@@ -1,0 +1,35 @@
+
+
+.session_ocean {
+    background-color: #2490EB;
+}
+
+.session_blue {
+    background-color: #14457B;
+}
+
+.text_ocean{
+    color: #2490EB;
+}
+
+.logo_absolute {
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin-top: 10px;
+    transition: all 0.3s;
+}
+
+.link {
+    background-color: #2490EB;
+    border-radius: 5px;
+    transition: all 0.6s;
+}
+
+.link:hover {
+    background-color: black;
+}
+
+.session:hover .logo_absolute {
+    margin-right: 20px;
+}
