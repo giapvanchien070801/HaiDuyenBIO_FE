@@ -50,7 +50,7 @@ export default function UserHeader() {
         </div>
       </div>
 
-      <div className="container mx-auto flex justify-between items-center relative z-20 bg-white">
+      <div className="container mx-auto flex justify-between items-center relative z-20 bg-white py-2">
         <Link href={`#`}>
           <div className="flex items-center">
             <img src="/images/logo.png" className="w-14 h-14" />

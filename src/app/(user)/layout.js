@@ -3,8 +3,8 @@ import Link from "next/link";
 import layoutUserStyle from "@/styles/layout_user_style.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarDays, faEnvelope, faLocationPin, faPhone } from "@fortawesome/free-solid-svg-icons";
-import UserHeader from "@/components/UserHeader";
-import UserFooter from "@/components/UserFooter";
+import UserHeader from "@/components/user/UserHeader";
+import UserFooter from "@/components/user/UserFooter";
 
 export const metadata = {
   description: "Website Phòng Khám Hà Nội Lào Cai",
