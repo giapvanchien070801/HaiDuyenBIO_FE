@@ -1,8 +1,4 @@
 import "../globals.css";
-import Link from "next/link";
-import layoutUserStyle from "@/styles/layout_user_style.module.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCalendarDays, faEnvelope, faLocationPin, faPhone } from "@fortawesome/free-solid-svg-icons";
 import UserHeader from "@/components/user/UserHeader";
 import UserFooter from "@/components/user/UserFooter";
 
@@ -15,6 +11,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
         <link rel="shortcut icon" href="/favicon.ico" />
+        <title>Phòng Khám Hà Nội Lào Cai</title>
       </head>
       <body>
         <UserHeader />

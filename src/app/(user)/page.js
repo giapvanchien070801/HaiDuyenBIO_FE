@@ -1,11 +1,20 @@
-import UserInfoImportant from '@/components/user/UserInfoImportant';
-import dynamic from 'next/dynamic';
+import UserInfoImportant from "@/components/user/UserInfoImportant";
+import dynamic from "next/dynamic";
+import Head from "next/head";
 
-const UserSwiper = dynamic(() => import('@/components/user/UserSwiper'), { ssr: false })
+const UserSwiper = dynamic(() => import("@/components/user/UserSwiper"), {
+  ssr: false,
+});
 export default function HomePage() {
-  return (<div className="pb-48 container mx-auto">
+  return (
+    <>
+      <Head>
 
-    <UserSwiper />
-    <UserInfoImportant />
-  </div>);
+      </Head>
+      <div className="pb-48 container mx-auto">
+        <UserSwiper />
+        <UserInfoImportant />
+      </div>
+    </>
+  );
 }
