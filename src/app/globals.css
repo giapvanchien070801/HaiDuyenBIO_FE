@@ -1,3 +1,24 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.session_ocean2 {
+    background-color: #2490EB;
+}
+
+.session_ocean1 {
+    background-color: #D3E9FB;
+}
+
+.session_blue {
+    background-color: #14457B;
+}
+
+.text_ocean {
+    color: #2490EB;
+}
+
+.transition {
+    transition: all 0.5s;
+}

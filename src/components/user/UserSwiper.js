@@ -21,21 +21,21 @@ export default function UserSwiper() {
         <img
           src="/images/slide1.jpg"
           className="w-full"
-          style={{ height: "570px" }}
+          style={{ height: "620px" }}
         />
       </SwiperSlide>
       <SwiperSlide>
         <img
           src="/images/slide2.jpg"
           className="w-full"
-          style={{ height: "570px" }}
+          style={{ height: "620px" }}
         />
       </SwiperSlide>
       <SwiperSlide>
         <img
           src="/images/slide3.jpg"
           className="w-full"
-          style={{ height: "570px" }}
+          style={{ height: "620px" }}
         />
       </SwiperSlide>
     </Swiper>
