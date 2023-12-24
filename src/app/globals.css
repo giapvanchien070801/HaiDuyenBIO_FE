@@ -2,23 +2,162 @@
 @tailwind components;
 @tailwind utilities;
 
-
 .session_ocean2 {
-    background-color: #2490EB;
+  background-color: #2490eb;
 }
 
 .session_ocean1 {
-    background-color: #D3E9FB;
+  background-color: #d3e9fb;
 }
 
 .session_blue {
-    background-color: #14457B;
+  background-color: #14457b;
 }
 
 .text_ocean {
-    color: #2490EB;
+  color: #2490eb;
 }
 
 .transition {
-    transition: all 0.5s;
+  transition: all 0.5s;
+}
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+/* Reset CSS  */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  line-height: 1.15;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+.font-nunito {
+}
+.hide-ant-tooltip .ant-tooltip-content {
+  display: none !important;
+}
+
+.bg-login {
+  background-color: #dbefee; /* For browsers that do not support gradients */
+  background-image: linear-gradient(to bottom right, #dbefee, #ebceb6);
+}
+
+.main-sidebar,
+.content-wraper {
+  transition: 0.5s;
+}
+.main-sidebar {
+  box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08),
+    0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+}
+.item-collapse-menu {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  color: #696969;
+  transition: 0.5s;
+  border-radius: 8px;
+}
+.item-collapse-menu:hover {
+  background-color: #ebebeb;
+  color: #96a6eb;
+}
+
+.bg-menu-active {
+  background-color: #ebebeb;
+}
+
+.text-menu {
+  animation-name: text-menu;
+  animation-duration: 1s;
+}
+.text-sub-menu {
+  animation-name: text-sub-menu;
+  animation-duration: 1s;
+}
+@keyframes text-menu {
+  from {
+    opacity: 0;
+    display: none;
+  }
+  to {
+    width: auto;
+    display: block;
+  }
+}
+@keyframes text-sub-menu {
+  from {
+    opacity: 0;
+    display: none;
+  }
+  to {
+    width: auto;
+    display: flex;
+  }
+}
+
+.rotate-90 {
+  transform: rotate(90deg);
+}
+
+.icon-right-menu {
+  transition: 0.5s;
+}
+
+.sub-menu-container {
+  color: #818080;
+
+  cursor: pointer;
+  animation-name: sub-menu-container;
+  animation-duration: 1s;
+}
+
+@keyframes sub-menu-container {
+  from {
+    opacity: 0;
+    height: 0;
+  }
+  to {
+    height: fit-content;
+    opacity: 1;
+  }
+}
+
+.sub-menu-container div {
+  height: 40px;
+  border-radius: 8px;
+  margin-bottom: 1px;
+  align-items: center;
+}
+
+.sub-menu-container div:hover {
+  background-color: #f3f4f6;
+  color: #8d8ec8;
+}
+
+.bg-submenu-active {
+  background-color: #f3f4f6;
+  color: #8d8ec8;
 }
