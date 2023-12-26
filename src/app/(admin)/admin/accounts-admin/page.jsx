@@ -7,8 +7,10 @@ import {
 } from "@ant-design/icons";
 import { useState } from "react";
 import styled from "@emotion/styled";
+import { useRouter } from "next/navigation";
 
 export default function AccountsAdmin() {
+  const router = useRouter();
   const breadcrumb = [
     {
       href: "/admin/home",
@@ -89,8 +91,9 @@ export default function AccountsAdmin() {
             size="middle"
             className="border-purple-800 text-purple-600"
             type="default"
+            onClick={() => handleGoCreateOrEdit()}
           >
-            Sửa
+            Xem chi tiết/Sửa
           </Button>
           <Button size="middle" type="default" danger>
             Xóa
@@ -182,6 +185,10 @@ export default function AccountsAdmin() {
     }
   };
 
+  const handleGoCreateOrEdit = () => {
+    router.push("/admin/accounts-admin/create-edit");
+  };
+
   return (
     <div>
       <Breadcrumb className="mb-5" items={breadcrumb} />
@@ -202,6 +209,7 @@ export default function AccountsAdmin() {
         size="middle"
         type="primary"
         className="float-right  bg-blue-700 text-white"
+        onClick={() => handleGoCreateOrEdit()}
       >
         Thêm mới
       </Button>

@@ -7,8 +7,15 @@ import {
 } from "@ant-design/icons";
 import { useState } from "react";
 import styled from "@emotion/styled";
+import { useRouter } from "next/navigation";
 
 export default function ListMainPage() {
+  const router = useRouter();
+
+  const handleGoCreateOrEdit = () => {
+    router.push("/admin/list-main-page/create-edit");
+  };
+
   const breadcrumb = [
     {
       href: "/admin/home",
@@ -78,16 +85,11 @@ export default function ListMainPage() {
             size="middle"
             className="border-teal-500 text-teal-500"
             type="default"
+            onClick={() => handleGoCreateOrEdit()}
           >
-            Xem chi tiết
+            Xem chi tiết/Sửa
           </Button>
-          <Button
-            size="middle"
-            className="border-purple-800 text-purple-600"
-            type="default"
-          >
-            Sửa
-          </Button>
+
           <Button size="middle" type="default" danger>
             Xóa
           </Button>
@@ -199,6 +201,7 @@ export default function ListMainPage() {
         size="middle"
         type="primary"
         className="float-right  bg-blue-700 text-white"
+        onClick={() => handleGoCreateOrEdit()}
       >
         Thêm mới
       </Button>

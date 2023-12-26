@@ -56,7 +56,7 @@ export default function AdminHomeLayout({ children }) {
     <div className=" flex">
       {/* siderbar */}
       <div
-        className={`  absolute  h-[100vh] main-sidebar flex flex-col items-center p-3 ${
+        className={`  absolute  min-h-[100vh] main-sidebar flex flex-col items-center p-3 ${
           isCloseMenu ? "w-[70px]" : "w-64"
         }`}
       >
@@ -67,7 +67,7 @@ export default function AdminHomeLayout({ children }) {
 
       {/* main content */}
       <div
-        className={` w-full h-[100vh] content-wraper bg-[#f3f3f5] ${
+        className={` w-full min-h-[100vh] content-wraper bg-[#f3f3f5] ${
           isCloseMenu ? "ml-[70px]" : "ml-64"
         }`}
       >
