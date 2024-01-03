@@ -1,7 +1,10 @@
-import UserAboutUs from "@/components/user/UserAboutUs";
+import Test from "@/components/user/Test";
 import UserFacilities from "@/components/user/UserFacilities";
 import UserInfoImportant from "@/components/user/UserInfoImportant";
 import UserSwiper from "@/components/user/UserSwiper";
+import dynamic from "next/dynamic";
+
+const UserAboutUs = dynamic(()=>import("@/components/user/UserAboutUs"), { ssr: false});
 
 export const metadata = {
   title: "Phòng Khám Hà Nội Lào Cai",
@@ -13,6 +16,7 @@ export default function HomePage() {
   return (
     <>
       <div className="pb-48">
+        <Test />
         <UserSwiper />
         <UserInfoImportant />
         <UserAboutUs />

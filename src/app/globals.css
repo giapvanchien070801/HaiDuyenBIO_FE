@@ -161,3 +161,16 @@ body {
   background-color: #f3f4f6;
   color: #8d8ec8;
 }
+
+
+.facilities_container:hover img{
+  scale: 1.05;
+}
+
+.facilities_container:hover .icon {
+  transform: rotateY(180deg);
+}
+
+.no-tailwind  {
+  all: unset !important;
+}
