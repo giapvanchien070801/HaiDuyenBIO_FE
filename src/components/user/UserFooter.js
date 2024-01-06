@@ -1,5 +1,10 @@
 import layoutUserStyle from "@/styles/layout_user_style.module.css";
-import { faCalendarDays, faEnvelope, faLocationPin, faPhone } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCalendarDays,
+  faEnvelope,
+  faLocationPin,
+  faPhone,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 
@@ -34,7 +39,7 @@ export default function UserFooter() {
             <div className="footer_logo">
               <div className="flex items-center mb-6">
                 <img src={`/images/logo.png`} className="w-14 h-14" />
-                <span className={`font-bold xl:text-2xl lg:text-2xl`}>
+                <span className={`font-bold xl:text-2xl lg:text-2xl ml-2`}>
                   Phòng Khám HNLC
                 </span>
               </div>

@@ -1,15 +1,15 @@
-"use client"
+"use client";
 import { useState } from "react";
 import layoutUserStyle from "@/styles/layout_user_style.module.css";
 import {
-    DownOutlined,
-    SearchOutlined,
-    CloseOutlined,
-    PhoneFilled,
-    MailFilled,
-    FacebookFilled,
-    PushpinFilled,
-  } from "@ant-design/icons";
+  DownOutlined,
+  SearchOutlined,
+  CloseOutlined,
+  PhoneFilled,
+  MailFilled,
+  FacebookFilled,
+  PushpinFilled,
+} from "@ant-design/icons";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
@@ -50,12 +50,12 @@ export default function UserHeader() {
         </div>
       </div>
 
-      <div className="container mx-auto flex justify-between items-center relative z-20 bg-white py-2">
+      <div className="container mx-auto flex justify-between items-center relative z-20 bg-white py-4">
         <Link href={`#`}>
           <div className="flex items-center">
             <img src="/images/logo.png" className="w-14 h-14" />
             <p
-              className={`${layoutUserStyle.text_logo} font-bold xl:text-xl lg:text-base`}
+              className={`${layoutUserStyle.text_logo} font-bold xl:text-xl lg:text-base ml-2`}
             >
               Phòng Khám HNLC
             </p>
