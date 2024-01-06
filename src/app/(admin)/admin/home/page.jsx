@@ -5,6 +5,9 @@ import { HomeOutlined } from "@ant-design/icons";
 import { Line } from "@ant-design/plots";
 import { useEffect, useState } from "react";
 import { dataChart } from "../../common/data-fake/dataChartFake";
+import { useQuery } from "react-query";
+// import Base from "@/app/models/Base";
+import Base from "../../../models/Base";
 
 export default function Dashboard() {
   const data = dataChart;
@@ -42,6 +45,18 @@ export default function Dashboard() {
       ),
     },
   ];
+
+  const { data: systemParamShoppingCart } = useQuery(
+    ["getListSPDVByTypess"],
+    async () => {
+      return Base.getListNewService({
+        size: 10,
+        customerType: "ENTERPRISE",
+      });
+    }
+  );
+
+  console.log("systemParamShoppingCart", systemParamShoppingCart);
 
   return (
     <div>

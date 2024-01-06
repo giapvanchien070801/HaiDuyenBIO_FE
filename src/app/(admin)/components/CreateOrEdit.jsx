@@ -14,6 +14,7 @@ const CreateOrEdit = (props) => {
   const router = useRouter();
 
   const [isShowPost, setIsShowPost] = useState(true);
+  const [valueTextEditor, setValueTextEditor] = useState("");
 
   const onFinish = (values) => {
     console.log("Received values:", values);
@@ -90,8 +91,14 @@ const CreateOrEdit = (props) => {
           </div>
         </div>
 
-        <h1 className="mb-2">Nội dung trang:</h1>
-        <TextEditor />
+        <p className="mb-2">Nội dung trang:</p>
+
+        <TextEditor
+          onChange={(value) => {
+            setValueTextEditor(value);
+          }}
+        />
+
         <div className="mt-5 flex justify-between gap-3">
           <Form.Item className="w-3/12" label="Ngày tạo">
             <DatePicker
@@ -172,11 +179,7 @@ const CreateOrEdit = (props) => {
             className="w-3/12"
             label={isShowPost ? "Hiển thị" : "Không hiển thị"}
           >
-            <Switch
-              className="bg-gray-500"
-              defaultChecked
-              onChange={onChangeSwitch}
-            />
+            <Switch className="" defaultChecked onChange={onChangeSwitch} />
           </Form.Item>
         </div>
 

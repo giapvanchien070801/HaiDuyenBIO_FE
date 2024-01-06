@@ -1,17 +1,29 @@
 "use client";
 
+import Base from "@/app/models/Base";
 import styled from "@emotion/styled";
 import { Button, Checkbox, Form, Input, message } from "antd";
 import { useRouter } from "next/navigation";
+import { useMutation } from "react-query";
 
 function LoginPage() {
   const router = useRouter();
 
+  // delete Record
+  const loginMutate = useMutation(Base.getListNewService, {
+    onSuccess: () => {
+      message.success("Đăng nhập thành công!");
+      // set token
+    },
+    onError: () => {
+      message.error("Đăng nhập thất bại!");
+    },
+  });
+
   const onFinish = (values) => {
+    // loginMutate.mutate(values)
     console.log("Received values:", values);
     router.push("admin/home");
-    message.success("Đăng nhập thành công!");
-    // Xử lý đăng nhập ở đây
   };
   const notAcc = `Don't have an account?`;
 

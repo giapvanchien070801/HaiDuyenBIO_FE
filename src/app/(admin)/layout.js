@@ -3,8 +3,10 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import "/src/app/globals.css";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 export default function AdminLayout({ children }) {
+  const queryClient = new QueryClient();
   const router = useRouter();
   const location = window.location.href;
 
@@ -32,7 +34,11 @@ export default function AdminLayout({ children }) {
       <head>
         <link rel="shortcut icon" href="/favicon.ico" />
       </head>
-      <body>{children}</body>
+      <body>
+        <QueryClientProvider client={queryClient}>
+          {children}
+        </QueryClientProvider>
+      </body>
     </html>
   );
 }

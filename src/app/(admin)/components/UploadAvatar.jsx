@@ -47,7 +47,7 @@ const UploadAvatar = () => {
   );
   return (
     <div>
-      <h1 className="ml-2 mb-2">Ảnh đại diện</h1>
+      <p className="ml-2 mb-2">Ảnh đại diện</p>
       <Upload
         name="avatar"
         listType="picture-card"

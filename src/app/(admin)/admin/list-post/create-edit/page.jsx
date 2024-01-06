@@ -7,7 +7,7 @@ import {
 } from "@ant-design/icons";
 import { useState } from "react";
 import styled from "@emotion/styled";
-import CreateOrEdit from "@/app/(admin)/components/CreateOrEdit";
+import CreateOrEdit from "../../../components/CreateOrEdit";
 
 export default function CreateOrEditListPost() {
   const breadcrumb = [

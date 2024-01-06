@@ -2,6 +2,58 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Reset CSS  */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  line-height: 1.15;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+/* Header 1 */
+h1 {
+  font-size: 2em;
+  font-weight: bold;
+}
+
+/* Header 2 */
+h2 {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+/* Header 3 */
+h3 {
+  font-size: 1.17em;
+  font-weight: bold;
+}
+
+/* Header 4 */
+h4 {
+  font-size: 1em;
+  font-weight: bold;
+}
+
+/* Header 5 */
+h5 {
+  font-size: 0.83em;
+  font-weight: bold;
+}
+
+/* Header 6 */
+h6 {
+  font-size: 0.67em;
+  font-weight: bold;
+}
+
 .session_ocean2 {
   background-color: #2490eb;
 }
@@ -34,22 +86,6 @@
     --background-start-rgb: 0, 0, 0;
     --background-end-rgb: 0, 0, 0;
   }
-}
-
-/* Reset CSS  */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html {
-  line-height: 1.15;
-  -webkit-text-size-adjust: 100%;
-}
-
-body {
-  margin: 0;
 }
 
 .font-nunito {
@@ -162,8 +198,7 @@ body {
   color: #8d8ec8;
 }
 
-
-.facilities_container:hover img{
+.facilities_container:hover img {
   scale: 1.05;
 }
 
@@ -171,6 +206,13 @@ body {
   transform: rotateY(180deg);
 }
 
-.no-tailwind  {
+.no-tailwind {
   all: unset !important;
+}
+
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+  background-color: none;
 }
