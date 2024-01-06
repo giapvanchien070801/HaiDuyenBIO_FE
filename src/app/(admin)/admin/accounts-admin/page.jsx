@@ -8,6 +8,7 @@ import {
 import { useState } from "react";
 import styled from "@emotion/styled";
 import { useRouter } from "next/navigation";
+import ModalCreateAccount from "../../components/ModalCreateAccount";
 
 export default function AccountsAdmin() {
   const router = useRouter();
@@ -48,40 +49,11 @@ export default function AccountsAdmin() {
       key: "age",
     },
     {
-      title: "Địa chỉ",
+      title: "Tài khoản",
       dataIndex: "address",
       key: "address",
     },
-    {
-      title: "Số điện thoại",
-      key: "tags",
-      dataIndex: "tags",
-      render: (_, { tags }) => (
-        <>
-          {tags.map((tag) => {
-            let color = tag.length > 5 ? "geekblue" : "green";
-            if (tag === "loser") {
-              color = "volcano";
-            }
-            return (
-              <Tag color={color} key={tag}>
-                {tag.toUpperCase()}
-              </Tag>
-            );
-          })}
-        </>
-      ),
-    },
-    {
-      title: "Email",
-      dataIndex: "address",
-      key: "address",
-    },
-    {
-      title: "Ngày sinh",
-      dataIndex: "address",
-      key: "address",
-    },
+
     {
       title: "Hoạt động",
       key: "action",
@@ -89,7 +61,7 @@ export default function AccountsAdmin() {
         <Space size="middle">
           <Button
             size="middle"
-            className="border-purple-800 text-purple-600"
+            className="border-teal-500 text-teal-500"
             type="default"
             onClick={() => handleGoCreateOrEdit()}
           >
@@ -204,15 +176,7 @@ export default function AccountsAdmin() {
         className="w-1/3 mb-5"
         placeholder="Tìm kiếm"
       />
-      <Button
-        icon={<PlusCircleOutlined />}
-        size="middle"
-        type="primary"
-        className="float-right  bg-blue-700 text-white"
-        onClick={() => handleGoCreateOrEdit()}
-      >
-        Thêm mới
-      </Button>
+      <ModalCreateAccount />
       <CustomTable>
         <Table
           columns={columns}

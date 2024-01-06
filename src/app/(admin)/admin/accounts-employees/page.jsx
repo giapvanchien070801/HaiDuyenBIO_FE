@@ -7,6 +7,7 @@ import {
 } from "@ant-design/icons";
 import styled from "@emotion/styled";
 import { useState } from "react";
+import ModalCreateAccount from "../../components/ModalCreateAccount";
 
 export default function AccountsEmployees() {
   const breadcrumb = [
@@ -46,40 +47,11 @@ export default function AccountsEmployees() {
       key: "age",
     },
     {
-      title: "Địa chỉ",
+      title: "Tài khoản",
       dataIndex: "address",
       key: "address",
     },
-    {
-      title: "Số điện thoại",
-      key: "tags",
-      dataIndex: "tags",
-      render: (_, { tags }) => (
-        <>
-          {tags.map((tag) => {
-            let color = tag.length > 5 ? "geekblue" : "green";
-            if (tag === "loser") {
-              color = "volcano";
-            }
-            return (
-              <Tag color={color} key={tag}>
-                {tag.toUpperCase()}
-              </Tag>
-            );
-          })}
-        </>
-      ),
-    },
-    {
-      title: "Email",
-      dataIndex: "address",
-      key: "address",
-    },
-    {
-      title: "Ngày sinh",
-      dataIndex: "address",
-      key: "address",
-    },
+
     {
       title: "Hoạt động",
       key: "action",
@@ -197,14 +169,7 @@ export default function AccountsEmployees() {
         className="w-1/3 mb-5"
         placeholder="Tìm kiếm"
       />
-      <Button
-        icon={<PlusCircleOutlined />}
-        size="middle"
-        type="primary"
-        className="float-right  bg-blue-700 text-white"
-      >
-        Thêm mới
-      </Button>
+      <ModalCreateAccount />
       <CustomTable>
         <Table
           columns={columns}

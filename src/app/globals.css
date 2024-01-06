@@ -209,10 +209,3 @@ h6 {
 .no-tailwind {
   all: unset !important;
 }
-
-button,
-[type="button"],
-[type="reset"],
-[type="submit"] {
-  background-color: none;
-}

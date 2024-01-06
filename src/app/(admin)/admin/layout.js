@@ -23,10 +23,16 @@ export default function AdminHomeLayout({ children }) {
     router.push("/login-admin");
     message.success("Đăng xuất thành công");
   };
+  const handleChangePass = () => {
+    router.push("/reset-password");
+  };
 
   const contentPopover = (
     <div className=" cursor-pointer">
-      <div className="flex items-center pr-4 py-3 gap-2 border-y hover:bg-[#4361ee1a] p-2">
+      <div
+        className="flex items-center pr-4 py-3 gap-2 border-y hover:bg-[#4361ee1a] p-2"
+        onClick={() => handleChangePass()}
+      >
         <InteractionOutlined />
         <p>Đổi mật khẩu</p>
       </div>
