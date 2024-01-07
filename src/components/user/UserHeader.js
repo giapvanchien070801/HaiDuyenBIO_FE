@@ -19,6 +19,12 @@ export default function UserHeader() {
   const showSearchBar = () => {
     setActiveSearchbar(!activeSearchbar);
   };
+  const listService = [
+    { content: "Cộng hưởng từ", id: 1 },
+    { content: "Khám bệnh", id: 2 },
+    { content: "Miễn dịch", id: 3 },
+  ];
+
   return (
     <header className="z-20">
       <div className={`${layoutUserStyle.background_info_top} z-20`}>
@@ -169,6 +175,36 @@ export default function UserHeader() {
                         Khoa xét nghiệm
                       </Link>
                     </li>
+                  </ul>
+                </div>
+              </li>
+
+              <li className={`h-full relative ${layoutUserStyle.menu_item}`}>
+                <Link
+                  href={`#`}
+                  className="h-full flex items-center px-2 hover:text-cyan-600 transition-all duration-300 lg:py-0 py-2"
+                >
+                  Dịch vụ
+                  <DownOutlined
+                    style={{ fontSize: "14px", marginLeft: "5px" }}
+                  />
+                </Link>
+
+                <div
+                  className={`${layoutUserStyle.submenu} lg:absolute lg:w-max w-full z-20`}
+                >
+                  <ul className="w-max bg-white">
+                    {listService?.map((service, index) => (
+                      <li key={index} className="w-full">
+                        <Link
+                          href={`/service-detail/${service?.id}`}
+                          as={`/service-detail/${service?.id}`}
+                          className="hover:text-white block hover:bg-cyan-600 py-2 px-8 transition-all duration-300 lg:px-4 lg:py-2"
+                        >
+                          {service?.content}
+                        </Link>
+                      </li>
+                    ))}
                   </ul>
                 </div>
               </li>
