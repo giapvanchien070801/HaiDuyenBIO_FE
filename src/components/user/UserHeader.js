@@ -218,18 +218,26 @@ export default function UserHeader() {
                 </Link>
               </li>
 
-              <li className="h-full relative">
+              {/* <li className="h-full relative">
                 <Link
                   href={`#`}
                   className="h-full flex items-center px-2 hover:text-cyan-600 transition-all duration-300 lg:py-0 py-2"
                 >
                   Tuyển dụng
                 </Link>
-              </li>
+              </li> */}
 
               <li className="h-full relative">
                 <Link
-                  href={`#`}
+                  href={`/login-admin`}
+                  className="h-full flex items-center px-2 hover:text-cyan-600 transition-all duration-300 lg:py-0 py-2"
+                >
+                  Tin tức
+                </Link>
+              </li>
+              <li className="h-full relative">
+                <Link
+                  href={`/login-admin`}
                   className="h-full flex items-center px-2 hover:text-cyan-600 transition-all duration-300 lg:py-0 py-2"
                 >
                   Nội bộ

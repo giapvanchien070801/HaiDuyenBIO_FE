@@ -7,9 +7,9 @@ import {
 } from "@ant-design/icons";
 import { useState } from "react";
 import styled from "@emotion/styled";
-import CreateOrEdit from "../../../components/CreateOrEdit";
+import CreateOrEdit from "../../../../components/CreateOrEdit";
 
-export default function CreateOrEditListPost() {
+export default function EditPost({ params }) {
   const breadcrumb = [
     {
       href: "/admin/home",
@@ -29,10 +29,10 @@ export default function CreateOrEditListPost() {
       ),
     },
     {
-      href: "/admin/list-post/create-edit",
+      href: "/admin/list-post/edit",
       title: (
         <>
-          <span className="text-cyan-700">Tạo mới bài viết</span>
+          <span className="text-cyan-700">Chỉnh sửa bài viết</span>
         </>
       ),
     },
@@ -42,7 +42,7 @@ export default function CreateOrEditListPost() {
     <div>
       <Breadcrumb className="mb-5" items={breadcrumb} />
 
-      <CreateOrEdit />
+      <CreateOrEdit typePage="post" id={params?.id} />
     </div>
   );
 }

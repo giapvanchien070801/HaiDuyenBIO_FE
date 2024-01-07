@@ -7,23 +7,32 @@ import { useRouter } from "next/navigation";
 import { useMutation } from "react-query";
 
 function LoginPage() {
+  const [form] = Form.useForm();
   const router = useRouter();
 
   // delete Record
-  const loginMutate = useMutation(Base.getListNewService, {
-    onSuccess: () => {
+  const loginMutate = useMutation(Base.loginAdmin, {
+    onSuccess: (value) => {
+      localStorage.setItem("accessToken", value.Token);
+      router.push("/admin/home");
       message.success("Đăng nhập thành công!");
       // set token
     },
-    onError: () => {
+    onError: (e) => {
       message.error("Đăng nhập thất bại!");
     },
   });
 
-  const onFinish = (values) => {
-    // loginMutate.mutate(values)
-    console.log("Received values:", values);
-    router.push("admin/home");
+  const handleSunmit = () => {
+    form.submit();
+
+    const listFieldName = ["password", "account"];
+    form
+      .validateFields(listFieldName)
+      .then((value) => {
+        loginMutate.mutate(value);
+      })
+      .catch(() => {});
   };
   const notAcc = `Don't have an account?`;
 
@@ -37,13 +46,13 @@ function LoginPage() {
             <Form
               name="login-form"
               initialValues={{ remember: true }}
-              onFinish={onFinish}
               className="w-full"
+              form={form}
             >
               {/* <p className="mb-1">Tài khoản:</p> */}
               <Form.Item
                 label="Tài khoản"
-                name="username"
+                name="account"
                 rules={[
                   { required: true, message: "Vui lòng nhập tên đăng nhập!" },
                 ]}
@@ -67,7 +76,7 @@ function LoginPage() {
               <Form.Item>
                 <Button
                   type="primary"
-                  htmlType="submit"
+                  onClick={() => handleSunmit()}
                   className="w-full bg-[#2ba191] text-white mt-10"
                 >
                   Đăng nhập

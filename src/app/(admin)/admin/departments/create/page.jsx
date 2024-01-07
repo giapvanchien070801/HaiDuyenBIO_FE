@@ -9,7 +9,7 @@ import { useState } from "react";
 import styled from "@emotion/styled";
 import CreateOrEdit from "../../../components/CreateOrEdit";
 
-export default function CreateOrEditMainPage() {
+export default function CreateDepartment() {
   const breadcrumb = [
     {
       href: "/admin/home",
@@ -21,18 +21,18 @@ export default function CreateOrEditMainPage() {
       ),
     },
     {
-      href: "/admin/list-main-page",
+      href: "/admin/departments",
       title: (
         <>
-          <span className="text-cyan-700">Các trang chính</span>
+          <span className="text-cyan-700">Danh sách khoa</span>
         </>
       ),
     },
     {
-      href: "/admin/list-main-page",
+      href: "/admin/departments/create",
       title: (
         <>
-          <span className="text-cyan-700">Tạo mới</span>
+          <span className="text-cyan-700">Tạo mới Khoa</span>
         </>
       ),
     },
@@ -42,7 +42,7 @@ export default function CreateOrEditMainPage() {
     <div>
       <Breadcrumb className="mb-5" items={breadcrumb} />
 
-      <CreateOrEdit />
+      <CreateOrEdit typePage="department" />
     </div>
   );
 }

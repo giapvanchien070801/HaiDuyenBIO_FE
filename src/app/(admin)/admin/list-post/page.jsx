@@ -25,14 +25,14 @@ export default function ListPost() {
       href: "",
       title: (
         <>
-          <span className="text-cyan-700">Các bài viết</span>
+          <span className="text-cyan-700">Danh sách bài viết</span>
         </>
       ),
     },
   ];
 
   const handleGoCreateOrEdit = () => {
-    router.push("/admin/list-post/create-edit");
+    router.push("/admin/list-post/create");
   };
 
   const columns = [
@@ -52,7 +52,7 @@ export default function ListPost() {
       key: "age",
     },
     {
-      title: "Thời gian tạo",
+      title: "Ngày tạo",
       dataIndex: "address",
       key: "address",
     },
@@ -85,7 +85,7 @@ export default function ListPost() {
             size="middle"
             className="border-teal-500 text-teal-500"
             type="default"
-            onClick={() => handleGoCreateOrEdit()}
+            onClick={() => router.push("/admin/list-post/edit/1")}
           >
             Xem chi tiết/Sửa
           </Button>

@@ -9,11 +9,11 @@ import styled from "@emotion/styled";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function InternalNotifications() {
+export default function Departments() {
   const router = useRouter();
 
   const handleGoCreateOrEdit = () => {
-    router.push("/admin/internal-notifications/create-edit");
+    router.push("/admin/departments/create");
   };
 
   const breadcrumb = [
@@ -30,7 +30,7 @@ export default function InternalNotifications() {
       href: "",
       title: (
         <>
-          <span className="text-cyan-700">Thông báo nội bộ</span>
+          <span className="text-cyan-700">Danh sách khoa</span>
         </>
       ),
     },
@@ -42,18 +42,14 @@ export default function InternalNotifications() {
       key: "stt",
     },
     {
-      title: "Tiêu đề",
+      title: "Tên khoa",
       dataIndex: "name",
       key: "name",
       render: (text) => <a>{text}</a>,
     },
+
     {
-      title: "Mô tả",
-      dataIndex: "age",
-      key: "age",
-    },
-    {
-      title: "Thời gian tạo",
+      title: "Ngày tạo",
       dataIndex: "address",
       key: "address",
     },
@@ -86,7 +82,7 @@ export default function InternalNotifications() {
             size="middle"
             className="border-teal-500 text-teal-500"
             type="default"
-            onClick={() => handleGoCreateOrEdit()}
+            onClick={() => router.push("/admin/departments/edit/1")}
           >
             Xem chi tiết/Sửa
           </Button>

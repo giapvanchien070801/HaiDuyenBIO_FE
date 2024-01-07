@@ -20,6 +20,7 @@ export default function AdminHomeLayout({ children }) {
   };
 
   const handleLogOut = () => {
+    localStorage.removeItem("accessToken");
     router.push("/login-admin");
     message.success("Đăng xuất thành công");
   };

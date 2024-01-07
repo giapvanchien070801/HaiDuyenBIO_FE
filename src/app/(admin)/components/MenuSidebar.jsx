@@ -36,18 +36,48 @@ const MenuSidebar = (props) => {
           icon: (
             <UnorderedListOutlined className={`${isCloseMenu && "text-xs"}`} />
           ),
-          text: "Các trang chính",
-          pushTo: "/admin/list-main-page",
+          text: "Danh mục bài viết",
+          pushTo: "/admin/categorys",
         },
         {
           icon: <FileTextOutlined className={`${isCloseMenu && "text-xs"}`} />,
-          text: "Các bài viết",
+          text: "Danh sách bài viết",
           pushTo: "/admin/list-post",
         },
+      ],
+    },
+
+    {
+      text: "Quản lý Đội ngũ",
+      icon: <OrderedListOutlined />,
+      listSubMenu: [
         {
-          icon: <BellOutlined className={`${isCloseMenu && "text-xs"}`} />,
-          text: "Thông báo nội bộ",
-          pushTo: "/admin/internal-notifications",
+          icon: <MenuOutlined className={`${isCloseMenu && "text-xs"}`} />,
+          text: "Danh sách nhân viên",
+          pushTo: "/admin/list-employee",
+        },
+      ],
+    },
+    {
+      text: "Quản lý Khoa",
+      icon: <PartitionOutlined />,
+      listSubMenu: [
+        {
+          icon: <UserOutlined className={`${isCloseMenu && "text-xs"}`} />,
+          text: "Danh sách Khoa",
+          pushTo: "/admin/departments",
+        },
+      ],
+    },
+
+    {
+      text: "Quản lý Slide",
+      icon: <PartitionOutlined />,
+      listSubMenu: [
+        {
+          icon: <UserOutlined className={`${isCloseMenu && "text-xs"}`} />,
+          text: "Danh sách ảnh",
+          pushTo: "/admin/list-image",
         },
       ],
     },
@@ -62,66 +92,15 @@ const MenuSidebar = (props) => {
         },
       ],
     },
-    {
-      text: "Quản lý Menu",
-      icon: <OrderedListOutlined />,
-      listSubMenu: [
-        {
-          icon: <MenuOutlined className={`${isCloseMenu && "text-xs"}`} />,
-          text: "Menu chính",
-          pushTo: "/admin/main-menus",
-        },
-        {
-          icon: <ApartmentOutlined className={`${isCloseMenu && "text-xs"}`} />,
-          text: "Các nút lệnh",
-          pushTo: "/admin/buttons",
-        },
-        {
-          icon: <ClusterOutlined className={`${isCloseMenu && "text-xs"}`} />,
-          text: "Chức năng nội bộ",
-          pushTo: "/admin/internal-function",
-        },
-      ],
-    },
+
     {
       text: "Quản lý Tài khoản",
       icon: <UsergroupAddOutlined />,
       listSubMenu: [
         {
           icon: <UserOutlined className={`${isCloseMenu && "text-xs"}`} />,
-          text: "Tài khoản quản trị",
+          text: "Danh sách tài khoản",
           pushTo: "/admin/accounts-admin",
-        },
-        {
-          icon: <UserOutlined className={`${isCloseMenu && "text-xs"}`} />,
-          text: "Tài khoản nhân viên",
-          pushTo: "/admin/accounts-employees",
-        },
-        {
-          icon: <UserOutlined className={`${isCloseMenu && "text-xs"}`} />,
-          text: "Tài khoản bệnh nhân",
-          pushTo: "/admin/accounts-patient",
-        },
-      ],
-    },
-    {
-      text: "Phân quyền tài khoản",
-      icon: <PartitionOutlined />,
-      listSubMenu: [
-        {
-          icon: <UserOutlined className={`${isCloseMenu && "text-xs"}`} />,
-          text: "Tài khoản quản trị",
-          pushTo: "/admin/accounts-admin",
-        },
-        {
-          icon: <UserOutlined className={`${isCloseMenu && "text-xs"}`} />,
-          text: "Tài khoản nhân viên",
-          pushTo: "/admin/accounts-employees",
-        },
-        {
-          icon: <UserOutlined className={`${isCloseMenu && "text-xs"}`} />,
-          text: "Tài khoản bệnh nhân",
-          pushTo: "/admin/accounts-patient",
         },
       ],
     },

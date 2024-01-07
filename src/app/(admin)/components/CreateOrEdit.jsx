@@ -9,7 +9,9 @@ import styled from "@emotion/styled";
 const { TextArea } = Input;
 
 const CreateOrEdit = (props) => {
-  const { isCloseMenu } = props;
+  const { typePage, id } = props;
+
+  const isCreatePost = typePage === "post";
 
   const router = useRouter();
 
@@ -59,129 +61,138 @@ const CreateOrEdit = (props) => {
         onFinishFailed={onFinishFailed}
         scrollToFirstError
       >
-        <div className="flex gap-3">
-          <UploadAvatar />
-          <div className="w-full">
-            <Form.Item
-              name="title"
-              rules={[
-                {
-                  required: true,
-                  message: "Tiêu đề không được bỏ trống!",
-                },
-              ]}
-              className="w-full mb-3 "
-              label="Tiêu đề"
-            >
-              <Input allowClear className=" mb-5" placeholder="Nhập tiêu đề" />
-            </Form.Item>
-            <Form.Item
-              name="description"
-              rules={[
-                {
-                  required: true,
-                  message: "Mô tả không được bỏ trống!",
-                },
-              ]}
-              className="w-full"
-              label="Mô tả ngắn"
-            >
-              <TextArea rows={4} placeholder="Nhập mô tả" maxLength={500} />
-            </Form.Item>
+        {isCreatePost && (
+          <div className="flex gap-3">
+            <UploadAvatar />
+            <div className="w-full">
+              <Form.Item
+                name="title"
+                rules={[
+                  {
+                    required: true,
+                    message: "Tiêu đề không được bỏ trống!",
+                  },
+                ]}
+                className="w-full mb-3 "
+                label="Tiêu đề"
+              >
+                <Input
+                  allowClear
+                  className=" mb-5"
+                  placeholder="Nhập tiêu đề"
+                />
+              </Form.Item>
+              <Form.Item
+                name="description"
+                rules={[
+                  {
+                    required: true,
+                    message: "Mô tả không được bỏ trống!",
+                  },
+                ]}
+                className="w-full"
+                label="Mô tả ngắn"
+              >
+                <TextArea rows={4} placeholder="Nhập mô tả" maxLength={500} />
+              </Form.Item>
+            </div>
           </div>
-        </div>
+        )}
 
-        <p className="mb-2">Nội dung trang:</p>
+        <p className="mb-2">
+          {isCreatePost ? "Nội dung trang:" : "Mô tả về khoa:"}
+        </p>
 
         <TextEditor
           onChange={(value) => {
             setValueTextEditor(value);
           }}
         />
+        {id ? (
+          <div className="flex mt-5  gap-3 w-full">
+            <Form.Item className="w-4/12" label="Ngày cập nhật">
+              <DatePicker
+                className="w-full"
+                showTime
+                onChange={onChange}
+                onOk={onOk}
+              />
+            </Form.Item>
 
-        <div className="mt-5 flex justify-between gap-3">
-          <Form.Item className="w-3/12" label="Ngày tạo">
-            <DatePicker
-              className="w-full"
-              showTime
-              onChange={onChange}
-              onOk={onOk}
-            />
-          </Form.Item>
+            <Form.Item className="w-4/12" label="Người cập nhật">
+              <Input allowClear className="" placeholder="" />
+            </Form.Item>
+            {isCreatePost && (
+              <Form.Item className="w-4/12" label="Danh mục">
+                <Select
+                  showSearch
+                  placeholder="Chọn danh mục"
+                  optionFilterProp="children"
+                  onChange={onChangeSelect}
+                  onSearch={onSearch}
+                  filterOption={filterOption}
+                  options={[
+                    {
+                      value: "jack",
+                      label: "Jack",
+                    },
+                    {
+                      value: "lucy",
+                      label: "Lucy",
+                    },
+                    {
+                      value: "tom",
+                      label: "Tom",
+                    },
+                  ]}
+                />
+              </Form.Item>
+            )}
+          </div>
+        ) : (
+          <div className="flex mt-5  gap-3 w-full">
+            <Form.Item className="w-4/12" label="Ngày tạo">
+              <DatePicker
+                className="w-full"
+                showTime
+                onChange={onChange}
+                onOk={onOk}
+              />
+            </Form.Item>
 
-          <Form.Item className="w-3/12" label="Người tạo">
-            <Input allowClear className="" placeholder="" />
-          </Form.Item>
+            <Form.Item className="w-4/12" label="Người tạo">
+              <Input allowClear className="" placeholder="" />
+            </Form.Item>
+            {isCreatePost && (
+              <Form.Item className="w-4/12" label="Danh mục">
+                <Select
+                  showSearch
+                  placeholder="Chọn danh mục"
+                  optionFilterProp="children"
+                  onChange={onChangeSelect}
+                  onSearch={onSearch}
+                  filterOption={filterOption}
+                  options={[
+                    {
+                      value: "jack",
+                      label: "Jack",
+                    },
+                    {
+                      value: "lucy",
+                      label: "Lucy",
+                    },
+                    {
+                      value: "tom",
+                      label: "Tom",
+                    },
+                  ]}
+                />
+              </Form.Item>
+            )}
+          </div>
+        )}
 
-          <Form.Item className="w-3/12" label="Ngày cập nhật">
-            <DatePicker
-              className="w-full"
-              showTime
-              onChange={onChange}
-              onOk={onOk}
-            />
-          </Form.Item>
-
-          <Form.Item className="w-3/12" label="Người cập nhật">
-            <Input allowClear className="" placeholder="" />
-          </Form.Item>
-        </div>
-        <div className="mt-5 flex gap-3 ">
-          <Form.Item className="w-3/12" label="Danh mục">
-            <Select
-              showSearch
-              placeholder="Chọn danh mục"
-              optionFilterProp="children"
-              onChange={onChangeSelect}
-              onSearch={onSearch}
-              filterOption={filterOption}
-              options={[
-                {
-                  value: "jack",
-                  label: "Jack",
-                },
-                {
-                  value: "lucy",
-                  label: "Lucy",
-                },
-                {
-                  value: "tom",
-                  label: "Tom",
-                },
-              ]}
-            />
-          </Form.Item>
-          <Form.Item className="w-3/12" label="Thuộc nội dung menu">
-            <Select
-              showSearch
-              placeholder="Chọn Menu"
-              optionFilterProp="children"
-              onChange={onChangeSelect}
-              onSearch={onSearch}
-              filterOption={filterOption}
-              options={[
-                {
-                  value: "jack",
-                  label: "Jack",
-                },
-                {
-                  value: "lucy",
-                  label: "Lucy",
-                },
-                {
-                  value: "tom",
-                  label: "Tom",
-                },
-              ]}
-            />
-          </Form.Item>
-          <Form.Item
-            className="w-3/12"
-            label={isShowPost ? "Hiển thị" : "Không hiển thị"}
-          >
-            <Switch className="" defaultChecked onChange={onChangeSwitch} />
-          </Form.Item>
-        </div>
+        <div className="mt-5 flex gap-3 "></div>
 
         <div className="gap-3 mt-5 float-right flex">
           <Button
@@ -203,7 +214,7 @@ const CreateOrEdit = (props) => {
               htmlType="submit"
               className="bg-[#2c3d94]"
             >
-              Tạo/Sửa
+              {id ? "Sửa" : "Tạo"}
             </Button>
           </Form.Item>
         </div>

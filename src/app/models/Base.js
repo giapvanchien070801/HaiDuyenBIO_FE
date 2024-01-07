@@ -1,5 +1,6 @@
 import axios from "axios";
-export const API_ROOT = "https://stagingonedx.vnpt-technology.vn:6443";
+// export const API_ROOT = "https://stagingonedx.vnpt-technology.vn:6443";
+export const API_ROOT = "http://192.168.0.103:3017";
 
 const axiosInstance = axios.create({
   baseURL: API_ROOT,
@@ -34,6 +35,18 @@ class Base {
       params: { size, customerType },
     });
     return response.data;
+  };
+
+  getListCategory = async () => {
+    const urlApi = `/api/category/get-all`;
+    const response = await requests.get(urlApi);
+    return response.data;
+  };
+
+  loginAdmin = async (data) => {
+    const urlApi = `/api/user/login`;
+    const response = await requests.post(urlApi, data);
+    return response?.data;
   };
 }
 export default new Base("");

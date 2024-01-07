@@ -59,14 +59,7 @@ export default function AccountsAdmin() {
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <Button
-            size="middle"
-            className="border-teal-500 text-teal-500"
-            type="default"
-            onClick={() => handleGoCreateOrEdit()}
-          >
-            Xem chi tiết/Sửa
-          </Button>
+          <ModalCreateAccount modalType="edit" />
           <Button size="middle" type="default" danger>
             Xóa
           </Button>
@@ -176,7 +169,7 @@ export default function AccountsAdmin() {
         className="w-1/3 mb-5"
         placeholder="Tìm kiếm"
       />
-      <ModalCreateAccount />
+      <ModalCreateAccount modalType="create" />
       <CustomTable>
         <Table
           columns={columns}

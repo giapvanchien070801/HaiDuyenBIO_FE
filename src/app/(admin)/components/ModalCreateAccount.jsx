@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import { Button, Modal, Input, Form } from "antd";
 import { PlusCircleOutlined } from "@ant-design/icons";
 
-const ModalCreateAccount = () => {
+const ModalCreateAccount = (props) => {
+  const { modalType } = props;
+
+  const isModalCreate = modalType === "create";
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form] = Form.useForm();
   const showModal = () => {
@@ -31,21 +34,33 @@ const ModalCreateAccount = () => {
 
   return (
     <>
-      <Button
-        icon={<PlusCircleOutlined />}
-        size="middle"
-        type="primary"
-        className="float-right  bg-blue-700 text-white"
-        onClick={showModal}
-      >
-        Thêm mới
-      </Button>
+      {isModalCreate ? (
+        <Button
+          icon={<PlusCircleOutlined />}
+          size="middle"
+          type="primary"
+          className="float-right  bg-blue-700 text-white"
+          onClick={showModal}
+        >
+          Thêm mới
+        </Button>
+      ) : (
+        <Button
+          size="middle"
+          className="border-teal-500 text-teal-500"
+          type="default"
+          onClick={showModal}
+        >
+          Xem chi tiết/Sửa
+        </Button>
+      )}
+
       <Modal
-        title="Thêm tài khoản"
+        title="Thêm tài khoản quản trị"
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
-        okText="Tạo"
+        okText={isModalCreate ? "Tạo" : "Sửa"}
         cancelText="Hủy"
       >
         <Form
@@ -76,15 +91,6 @@ const ModalCreateAccount = () => {
           >
             <Input />
           </Form.Item>
-          {/* <Form.Item
-          label="Old Password"
-          name="old_password"
-          rules={[
-            { required: true, message: "Please input your old password!" },
-          ]}
-        >
-          <Input.Password />
-        </Form.Item> */}
 
           <Form.Item
             label="Mật khẩu"

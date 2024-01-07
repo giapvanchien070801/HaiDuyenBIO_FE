@@ -56,6 +56,10 @@ export default function Dashboard() {
     }
   );
 
+  const { data: listCate } = useQuery(["getListCate"], async () => {
+    return Base.getListCategory();
+  });
+
   console.log("systemParamShoppingCart", systemParamShoppingCart);
 
   return (

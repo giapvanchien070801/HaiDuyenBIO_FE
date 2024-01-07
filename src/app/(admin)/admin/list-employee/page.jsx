@@ -5,10 +5,10 @@ import {
   SearchOutlined,
   PlusCircleOutlined,
 } from "@ant-design/icons";
-import styled from "@emotion/styled";
 import { useState } from "react";
+import styled from "@emotion/styled";
 
-export default function InternalFunction() {
+export default function MainMenus() {
   const breadcrumb = [
     {
       href: "/admin/home",
@@ -23,7 +23,7 @@ export default function InternalFunction() {
       href: "",
       title: (
         <>
-          <span className="text-cyan-700">Chức năng nội bộ</span>
+          <span className="text-cyan-700">Danh sách nhân viên</span>
         </>
       ),
     },
@@ -34,41 +34,17 @@ export default function InternalFunction() {
       key: "stt",
     },
     {
-      title: "Tên Menu",
+      title: "Tên nhân viên",
       dataIndex: "name",
       key: "name",
       render: (text) => <a>{text}</a>,
     },
     {
-      title: "Nội dung",
+      title: "Chức vụ",
       dataIndex: "age",
       key: "age",
     },
-    {
-      title: "Mô tả",
-      dataIndex: "address",
-      key: "address",
-    },
-    {
-      title: "Link",
-      key: "tags",
-      dataIndex: "tags",
-      render: (_, { tags }) => (
-        <>
-          {tags.map((tag) => {
-            let color = tag.length > 5 ? "geekblue" : "green";
-            if (tag === "loser") {
-              color = "volcano";
-            }
-            return (
-              <Tag color={color} key={tag}>
-                {tag.toUpperCase()}
-              </Tag>
-            );
-          })}
-        </>
-      ),
-    },
+
     {
       title: "Hoạt động",
       key: "action",
@@ -79,15 +55,9 @@ export default function InternalFunction() {
             className="border-teal-500 text-teal-500"
             type="default"
           >
-            Xem chi tiết
+            Xem chi tiết/Sửa
           </Button>
-          <Button
-            size="middle"
-            className="border-purple-800 text-purple-600"
-            type="default"
-          >
-            Sửa
-          </Button>
+
           <Button size="middle" type="default" danger>
             Xóa
           </Button>

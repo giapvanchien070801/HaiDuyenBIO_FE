@@ -7,8 +7,15 @@ import {
 } from "@ant-design/icons";
 import { useState } from "react";
 import styled from "@emotion/styled";
+import { useRouter } from "next/navigation";
 
-export default function MainMenus() {
+export default function Categorys() {
+  const router = useRouter();
+
+  const handleGoCreateOrEdit = () => {
+    router.push("/admin/list-main-categorys/create-edit");
+  };
+
   const breadcrumb = [
     {
       href: "/admin/home",
@@ -23,7 +30,7 @@ export default function MainMenus() {
       href: "",
       title: (
         <>
-          <span className="text-cyan-700">Menu chính</span>
+          <span className="text-cyan-700">Danh mục bài viết</span>
         </>
       ),
     },
@@ -34,23 +41,19 @@ export default function MainMenus() {
       key: "stt",
     },
     {
-      title: "Tên Menu",
+      title: "Tiêu đề",
       dataIndex: "name",
       key: "name",
       render: (text) => <a>{text}</a>,
     },
+
     {
-      title: "Nội dung",
-      dataIndex: "age",
-      key: "age",
-    },
-    {
-      title: "Mô tả",
+      title: "Ngày tạo",
       dataIndex: "address",
       key: "address",
     },
     {
-      title: "Link",
+      title: "Người tạo",
       key: "tags",
       dataIndex: "tags",
       render: (_, { tags }) => (
@@ -78,16 +81,11 @@ export default function MainMenus() {
             size="middle"
             className="border-teal-500 text-teal-500"
             type="default"
+            onClick={() => handleGoCreateOrEdit()}
           >
-            Xem chi tiết
+            Xem chi tiết/Sửa
           </Button>
-          <Button
-            size="middle"
-            className="border-purple-800 text-purple-600"
-            type="default"
-          >
-            Sửa
-          </Button>
+
           <Button size="middle" type="default" danger>
             Xóa
           </Button>
@@ -181,6 +179,7 @@ export default function MainMenus() {
   return (
     <div>
       <Breadcrumb className="mb-5" items={breadcrumb} />
+
       <Input
         allowClear
         prefix={
@@ -198,6 +197,7 @@ export default function MainMenus() {
         size="middle"
         type="primary"
         className="float-right  bg-blue-700 text-white"
+        onClick={() => handleGoCreateOrEdit()}
       >
         Thêm mới
       </Button>

@@ -7,9 +7,9 @@ import {
 } from "@ant-design/icons";
 import { useState } from "react";
 import styled from "@emotion/styled";
-import CreateOrEdit from "../../../components/CreateOrEdit";
+import CreateOrEdit from "../../../../components/CreateOrEdit";
 
-export default function CreateOrEditInternalNoti() {
+export default function EditDepartment({ params }) {
   const breadcrumb = [
     {
       href: "/admin/home",
@@ -21,18 +21,18 @@ export default function CreateOrEditInternalNoti() {
       ),
     },
     {
-      href: "/admin/internal-notifications",
+      href: "/admin/departments",
       title: (
         <>
-          <span className="text-cyan-700">Thông báo nội bộ</span>
+          <span className="text-cyan-700">Danh sách khoa</span>
         </>
       ),
     },
     {
-      href: "/admin/internal-notifications/create-edit",
+      href: "/admin/departments/create",
       title: (
         <>
-          <span className="text-cyan-700">Tạo mới thông báo</span>
+          <span className="text-cyan-700">Chỉnh sửa Khoa</span>
         </>
       ),
     },
@@ -42,7 +42,7 @@ export default function CreateOrEditInternalNoti() {
     <div>
       <Breadcrumb className="mb-5" items={breadcrumb} />
 
-      <CreateOrEdit />
+      <CreateOrEdit typePage="department" id={params?.id} />
     </div>
   );
 }
