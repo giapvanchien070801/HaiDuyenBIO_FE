@@ -67,7 +67,7 @@ export default function UserHeader() {
             <ul className="lg:flex items-center h-full">
               <li className="h-full relative">
                 <Link
-                  href={`#`}
+                  href={`/`}
                   className="h-full flex items-center px-2 hover:text-cyan-600 transition-all duration-300 lg:py-0 py-2"
                 >
                   <p>Trang chủ</p>
@@ -197,6 +197,14 @@ export default function UserHeader() {
                   className="h-full flex items-center px-2 hover:text-cyan-600 transition-all duration-300 lg:py-0 py-2"
                 >
                   Nội bộ
+                </Link>
+              </li>
+              <li className="h-full relative">
+                <Link
+                  href={`/contact`}
+                  className="h-full flex items-center px-2 hover:text-cyan-600 transition-all duration-300 lg:py-0 py-2"
+                >
+                  Liên hệ
                 </Link>
               </li>
             </ul>

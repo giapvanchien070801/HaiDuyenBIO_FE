@@ -209,3 +209,57 @@ h6 {
 .no-tailwind {
   all: unset !important;
 }
+
+/* css container */
+.container-original {
+  width: 100%;
+  max-width: 1240px;
+}
+
+.container-swiper {
+  width: 100%;
+  max-width: 1180px;
+}
+
+@media (max-width: 1169px) {
+  .container {
+    width: 100%;
+    max-width: 720px;
+  }
+
+  .container-original {
+    width: 100%;
+    max-width: 570px;
+  }
+}
+
+@media (max-width: 767px) {
+  .container {
+    width: calc(100% - 24px);
+  }
+
+  .container-original {
+    width: 100%;
+  }
+}
+.icon-contact {
+  background-color: #2490eb;
+}
+.icon-contact:hover {
+  background-color: #14457b;
+}
+.shadow-container-contact {
+  box-shadow: 0px 0px 30px 0px
+    rgba(
+      20.999999999999996,
+      20.999999999999996,
+      20.999999999999996,
+      0.10980392156862745
+    );
+}
+.banner-contact {
+  background-image: url(https://medicate.peacefulqode.com/wp-content/uploads/2022/04/breadcrumb-image-1.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: top center;
+}
