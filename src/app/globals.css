@@ -263,3 +263,17 @@ h6 {
   background-size: cover;
   background-position: top center;
 }
+.bg-overlay {
+  background-image: url(https://medicate.peacefulqode.com/wp-content/uploads/2022/03/3.png);
+  background-position: center center;
+  background-repeat: repeat;
+  background-size: 60% auto;
+  /* opacity: 0.1; */
+  background-color: #14457b;
+}
+.img-card-blog {
+  transition: 0.5s;
+}
+.img-card-blog:hover {
+  transform: scale(1.2);
+}

@@ -244,7 +244,7 @@ export default function UserHeader() {
               <FontAwesomeIcon icon={faBars} />
             </button>
             <Link
-              href={`#`}
+              href={`/add-appointment`}
               className={`transition-all duration-300 flex items-center p-4 text-white rounded-md hover:bg-slate-950 ${layoutUserStyle.apoiment}`}
             >
               Thêm lịch hẹn +

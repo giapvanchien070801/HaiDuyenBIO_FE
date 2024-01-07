@@ -13,6 +13,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "@emotion/styled";
+import BannerBreadcrumb from "@/components/user/BannerBreadcrumb";
 const { TextArea } = Input;
 
 export default function Contact() {
@@ -52,12 +53,7 @@ export default function Contact() {
 
   return (
     <div className="flex flex-col items-center">
-      <div className="h-[360px] w-full flex flex-col items-center justify-center banner-contact ">
-        <div className="container-original ">
-          <p className="mb-4 text-6xl">Liên hệ</p>
-          <Breadcrumb items={breadcrumb} />
-        </div>
-      </div>
+      <BannerBreadcrumb title="Liên hệ" breadcrumb={breadcrumb} />
 
       <div className="h-[600px]  flex items-center justify-between container-original gap-8">
         <CardContact
