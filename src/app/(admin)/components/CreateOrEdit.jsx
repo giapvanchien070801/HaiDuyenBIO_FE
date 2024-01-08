@@ -11,6 +11,8 @@ const { TextArea } = Input;
 const CreateOrEdit = (props) => {
   const { typePage, id } = props;
 
+  // typePage = post | department | service
+
   const isCreatePost = typePage === "post";
 
   const router = useRouter();
@@ -98,27 +100,29 @@ const CreateOrEdit = (props) => {
             </div>
           </div>
         )}
+        {(typePage === "department" || typePage === "service") && (
           <Form.Item
-                name="departmantName"
-                rules={[
-                  {
-                    required: true,
-                    message: "Tên khoa không được bỏ trống!",
-                  },
-                ]}
-                className="w-1/2 mb-3 "
-                label="Tên khoa"
-              >
-                <Input
-                  allowClear
-                  className=" mb-5"
-                  placeholder="Nhập tên khoa"
-                />
-              </Form.Item>
+            name="departmantName"
+            rules={[
+              {
+                required: true,
+                message: "Không được bỏ trống!",
+              },
+            ]}
+            className="w-1/2 mb-3 "
+            label={typePage === "department" ? "Tên khoa" : "Tên dịch vụ"}
+          >
+            <Input
+              allowClear
+              className=" mb-5"
+              placeholder={
+                typePage === "department" ? "Nhập tên khoa" : "Nhập tên Dịch vụ"
+              }
+            />
+          </Form.Item>
+        )}
 
-        <p className="mb-2">
-          {isCreatePost ? "Nội dung trang:" : "Mô tả về khoa:"}
-        </p>
+        <p className="mb-2">{isCreatePost ? "Nội dung trang:" : "Mô tả:"}</p>
 
         <TextEditor
           onChange={(value) => {

@@ -69,6 +69,17 @@ const MenuSidebar = (props) => {
         },
       ],
     },
+    {
+      text: "Quản lý Dịch vụ",
+      icon: <PartitionOutlined />,
+      listSubMenu: [
+        {
+          icon: <UserOutlined className={`${isCloseMenu && "text-xs"}`} />,
+          text: "Danh sách Dịch vụ",
+          pushTo: "/admin/service",
+        },
+      ],
+    },
 
     {
       text: "Quản lý Slide",
