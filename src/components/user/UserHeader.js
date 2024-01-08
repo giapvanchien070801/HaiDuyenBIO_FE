@@ -13,6 +13,8 @@ import {
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { useQuery } from "react-query";
+import Base from "@/app/models/Base";
 export default function UserHeader() {
   const [activeSearchbar, setActiveSearchbar] = useState(false);
 
@@ -24,6 +26,16 @@ export default function UserHeader() {
     { content: "Khám bệnh", id: 2 },
     { content: "Miễn dịch", id: 3 },
   ];
+
+  // api lấy danh sách tất cả thể loại
+  const { data: listCategory } = useQuery(
+    ["getAllCate"],
+    async () => {
+      const res = await Base.getAllCategory();
+      return res;
+    },
+    {}
+  );
 
   return (
     <header className="z-20">
@@ -227,13 +239,35 @@ export default function UserHeader() {
                 </Link>
               </li> */}
 
-              <li className="h-full relative">
+              <li className={`h-full relative ${layoutUserStyle.menu_item}`}>
                 <Link
-                  href={`/login-admin`}
+                  href={`#`}
                   className="h-full flex items-center px-2 hover:text-cyan-600 transition-all duration-300 lg:py-0 py-2"
                 >
                   Tin tức
+                  <DownOutlined
+                    style={{ fontSize: "14px", marginLeft: "5px" }}
+                  />
                 </Link>
+
+                <div
+                  className={`${layoutUserStyle.submenu} lg:absolute lg:w-max w-full z-20`}
+                >
+                  <ul className="w-max bg-white">
+                    {listCategory?.map((category, index) => (
+                      <li key={index} className="w-full">
+                        {/* link đến tranh danh sách bài viết */}
+                        <Link
+                          href={`/service-detail/${category?.id}`}
+                          as={`/service-detail/${category?.id}`}
+                          className="hover:text-white block hover:bg-cyan-600 py-2 px-8 transition-all duration-300 lg:px-4 lg:py-2"
+                        >
+                          {category?.Name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </li>
               <li className="h-full relative">
                 <Link

@@ -25,27 +25,57 @@ const requests = {
   post: (url, dataSubmit) =>
     axiosInstance.post(`${API_ROOT}${url}`, dataSubmit),
   put: (url, updateData) => axiosInstance.put(`${API_ROOT}${url}`, updateData),
-  delete: (url) => axiosInstance.put(`${API_ROOT}${url}`),
+  delete: (url) => axiosInstance.delete(`${API_ROOT}${url}`),
 };
 
 class Base {
-  getListNewService = async ({ size, customerType }) => {
-    const urlApi = `/api/portal/service-recommend/new-service`;
-    const response = await requests.get(urlApi, {
-      params: { size, customerType },
-    });
-    return response.data;
-  };
-
-  getListCategory = async () => {
-    const urlApi = `/api/category/get-all`;
-    const response = await requests.get(urlApi);
-    return response.data;
-  };
-
+  // API login
   loginAdmin = async (data) => {
     const urlApi = `/api/user/login`;
     const response = await requests.post(urlApi, data);
+    return response?.data;
+  };
+
+  //----------------------------------Api Thể loại bài viết --------------------------//
+  // api lấy danh sách thể loại bài viết, có phân trang
+  getListCatePagination = async (data) => {
+    const urlApi = `/api/category/get-page`;
+    const response = await requests.post(urlApi, data);
+    return response?.data;
+  };
+
+  // api lấy chi tiết thể loại bài viết, có phân trang
+  getDetailCate = async (categoryId) => {
+    const urlApi = `/api/category/get-detail/${categoryId}`;
+    const response = await requests.get(urlApi);
+    return response?.data;
+  };
+
+  // api lấy chi tiết thể loại bài viết, có phân trang
+  getAllCategory = async () => {
+    const urlApi = `/api/category/get-all`;
+    const response = await requests.get(urlApi);
+    return response?.data;
+  };
+
+  // api tạo mới thể loại bài viết
+  createCategory = async (data) => {
+    const urlApi = `/api/category/create`;
+    const response = await requests.post(urlApi, data);
+    return response?.data;
+  };
+
+  // api sửa thể loại bài viết
+  updateCategory = async (data) => {
+    const urlApi = `/api/category/update`;
+    const response = await requests.put(urlApi, data);
+    return response?.data;
+  };
+
+  // api xóa thể loại bài viết
+  deleteCategory = async (categoryId) => {
+    const urlApi = `/api/category/delete/${categoryId}`;
+    const response = await requests.delete(urlApi);
     return response?.data;
   };
 }

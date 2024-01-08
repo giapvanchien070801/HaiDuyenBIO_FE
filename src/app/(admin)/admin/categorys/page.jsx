@@ -1,5 +1,14 @@
 "use client";
-import { Breadcrumb, Button, Input, Space, Table, Tag } from "antd";
+import {
+  Breadcrumb,
+  Button,
+  Input,
+  Popconfirm,
+  Space,
+  Spin,
+  Table,
+  message,
+} from "antd";
 import {
   HomeOutlined,
   SearchOutlined,
@@ -8,6 +17,10 @@ import {
 import { useState } from "react";
 import styled from "@emotion/styled";
 import { useRouter } from "next/navigation";
+import { useMutation, useQuery } from "react-query";
+import Base from "@/app/models/Base";
+import ModalCreateCategory from "../../components/ModalCreateCategory";
+import { useDebounce } from "../../common/functions/commonFunction";
 
 export default function Categorys() {
   const router = useRouter();
@@ -15,6 +28,56 @@ export default function Categorys() {
   const handleGoCreateOrEdit = () => {
     router.push("/admin/list-main-categorys/create-edit");
   };
+
+  const [valueSearchCate, setValueSearchCate] = useState("");
+  const [idCateSelected, setIdCateSelected] = useState();
+
+  const [tableParams, setTableParams] = useState({
+    pagination: {
+      current: 1,
+      pageSize: 5,
+      total: 20,
+    },
+  });
+
+  const handleTableChange = (pagination, filters, sorter) => {
+    setTableParams({
+      pagination,
+      filters,
+      ...sorter,
+    });
+
+    if (pagination.pageSize !== tableParams.pagination?.pageSize) {
+    }
+  };
+
+  const searchDebounce = useDebounce(valueSearchCate, 1000);
+  const {
+    data: listCate,
+    refetch,
+    isFetching,
+  } = useQuery(
+    ["getListCategory", searchDebounce, tableParams.pagination.current],
+    async () => {
+      const res = await Base.getListCatePagination({
+        Page: tableParams.pagination.current,
+        Size: 5,
+        KeySearch: searchDebounce,
+      });
+
+      if (res.TotalRecord) {
+        setTableParams({
+          pagination: {
+            current: tableParams.pagination.current,
+            pageSize: 5,
+            total: res.TotalRecord,
+          },
+        });
+      }
+
+      return res?.Data;
+    }
+  );
 
   const breadcrumb = [
     {
@@ -35,146 +98,72 @@ export default function Categorys() {
       ),
     },
   ];
+
+  const deleteCateMutate = useMutation(Base.deleteCategory, {
+    onSuccess: () => {
+      message.success("Xóa thể loại thành công!");
+      setIdCateSelected();
+      refetch();
+    },
+    onError: (e) => {
+      message.error("Xóa thể loại thất bại!");
+    },
+  });
+
+  const handleDeleteCate = (e) => {
+    deleteCateMutate.mutate(idCateSelected);
+  };
+
   const columns = [
     {
       title: "STT",
       key: "stt",
+      dataIndex: "Id",
+      render: (value, item, index) => index,
+      fixed: "left",
     },
     {
       title: "Tiêu đề",
-      dataIndex: "name",
-      key: "name",
+      dataIndex: "Name",
+      key: "Name",
       render: (text) => <a>{text}</a>,
     },
 
     {
       title: "Ngày tạo",
-      dataIndex: "address",
-      key: "address",
+      dataIndex: "CreatedAt",
+      key: "CreatedAt",
     },
     {
       title: "Người tạo",
-      key: "tags",
-      dataIndex: "tags",
-      render: (_, { tags }) => (
-        <>
-          {tags.map((tag) => {
-            let color = tag.length > 5 ? "geekblue" : "green";
-            if (tag === "loser") {
-              color = "volcano";
-            }
-            return (
-              <Tag color={color} key={tag}>
-                {tag.toUpperCase()}
-              </Tag>
-            );
-          })}
-        </>
-      ),
+      key: "CreatedBy",
+      dataIndex: "CreatedBy",
     },
     {
       title: "Hoạt động",
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <Button
-            size="middle"
-            className="border-teal-500 text-teal-500"
-            type="default"
-            onClick={() => handleGoCreateOrEdit()}
+          <ModalCreateCategory
+            modalType="edit"
+            idCategory={idCateSelected}
+            refetchData={refetch}
+          />
+          <Popconfirm
+            title="Xóa thể loại"
+            description="Bạn có chắc chắn muốn xóa thể loại này?"
+            onConfirm={handleDeleteCate}
+            okText="Xóa"
+            cancelText="Hủy"
           >
-            Xem chi tiết/Sửa
-          </Button>
-
-          <Button size="middle" type="default" danger>
-            Xóa
-          </Button>
+            <Button size="middle" type="default" danger>
+              Xóa
+            </Button>
+          </Popconfirm>
         </Space>
       ),
     },
   ];
-  const data = [
-    {
-      key: "1",
-      name: "John Brown",
-      age: 32,
-      address: "New York No. 1 Lake Park",
-      tags: ["nice", "developer"],
-    },
-    {
-      key: "2",
-      name: "Jim Green",
-      age: 42,
-      address: "London No. 1 Lake Park",
-      tags: ["loser"],
-    },
-    {
-      key: "3",
-      name: "Joe Black",
-      age: 32,
-      address: "Sydney No. 1 Lake Park",
-      tags: ["cool", "teacher"],
-    },
-    {
-      key: "4",
-      name: "John Brown",
-      age: 32,
-      address: "New York No. 1 Lake Park",
-      tags: ["nice", "developer"],
-    },
-    {
-      key: "5",
-      name: "Jim Green",
-      age: 42,
-      address: "London No. 1 Lake Park",
-      tags: ["loser"],
-    },
-    {
-      key: "6",
-      name: "Joe Black",
-      age: 32,
-      address: "Sydney No. 1 Lake Park",
-      tags: ["cool", "teacher"],
-    },
-    {
-      key: "7",
-      name: "John Brown",
-      age: 32,
-      address: "New York No. 1 Lake Park",
-      tags: ["nice", "developer"],
-    },
-    {
-      key: "8",
-      name: "Jim Green",
-      age: 42,
-      address: "London No. 1 Lake Park",
-      tags: ["loser"],
-    },
-    {
-      key: "9",
-      name: "Joe Black",
-      age: 32,
-      address: "Sydney No. 1 Lake Park",
-      tags: ["cool", "teacher"],
-    },
-  ];
-
-  const [tableParams, setTableParams] = useState({
-    pagination: {
-      current: 1,
-      pageSize: 5,
-    },
-  });
-  const handleTableChange = (pagination, filters, sorter) => {
-    setTableParams({
-      pagination,
-      filters,
-      ...sorter,
-    });
-
-    if (pagination.pageSize !== tableParams.pagination?.pageSize) {
-    }
-  };
 
   return (
     <div>
@@ -189,30 +178,34 @@ export default function Categorys() {
             }}
           />
         }
+        onChange={(e) => {
+          setValueSearchCate(e.target.value);
+        }}
         className="w-1/3 mb-5"
         placeholder="Tìm kiếm"
       />
-      <Button
-        icon={<PlusCircleOutlined />}
-        size="middle"
-        type="primary"
-        className="float-right  bg-blue-700 text-white"
-        onClick={() => handleGoCreateOrEdit()}
-      >
-        Thêm mới
-      </Button>
-      <CustomTable>
-        <Table
-          columns={columns}
-          dataSource={data}
-          pagination={{
-            ...tableParams.pagination,
-            showSizeChanger: true, // Cho phép hiển thị Select chọn số lượng phần tử trên trang
-            pageSizeOptions: tableParams.pageSizeOptions, // Sử dụng pageSizeOptions từ tableParams
-          }}
-          onChange={handleTableChange}
-        />
-      </CustomTable>
+      <ModalCreateCategory modalType="create" refetchData={refetch} />
+      <Spin spinning={isFetching}>
+        <CustomTable>
+          <Table
+            columns={columns}
+            dataSource={listCate}
+            onRow={(record) => {
+              return {
+                onClick: () => {
+                  setIdCateSelected(record.Id);
+                },
+              };
+            }}
+            pagination={{
+              ...tableParams.pagination,
+              showSizeChanger: true, // Cho phép hiển thị Select chọn số lượng phần tử trên trang
+              pageSizeOptions: tableParams.pageSizeOptions, // Sử dụng pageSizeOptions từ tableParams
+            }}
+            onChange={handleTableChange}
+          />
+        </CustomTable>
+      </Spin>
     </div>
   );
 }

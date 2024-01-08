@@ -98,6 +98,23 @@ const CreateOrEdit = (props) => {
             </div>
           </div>
         )}
+          <Form.Item
+                name="departmantName"
+                rules={[
+                  {
+                    required: true,
+                    message: "Tên khoa không được bỏ trống!",
+                  },
+                ]}
+                className="w-1/2 mb-3 "
+                label="Tên khoa"
+              >
+                <Input
+                  allowClear
+                  className=" mb-5"
+                  placeholder="Nhập tên khoa"
+                />
+              </Form.Item>
 
         <p className="mb-2">
           {isCreatePost ? "Nội dung trang:" : "Mô tả về khoa:"}
