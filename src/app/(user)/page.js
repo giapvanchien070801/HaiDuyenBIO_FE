@@ -1,5 +1,6 @@
 import UserFacilities from "@/components/user/UserFacilities";
 import UserInfoImportant from "@/components/user/UserInfoImportant";
+import UserMenuBody from "@/components/user/UserMenuBody";
 import UserSwiper from "@/components/user/UserSwiper";
 import dynamic from "next/dynamic";
 
@@ -18,6 +19,7 @@ export default function HomePage() {
       <div className="pb-48">
         <UserSwiper />
         <UserInfoImportant />
+        <UserMenuBody />
         <UserAboutUs />
         <UserFacilities />
       </div>

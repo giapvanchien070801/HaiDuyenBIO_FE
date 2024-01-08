@@ -45,12 +45,10 @@ export default function UserFooter() {
               </div>
 
               <p className="text-lg">
-                Slogan có giá trị đối với doanh nghiệp nha sĩ và hoạt động tiếp
-                thị của nó. Mỗi nha sĩ phải nhận thức được tầm quan trọng của
-                Slogan đối với hình ảnh thương hiệu. Slogan là một phần quan
-                trọng của tiếp thị. Đây là những nhận thức về doanh nghiệp của
-                bạn mà bạn muốn khắc sâu trong tâm trí người tiêu dùng, chẳng
-                hạn như sự tin tưởng, đổi mới và chất lượng.
+                Phòng khám Hà Nội Lào Cai luôn nỗ lực không ngừng nhằm mang đến
+                những điều kiện tốt nhất và là nơi khách hàng tin cậy, là điểm
+                lựa chọn để nhân dân trên địa bàn tỉnh Lào Cai đến chăm sóc sức
+                khỏe cho cả gia đình.
               </p>
             </div>
 
