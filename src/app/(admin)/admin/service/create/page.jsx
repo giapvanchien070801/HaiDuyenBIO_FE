@@ -42,7 +42,7 @@ export default function CreateDepartment() {
     <div>
       <Breadcrumb className="mb-5" items={breadcrumb} />
 
-      <CreateOrEdit typePage="service" />
+      <CreateOrEdit typePage="service" actionType="create" />
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import axios from "axios";
 // export const API_ROOT = "https://stagingonedx.vnpt-technology.vn:6443";
-export const API_ROOT = "http://192.168.0.103:3017";
+// export const API_ROOT = "http://192.168.0.103:3017";
+export const API_ROOT = "http://localhost:3017";
 
 const axiosInstance = axios.create({
   baseURL: API_ROOT,
@@ -51,7 +52,7 @@ class Base {
     return response?.data;
   };
 
-  // api lấy chi tiết thể loại bài viết, có phân trang
+  // api lấy tất cả thể loại bài viết
   getAllCategory = async () => {
     const urlApi = `/api/category/get-all`;
     const response = await requests.get(urlApi);
@@ -76,6 +77,145 @@ class Base {
   deleteCategory = async (categoryId) => {
     const urlApi = `/api/category/delete/${categoryId}`;
     const response = await requests.delete(urlApi);
+    return response?.data;
+  };
+
+  //-----------------------------------Api phòng ban----------------//
+
+  // api lấy danh sách khoa, có phân trang
+  getListDepartmentPagination = async (data) => {
+    const urlApi = `/api/department/get-page`;
+    const response = await requests.post(urlApi, data);
+    return response?.data;
+  };
+
+  // api xóa khoa
+  deleteDepartment = async (departmentId) => {
+    const urlApi = `/api/department/delete/${departmentId}`;
+    const response = await requests.delete(urlApi);
+    return response?.data;
+  };
+
+  // api lấy tất cả khoa
+  getAllDepartment = async () => {
+    const urlApi = `/api/department/get-all`;
+    const response = await requests.get(urlApi);
+    return response?.data;
+  };
+
+  // api tạo mới khoa
+  createDepartment = async (data) => {
+    const urlApi = `/api/department/create`;
+
+    const response = await requests.post(urlApi, data);
+
+    return response?.data;
+  };
+
+  // api lấy chi tiết khoa
+  getDetailDepartment = async (departmentId) => {
+    const urlApi = `/api/department/get-detail/${departmentId}`;
+    const response = await requests.get(urlApi);
+    return response?.data;
+  };
+
+  // api sửa khoa
+  updateDepartment = async (data) => {
+    const urlApi = `/api/department/update`;
+    const response = await requests.put(urlApi, data);
+    return response?.data;
+  };
+
+  //-----------------------------------Api dịch vụ----------------//
+
+  // api lấy danh sách khoa, có phân trang
+  getListServicePagination = async (data) => {
+    const urlApi = `/api/service/get-page`;
+    const response = await requests.post(urlApi, data);
+    return response?.data;
+  };
+
+  // api lấy tất cả dịch vụ
+  getAllService = async () => {
+    const urlApi = `/api/service/get-all`;
+    const response = await requests.get(urlApi);
+    return response?.data;
+  };
+
+  // api tạo mới dịch vụ
+  createService = async (data) => {
+    const urlApi = `/api/service/create`;
+
+    const response = await requests.post(urlApi, data);
+
+    return response?.data;
+  };
+
+  // api lấy chi tiết dịch vụ
+  getDetailService = async (serviceId) => {
+    const urlApi = `/api/service/get-detail/${serviceId}`;
+    const response = await requests.get(urlApi);
+
+    return response?.data;
+  };
+
+  // api sửa dịch vụ
+  updateService = async (data) => {
+    const urlApi = `/api/service/update`;
+    const response = await requests.put(urlApi, data);
+    return response?.data;
+  };
+
+  // api xóa dịch vụ
+  deleteService = async (serviceId) => {
+    const urlApi = `/api/service/delete/${serviceId}`;
+    const response = await requests.delete(urlApi);
+    return response?.data;
+  };
+
+  //------------------------- api danh sách bài viết-------------------//
+  // api lấy danh sách bài viết, có phân trang
+  getListPostPagination = async (data) => {
+    const urlApi = `/api/post/get-page`;
+    const response = await requests.post(urlApi, data);
+    return response?.data;
+  };
+
+  // api tạo mới dịch vụ
+  createPost = async (data) => {
+    const urlApi = `/api/post/create`;
+
+    const response = await requests.post(urlApi, data);
+
+    return response?.data;
+  };
+
+  // api lấy chi tiết bài viết
+  getDetailPost = async (postId) => {
+    const urlApi = `/api/post/get-detail/${postId}`;
+    const response = await requests.get(urlApi);
+
+    return response?.data;
+  };
+
+  // api sửa bài viết
+  updatePost = async (data) => {
+    const urlApi = `/api/post/update`;
+    const response = await requests.put(urlApi, data);
+    return response?.data;
+  };
+
+  // api xóa bài viết
+  deletePost = async (postId) => {
+    const urlApi = `/api/post/delete/${postId}`;
+    const response = await requests.delete(urlApi);
+    return response?.data;
+  };
+
+  //------------------------------slide--------------------//
+  getAllSlider = async () => {
+    const urlApi = `/api/slider/get-all`;
+    const response = await requests.get(urlApi);
     return response?.data;
   };
 }

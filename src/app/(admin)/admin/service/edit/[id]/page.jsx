@@ -42,7 +42,7 @@ export default function EditDepartment({ params }) {
     <div>
       <Breadcrumb className="mb-5" items={breadcrumb} />
 
-      <CreateOrEdit typePage="service" id={params?.id} />
+      <CreateOrEdit typePage="service" id={params?.id} actionType="edit" />
     </div>
   );
 }

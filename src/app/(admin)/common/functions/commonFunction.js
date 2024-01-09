@@ -1,3 +1,4 @@
+import { API_ROOT } from "@/app/models/Base";
 import { useEffect, useState } from "react";
 
 export const useDebounce = (value, milliSeconds) => {
@@ -14,4 +15,10 @@ export const useDebounce = (value, milliSeconds) => {
   }, [value, milliSeconds]);
 
   return debouncedValue;
+};
+
+export const handleSrcImg = (src) => {
+  const srcImg = src ? `${API_ROOT}${src}` : "";
+
+  return srcImg;
 };

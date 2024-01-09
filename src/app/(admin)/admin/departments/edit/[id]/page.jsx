@@ -10,6 +10,7 @@ import styled from "@emotion/styled";
 import CreateOrEdit from "../../../../components/CreateOrEdit";
 
 export default function EditDepartment({ params }) {
+  const idDepartment = params?.id;
   const breadcrumb = [
     {
       href: "/admin/home",
@@ -42,7 +43,7 @@ export default function EditDepartment({ params }) {
     <div>
       <Breadcrumb className="mb-5" items={breadcrumb} />
 
-      <CreateOrEdit typePage="department" id={params?.id} />
+      <CreateOrEdit typePage="department" id={idDepartment} actionType="edit" />
     </div>
   );
 }

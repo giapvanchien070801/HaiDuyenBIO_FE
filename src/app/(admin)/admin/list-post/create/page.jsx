@@ -42,7 +42,7 @@ export default function CreateOrEditListPost() {
     <div>
       <Breadcrumb className="mb-5" items={breadcrumb} />
 
-      <CreateOrEdit typePage="post" />
+      <CreateOrEdit typePage="post" actionType="create" />
     </div>
   );
 }

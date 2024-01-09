@@ -3,6 +3,9 @@ import { Breadcrumb, Modal, Upload } from "antd";
 import { HomeOutlined, PlusOutlined } from "@ant-design/icons";
 import styled from "@emotion/styled";
 import { useState } from "react";
+import { useQuery } from "react-query";
+import Base from "@/app/models/Base";
+import { handleSrcImg } from "../../common/functions/commonFunction";
 
 const getBase64 = (file) =>
   new Promise((resolve, reject) => {
@@ -35,32 +38,27 @@ export default function InternalFunction() {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
-  const [fileList, setFileList] = useState([
-    {
-      uid: "-1",
-      name: "image.png",
-      status: "done",
-      url: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
+  const [fileList, setFileList] = useState([]);
+
+  const { data: listSlider } = useQuery(
+    ["getListSlider"],
+    async () => {
+      const res = await Base.getAllSlider();
+      const dataConvert = res?.map((slider) => {
+        return {
+          uid: String(slider?.Id),
+          name: `slider ${String(slider?.Id)}`,
+          status: "done",
+          url: handleSrcImg(slider?.ImagePath),
+        };
+      });
+
+      setFileList(dataConvert);
+      return res;
     },
-    {
-      uid: "-2",
-      name: "image.png",
-      status: "done",
-      url: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-    },
-    {
-      uid: "-3",
-      name: "image.png",
-      status: "done",
-      url: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-    },
-    {
-      uid: "-4",
-      name: "image.png",
-      status: "done",
-      url: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-    },
-  ]);
+    {}
+  );
+
   const handleCancel = () => setPreviewOpen(false);
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
@@ -121,13 +119,3 @@ export default function InternalFunction() {
     </div>
   );
 }
-
-const CustomTable = styled.div`
-  & .ant-table-wrapper .ant-table-thead > tr > th,
-  :where(.css-dev-only-do-not-override-6j9yrn).ant-table-wrapper
-    .ant-table-thead
-    > tr
-    > td {
-    background: #cce3de;
-  }
-`;

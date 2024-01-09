@@ -1,40 +1,181 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Form, Input, Button, DatePicker, Select, Switch, message } from "antd";
 import "react-quill/dist/quill.snow.css";
 import TextEditor from "./TextEditor";
 import UploadAvatar from "./UploadAvatar";
 import { useRouter } from "next/navigation";
 import styled from "@emotion/styled";
+import { useMutation, useQuery } from "react-query";
+import Base from "@/app/models/Base";
 
 const { TextArea } = Input;
 
 const CreateOrEdit = (props) => {
-  const { typePage, id } = props;
+  const { typePage, id, actionType } = props;
+  const [form] = Form.useForm();
 
   // typePage = post | department | service
+  // actionType = create | update
+  const isCreate = actionType === "create";
 
-  const isCreatePost = typePage === "post";
+  const isPost = typePage === "post";
 
   const router = useRouter();
 
-  const [isShowPost, setIsShowPost] = useState(true);
   const [valueTextEditor, setValueTextEditor] = useState("");
 
-  const onFinish = (values) => {
-    console.log("Received values:", values);
+  // tạo sửa Khoa
+  const createDepartmentMutate = useMutation(Base.createDepartment, {
+    onSuccess: () => {
+      message.success("Tạo mới Khoa thành công!");
+      form.resetFields();
+      router.back();
+    },
+    onError: (e) => {
+      message.error("Tạo mới khoa thất bại!");
+    },
+  });
+  const updateDepartmentMutate = useMutation(Base.updateDepartment, {
+    onSuccess: () => {
+      message.success("Sửa Khoa thành công!");
+      form.resetFields();
+      router.back();
+    },
+    onError: (e) => {
+      message.error("Sửa Khoa thất bại!");
+    },
+  });
+
+  // tạo sửa dịch vụ
+  const createServiceMutate = useMutation(Base.createService, {
+    onSuccess: () => {
+      message.success("Tạo mới Dịch vụ thành công!");
+      form.resetFields();
+      router.back();
+    },
+    onError: (e) => {
+      message.error("Tạo mới Dịch vụ thất bại!");
+    },
+  });
+  const updateServiceMutate = useMutation(Base.updateService, {
+    onSuccess: () => {
+      message.success("Sửa Dịch vụ thành công!");
+      form.resetFields();
+      router.back();
+    },
+    onError: (e) => {
+      message.error("Sửa Dịch vụ thất bại!");
+    },
+  });
+
+  // tạo sửa bài viết
+  const createPostMutate = useMutation(Base.createPost, {
+    onSuccess: () => {
+      message.success("Tạo mới bài viết thành công!");
+      form.resetFields();
+      router.back();
+    },
+    onError: (e) => {
+      message.error("Tạo mới bài viết thất bại!");
+    },
+  });
+  const updatePostMutate = useMutation(Base.updatePost, {
+    onSuccess: () => {
+      message.success("Sửa bài viết thành công!");
+      form.resetFields();
+      router.back();
+    },
+    onError: (e) => {
+      message.error("Sửa bài viết thất bại!");
+    },
+  });
+
+  const handleCreate = () => {
+    form.submit();
+
+    const listFieldName = ["Name"];
+    const listFieldNamePost = ["Title", "Description", "CategoryId"];
+    const listFields = isPost ? listFieldNamePost : listFieldName;
+    form
+      .validateFields(listFields)
+      .then((value) => {
+        const valueCreatePost = {
+          ...value,
+          Content: valueTextEditor,
+          ImagePath: "avatar.png",
+        };
+        const valueUpdatePost = {
+          ...value,
+          Content: valueTextEditor,
+          ImagePath: "avatar.png",
+          Id: id,
+        };
+
+        const valueCreate = {
+          Name: value?.Name?.trim(),
+          Description: valueTextEditor,
+        };
+
+        const valueUpdate = {
+          Id: id,
+          Name: value?.Name?.trim(),
+          Description: valueTextEditor,
+        };
+
+        if (typePage === "department") {
+          if (isCreate) {
+            createDepartmentMutate.mutate(valueCreate);
+          } else {
+            updateDepartmentMutate.mutate(valueUpdate);
+          }
+        }
+        if (typePage === "service") {
+          if (isCreate) {
+            createServiceMutate.mutate(valueCreate);
+          } else {
+            updateServiceMutate.mutate(valueUpdate);
+          }
+        }
+        if (typePage === "post") {
+          if (isCreate) {
+            createPostMutate.mutate(valueCreatePost);
+          } else {
+            updatePostMutate.mutate(valueUpdatePost);
+          }
+        }
+      })
+      .catch(() => {});
   };
 
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-  };
+  const { data: dataDetail } = useQuery(
+    ["getDetail", id],
+    async () => {
+      let res;
+      if (typePage === "department") {
+        res = await Base.getDetailDepartment(id);
+      }
+      if (typePage === "service") {
+        res = await Base.getDetailService(id);
+      }
+      if (typePage === "post") {
+        res = await Base.getDetailPost(id);
+      }
 
-  const onChange = (value, dateString) => {
-    console.log("Selected Time: ", value);
-    console.log("Formatted Selected Time: ", dateString);
-  };
-  const onOk = (value) => {
-    console.log("onOk: ", value);
-  };
+      return res;
+    },
+    { enabled: !!id }
+  );
+  useEffect(() => {
+    if (dataDetail && id) {
+      form.setFieldsValue({
+        Name: dataDetail?.Name,
+        CategoryId: dataDetail?.CategoryId,
+        Description: dataDetail?.Description,
+        Title: dataDetail?.Title,
+      });
+      setValueTextEditor(dataDetail?.Description);
+    }
+  }, [dataDetail, id]);
 
   const onChangeSelect = (value) => {
     console.log(`selected ${value}`);
@@ -47,10 +188,19 @@ const CreateOrEdit = (props) => {
   const filterOption = (input, option) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
 
-  const onChangeSwitch = (checked) => {
-    setIsShowPost(checked);
-    console.log(`switch to ${checked}`);
-  };
+  // api lấy danh sách tất cả thể loại
+  const { data: listCategory } = useQuery(
+    ["getAllCateAdmin"],
+    async () => {
+      const res = await Base.getAllCategory();
+
+      const dataConver = res?.map((category) => {
+        return { label: category?.Name, value: category?.Id };
+      });
+      return dataConver;
+    },
+    {}
+  );
 
   return (
     <CustomForm className="w-full h-full ">
@@ -59,16 +209,15 @@ const CreateOrEdit = (props) => {
         initialValues={{
           remember: true,
         }}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
         scrollToFirstError
+        form={form}
       >
-        {isCreatePost && (
+        {isPost && (
           <div className="flex gap-3">
             <UploadAvatar />
             <div className="w-full">
               <Form.Item
-                name="title"
+                name="Title"
                 rules={[
                   {
                     required: true,
@@ -85,7 +234,7 @@ const CreateOrEdit = (props) => {
                 />
               </Form.Item>
               <Form.Item
-                name="description"
+                name="Description"
                 rules={[
                   {
                     required: true,
@@ -102,7 +251,7 @@ const CreateOrEdit = (props) => {
         )}
         {(typePage === "department" || typePage === "service") && (
           <Form.Item
-            name="departmantName"
+            name="Name"
             rules={[
               {
                 required: true,
@@ -122,98 +271,38 @@ const CreateOrEdit = (props) => {
           </Form.Item>
         )}
 
-        <p className="mb-2">{isCreatePost ? "Nội dung trang:" : "Mô tả:"}</p>
+        <p className="mb-2">{isPost ? "Nội dung trang:" : "Mô tả:"}</p>
 
         <TextEditor
           onChange={(value) => {
             setValueTextEditor(value);
           }}
+          valueDetail={valueTextEditor}
         />
-        {id ? (
-          <div className="flex mt-5  gap-3 w-full">
-            <Form.Item className="w-4/12" label="Ngày cập nhật">
-              <DatePicker
-                className="w-full"
-                showTime
-                onChange={onChange}
-                onOk={onOk}
-              />
-            </Form.Item>
 
-            <Form.Item className="w-4/12" label="Người cập nhật">
-              <Input allowClear className="" placeholder="" />
-            </Form.Item>
-            {isCreatePost && (
-              <Form.Item className="w-4/12" label="Danh mục">
-                <Select
-                  showSearch
-                  placeholder="Chọn danh mục"
-                  optionFilterProp="children"
-                  onChange={onChangeSelect}
-                  onSearch={onSearch}
-                  filterOption={filterOption}
-                  options={[
-                    {
-                      value: "jack",
-                      label: "Jack",
-                    },
-                    {
-                      value: "lucy",
-                      label: "Lucy",
-                    },
-                    {
-                      value: "tom",
-                      label: "Tom",
-                    },
-                  ]}
-                />
-              </Form.Item>
-            )}
-          </div>
-        ) : (
-          <div className="flex mt-5  gap-3 w-full">
-            <Form.Item className="w-4/12" label="Ngày tạo">
-              <DatePicker
-                className="w-full"
-                showTime
-                onChange={onChange}
-                onOk={onOk}
-              />
-            </Form.Item>
-
-            <Form.Item className="w-4/12" label="Người tạo">
-              <Input allowClear className="" placeholder="" />
-            </Form.Item>
-            {isCreatePost && (
-              <Form.Item className="w-4/12" label="Danh mục">
-                <Select
-                  showSearch
-                  placeholder="Chọn danh mục"
-                  optionFilterProp="children"
-                  onChange={onChangeSelect}
-                  onSearch={onSearch}
-                  filterOption={filterOption}
-                  options={[
-                    {
-                      value: "jack",
-                      label: "Jack",
-                    },
-                    {
-                      value: "lucy",
-                      label: "Lucy",
-                    },
-                    {
-                      value: "tom",
-                      label: "Tom",
-                    },
-                  ]}
-                />
-              </Form.Item>
-            )}
-          </div>
+        {isPost && (
+          <Form.Item
+            rules={[
+              {
+                required: true,
+                message: "Danh mục không được bỏ trống!",
+              },
+            ]}
+            name="CategoryId"
+            className="w-4/12 mt-5"
+            label="Danh mục"
+          >
+            <Select
+              showSearch
+              placeholder="Chọn danh mục"
+              optionFilterProp="children"
+              onChange={onChangeSelect}
+              onSearch={onSearch}
+              filterOption={filterOption}
+              options={listCategory}
+            />
+          </Form.Item>
         )}
-
-        <div className="mt-5 flex gap-3 "></div>
 
         <div className="gap-3 mt-5 float-right flex">
           <Button
@@ -228,8 +317,7 @@ const CreateOrEdit = (props) => {
           <Form.Item>
             <Button
               onClick={() => {
-                router.back();
-                message.success("Tạo thành công!");
+                handleCreate();
               }}
               type="primary"
               htmlType="submit"

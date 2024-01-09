@@ -8,6 +8,7 @@ import {
   Spin,
   Table,
   message,
+  notification,
 } from "antd";
 import {
   HomeOutlined,
@@ -24,10 +25,6 @@ import { useDebounce } from "../../common/functions/commonFunction";
 
 export default function Categorys() {
   const router = useRouter();
-
-  const handleGoCreateOrEdit = () => {
-    router.push("/admin/list-main-categorys/create-edit");
-  };
 
   const [valueSearchCate, setValueSearchCate] = useState("");
   const [idCateSelected, setIdCateSelected] = useState();
@@ -57,11 +54,16 @@ export default function Categorys() {
     refetch,
     isFetching,
   } = useQuery(
-    ["getListCategory", searchDebounce, tableParams.pagination.current],
+    [
+      "getListCategory",
+      searchDebounce,
+      tableParams.pagination.current,
+      tableParams.pagination.pageSize,
+    ],
     async () => {
       const res = await Base.getListCatePagination({
         Page: tableParams.pagination.current,
-        Size: 5,
+        Size: tableParams.pagination.pageSize,
         KeySearch: searchDebounce,
       });
 
@@ -69,7 +71,7 @@ export default function Categorys() {
         setTableParams({
           pagination: {
             current: tableParams.pagination.current,
-            pageSize: 5,
+            pageSize: tableParams.pagination.pageSize,
             total: res.TotalRecord,
           },
         });
@@ -99,14 +101,25 @@ export default function Categorys() {
     },
   ];
 
+  const [api, contextHolder] = notification.useNotification();
+
   const deleteCateMutate = useMutation(Base.deleteCategory, {
     onSuccess: () => {
-      message.success("Xóa thể loại thành công!");
+      message.success("Xóa danh mục thành công!");
       setIdCateSelected();
       refetch();
     },
     onError: (e) => {
-      message.error("Xóa thể loại thất bại!");
+      if (e?.response?.data?.Message === "Can not delete this category") {
+        // trường hợp danh mục bài viết đã có bài viết
+
+        api["error"]({
+          message: "Không thể xóa danh mục này",
+          description: "Đã có bài viết thuộc danh mục này. Không thể xóa!",
+        });
+      } else {
+        message.error("Xóa danh mục thất bại!");
+      }
     },
   });
 
@@ -123,7 +136,7 @@ export default function Categorys() {
       fixed: "left",
     },
     {
-      title: "Tiêu đề",
+      title: "Tên danh mục",
       dataIndex: "Name",
       key: "Name",
       render: (text) => <a>{text}</a>,
@@ -150,8 +163,8 @@ export default function Categorys() {
             refetchData={refetch}
           />
           <Popconfirm
-            title="Xóa thể loại"
-            description="Bạn có chắc chắn muốn xóa thể loại này?"
+            title="Xóa danh mục"
+            description="Bạn có chắc chắn muốn xóa danh mục này?"
             onConfirm={handleDeleteCate}
             okText="Xóa"
             cancelText="Hủy"
@@ -167,6 +180,7 @@ export default function Categorys() {
 
   return (
     <div>
+      {contextHolder}
       <Breadcrumb className="mb-5" items={breadcrumb} />
 
       <Input

@@ -1,17 +1,29 @@
 import styled from "@emotion/styled";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
 const TextEditor = (props) => {
-  const { onChange } = props;
+  const { onChange, valueDetail } = props;
+  const [valueEditor, setValueEditor] = useState("");
+  const onChangeEditor = (value) => {
+    setValueEditor(value);
+    onChange(value);
+  };
+
+  useEffect(() => {
+    if (valueDetail) {
+      setValueEditor(valueDetail);
+    }
+  }, [valueDetail]);
 
   return (
     <CustomQuill>
       <ReactQuill
+        value={valueEditor}
         className="bg-white"
         theme="snow"
-        onChange={onChange}
+        onChange={onChangeEditor}
         modules={TextEditor.modules}
         formats={TextEditor.formats}
       />

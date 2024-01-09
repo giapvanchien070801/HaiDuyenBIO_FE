@@ -21,17 +21,32 @@ export default function UserHeader() {
   const showSearchBar = () => {
     setActiveSearchbar(!activeSearchbar);
   };
-  const listService = [
-    { content: "Cộng hưởng từ", id: 1 },
-    { content: "Khám bệnh", id: 2 },
-    { content: "Miễn dịch", id: 3 },
-  ];
 
   // api lấy danh sách tất cả thể loại
   const { data: listCategory } = useQuery(
     ["getAllCate"],
     async () => {
       const res = await Base.getAllCategory();
+      return res;
+    },
+    {}
+  );
+
+  // api lấy danh sách tất cả khoa
+  const { data: listDepartment } = useQuery(
+    ["getAllDepartment"],
+    async () => {
+      const res = await Base.getAllDepartment();
+      return res;
+    },
+    {}
+  );
+
+  // api lấy danh sách tất cả dịch vụ
+  const { data: listService } = useQuery(
+    ["getAllService"],
+    async () => {
+      const res = await Base.getAllService();
       return res;
     },
     {}
@@ -106,7 +121,7 @@ export default function UserHeader() {
                   href={`#`}
                   className="h-full flex items-center px-2 hover:text-cyan-600 transition-all duration-300 lg:py-0 py-2"
                 >
-                  Chuyên khoa{" "}
+                  Chuyên khoa
                   <DownOutlined
                     style={{ fontSize: "14px", marginLeft: "5px" }}
                   />
@@ -116,77 +131,18 @@ export default function UserHeader() {
                   className={`${layoutUserStyle.submenu} lg:absolute lg:w-max w-full z-20`}
                 >
                   <ul className="w-max bg-white">
-                    <li className="w-full">
-                      <Link
-                        href={`#`}
-                        className="hover:text-white block hover:bg-cyan-600 py-2 px-8 transition-all duration-300 lg:px-4 lg:py-2"
-                      >
-                        Khoa nội
-                      </Link>
-                    </li>
-
-                    <li>
-                      <Link
-                        href={`#`}
-                        className="hover:text-white block hover:bg-cyan-600 py-2 px-8 transition-all duration-300 lg:px-4 lg:py-2"
-                      >
-                        Khoa nhi
-                      </Link>
-                    </li>
-
-                    <li>
-                      <Link
-                        href={`#`}
-                        className="hover:text-white block hover:bg-cyan-600 py-2 px-8 transition-all duration-300 lg:px-4 lg:py-2"
-                      >
-                        Khoa phụ sản
-                      </Link>
-                    </li>
-
-                    <li>
-                      <Link
-                        href={`#`}
-                        className="hover:text-white block hover:bg-cyan-600 py-2 px-8 transition-all duration-300 lg:px-4 lg:py-2"
-                      >
-                        Khoa dược
-                      </Link>
-                    </li>
-
-                    <li>
-                      <Link
-                        href={`#`}
-                        className="hover:text-white block hover:bg-cyan-600 py-2 px-8 transition-all duration-300 lg:px-4 lg:py-2"
-                      >
-                        Khoa chuẩn đoán hình ảnh
-                      </Link>
-                    </li>
-
-                    <li>
-                      <Link
-                        href={`#`}
-                        className="hover:text-white block hover:bg-cyan-600 py-2 px-8 transition-all duration-300 lg:px-4 lg:py-2"
-                      >
-                        Khoa y học cổ truyền - Phục hồi chức năng
-                      </Link>
-                    </li>
-
-                    <li>
-                      <Link
-                        href={`#`}
-                        className="hover:text-white block hover:bg-cyan-600 py-2 px-8 transition-all duration-300 lg:px-4 lg:py-2"
-                      >
-                        Khoa nội tiêu hóa
-                      </Link>
-                    </li>
-
-                    <li>
-                      <Link
-                        href={`#`}
-                        className="hover:text-white block hover:bg-cyan-600 py-2 px-8 transition-all duration-300 lg:px-4 lg:py-2"
-                      >
-                        Khoa xét nghiệm
-                      </Link>
-                    </li>
+                    {listDepartment?.map((category, index) => (
+                      <li key={index} className="w-full">
+                        {/* link đến tranh danh sách bài viết */}
+                        <Link
+                          href={`/service-detail/${category?.id}`}
+                          as={`/service-detail/${category?.id}`}
+                          className="hover:text-white block hover:bg-cyan-600 py-2 px-8 transition-all duration-300 lg:px-4 lg:py-2"
+                        >
+                          {category?.Name}
+                        </Link>
+                      </li>
+                    ))}
                   </ul>
                 </div>
               </li>

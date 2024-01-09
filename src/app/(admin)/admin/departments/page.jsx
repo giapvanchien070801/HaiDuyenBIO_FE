@@ -1,5 +1,15 @@
 "use client";
-import { Breadcrumb, Button, Input, Table, Space, Tag } from "antd";
+import {
+  Breadcrumb,
+  Button,
+  Input,
+  Table,
+  Space,
+  Tag,
+  Spin,
+  message,
+  Popconfirm,
+} from "antd";
 import {
   HomeOutlined,
   SearchOutlined,
@@ -8,6 +18,9 @@ import {
 import styled from "@emotion/styled";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Base from "@/app/models/Base";
+import { useDebounce } from "../../common/functions/commonFunction";
+import { useMutation, useQuery } from "react-query";
 
 export default function Departments() {
   const router = useRouter();
@@ -16,6 +29,60 @@ export default function Departments() {
     router.push("/admin/departments/create");
   };
 
+  const [valueSearch, setValueSearch] = useState("");
+  const [idSelected, setIdSelected] = useState();
+
+  const [tableParams, setTableParams] = useState({
+    pagination: {
+      current: 1,
+      pageSize: 5,
+      total: 20,
+    },
+  });
+
+  const handleTableChange = (pagination, filters, sorter) => {
+    setTableParams({
+      pagination,
+      filters,
+      ...sorter,
+    });
+
+    if (pagination.pageSize !== tableParams.pagination?.pageSize) {
+    }
+  };
+
+  const searchDebounce = useDebounce(valueSearch, 1000);
+  const {
+    data: listDepartment,
+    refetch,
+    isFetching,
+  } = useQuery(
+    [
+      "getListDepartmentPagination",
+      searchDebounce,
+      tableParams.pagination.current,
+      tableParams.pagination.pageSize,
+    ],
+    async () => {
+      const res = await Base.getListDepartmentPagination({
+        Page: tableParams.pagination.current,
+        Size: tableParams.pagination.pageSize,
+        KeySearch: searchDebounce,
+      });
+
+      if (res.TotalRecord) {
+        setTableParams({
+          pagination: {
+            current: tableParams.pagination.current,
+            pageSize: tableParams.pagination.pageSize,
+            total: res.TotalRecord,
+          },
+        });
+      }
+
+      return res?.Data;
+    }
+  );
   const breadcrumb = [
     {
       href: "/admin/home",
@@ -36,146 +103,78 @@ export default function Departments() {
     },
   ];
 
+  const deleteMutate = useMutation(Base.deleteDepartment, {
+    onSuccess: () => {
+      message.success("Xóa Khoa thành công!");
+      setIdSelected();
+      refetch();
+    },
+    onError: (e) => {
+      message.error("Xóa Khoa thất bại!");
+    },
+  });
+
+  const handleDelete = (e) => {
+    deleteMutate.mutate(idSelected);
+  };
+
   const columns = [
     {
       title: "STT",
       key: "stt",
+      render: (value, item, index) => index,
+      fixed: "left",
     },
     {
       title: "Tên khoa",
-      dataIndex: "name",
-      key: "name",
+      dataIndex: "Name",
+      key: "Name",
       render: (text) => <a>{text}</a>,
     },
 
     {
       title: "Ngày tạo",
-      dataIndex: "address",
-      key: "address",
+      dataIndex: "CreatedAt",
+      key: "CreatedAt",
     },
     {
       title: "Người tạo",
-      key: "tags",
-      dataIndex: "tags",
-      render: (_, { tags }) => (
-        <>
-          {tags.map((tag) => {
-            let color = tag.length > 5 ? "geekblue" : "green";
-            if (tag === "loser") {
-              color = "volcano";
-            }
-            return (
-              <Tag color={color} key={tag}>
-                {tag.toUpperCase()}
-              </Tag>
-            );
-          })}
-        </>
-      ),
+      key: "CreatedBy",
+      dataIndex: "CreatedBy",
     },
     {
       title: "Hoạt động",
       key: "action",
-      render: (_, record) => (
-        <Space size="middle">
-          <Button
-            size="middle"
-            className="border-teal-500 text-teal-500"
-            type="default"
-            onClick={() => router.push("/admin/departments/edit/1")}
-          >
-            Xem chi tiết/Sửa
-          </Button>
+      render: (_, record) => {
+        return (
+          <Space size="middle">
+            <Button
+              size="middle"
+              className="border-teal-500 text-teal-500"
+              type="default"
+              onClick={() =>
+                router.push(`/admin/departments/edit/${record?.Id}`)
+              }
+            >
+              Xem chi tiết/Sửa
+            </Button>
 
-          <Button size="middle" type="default" danger>
-            Xóa
-          </Button>
-        </Space>
-      ),
+            <Popconfirm
+              title="Xóa khoa"
+              description="Bạn có chắc chắn muốn xóa Khoa này?"
+              onConfirm={handleDelete}
+              okText="Xóa"
+              cancelText="Hủy"
+            >
+              <Button size="middle" type="default" danger>
+                Xóa
+              </Button>
+            </Popconfirm>
+          </Space>
+        );
+      },
     },
   ];
-  const data = [
-    {
-      key: "1",
-      name: "John Brown",
-      age: 32,
-      address: "New York No. 1 Lake Park",
-      tags: ["nice", "developer"],
-    },
-    {
-      key: "2",
-      name: "Jim Green",
-      age: 42,
-      address: "London No. 1 Lake Park",
-      tags: ["loser"],
-    },
-    {
-      key: "3",
-      name: "Joe Black",
-      age: 32,
-      address: "Sydney No. 1 Lake Park",
-      tags: ["cool", "teacher"],
-    },
-    {
-      key: "4",
-      name: "John Brown",
-      age: 32,
-      address: "New York No. 1 Lake Park",
-      tags: ["nice", "developer"],
-    },
-    {
-      key: "5",
-      name: "Jim Green",
-      age: 42,
-      address: "London No. 1 Lake Park",
-      tags: ["loser"],
-    },
-    {
-      key: "6",
-      name: "Joe Black",
-      age: 32,
-      address: "Sydney No. 1 Lake Park",
-      tags: ["cool", "teacher"],
-    },
-    {
-      key: "7",
-      name: "John Brown",
-      age: 32,
-      address: "New York No. 1 Lake Park",
-      tags: ["nice", "developer"],
-    },
-    {
-      key: "8",
-      name: "Jim Green",
-      age: 42,
-      address: "London No. 1 Lake Park",
-      tags: ["loser"],
-    },
-    {
-      key: "9",
-      name: "Joe Black",
-      age: 32,
-      address: "Sydney No. 1 Lake Park",
-      tags: ["cool", "teacher"],
-    },
-  ];
-
-  const [tableParams, setTableParams] = useState({
-    pagination: {
-      current: 1,
-      pageSize: 5,
-    },
-  });
-  const handleTableChange = (pagination, filters, sorter) => {
-    setTableParams({
-      pagination,
-      filters,
-      ...sorter,
-    });
-
-    if (pagination.pageSize !== tableParams.pagination?.pageSize) {
-    }
-  };
 
   return (
     <div>
@@ -189,6 +188,9 @@ export default function Departments() {
             }}
           />
         }
+        onChange={(e) => {
+          setValueSearch(e.target.value);
+        }}
         className="w-1/3 mb-5"
         placeholder="Tìm kiếm"
       />
@@ -201,18 +203,27 @@ export default function Departments() {
       >
         Thêm mới
       </Button>
-      <CustomTable>
-        <Table
-          columns={columns}
-          dataSource={data}
-          pagination={{
-            ...tableParams.pagination,
-            showSizeChanger: true, // Cho phép hiển thị Select chọn số lượng phần tử trên trang
-            pageSizeOptions: tableParams.pageSizeOptions, // Sử dụng pageSizeOptions từ tableParams
-          }}
-          onChange={handleTableChange}
-        />
-      </CustomTable>
+      <Spin spinning={isFetching}>
+        <CustomTable>
+          <Table
+            columns={columns}
+            dataSource={listDepartment}
+            onRow={(record) => {
+              return {
+                onClick: () => {
+                  setIdSelected(record.Id);
+                },
+              };
+            }}
+            pagination={{
+              ...tableParams.pagination,
+              showSizeChanger: true, // Cho phép hiển thị Select chọn số lượng phần tử trên trang
+              pageSizeOptions: tableParams.pageSizeOptions, // Sử dụng pageSizeOptions từ tableParams
+            }}
+            onChange={handleTableChange}
+          />
+        </CustomTable>
+      </Spin>
     </div>
   );
 }

@@ -1,5 +1,15 @@
 "use client";
-import { Breadcrumb, Button, Input, Table, Tag, Space } from "antd";
+import {
+  Breadcrumb,
+  Button,
+  Input,
+  Table,
+  Space,
+  Spin,
+  Popconfirm,
+  Select,
+  message,
+} from "antd";
 import {
   HomeOutlined,
   SearchOutlined,
@@ -8,9 +18,70 @@ import {
 import styled from "@emotion/styled";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useDebounce } from "../../common/functions/commonFunction";
+import { useMutation, useQuery } from "react-query";
+import Base from "@/app/models/Base";
 
 export default function ListPost() {
   const router = useRouter();
+
+  const [valueSearch, setValueSearch] = useState("");
+  const [valueSearchCate, setValueSearchCate] = useState(-1);
+  const [idSelected, setIdSelected] = useState();
+
+  const [tableParams, setTableParams] = useState({
+    pagination: {
+      current: 1,
+      pageSize: 5,
+      total: 20,
+    },
+  });
+
+  const handleTableChange = (pagination, filters, sorter) => {
+    setTableParams({
+      pagination,
+      filters,
+      ...sorter,
+    });
+
+    if (pagination.pageSize !== tableParams.pagination?.pageSize) {
+    }
+  };
+
+  const searchDebounce = useDebounce(valueSearch, 1000);
+  const {
+    data: listPost,
+    refetch,
+    isFetching,
+  } = useQuery(
+    [
+      "getListPostPagination",
+      searchDebounce,
+      tableParams.pagination.current,
+      tableParams.pagination.pageSize,
+      valueSearchCate,
+    ],
+    async () => {
+      const res = await Base.getListPostPagination({
+        Page: tableParams.pagination.current,
+        Size: tableParams.pagination.pageSize,
+        KeySearch: searchDebounce,
+        CategoryId: valueSearchCate,
+      });
+
+      if (res.TotalRecord) {
+        setTableParams({
+          pagination: {
+            current: tableParams.pagination.current,
+            pageSize: tableParams.pagination.pageSize,
+            total: res.TotalRecord,
+          },
+        });
+      }
+
+      return res?.Data;
+    }
+  );
   const breadcrumb = [
     {
       href: "/admin/home",
@@ -39,42 +110,34 @@ export default function ListPost() {
     {
       title: "STT",
       key: "stt",
+      render: (value, item, index) => index,
+      fixed: "left",
     },
     {
       title: "Tiêu đề",
-      dataIndex: "name",
-      key: "name",
+      dataIndex: "Title",
+      key: "Title",
       render: (text) => <a>{text}</a>,
     },
     {
       title: "Mô tả",
-      dataIndex: "age",
-      key: "age",
+      dataIndex: "Description",
+      key: "Description",
+    },
+    {
+      title: "Danh mục",
+      dataIndex: "CategoryName",
+      key: "CategoryName",
     },
     {
       title: "Ngày tạo",
-      dataIndex: "address",
-      key: "address",
+      dataIndex: "CreatedAt",
+      key: "CreatedAt",
     },
     {
       title: "Người tạo",
-      key: "tags",
-      dataIndex: "tags",
-      render: (_, { tags }) => (
-        <>
-          {tags.map((tag) => {
-            let color = tag.length > 5 ? "geekblue" : "green";
-            if (tag === "loser") {
-              color = "volcano";
-            }
-            return (
-              <Tag color={color} key={tag}>
-                {tag.toUpperCase()}
-              </Tag>
-            );
-          })}
-        </>
-      ),
+      key: "AuthorName",
+      dataIndex: "AuthorName",
     },
     {
       title: "Hoạt động",
@@ -85,100 +148,62 @@ export default function ListPost() {
             size="middle"
             className="border-teal-500 text-teal-500"
             type="default"
-            onClick={() => router.push("/admin/list-post/edit/1")}
+            onClick={() => router.push(`/admin/list-post/edit/${record?.Id}`)}
           >
             Xem chi tiết/Sửa
           </Button>
 
-          <Button size="middle" type="default" danger>
-            Xóa
-          </Button>
+          <Popconfirm
+            title="Xóa vài viết"
+            description="Bạn có chắc chắn muốn xóa bài viết này?"
+            onConfirm={handleDelete}
+            okText="Xóa"
+            cancelText="Hủy"
+          >
+            <Button size="middle" type="default" danger>
+              Xóa
+            </Button>
+          </Popconfirm>
         </Space>
       ),
     },
   ];
-  const data = [
-    {
-      key: "1",
-      name: "John Brown",
-      age: 32,
-      address: "New York No. 1 Lake Park",
-      tags: ["nice", "developer"],
-    },
-    {
-      key: "2",
-      name: "Jim Green",
-      age: 42,
-      address: "London No. 1 Lake Park",
-      tags: ["loser"],
-    },
-    {
-      key: "3",
-      name: "Joe Black",
-      age: 32,
-      address: "Sydney No. 1 Lake Park",
-      tags: ["cool", "teacher"],
-    },
-    {
-      key: "4",
-      name: "John Brown",
-      age: 32,
-      address: "New York No. 1 Lake Park",
-      tags: ["nice", "developer"],
-    },
-    {
-      key: "5",
-      name: "Jim Green",
-      age: 42,
-      address: "London No. 1 Lake Park",
-      tags: ["loser"],
-    },
-    {
-      key: "6",
-      name: "Joe Black",
-      age: 32,
-      address: "Sydney No. 1 Lake Park",
-      tags: ["cool", "teacher"],
-    },
-    {
-      key: "7",
-      name: "John Brown",
-      age: 32,
-      address: "New York No. 1 Lake Park",
-      tags: ["nice", "developer"],
-    },
-    {
-      key: "8",
-      name: "Jim Green",
-      age: 42,
-      address: "London No. 1 Lake Park",
-      tags: ["loser"],
-    },
-    {
-      key: "9",
-      name: "Joe Black",
-      age: 32,
-      address: "Sydney No. 1 Lake Park",
-      tags: ["cool", "teacher"],
-    },
-  ];
 
-  const [tableParams, setTableParams] = useState({
-    pagination: {
-      current: 1,
-      pageSize: 5,
+  const deleteMutate = useMutation(Base.deletePost, {
+    onSuccess: () => {
+      message.success("Xóa bài viết thành công!");
+      setIdSelected();
+      refetch();
+    },
+    onError: (e) => {
+      message.error("Xóa bài viết thất bại!");
     },
   });
-  const handleTableChange = (pagination, filters, sorter) => {
-    setTableParams({
-      pagination,
-      filters,
-      ...sorter,
-    });
 
-    if (pagination.pageSize !== tableParams.pagination?.pageSize) {
-    }
+  const handleDelete = (e) => {
+    deleteMutate.mutate(idSelected);
   };
+
+  const onChangeSelect = (value) => {
+    setValueSearchCate(value);
+  };
+
+  // Filter `option.label` match the user type `input`
+  const filterOption = (input, option) =>
+    (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
+  // api lấy danh sách tất cả thể loại
+  const { data: listCategory } = useQuery(
+    ["getAllCateAdminSearch"],
+    async () => {
+      const res = await Base.getAllCategory();
+
+      const dataConver = res?.map((category) => {
+        return { label: category?.Name, value: category?.Id };
+      });
+      return dataConver;
+    },
+    {}
+  );
 
   return (
     <div>
@@ -192,8 +217,20 @@ export default function ListPost() {
             }}
           />
         }
+        onChange={(e) => {
+          setValueSearch(e.target.value);
+        }}
         className="w-1/3 mb-5"
-        placeholder="Tìm kiếm"
+        placeholder="Tìm kiếm theo tiêu đề"
+      />
+      <Select
+        className="w-1/3 mb-5 ml-5"
+        showSearch
+        placeholder="Tìm kiếm theo danh mục"
+        optionFilterProp="children"
+        onChange={onChangeSelect}
+        filterOption={filterOption}
+        options={listCategory}
       />
       <Button
         icon={<PlusCircleOutlined />}
@@ -204,18 +241,27 @@ export default function ListPost() {
       >
         Thêm mới
       </Button>
-      <CustomTable>
-        <Table
-          columns={columns}
-          dataSource={data}
-          pagination={{
-            ...tableParams.pagination,
-            showSizeChanger: true, // Cho phép hiển thị Select chọn số lượng phần tử trên trang
-            pageSizeOptions: tableParams.pageSizeOptions, // Sử dụng pageSizeOptions từ tableParams
-          }}
-          onChange={handleTableChange}
-        />
-      </CustomTable>
+      <Spin spinning={isFetching}>
+        <CustomTable>
+          <Table
+            columns={columns}
+            dataSource={listPost}
+            onRow={(record) => {
+              return {
+                onClick: () => {
+                  setIdSelected(record.Id);
+                },
+              };
+            }}
+            pagination={{
+              ...tableParams.pagination,
+              showSizeChanger: true, // Cho phép hiển thị Select chọn số lượng phần tử trên trang
+              pageSizeOptions: tableParams.pageSizeOptions, // Sử dụng pageSizeOptions từ tableParams
+            }}
+            onChange={handleTableChange}
+          />
+        </CustomTable>
+      </Spin>
     </div>
   );
 }
