@@ -7,10 +7,7 @@ import {
   MenuOutlined,
   UnorderedListOutlined,
   FileTextOutlined,
-  BellOutlined,
   UploadOutlined,
-  ApartmentOutlined,
-  ClusterOutlined,
   UsergroupAddOutlined,
   UserOutlined,
   PartitionOutlined,
@@ -53,7 +50,7 @@ const MenuSidebar = (props) => {
       listSubMenu: [
         {
           icon: <MenuOutlined className={`${isCloseMenu && "text-xs"}`} />,
-          text: "Danh sách nhân viên",
+          text: "Danh sách nhân sự",
           pushTo: "/admin/list-employee",
         },
       ],
@@ -100,6 +97,28 @@ const MenuSidebar = (props) => {
           icon: <UploadOutlined className={`${isCloseMenu && "text-xs"}`} />,
           text: "Upload - Download File",
           pushTo: "/admin/files-manage",
+        },
+      ],
+    },
+    {
+      text: "Quản lý Liên hệ",
+      icon: <FolderOpenOutlined />,
+      listSubMenu: [
+        {
+          icon: <UploadOutlined className={`${isCloseMenu && "text-xs"}`} />,
+          text: "Danh sách liên hệ",
+          pushTo: "/admin/customer-contact",
+        },
+      ],
+    },
+    {
+      text: "Quản lý Lịch khám",
+      icon: <FolderOpenOutlined />,
+      listSubMenu: [
+        {
+          icon: <UploadOutlined className={`${isCloseMenu && "text-xs"}`} />,
+          text: "Danh sách lịch khám",
+          pushTo: "/admin/appointments",
         },
       ],
     },

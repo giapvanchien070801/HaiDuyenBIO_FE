@@ -27,6 +27,12 @@ const requests = {
     axiosInstance.post(`${API_ROOT}${url}`, dataSubmit),
   put: (url, updateData) => axiosInstance.put(`${API_ROOT}${url}`, updateData),
   delete: (url) => axiosInstance.delete(`${API_ROOT}${url}`),
+  postFile: (url, formData) =>
+    axiosInstance.post(`${API_ROOT}${url}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }),
 };
 
 class Base {
@@ -216,6 +222,54 @@ class Base {
   getAllSlider = async () => {
     const urlApi = `/api/slider/get-all`;
     const response = await requests.get(urlApi);
+    return response?.data;
+  };
+
+  //------------------------------upload file--------------------//
+  // api upload file
+  uploadFile = async (data) => {
+    const urlApi = `api/upload/thumbnail`;
+    console.log("data", data);
+    const response = await requests.postFile(urlApi, data);
+    debugger;
+    return response?.data;
+  };
+
+  //--------------------------nhân viên----------------//
+  // api lấy danh sách nhân viên, có phân trang
+  getListDoctorPagination = async (data) => {
+    const urlApi = `/api/doctor/get-page`;
+    const response = await requests.post(urlApi, data);
+    return response?.data;
+  };
+  // api tạo mới nhân sự
+  createDoctor = async (data) => {
+    const urlApi = `/api/doctor/create`;
+
+    const response = await requests.post(urlApi, data);
+
+    return response?.data;
+  };
+
+  // api lấy chi tiết nhân sự
+  getDetailDoctor = async (doctorId) => {
+    const urlApi = `/api/doctor/get-detail/${doctorId}`;
+    const response = await requests.get(urlApi);
+
+    return response?.data;
+  };
+
+  // api sửa nhân sự
+  updateDoctor = async (data) => {
+    const urlApi = `/api/doctor/update`;
+    const response = await requests.put(urlApi, data);
+    return response?.data;
+  };
+
+  // api xóa bài viết
+  deleteDoctor = async (doctorId) => {
+    const urlApi = `/api/doctor/delete/${doctorId}`;
+    const response = await requests.delete(urlApi);
     return response?.data;
   };
 }

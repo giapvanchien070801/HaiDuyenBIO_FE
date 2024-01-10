@@ -10,22 +10,14 @@ import {
   message,
   notification,
 } from "antd";
-import {
-  HomeOutlined,
-  SearchOutlined,
-  PlusCircleOutlined,
-} from "@ant-design/icons";
+import { HomeOutlined, SearchOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import styled from "@emotion/styled";
-import { useRouter } from "next/navigation";
 import { useMutation, useQuery } from "react-query";
 import Base from "@/app/models/Base";
-import ModalCreateCategory from "../../components/modals/ModalCreateCategory";
 import { useDebounce } from "../../common/functions/commonFunction";
 
-export default function Categorys() {
-  const router = useRouter();
-
+export default function Appointments() {
   const [valueSearchCate, setValueSearchCate] = useState("");
   const [idCateSelected, setIdCateSelected] = useState();
 
@@ -95,7 +87,7 @@ export default function Categorys() {
       href: "",
       title: (
         <>
-          <span className="text-cyan-700">Danh mục bài viết</span>
+          <span className="text-cyan-700">Danh sách lịch hẹn khám</span>
         </>
       ),
     },
@@ -105,20 +97,20 @@ export default function Categorys() {
 
   const deleteCateMutate = useMutation(Base.deleteCategory, {
     onSuccess: () => {
-      message.success("Xóa danh mục thành công!");
+      message.success("Xóa lịch hẹn thành công!");
       setIdCateSelected();
       refetch();
     },
     onError: (e) => {
       if (e?.response?.data?.Message === "Can not delete this category") {
-        // trường hợp danh mục bài viết đã có bài viết
+        // trường hợp lịch hẹn bài viết đã có bài viết
 
         api["error"]({
-          message: "Không thể xóa danh mục này",
-          description: "Đã có bài viết thuộc danh mục này. Không thể xóa!",
+          message: "Không thể xóa lịch hẹn này",
+          description: "Đã có bài viết thuộc lịch hẹn này. Không thể xóa!",
         });
       } else {
-        message.error("Xóa danh mục thất bại!");
+        message.error("Xóa lịch hẹn thất bại!");
       }
     },
   });
@@ -136,7 +128,7 @@ export default function Categorys() {
       fixed: "left",
     },
     {
-      title: "Tên danh mục",
+      title: "Tên lịch hẹn",
       dataIndex: "Name",
       key: "Name",
       render: (text) => <a>{text}</a>,
@@ -157,14 +149,9 @@ export default function Categorys() {
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <ModalCreateCategory
-            modalType="edit"
-            idCategory={idCateSelected}
-            refetchData={refetch}
-          />
           <Popconfirm
-            title="Xóa danh mục"
-            description="Bạn có chắc chắn muốn xóa danh mục này?"
+            title="Xóa lịch hẹn"
+            description="Bạn có chắc chắn muốn xóa lịch hẹn này?"
             onConfirm={handleDeleteCate}
             okText="Xóa"
             cancelText="Hủy"
@@ -198,7 +185,7 @@ export default function Categorys() {
         className="w-1/3 mb-5"
         placeholder="Tìm kiếm"
       />
-      <ModalCreateCategory modalType="create" refetchData={refetch} />
+
       <Spin spinning={isFetching}>
         <CustomTable>
           <Table

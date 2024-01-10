@@ -8,7 +8,7 @@ import {
 import { useState } from "react";
 import styled from "@emotion/styled";
 import { useRouter } from "next/navigation";
-import ModalCreateAccount from "../../components/ModalCreateAccount";
+import ModalCreateAccount from "../../components/modals/ModalCreateAccount";
 
 export default function AccountsAdmin() {
   const router = useRouter();

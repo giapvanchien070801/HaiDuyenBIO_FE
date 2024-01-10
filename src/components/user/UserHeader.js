@@ -44,7 +44,7 @@ export default function UserHeader() {
 
   // api lấy danh sách tất cả dịch vụ
   const { data: listService } = useQuery(
-    ["getAllService"],
+    ["getAllServiceUser"],
     async () => {
       const res = await Base.getAllService();
       return res;
@@ -169,7 +169,7 @@ export default function UserHeader() {
                           as={`/service-detail/${service?.id}`}
                           className="hover:text-white block hover:bg-cyan-600 py-2 px-8 transition-all duration-300 lg:px-4 lg:py-2"
                         >
-                          {service?.content}
+                          {service?.Name}
                         </Link>
                       </li>
                     ))}

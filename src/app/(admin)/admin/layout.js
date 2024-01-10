@@ -8,7 +8,7 @@ import {
   InteractionOutlined,
   MenuFoldOutlined,
 } from "@ant-design/icons";
-import MenuSidebar from "../components/MenuSidebar";
+import MenuSidebar from "../components/menus/MenuSidebar";
 import { useRouter } from "next/navigation";
 
 export default function AdminHomeLayout({ children }) {

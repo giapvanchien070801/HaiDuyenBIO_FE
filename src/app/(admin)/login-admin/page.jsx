@@ -2,13 +2,14 @@
 
 import Base from "@/app/models/Base";
 import styled from "@emotion/styled";
-import { Button, Checkbox, Form, Input, message } from "antd";
+import { Button, Checkbox, Form, Input, message, notification } from "antd";
 import { useRouter } from "next/navigation";
 import { useMutation } from "react-query";
 
 function LoginPage() {
   const [form] = Form.useForm();
   const router = useRouter();
+  const [api, contextHolder] = notification.useNotification();
 
   // delete Record
   const loginMutate = useMutation(Base.loginAdmin, {
@@ -19,7 +20,14 @@ function LoginPage() {
       // set token
     },
     onError: (e) => {
-      message.error("Đăng nhập thất bại!");
+      if (e?.response?.data?.Message === "Unauthorized") {
+        api["error"]({
+          message: "Đăng nhập thất bại",
+          description: "Tài khoản hoặc mật khẩu không đúng!",
+        });
+      } else {
+        message.error("Đăng nhập thất bại!");
+      }
     },
   });
 
@@ -41,7 +49,7 @@ function LoginPage() {
       <div className="bg-orange-600 w-3/4 h-3/4 rounded-2xl flex overflow-hidden">
         <div className="w-1/2 bg-white flex items-center flex-col justify-center">
           <p className=" mb-7 text-4xl font-mono">Login Admin</p>
-
+          {contextHolder}
           <CustomForm className="w-1/2">
             <Form
               name="login-form"

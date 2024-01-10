@@ -46,22 +46,6 @@ export default function Dashboard() {
     },
   ];
 
-  const { data: systemParamShoppingCart } = useQuery(
-    ["getListSPDVByTypess"],
-    async () => {
-      return Base.getListNewService({
-        size: 10,
-        customerType: "ENTERPRISE",
-      });
-    }
-  );
-
-  const { data: listCate } = useQuery(["getListCate"], async () => {
-    return Base.getListCategory();
-  });
-
-  console.log("systemParamShoppingCart", systemParamShoppingCart);
-
   return (
     <div>
       <Breadcrumb className="mb-5" items={breadcrumb} />

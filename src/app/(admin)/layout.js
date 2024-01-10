@@ -1,33 +1,31 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import "/src/app/globals.css";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { message } from "antd";
 
 export default function AdminLayout({ children }) {
   const queryClient = new QueryClient();
   const router = useRouter();
-  const location = window.location.href;
+  const pathname = usePathname();
 
-  // Xử lý logic kiểm tra trạng thái đăng nhập tại đây
-  const isLoggedIn = true; // Thay đổi thành logic kiểm tra đăng nhập
-
-  const isLinkToLogin = () => {
-    let isToAdmin = false;
-
-    if (location.split("/").includes("admin") && !isLoggedIn) {
-      isToAdmin = true;
-    }
-    return isToAdmin;
-  };
+  //kiểm tra trạng thái đăng nhập
+  const accessToken = localStorage.getItem("accessToken");
 
   useEffect(() => {
     // Nếu đường dẫn là /admin và chưa đăng nhập, điều hướng đến trang login
-    if (isLinkToLogin()) {
-      router.push("/login");
+    if (pathname?.split("/").includes("admin") && !accessToken) {
+      router.push("/login-admin");
+      message.warning("Bạn chưa đăng nhập!");
     }
-  }, [location]);
+
+    // trường hợp đã đăng nhập nhưng nhập url login
+    if (pathname?.split("/").includes("login-admin") && accessToken) {
+      router.push("/admin/home");
+    }
+  }, [pathname]);
 
   return (
     <html>
