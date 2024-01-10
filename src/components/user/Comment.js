@@ -19,7 +19,7 @@ export default async function Comment() {
       <p className="text-2xl font-medium">{data.total} bình luận</p>
       <ul>
         {data.comments.map((e) => (
-          <li key={e.id} className="background-input-comment p-4 my-4">
+          <li key={e.id} className="background-input-comment p-4 my-4" style={{backgroundColor: "#F4F6F9"}}>
             <p className="comment-content-color text-xl font-bold">
               {e.user.username}
             </p>
