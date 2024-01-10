@@ -277,3 +277,27 @@ h6 {
 .img-card-blog:hover {
   transform: scale(1.2);
 }
+
+.background-input-comment {
+  background-color: #F4F6F9;
+}
+
+.background-input-comment::placeholder {
+  color: #18100F;
+}
+
+.comment-username-color {
+  color: #18100F;
+} 
+
+.comment-content-color {
+  color: #6696CA;
+}
+
+.input-comment:hover {
+  outline: 1px solid #2490eb;
+}
+
+.input-comment:focus {
+  outline: 1px solid #2490eb;
+}
