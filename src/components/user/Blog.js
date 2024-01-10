@@ -3,7 +3,7 @@ import BannerBreadcrumb from "@/components/user/BannerBreadcrumb";
 import { faComments, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Suspense } from "react";
-import Comment from "../Comment";
+import Comment from "./Comment";
 
 async function getBlog(id) {
   const res = await fetch(
