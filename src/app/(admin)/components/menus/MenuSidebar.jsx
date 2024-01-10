@@ -89,17 +89,7 @@ const MenuSidebar = (props) => {
         },
       ],
     },
-    {
-      text: "Quản lý File",
-      icon: <FolderOpenOutlined />,
-      listSubMenu: [
-        {
-          icon: <UploadOutlined className={`${isCloseMenu && "text-xs"}`} />,
-          text: "Upload - Download File",
-          pushTo: "/admin/files-manage",
-        },
-      ],
-    },
+
     {
       text: "Quản lý Liên hệ",
       icon: <FolderOpenOutlined />,

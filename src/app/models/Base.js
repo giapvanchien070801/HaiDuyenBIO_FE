@@ -272,5 +272,29 @@ class Base {
     const response = await requests.delete(urlApi);
     return response?.data;
   };
+
+  //-----------------------------liên hệ------------------------//
+  // api lấy danh sách liên hệ, có phân trang
+  getListContactPagination = async (data) => {
+    const urlApi = `/api/contact/get-page`;
+    const response = await requests.post(urlApi, data);
+    return response?.data;
+  };
+
+  // api tạo mới liên hệ
+  createContact = async (data) => {
+    const urlApi = `/api/contact/create`;
+
+    const response = await requests.post(urlApi, data);
+
+    return response?.data;
+  };
+
+  // api xóa liên hệ
+  deleteContact = async (contactId) => {
+    const urlApi = `/api/contact/delete/${contactId}`;
+    const response = await requests.delete(urlApi);
+    return response?.data;
+  };
 }
 export default new Base("");

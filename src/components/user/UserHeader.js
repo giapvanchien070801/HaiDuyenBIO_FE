@@ -131,18 +131,19 @@ export default function UserHeader() {
                   className={`${layoutUserStyle.submenu} lg:absolute lg:w-max w-full z-20`}
                 >
                   <ul className="w-max bg-white">
-                    {listDepartment?.map((category, index) => (
-                      <li key={index} className="w-full">
-                        {/* link đến tranh danh sách bài viết */}
-                        <Link
-                          href={`/service-detail/${category?.id}`}
-                          as={`/service-detail/${category?.id}`}
-                          className="hover:text-white block hover:bg-cyan-600 py-2 px-8 transition-all duration-300 lg:px-4 lg:py-2"
-                        >
-                          {category?.Name}
-                        </Link>
-                      </li>
-                    ))}
+                    {listDepartment?.length &&
+                      listDepartment?.map((category, index) => (
+                        <li key={index} className="w-full">
+                          {/* link đến tranh danh sách bài viết */}
+                          <Link
+                            href={`/service-detail/${category?.id}`}
+                            as={`/service-detail/${category?.id}`}
+                            className="hover:text-white block hover:bg-cyan-600 py-2 px-8 transition-all duration-300 lg:px-4 lg:py-2"
+                          >
+                            {category?.Name}
+                          </Link>
+                        </li>
+                      ))}
                   </ul>
                 </div>
               </li>
@@ -162,17 +163,18 @@ export default function UserHeader() {
                   className={`${layoutUserStyle.submenu} lg:absolute lg:w-max w-full z-20`}
                 >
                   <ul className="w-max bg-white">
-                    {listService?.map((service, index) => (
-                      <li key={index} className="w-full">
-                        <Link
-                          href={`/service-detail/${service?.id}`}
-                          as={`/service-detail/${service?.id}`}
-                          className="hover:text-white block hover:bg-cyan-600 py-2 px-8 transition-all duration-300 lg:px-4 lg:py-2"
-                        >
-                          {service?.Name}
-                        </Link>
-                      </li>
-                    ))}
+                    {listService?.length &&
+                      listService?.map((service, index) => (
+                        <li key={index} className="w-full">
+                          <Link
+                            href={`/service-detail/${service?.Id}`}
+                            as={`/service-detail/${service?.Id}`}
+                            className="hover:text-white block hover:bg-cyan-600 py-2 px-8 transition-all duration-300 lg:px-4 lg:py-2"
+                          >
+                            {service?.Name}
+                          </Link>
+                        </li>
+                      ))}
                   </ul>
                 </div>
               </li>
@@ -210,18 +212,19 @@ export default function UserHeader() {
                   className={`${layoutUserStyle.submenu} lg:absolute lg:w-max w-full z-20`}
                 >
                   <ul className="w-max bg-white">
-                    {listCategory?.map((category, index) => (
-                      <li key={index} className="w-full">
-                        {/* link đến tranh danh sách bài viết */}
-                        <Link
-                          href={`/service-detail/${category?.id}`}
-                          as={`/service-detail/${category?.id}`}
-                          className="hover:text-white block hover:bg-cyan-600 py-2 px-8 transition-all duration-300 lg:px-4 lg:py-2"
-                        >
-                          {category?.Name}
-                        </Link>
-                      </li>
-                    ))}
+                    {listCategory?.length &&
+                      listCategory?.map((category, index) => (
+                        <li key={index} className="w-full">
+                          {/* link đến tranh danh sách bài viết */}
+                          <Link
+                            href={`/blog/${category?.Id}`}
+                            as={`/blog/${category?.Id}`}
+                            className="hover:text-white block hover:bg-cyan-600 py-2 px-8 transition-all duration-300 lg:px-4 lg:py-2"
+                          >
+                            {category?.Name}
+                          </Link>
+                        </li>
+                      ))}
                   </ul>
                 </div>
               </li>

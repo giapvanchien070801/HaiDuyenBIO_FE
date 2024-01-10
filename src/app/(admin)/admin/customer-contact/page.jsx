@@ -18,8 +18,8 @@ import Base from "@/app/models/Base";
 import { useDebounce } from "../../common/functions/commonFunction";
 
 export default function CustomerContact() {
-  const [valueSearchCate, setValueSearchCate] = useState("");
-  const [idCateSelected, setIdCateSelected] = useState();
+  const [valueSearchContact, setValueSearchContact] = useState("");
+  const [idContactSelected, setIdContactSelected] = useState();
 
   const [tableParams, setTableParams] = useState({
     pagination: {
@@ -40,20 +40,20 @@ export default function CustomerContact() {
     }
   };
 
-  const searchDebounce = useDebounce(valueSearchCate, 1000);
+  const searchDebounce = useDebounce(valueSearchContact, 1000);
   const {
-    data: listCate,
+    data: listContact,
     refetch,
     isFetching,
   } = useQuery(
     [
-      "getListCategory",
+      "getListContactgory",
       searchDebounce,
       tableParams.pagination.current,
       tableParams.pagination.pageSize,
     ],
     async () => {
-      const res = await Base.getListCatePagination({
+      const res = await Base.getListContactPagination({
         Page: tableParams.pagination.current,
         Size: tableParams.pagination.pageSize,
         KeySearch: searchDebounce,
@@ -95,10 +95,10 @@ export default function CustomerContact() {
 
   const [api, contextHolder] = notification.useNotification();
 
-  const deleteCateMutate = useMutation(Base.deleteCategory, {
+  const deleteContactMutate = useMutation(Base.deleteContact, {
     onSuccess: () => {
       message.success("Xóa liên hệ thành công!");
-      setIdCateSelected();
+      setIdContactSelected();
       refetch();
     },
     onError: (e) => {
@@ -115,8 +115,8 @@ export default function CustomerContact() {
     },
   });
 
-  const handleDeleteCate = (e) => {
-    deleteCateMutate.mutate(idCateSelected);
+  const handleDeleteContact = (e) => {
+    deleteContactMutate.mutate(idContactSelected);
   };
 
   const columns = [
@@ -128,22 +128,34 @@ export default function CustomerContact() {
       fixed: "left",
     },
     {
-      title: "Tên liên hệ",
+      title: "Tên khách hàng",
       dataIndex: "Name",
       key: "Name",
       render: (text) => <a>{text}</a>,
     },
+    {
+      title: "Số điện thoại",
+      dataIndex: "PhoneNumber",
+      key: "PhoneNumber",
+      render: (text) => <a>{text}</a>,
+    },
 
     {
-      title: "Ngày tạo",
-      dataIndex: "CreatedAt",
-      key: "CreatedAt",
+      title: "Email",
+      dataIndex: "Email",
+      key: "Email",
     },
     {
-      title: "Người tạo",
-      key: "CreatedBy",
-      dataIndex: "CreatedBy",
+      title: "Triệu chứng",
+      dataIndex: "Subject",
+      key: "Subject",
     },
+    {
+      title: "Lời nhắn",
+      dataIndex: "Message",
+      key: "Message",
+    },
+
     {
       title: "Hoạt động",
       key: "action",
@@ -152,7 +164,7 @@ export default function CustomerContact() {
           <Popconfirm
             title="Xóa liên hệ"
             description="Bạn có chắc chắn muốn xóa liên hệ này?"
-            onConfirm={handleDeleteCate}
+            onConfirm={handleDeleteContact}
             okText="Xóa"
             cancelText="Hủy"
           >
@@ -180,7 +192,7 @@ export default function CustomerContact() {
           />
         }
         onChange={(e) => {
-          setValueSearchCate(e.target.value);
+          setValueSearchContact(e.target.value);
         }}
         className="w-1/3 mb-5"
         placeholder="Tìm kiếm"
@@ -190,11 +202,11 @@ export default function CustomerContact() {
         <CustomTable>
           <Table
             columns={columns}
-            dataSource={listCate}
+            dataSource={listContact}
             onRow={(record) => {
               return {
                 onClick: () => {
-                  setIdCateSelected(record.Id);
+                  setIdContactSelected(record.Id);
                 },
               };
             }}

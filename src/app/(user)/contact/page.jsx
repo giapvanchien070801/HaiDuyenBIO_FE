@@ -1,6 +1,6 @@
 "use client";
 
-import { Breadcrumb, Tag, Input, Form, Button } from "antd";
+import { Breadcrumb, Tag, Input, Form, Button, message } from "antd";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import { HomeOutlined } from "@ant-design/icons";
 
@@ -14,6 +14,8 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "@emotion/styled";
 import BannerBreadcrumb from "@/components/user/BannerBreadcrumb";
+import { useMutation } from "react-query";
+import Base from "@/app/models/Base";
 const { TextArea } = Input;
 
 export default function Contact() {
@@ -38,14 +40,30 @@ export default function Contact() {
     },
   ];
 
+  const createDoctorMutate = useMutation(Base.createContact, {
+    onSuccess: () => {
+      message.success("Tạo liên hệ thành công!");
+      form.resetFields();
+    },
+    onError: (e) => {
+      message.error("Tạo liên hệ thất bại!");
+    },
+  });
+
   const handleSunmit = () => {
     form.submit();
 
-    const listFieldName = ["fullName", "message", "subject", "phoneNumber"];
+    const listFieldName = [
+      "Name",
+      "Message",
+      "Subject",
+      "PhoneNumber",
+      "Email",
+    ];
     form
       .validateFields(listFieldName)
       .then((value) => {
-        console.log("value contact", value);
+        createDoctorMutate.mutate(value);
       })
       .catch(() => {});
     // setIsModalOpen(false);
@@ -107,7 +125,7 @@ export default function Contact() {
             <div className="flex gap-4 w-full mb-8">
               <Form.Item
                 className="w-1/2"
-                name="fullName"
+                name="Name"
                 rules={[
                   {
                     required: true,
@@ -117,14 +135,14 @@ export default function Contact() {
               >
                 <Input placeholder="Họ và tên" />
               </Form.Item>
-              <Form.Item className="w-1/2" name="email">
+              <Form.Item className="w-1/2" name="Email">
                 <Input placeholder="Email của bạn" />
               </Form.Item>
             </div>
             <div className="flex gap-4 w-full mb-8">
               <Form.Item
                 className="w-1/2"
-                name="phoneNumber"
+                name="PhoneNumber"
                 rules={[
                   {
                     required: true,
@@ -134,11 +152,11 @@ export default function Contact() {
               >
                 <Input placeholder="Số điện thoại của bạn" />
               </Form.Item>
-              <Form.Item className="w-1/2" name="subject">
+              <Form.Item className="w-1/2" name="Subject">
                 <Input placeholder="Triệu chứng của bạn" />
               </Form.Item>
             </div>
-            <Form.Item className="w-full mb-8" name="message">
+            <Form.Item className="w-full mb-8" name="Message">
               <TextArea rows={4} placeholder="Lời nhắn" />
             </Form.Item>
             <Form.Item>

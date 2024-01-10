@@ -5,6 +5,8 @@ import { HomeOutlined, RightOutlined } from "@ant-design/icons";
 import styled from "@emotion/styled";
 import BannerBreadcrumb from "@/components/user/BannerBreadcrumb";
 import Link from "next/link";
+import { useQuery } from "react-query";
+import Base from "@/app/models/Base";
 
 export default function ServiceDetail({ params }) {
   // Sử dụng query param từ URL
@@ -30,11 +32,25 @@ export default function ServiceDetail({ params }) {
     },
   ];
 
-  const listService = [
-    { content: "Cộng hưởng từ", id: 1 },
-    { content: "Khám bệnh", id: 2 },
-    { content: "Miễn dịch", id: 3 },
-  ];
+  // api lấy danh sách tất cả dịch vụ
+  const { data: listService } = useQuery(
+    ["getAllServiceMenu"],
+    async () => {
+      const res = await Base.getAllService();
+      return res;
+    },
+    {}
+  );
+
+  const { data: dataService } = useQuery(
+    ["getDetailService", idService],
+    async () => {
+      const res = await Base.getDetailService(idService);
+
+      return res;
+    },
+    { enabled: !!idService }
+  );
 
   const text = `
   A dog is a type of domesticated animal.
@@ -76,16 +92,16 @@ export default function ServiceDetail({ params }) {
               <div
                 key={index}
                 className={`${
-                  service?.id === Number(idService)
+                  service?.Id === Number(idService)
                     ? "bg-[#2490eb] text-white"
                     : "bg-white"
                 } mb-2 rounded`}
               >
                 <Link
-                  href={`/service-detail/${service?.id}`}
+                  href={`/service-detail/${service?.Id}`}
                   className=" flex py-4 px-6  justify-between text-base font-medium"
                 >
-                  {service?.content}
+                  {service?.Name}
                   <RightOutlined />
                 </Link>
               </div>
@@ -102,11 +118,7 @@ export default function ServiceDetail({ params }) {
           </div>
         </div>
         <div className="w-8/12 bg-red-40 h-full p-8">
-          <h4 className="mb-10">Nội dung của bài viết về các dịch vụ</h4>
-          <img
-            src="https://nld.mediacdn.vn/2020/3/23/89963885102126374520495725234434303294701568o-15849685424641174163940.jpg"
-            alt=""
-          />
+          <div dangerouslySetInnerHTML={{ __html: dataService?.Description }} />
 
           {/* Lời khuyên & Thông tin về Sức khỏe */}
           <div className="mt-10">

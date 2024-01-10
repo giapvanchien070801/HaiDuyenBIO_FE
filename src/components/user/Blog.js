@@ -1,3 +1,5 @@
+"use client";
+
 import { HomeOutlined } from "@ant-design/icons";
 import BannerBreadcrumb from "@/components/user/BannerBreadcrumb";
 import {
@@ -9,21 +11,29 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Suspense } from "react";
 import Comment from "./Comment";
 import Link from "next/link";
+import { useQuery } from "react-query";
+import Base from "@/app/models/Base";
 
-async function getBlog(id) {
-  const res = await fetch(
-    "https://api.slingacademy.com/v1/sample-data/blog-posts/1"
+export default async function Blog({ postId }) {
+  // api lấy danh sách tất cả thể loại
+  const { data: listCategory } = useQuery(
+    ["getAllCateMenu"],
+    async () => {
+      const res = await Base.getAllCategory();
+      return res;
+    },
+    {}
+  );
+  const { data: dataPostDetail } = useQuery(
+    ["getDetailPost", postId],
+    async () => {
+      const res = await Base.getDetailPost(postId);
+
+      return res;
+    },
+    { enabled: !!postId }
   );
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
-
-  return res.json();
-}
-
-export default async function Blog({ id }) {
-  const blog = await getBlog(id);
   const breadCrum = [
     {
       href: "/",
@@ -38,7 +48,7 @@ export default async function Blog({ id }) {
       href: `/blog`,
       title: (
         <>
-          <span className="text-[#2490eb]">Các bài viết</span>
+          <span className="text-[#2490eb]">Danh sách bài viết</span>
         </>
       ),
     },
@@ -46,97 +56,22 @@ export default async function Blog({ id }) {
       href: ``,
       title: (
         <>
-          <span className="text-[#2490eb]">{blog.blog.title}</span>
+          <span className="text-[#2490eb]">{dataPostDetail?.Title}</span>
         </>
       ),
     },
   ];
+
   return (
     <>
-      <BannerBreadcrumb title={blog.blog.title} breadcrumb={breadCrum} />
+      <BannerBreadcrumb title={dataPostDetail?.Title} breadcrumb={breadCrum} />
 
       <div className="grid xl:grid-cols-10 gap-6 mt-12">
         <div className="content-blog col-span-7 bg-white">
-          <div className="shadow-md pb-8 ">
-            <div className="blog-thumbnail relative h-fit">
-              <div className="w-full overflow-hidden" style={{ height: "550" }}>
-                <img
-                  src={`${blog.blog.photo_url}`}
-                  className="w-full h-full hover:scale-110 transition-all duration-500"
-                />
-                <div className="time-posted absolute session_ocean2 text-white p-2 bottom-0 left-0 ml-4 mb-4">
-                  <p className="font-medium">10/01/2023</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="px-4">
-              <div className="short-content">
-                <div className="author-comments border-b-2 py-4">
-                  <span className="text-xl">
-                    <FontAwesomeIcon icon={faUser} className="text_ocean" />{" "}
-                    Admin{" "}
-                    <FontAwesomeIcon icon={faComments} className="text_ocean" />{" "}
-                    12 bình luận
-                  </span>
-                </div>
-              </div>
-
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: `${
-                    blog.blog.content_html +
-                    ` <ul> Demo the ul html
-                <li>Coffee</li>
-                <li>Tea</li>
-                <li>Milk</li>
-              </ul> <table>
-              <tr>
-                <th>Company</th>
-                <th>Contact</th>
-                <th>Country</th>
-              </tr>
-              <tr>
-                <td>Alfreds Futterkiste</td>
-                <td>Maria Anders</td>
-                <td>Germany</td>
-              </tr>
-              <tr>
-                <td>Centro comercial Moctezuma</td>
-                <td>Francisco Chang</td>
-                <td>Mexico</td>
-              </tr>
-              <tr>
-                <td>Ernst Handel</td>
-                <td>Roland Mendel</td>
-                <td>Austria</td>
-              </tr>
-              <tr>
-                <td>Island Trading</td>
-                <td>Helen Bennett</td>
-                <td>UK</td>
-              </tr>
-              <tr>
-                <td>Laughing Bacchus Winecellars</td>
-                <td>Yoshi Tannamuri</td>
-                <td>Canada</td>
-              </tr>
-              <tr>
-                <td>Magazzini Alimentari Riuniti</td>
-                <td>Giovanni Rovelli</td>
-                <td>Italy</td>
-              </tr>
-            </table>`
-                  }`,
-                }}
-                className="mt-8 blog-content"
-              />
-            </div>
-          </div>
-
-          <Suspense fallback={<div>Đang tải bình luận ...</div>}>
+          <div dangerouslySetInnerHTML={{ __html: dataPostDetail?.Content }} />
+          {/* <Suspense fallback={<div>Đang tải bình luận ...</div>}>
             <Comment />
-          </Suspense>
+          </Suspense> */}
 
           <div className="write-comment mt-16">
             <p className="text-4xl font-medium mb-8">
@@ -183,40 +118,26 @@ export default async function Blog({ id }) {
         <div className="another col-span-3 ">
           <div className="categories-blog py-8 pl-4">
             <p className="text-3xl mb-4">Thể Loại</p>
-            <p className="my-4">
-              <Link href={`#`} className="capitalize categorie-link transition-all duration-500">
-                <FontAwesomeIcon icon={faAngleRight} className="text_ocean" />{" "}
-                bác sỹ
-              </Link>
-            </p>
-            <p className="my-4">
-              <Link href={`#`} className="capitalize categorie-link transition-all duration-500">
-                <FontAwesomeIcon icon={faAngleRight} className="text_ocean" />{" "}
-                sức khoẻ
-              </Link>
-            </p>
-            <p className="my-4">
-              <Link href={`#`} className="capitalize categorie-link transition-all duration-500">
-                <FontAwesomeIcon icon={faAngleRight} className="text_ocean" />{" "}
-                trẻ em
-              </Link>
-            </p>
-            <p className="my-4">
-              <Link href={`#`} className="capitalize categorie-link transition-all duration-500">
-                <FontAwesomeIcon icon={faAngleRight} className="text_ocean" />{" "}
-                người lớn
-              </Link>
-            </p>
-            <p className="my-4">
-              <Link href={`#`} className="capitalize categorie-link transition-all duration-500">
-                <FontAwesomeIcon icon={faAngleRight} className="text_ocean" />{" "}
-                thực phẩm
-              </Link>
-            </p>
+            {listCategory?.length &&
+              listCategory?.map((category, index) => (
+                <p className="my-4" key={index}>
+                  <Link
+                    href={`/blog/${category?.Id}`}
+                    as={`/blog/${category?.Id}`}
+                    className="capitalize categorie-link transition-all duration-500"
+                  >
+                    <FontAwesomeIcon
+                      icon={faAngleRight}
+                      className="text_ocean"
+                    />{" "}
+                    {category?.Name}
+                  </Link>
+                </p>
+              ))}
           </div>
 
           <div className="categories-blog py-8 pl-4 mt-16">
-          <p className="text-3xl mb-4">Dịch Vụ</p>
+            <p className="text-3xl mb-4">Dịch Vụ</p>
           </div>
         </div>
       </div>
