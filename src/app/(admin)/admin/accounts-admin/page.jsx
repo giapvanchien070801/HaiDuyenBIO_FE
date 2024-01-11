@@ -1,5 +1,5 @@
 "use client";
-import { Breadcrumb, Button, Input, Space, Table, Tag } from "antd";
+import { Breadcrumb, Input, Spin, Table } from "antd";
 import {
   HomeOutlined,
   SearchOutlined,
@@ -8,10 +8,70 @@ import {
 import { useState } from "react";
 import styled from "@emotion/styled";
 import { useRouter } from "next/navigation";
+import { useQuery } from "react-query";
+import Base from "@/app/models/Base";
+
+import { useDebounce } from "../../common/functions/commonFunction";
 import ModalCreateAccount from "../../components/modals/ModalCreateAccount";
 
-export default function AccountsAdmin() {
+export default function AccountAdmin() {
   const router = useRouter();
+
+  const [valueSearchCate, setValueSearchCate] = useState("");
+  const [idCateSelected, setIdCateSelected] = useState();
+
+  const [tableParams, setTableParams] = useState({
+    pagination: {
+      current: 1,
+      pageSize: 5,
+      total: 20,
+    },
+  });
+
+  const handleTableChange = (pagination, filters, sorter) => {
+    setTableParams({
+      pagination,
+      filters,
+      ...sorter,
+    });
+
+    if (pagination.pageSize !== tableParams.pagination?.pageSize) {
+    }
+  };
+
+  const searchDebounce = useDebounce(valueSearchCate, 1000);
+  const {
+    data: listCate,
+    refetch,
+    isFetching,
+  } = useQuery(
+    [
+      "getListCategory",
+      searchDebounce,
+      tableParams.pagination.current,
+      tableParams.pagination.pageSize,
+    ],
+    async () => {
+      const res = await Base.getListAccount({
+        Page: tableParams.pagination.current,
+        Size: tableParams.pagination.pageSize,
+        KeySearch: searchDebounce,
+      });
+
+      if (res.TotalRecord) {
+        setTableParams({
+          pagination: {
+            current: tableParams.pagination.current,
+            pageSize: tableParams.pagination.pageSize,
+            total: res.TotalRecord,
+          },
+        });
+      }
+
+      return res?.Data;
+    }
+  );
+
   const breadcrumb = [
     {
       href: "/admin/home",
@@ -26,7 +86,7 @@ export default function AccountsAdmin() {
       href: "",
       title: (
         <>
-          <span className="text-cyan-700">Tài khoản quản trị</span>
+          <span className="text-cyan-700">Danh sách tài khoản quản trị</span>
         </>
       ),
     },
@@ -36,127 +96,40 @@ export default function AccountsAdmin() {
     {
       title: "STT",
       key: "stt",
+      dataIndex: "Id",
+      render: (value, item, index) => index,
+      fixed: "left",
     },
     {
-      title: "Id",
-      dataIndex: "Tài khoản",
-      key: "name",
+      title: "Tên quản trị viên",
+      dataIndex: "Name",
+      key: "Name",
       render: (text) => <a>{text}</a>,
     },
     {
-      title: "Họ và tên",
-      dataIndex: "age",
-      key: "age",
+      title: "Quyền",
+      dataIndex: "RoleName",
+      key: "RoleName",
+      render: (text) => <a>{text}</a>,
     },
     {
       title: "Tài khoản",
-      dataIndex: "address",
-      key: "address",
+      dataIndex: "Account",
+      key: "Account",
+      render: (text) => <a>{text}</a>,
     },
 
     {
-      title: "Hoạt động",
-      key: "action",
-      render: (_, record) => (
-        <Space size="middle">
-          <ModalCreateAccount modalType="edit" />
-          <Button size="middle" type="default" danger>
-            Xóa
-          </Button>
-        </Space>
-      ),
+      title: "Ngày tạo",
+      dataIndex: "CreatedAt",
+      key: "CreatedAt",
     },
   ];
-  const data = [
-    {
-      key: "1",
-      name: "John Brown",
-      age: 32,
-      address: "New York No. 1 Lake Park",
-      tags: ["nice", "developer"],
-    },
-    {
-      key: "2",
-      name: "Jim Green",
-      age: 42,
-      address: "London No. 1 Lake Park",
-      tags: ["loser"],
-    },
-    {
-      key: "3",
-      name: "Joe Black",
-      age: 32,
-      address: "Sydney No. 1 Lake Park",
-      tags: ["cool", "teacher"],
-    },
-    {
-      key: "4",
-      name: "John Brown",
-      age: 32,
-      address: "New York No. 1 Lake Park",
-      tags: ["nice", "developer"],
-    },
-    {
-      key: "5",
-      name: "Jim Green",
-      age: 42,
-      address: "London No. 1 Lake Park",
-      tags: ["loser"],
-    },
-    {
-      key: "6",
-      name: "Joe Black",
-      age: 32,
-      address: "Sydney No. 1 Lake Park",
-      tags: ["cool", "teacher"],
-    },
-    {
-      key: "7",
-      name: "John Brown",
-      age: 32,
-      address: "New York No. 1 Lake Park",
-      tags: ["nice", "developer"],
-    },
-    {
-      key: "8",
-      name: "Jim Green",
-      age: 42,
-      address: "London No. 1 Lake Park",
-      tags: ["loser"],
-    },
-    {
-      key: "9",
-      name: "Joe Black",
-      age: 32,
-      address: "Sydney No. 1 Lake Park",
-      tags: ["cool", "teacher"],
-    },
-  ];
-
-  const [tableParams, setTableParams] = useState({
-    pagination: {
-      current: 1,
-      pageSize: 5,
-    },
-  });
-  const handleTableChange = (pagination, filters, sorter) => {
-    setTableParams({
-      pagination,
-      filters,
-      ...sorter,
-    });
-
-    if (pagination.pageSize !== tableParams.pagination?.pageSize) {
-    }
-  };
-
-  const handleGoCreateOrEdit = () => {
-    router.push("/admin/accounts-admin/create-edit");
-  };
 
   return (
     <div>
       <Breadcrumb className="mb-5" items={breadcrumb} />
+
       <Input
         allowClear
         prefix={
@@ -166,22 +139,34 @@ export default function AccountsAdmin() {
             }}
           />
         }
+        onChange={(e) => {
+          setValueSearchCate(e.target.value);
+        }}
         className="w-1/3 mb-5"
         placeholder="Tìm kiếm"
       />
-      <ModalCreateAccount modalType="create" />
-      <CustomTable>
-        <Table
-          columns={columns}
-          dataSource={data}
-          pagination={{
-            ...tableParams.pagination,
-            showSizeChanger: true, // Cho phép hiển thị Select chọn số lượng phần tử trên trang
-            pageSizeOptions: tableParams.pageSizeOptions, // Sử dụng pageSizeOptions từ tableParams
-          }}
-          onChange={handleTableChange}
-        />
-      </CustomTable>
+      <ModalCreateAccount modalType="create" refetchData={refetch} />
+      <Spin spinning={isFetching}>
+        <CustomTable>
+          <Table
+            columns={columns}
+            dataSource={listCate}
+            onRow={(record) => {
+              return {
+                onClick: () => {
+                  setIdCateSelected(record.Id);
+                },
+              };
+            }}
+            pagination={{
+              ...tableParams.pagination,
+              showSizeChanger: true, // Cho phép hiển thị Select chọn số lượng phần tử trên trang
+              pageSizeOptions: tableParams.pageSizeOptions, // Sử dụng pageSizeOptions từ tableParams
+            }}
+            onChange={handleTableChange}
+          />
+        </CustomTable>
+      </Spin>
     </div>
   );
 }

@@ -7,6 +7,7 @@ import {
   LogoutOutlined,
   InteractionOutlined,
   MenuFoldOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
 import MenuSidebar from "../components/menus/MenuSidebar";
 import { useRouter } from "next/navigation";
@@ -20,23 +21,16 @@ export default function AdminHomeLayout({ children }) {
   };
 
   const handleLogOut = () => {
-    localStorage.removeItem("accessToken");
+    sessionStorage.removeItem("accessToken");
+    sessionStorage.removeItem("adminInfor");
     router.push("/login-admin");
     message.success("Đăng xuất thành công");
   };
-  const handleChangePass = () => {
-    router.push("/reset-password");
-  };
+
+  const adminInfo = JSON.parse(sessionStorage.getItem("adminInfor"));
 
   const contentPopover = (
     <div className=" cursor-pointer">
-      <div
-        className="flex items-center pr-4 py-3 gap-2 border-y hover:bg-[#4361ee1a] p-2"
-        onClick={() => handleChangePass()}
-      >
-        <InteractionOutlined />
-        <p>Đổi mật khẩu</p>
-      </div>
       <div
         onClick={() => handleLogOut()}
         className="text-red-700 flex items-center pr-4 py-3 gap-2 border-b hover:bg-[#4361ee1a] p-2"
@@ -47,15 +41,13 @@ export default function AdminHomeLayout({ children }) {
     </div>
   );
   const titleHover = (
-    <div className=" flex gap-2 cursor-pointer">
-      <Avatar
-        size={40}
-        src="https://adminlte.io/themes/v3/dist/img/user8-128x128.jpg"
-        shape="square"
-      />
+    <div className=" flex gap-2 cursor-pointer items-center">
+      <div className="w-10 h-10 rounded-md bg-slate-300 flex items-center justify-center">
+        <UserOutlined className="text-2xl text-slate-800" />
+      </div>
       <div>
-        <p>Giáp Văn Chiến</p>
-        <p> abctest@gmail.com</p>
+        <b>{adminInfo?.Name}</b>
+        <p>{adminInfo?.RoleName}</p>
       </div>
     </div>
   );
@@ -103,7 +95,9 @@ export default function AdminHomeLayout({ children }) {
               title={titleHover}
               trigger="click"
             >
-              <Avatar src="https://adminlte.io/themes/v3/dist/img/user8-128x128.jpg" />
+              <div className="w-8 h-8 rounded-full bg-slate-300 flex items-center justify-center">
+                <UserOutlined className="text-xl text-slate-800" />
+              </div>
             </Popover>
           </div>
         </div>

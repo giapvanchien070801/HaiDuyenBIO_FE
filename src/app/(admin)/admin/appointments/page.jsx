@@ -25,7 +25,7 @@ export default function Appointments() {
     pagination: {
       current: 1,
       pageSize: 5,
-      total: 20,
+      total: 200,
     },
   });
 
@@ -42,18 +42,18 @@ export default function Appointments() {
 
   const searchDebounce = useDebounce(valueSearchCate, 1000);
   const {
-    data: listCate,
+    data: listSchedule,
     refetch,
     isFetching,
   } = useQuery(
     [
-      "getListCategory",
+      "getListSchedulePagination",
       searchDebounce,
       tableParams.pagination.current,
       tableParams.pagination.pageSize,
     ],
     async () => {
-      const res = await Base.getListCatePagination({
+      const res = await Base.getListSchedulePagination({
         Page: tableParams.pagination.current,
         Size: tableParams.pagination.pageSize,
         KeySearch: searchDebounce,
@@ -93,30 +93,19 @@ export default function Appointments() {
     },
   ];
 
-  const [api, contextHolder] = notification.useNotification();
-
-  const deleteCateMutate = useMutation(Base.deleteCategory, {
+  const deleteScheduleMutate = useMutation(Base.deleteSchedule, {
     onSuccess: () => {
       message.success("Xóa lịch hẹn thành công!");
       setIdCateSelected();
       refetch();
     },
     onError: (e) => {
-      if (e?.response?.data?.Message === "Can not delete this category") {
-        // trường hợp lịch hẹn bài viết đã có bài viết
-
-        api["error"]({
-          message: "Không thể xóa lịch hẹn này",
-          description: "Đã có bài viết thuộc lịch hẹn này. Không thể xóa!",
-        });
-      } else {
-        message.error("Xóa lịch hẹn thất bại!");
-      }
+      message.error("Xóa lịch hẹn thất bại!");
     },
   });
 
-  const handleDeleteCate = (e) => {
-    deleteCateMutate.mutate(idCateSelected);
+  const handleDeleteSchedule = (e) => {
+    deleteScheduleMutate.mutate(idCateSelected);
   };
 
   const columns = [
@@ -126,23 +115,51 @@ export default function Appointments() {
       dataIndex: "Id",
       render: (value, item, index) => index,
       fixed: "left",
+      width: 50,
     },
     {
-      title: "Tên lịch hẹn",
-      dataIndex: "Name",
-      key: "Name",
+      title: "Họ và tên",
+      dataIndex: "FullName",
+      key: "FullName",
       render: (text) => <a>{text}</a>,
+      width: 100,
     },
 
     {
-      title: "Ngày tạo",
-      dataIndex: "CreatedAt",
-      key: "CreatedAt",
+      title: "Email",
+      dataIndex: "Email",
+      key: "Email",
+      width: 150,
     },
     {
-      title: "Người tạo",
-      key: "CreatedBy",
-      dataIndex: "CreatedBy",
+      title: "Số điện thoại",
+      key: "PhoneNumber",
+      dataIndex: "PhoneNumber",
+      width: 100,
+    },
+    {
+      title: "Hẹn gặp với Bác sĩ",
+      key: "DoctorName",
+      dataIndex: "DoctorName",
+      width: 150,
+    },
+    {
+      title: "Ngày hẹn gặp",
+      key: "MeetDate",
+      dataIndex: "MeetDate",
+      width: 100,
+    },
+    {
+      title: "Thời gian hẹn gặp",
+      key: "MeetTime",
+      dataIndex: "MeetTime",
+      width: 100,
+    },
+    {
+      title: "Ghi chú",
+      key: "Note",
+      dataIndex: "Note",
+      width: 150,
     },
     {
       title: "Hoạt động",
@@ -152,7 +169,7 @@ export default function Appointments() {
           <Popconfirm
             title="Xóa lịch hẹn"
             description="Bạn có chắc chắn muốn xóa lịch hẹn này?"
-            onConfirm={handleDeleteCate}
+            onConfirm={handleDeleteSchedule}
             okText="Xóa"
             cancelText="Hủy"
           >
@@ -162,12 +179,12 @@ export default function Appointments() {
           </Popconfirm>
         </Space>
       ),
+      width: 50,
     },
   ];
 
   return (
     <div>
-      {contextHolder}
       <Breadcrumb className="mb-5" items={breadcrumb} />
 
       <Input
@@ -190,7 +207,7 @@ export default function Appointments() {
         <CustomTable>
           <Table
             columns={columns}
-            dataSource={listCate}
+            dataSource={listSchedule}
             onRow={(record) => {
               return {
                 onClick: () => {

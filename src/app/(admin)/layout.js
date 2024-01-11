@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import "/src/app/globals.css";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { message } from "antd";
+import { message, notification } from "antd";
 
 export default function AdminLayout({ children }) {
   const queryClient = new QueryClient();
@@ -12,13 +12,17 @@ export default function AdminLayout({ children }) {
   const pathname = usePathname();
 
   //kiểm tra trạng thái đăng nhập
-  const accessToken = localStorage.getItem("accessToken");
+  const accessToken = sessionStorage.getItem("accessToken");
+  const [api, contextHolder] = notification.useNotification();
 
   useEffect(() => {
     // Nếu đường dẫn là /admin và chưa đăng nhập, điều hướng đến trang login
     if (pathname?.split("/").includes("admin") && !accessToken) {
+      api["warning"]({
+        message: "Bạn chưa đăng nhập",
+        description: "Hãy đăng nhập để có quyền truy cập!",
+      });
       router.push("/login-admin");
-      message.warning("Bạn chưa đăng nhập!");
     }
 
     // trường hợp đã đăng nhập nhưng nhập url login
@@ -33,6 +37,7 @@ export default function AdminLayout({ children }) {
         <link rel="shortcut icon" href="/favicon.ico" />
       </head>
       <body>
+        {contextHolder}
         <QueryClientProvider client={queryClient}>
           {children}
         </QueryClientProvider>

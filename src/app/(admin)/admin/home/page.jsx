@@ -3,10 +3,8 @@
 import { Breadcrumb } from "antd";
 import { HomeOutlined } from "@ant-design/icons";
 import { Line } from "@ant-design/plots";
-import { useEffect, useState } from "react";
 import { dataChart } from "../../common/data-fake/dataChartFake";
 import { useQuery } from "react-query";
-// import Base from "@/app/models/Base";
 import Base from "../../../models/Base";
 
 export default function Dashboard() {
@@ -45,6 +43,12 @@ export default function Dashboard() {
       ),
     },
   ];
+
+  const { data: dataAdmin } = useQuery(["getInforAdmin"], async () => {
+    const res = await Base.getInforAdmin();
+    sessionStorage.setItem("adminInfor", JSON.stringify(res));
+    return res;
+  });
 
   return (
     <div>

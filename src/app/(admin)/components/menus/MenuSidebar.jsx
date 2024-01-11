@@ -102,12 +102,12 @@ const MenuSidebar = (props) => {
       ],
     },
     {
-      text: "Quản lý Lịch khám",
+      text: "Quản lý Lịch hẹn",
       icon: <FolderOpenOutlined />,
       listSubMenu: [
         {
           icon: <UploadOutlined className={`${isCloseMenu && "text-xs"}`} />,
-          text: "Danh sách lịch khám",
+          text: "Danh sách lịch hẹn",
           pushTo: "/admin/appointments",
         },
       ],

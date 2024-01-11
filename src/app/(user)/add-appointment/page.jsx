@@ -3,13 +3,16 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Autoplay } from "swiper/modules";
-import { Input, Form, Button, Select, DatePicker } from "antd";
+import { Input, Form, Button, Select, DatePicker, message } from "antd";
 import { PlusOutlined, HomeOutlined } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
 import styled from "@emotion/styled";
 import BannerBreadcrumb from "@/components/user/BannerBreadcrumb";
 import CardFeedback from "@/components/user/CardFeedback";
 import CardLatestBlog from "@/components/user/CardLatestBlog";
+import { useMutation, useQuery } from "react-query";
+import Base from "@/app/models/Base";
+import moment from "moment";
 const { TextArea } = Input;
 
 export default function AddAppointment() {
@@ -35,14 +38,41 @@ export default function AddAppointment() {
     },
   ];
 
+  const createSchedule = useMutation(Base.createSchedule, {
+    onSuccess: () => {
+      message.success("Tạo lịch hẹn thành công!");
+      form.resetFields();
+    },
+    onError: (e) => {
+      message.error("Tạo lịch hẹn thất bại!");
+    },
+  });
+
   const handleSunmit = () => {
     form.submit();
 
-    const listFieldName = ["fullName", "message", "subject", "phoneNumber"];
+    const listFieldName = [
+      "MeetTime",
+      "MeetDate",
+      "Email",
+      "PhoneNumber",
+      "FullName",
+      "DoctorId",
+      "Note",
+    ];
     form
       .validateFields(listFieldName)
       .then((value) => {
-        console.log("value contact", value);
+        const valueSubmit = {
+          MeetTime: value?.MeetTime,
+          MeetDate: moment(value?.MeetDate).format("DD-MM-YYYY"),
+          Email: value?.Email,
+          PhoneNumber: value?.PhoneNumber,
+          FullName: value?.FullName,
+          DoctorId: value?.DoctorId,
+          Note: value?.Note,
+        };
+        createSchedule.mutate(valueSubmit);
       })
       .catch(() => {});
     // setIsModalOpen(false);
@@ -61,6 +91,20 @@ export default function AddAppointment() {
   const onChangeDate = (date, dateString) => {
     console.log(date, dateString);
   };
+
+  // api lấy danh sách tất cả bác sĩ
+  const { data: listDoctor } = useQuery(
+    ["getAllgetAllDoctorSchedule"],
+    async () => {
+      const res = await Base.getAllDoctor();
+
+      const dataConver = res?.map((doctor) => {
+        return { label: doctor?.Name, value: doctor?.Id };
+      });
+      return dataConver;
+    },
+    {}
+  );
 
   return (
     <div className="flex flex-col items-center">
@@ -81,31 +125,16 @@ export default function AddAppointment() {
                 form={form}
                 layout="vertical"
               >
-                <Form.Item label="Chọn khoa" className="w-full" name="khoa">
-                  <Select
-                    showSearch
-                    placeholder="Chọn khoa"
-                    optionFilterProp="children"
-                    onChange={onChange}
-                    onSearch={onSearch}
-                    filterOption={filterOption}
-                    options={[
-                      {
-                        value: "jack",
-                        label: "Jack",
-                      },
-                      {
-                        value: "lucy",
-                        label: "Lucy",
-                      },
-                      {
-                        value: "tom",
-                        label: "Tom",
-                      },
-                    ]}
-                  />
-                </Form.Item>
-                <Form.Item label="Chọn bác sĩ" className="w-full" name="doctor">
+                <Form.Item
+                  className="w-full"
+                  name="DoctorId"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Vui lòng chọn bác sĩ cần gặp",
+                    },
+                  ]}
+                >
                   <Select
                     showSearch
                     placeholder="Chọn bác sĩ"
@@ -113,20 +142,7 @@ export default function AddAppointment() {
                     onChange={onChange}
                     onSearch={onSearch}
                     filterOption={filterOption}
-                    options={[
-                      {
-                        value: "jack",
-                        label: "Jack",
-                      },
-                      {
-                        value: "lucy",
-                        label: "Lucy",
-                      },
-                      {
-                        value: "tom",
-                        label: "Tom",
-                      },
-                    ]}
+                    options={listDoctor}
                   />
                 </Form.Item>
                 <Form.Item
@@ -137,14 +153,14 @@ export default function AddAppointment() {
                       message: "Vui lòng nhập họ và tên của bạn",
                     },
                   ]}
-                  name="fullNamePatient"
+                  name="FullName"
                 >
                   <Input placeholder="Họ và tên" />
                 </Form.Item>
                 <div className="flex gap-4 w-full ">
                   <Form.Item
                     className="w-1/2"
-                    name="phoneNumber"
+                    name="PhoneNumber"
                     rules={[
                       {
                         required: true,
@@ -154,14 +170,14 @@ export default function AddAppointment() {
                   >
                     <Input placeholder="Số điện thoại của bạn" />
                   </Form.Item>
-                  <Form.Item className="w-1/2" name="email">
+                  <Form.Item className="w-1/2" name="Email">
                     <Input placeholder="Email của bạn" />
                   </Form.Item>
                 </div>
                 <div className="flex gap-4 w-full ">
                   <Form.Item
                     className="w-1/2"
-                    name="date"
+                    name="MeetDate"
                     rules={[
                       {
                         required: true,
@@ -171,11 +187,11 @@ export default function AddAppointment() {
                   >
                     <DatePicker className="w-full" onChange={onChangeDate} />
                   </Form.Item>
-                  <Form.Item className="w-1/2" name="subject">
+                  <Form.Item className="w-1/2" name="MeetTime">
                     <Input placeholder="Thời gian" />
                   </Form.Item>
                 </div>
-                <Form.Item className="w-full " name="message">
+                <Form.Item className="w-full " name="Note">
                   <TextArea rows={3} placeholder="Ghi chú" />
                 </Form.Item>
                 <Form.Item>
@@ -242,8 +258,8 @@ export default function AddAppointment() {
             <Swiper
               spaceBetween={50}
               slidesPerView={1}
-              onSlideChange={() => console.log("slide change")}
-              onSwiper={(swiper) => console.log(swiper)}
+              // onSlideChange={() => console.log("slide change")}
+              // onSwiper={(swiper) => console.log(swiper)}
               modules={[Autoplay]}
               effect="coverflow"
               autoplay={{

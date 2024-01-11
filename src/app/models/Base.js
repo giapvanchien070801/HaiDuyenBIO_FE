@@ -10,7 +10,7 @@ const axiosInstance = axios.create({
 // Thiết lập interceptor để thêm token vào mỗi request (nếu có)
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("accessToken"); // Lấy token từ localStorage hoặc nơi lưu trữ khác
+    const token = sessionStorage.getItem("accessToken"); // Lấy token từ sessionStorage  hoặc nơi lưu trữ khác
     if (token) {
       config.headers.Authorization = `Bearer ${token}`; // Thêm token vào header Authorization
     }
@@ -266,10 +266,16 @@ class Base {
     return response?.data;
   };
 
-  // api xóa bài viết
+  // api xóa bác sĩ
   deleteDoctor = async (doctorId) => {
     const urlApi = `/api/doctor/delete/${doctorId}`;
     const response = await requests.delete(urlApi);
+    return response?.data;
+  };
+
+  getAllDoctor = async () => {
+    const urlApi = `/api/doctor/get-all`;
+    const response = await requests.get(urlApi);
     return response?.data;
   };
 
@@ -294,6 +300,50 @@ class Base {
   deleteContact = async (contactId) => {
     const urlApi = `/api/contact/delete/${contactId}`;
     const response = await requests.delete(urlApi);
+    return response?.data;
+  };
+
+  //---------------------------------tài khoản quản trị --------------------------//
+  // api lấy danh sách thể loại bài viết, có phân trang
+  getListAccount = async (data) => {
+    const urlApi = `/api/user/get-page`;
+    const response = await requests.post(urlApi, data);
+    return response?.data;
+  };
+
+  // api tạo mới tài khoản
+  createAccount = async (data) => {
+    const urlApi = `/api/user/create`;
+    const response = await requests.post(urlApi, data);
+    return response?.data;
+  };
+
+  //---------------------------------api lấy thông tin tài khoản đăng nhập --------------------------//
+  getInforAdmin = async () => {
+    const urlApi = `/api/user/get-info`;
+    const response = await requests.get(urlApi);
+
+    return response?.data;
+  };
+
+  //---------------------------------api lịch hẹn --------------------------//
+  getListSchedulePagination = async (data) => {
+    const urlApi = `/api/schedule/get-page`;
+    const response = await requests.post(urlApi, data);
+    return response?.data;
+  };
+
+  // api xóa lịch hẹn
+  deleteSchedule = async (scheduleId) => {
+    const urlApi = `/api/schedule/delete/${scheduleId}`;
+    const response = await requests.delete(urlApi);
+    return response?.data;
+  };
+
+  // api tạo mới lịch hẹn
+  createSchedule = async (data) => {
+    const urlApi = `/api/schedule/create`;
+    const response = await requests.post(urlApi, data);
     return response?.data;
   };
 }

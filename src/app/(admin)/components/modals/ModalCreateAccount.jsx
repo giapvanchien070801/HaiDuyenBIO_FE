@@ -1,9 +1,11 @@
-import React, { useState } from "react";
-import { Button, Modal, Input, Form } from "antd";
+import React, { useEffect, useState } from "react";
+import { Button, Modal, Input, Form, message } from "antd";
 import { PlusCircleOutlined } from "@ant-design/icons";
+import { useMutation, useQuery } from "react-query";
+import Base from "@/app/models/Base";
 
 const ModalCreateAccount = (props) => {
-  const { modalType } = props;
+  const { modalType, refetchData, idCategory } = props;
 
   const isModalCreate = modalType === "create";
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -11,25 +13,82 @@ const ModalCreateAccount = (props) => {
   const showModal = () => {
     setIsModalOpen(true);
   };
+
+  const { data: dataDetailCate } = useQuery(
+    ["getDetailCate", idCategory],
+    async () => {
+      const res = await Base.getDetailCate(idCategory);
+
+      return res;
+    },
+    { enabled: !!idCategory }
+  );
+
+  useEffect(() => {
+    if (dataDetailCate && idCategory) {
+      form.setFieldValue("Name", dataDetailCate?.Name);
+    }
+  }, [dataDetailCate, idCategory]);
+
+  const createCateMutate = useMutation(Base.createAccount, {
+    onSuccess: () => {
+      message.success("Tạo mới tài khoản thành công!");
+      form.resetFields();
+      if (refetchData) {
+        refetchData();
+      }
+      setIsModalOpen(false);
+    },
+    onError: (e) => {
+      if (e?.response?.data?.Message === "Duplicate Account") {
+        // trường hợp danh mục bài viết đã có bài viết
+        message.error("Tên tài khoản bị trùng!");
+      } else {
+        message.error("Tạo mới tài khoản thất bại!");
+      }
+    },
+  });
+  const updateCateMutate = useMutation(Base.updateCategory, {
+    onSuccess: () => {
+      message.success("Sửa tài khoản thành công!");
+      form.resetFields();
+      if (refetchData) {
+        refetchData();
+      }
+      setIsModalOpen(false);
+    },
+    onError: (e) => {
+      message.error("Sửa tài khoản thất bại!");
+    },
+  });
+
   const handleOk = () => {
     form.submit();
 
-    const listFieldName = ["fullName", "userName", "passWord"];
+    const listFieldName = ["Name", "Account", "HashPassword"];
     form
       .validateFields(listFieldName)
       .then((value) => {
-        console.log("value", value);
+        const valueCreate = {
+          Name: value?.Name?.trim(),
+          HashPassword: value?.HashPassword?.trim(),
+          Account: value?.Account?.trim(),
+        };
+        const valueUpdate = {
+          Id: idCategory,
+          Name: value?.Name?.trim(),
+        };
+
+        if (isModalCreate) {
+          createCateMutate.mutate(valueCreate);
+        } else {
+          updateCateMutate.mutate(valueUpdate);
+        }
       })
       .catch(() => {});
-    // setIsModalOpen(false);
   };
   const handleCancel = () => {
     setIsModalOpen(false);
-  };
-  const onFinish = (values) => {
-    // loginMutate.mutate(values)
-    console.log("Received values:", values);
-    router.push("admin/home");
   };
 
   return (
@@ -56,7 +115,7 @@ const ModalCreateAccount = (props) => {
       )}
 
       <Modal
-        title="Thêm tài khoản quản trị"
+        title={`${isModalCreate ? "Thêm" : "Sửa"} tài khoản quản trị viên`}
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -74,32 +133,34 @@ const ModalCreateAccount = (props) => {
           layout="vertical"
         >
           <Form.Item
-            label="Họ và tên"
-            name="fullName"
+            label="Tên quản trị viên"
+            name="Name"
             rules={[
-              { required: true, message: "Please input your old password!" },
+              {
+                required: true,
+                message: "Tên quản trị viên không được bỏ trống!",
+              },
             ]}
           >
-            <Input />
+            <Input placeholder="Nhập tên quản trị viên" />
           </Form.Item>
           <Form.Item
-            label="Tài khoản"
-            name="userName"
+            label="Tên tài khoản"
+            name="Account"
             rules={[
-              { required: true, message: "Please input your old password!" },
+              { required: true, message: "Tài khoản không được bỏ trống!" },
             ]}
           >
-            <Input />
+            <Input placeholder="Nhập tài khoản" />
           </Form.Item>
-
           <Form.Item
             label="Mật khẩu"
-            name="passWord"
+            name="HashPassword"
             rules={[
-              { required: true, message: "Please input your new password!" },
+              { required: true, message: "Mật khẩu không được bỏ trống!" },
             ]}
           >
-            <Input.Password />
+            <Input.Password placeholder="Nhập Mật khẩu" className="mb-4" />
           </Form.Item>
         </Form>
       </Modal>

@@ -14,7 +14,7 @@ function LoginPage() {
   // delete Record
   const loginMutate = useMutation(Base.loginAdmin, {
     onSuccess: (value) => {
-      localStorage.setItem("accessToken", value.Token);
+      sessionStorage.setItem("accessToken", value.Token);
       router.push("/admin/home");
       message.success("Đăng nhập thành công!");
       // set token
