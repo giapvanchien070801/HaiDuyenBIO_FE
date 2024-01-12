@@ -3,7 +3,7 @@
 import Base from "@/app/models/Base";
 import styled from "@emotion/styled";
 import { Button, Checkbox, Form, Input, message, notification } from "antd";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { useMutation } from "react-query";
 
 function LoginPage() {
@@ -15,8 +15,9 @@ function LoginPage() {
   const loginMutate = useMutation(Base.loginAdmin, {
     onSuccess: (value) => {
       sessionStorage.setItem("accessToken", value.Token);
-      router.push("/admin/home");
       message.success("Đăng nhập thành công!");
+      router.push("/admin/home");
+
       // set token
     },
     onError: (e) => {

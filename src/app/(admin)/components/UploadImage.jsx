@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Upload, Button, message } from "antd";
 import { UploadOutlined, PlusOutlined } from "@ant-design/icons";
 import axios from "axios";
+import { handleSrcImg } from "../common/functions/commonFunction";
 
 const UploadImage = (props) => {
   const { onchange, uploadType } = props;
@@ -34,6 +35,7 @@ const UploadImage = (props) => {
         }
       );
 
+      setImageUrl(handleSrcImg(response.data));
       // Gọi hàm onSuccess với thông tin phản hồi từ máy chủ
       onSuccess(response.data);
 

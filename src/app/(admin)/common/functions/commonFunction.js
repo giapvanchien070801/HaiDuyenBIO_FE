@@ -18,7 +18,7 @@ export const useDebounce = (value, milliSeconds) => {
 };
 
 export const handleSrcImg = (src) => {
-  const srcImg = src ? `${API_ROOT}${src}` : "";
+  const srcImg = src ? `${API_ROOT}/${src}` : "";
 
   return srcImg;
 };
