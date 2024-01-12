@@ -2,11 +2,26 @@
 
 import { Button } from "antd";
 import { UserOutlined, CommentOutlined, PlusOutlined } from "@ant-design/icons";
+import Link from "next/link";
 
 export default function CardLatestBlog(props) {
-  const { time, createBy, avatar, comment, description, title } = props;
+  const {
+    isListPage,
+    time,
+    createBy,
+    avatar,
+    comment,
+    description,
+    title,
+    id,
+    categoryId,
+  } = props;
   return (
-    <div className=" w-4/12  bg-[#F4F6F9] rounded overflow-hidden">
+    <div
+      className={`${
+        isListPage ? "w-[45%] mb-10" : "w-[32%]"
+      }   bg-[#F4F6F9] rounded overflow-hidden`}
+    >
       <div className="h-[400px] overflow-hidden">
         <img
           src={avatar}
@@ -34,17 +49,31 @@ export default function CardLatestBlog(props) {
           </div>
         </div>
         <hr />
-        <p className="text-2xl font-semibold leading-8 mt-4">{title}</p>
-        <p className="text-[#666666]  mt-4 leading-8 mb-4">{description}</p>
-        <Button
-          type="text"
-          onClick={() => {
-            router.push("/contact");
-          }}
-          className=" text-[#2490eb] h-12 p-0  font-semibold flex items-center"
+        <Link
+          href={`/blog/${categoryId}/${id}`}
+          as={`/blog/${categoryId}/${id}`}
         >
-          ĐỌC THÊM <PlusOutlined />
-        </Button>
+          <p className="text-2xl font-semibold leading-8 mt-4 hover:text-[#2490eb]">
+            {title}
+          </p>
+        </Link>
+
+        <p className="text-[#666666]  mt-4 leading-8 mb-4">{description}</p>
+
+        <Link
+          href={`/blog/${categoryId}/${id}`}
+          as={`/blog/${categoryId}/${id}`}
+        >
+          <Button
+            type="text"
+            onClick={() => {
+              router.push("/contact");
+            }}
+            className=" text-[#2490eb] h-12 p-0  font-semibold flex items-center"
+          >
+            ĐỌC THÊM <PlusOutlined />
+          </Button>
+        </Link>
       </div>
     </div>
   );

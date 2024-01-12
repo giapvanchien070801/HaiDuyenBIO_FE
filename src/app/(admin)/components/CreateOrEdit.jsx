@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import styled from "@emotion/styled";
 import { useMutation, useQuery } from "react-query";
 import Base from "@/app/models/Base";
+import UploadImage from "./UploadImage";
 
 const { TextArea } = Input;
 
@@ -215,6 +216,7 @@ const CreateOrEdit = (props) => {
         {isPost && (
           <div className="flex gap-3">
             <UploadAvatar />
+            <UploadImage />
             <div className="w-full">
               <Form.Item
                 name="Title"
@@ -228,6 +230,7 @@ const CreateOrEdit = (props) => {
                 label="Tiêu đề"
               >
                 <Input
+                  maxLength={500}
                   allowClear
                   className=" mb-5"
                   placeholder="Nhập tiêu đề"

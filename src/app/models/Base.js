@@ -229,9 +229,7 @@ class Base {
   // api upload file
   uploadFile = async (data) => {
     const urlApi = `api/upload/thumbnail`;
-    console.log("data", data);
     const response = await requests.postFile(urlApi, data);
-    debugger;
     return response?.data;
   };
 

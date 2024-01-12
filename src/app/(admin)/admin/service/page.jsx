@@ -52,7 +52,7 @@ export default function Services() {
 
   const searchDebounce = useDebounce(valueSearch, 1000);
   const {
-    data: listDepartment,
+    data: listService,
     refetch,
     isFetching,
   } = useQuery(
@@ -202,7 +202,7 @@ export default function Services() {
         <CustomTable>
           <Table
             columns={columns}
-            dataSource={listDepartment}
+            dataSource={listService}
             onRow={(record) => {
               return {
                 onClick: () => {

@@ -118,11 +118,13 @@ export default function ListPost() {
       dataIndex: "Title",
       key: "Title",
       render: (text) => <a>{text}</a>,
+      width: 200,
     },
     {
       title: "Mô tả",
       dataIndex: "Description",
       key: "Description",
+      width: 300,
     },
     {
       title: "Danh mục",
@@ -166,6 +168,7 @@ export default function ListPost() {
           </Popconfirm>
         </Space>
       ),
+      width: 200,
     },
   ];
 

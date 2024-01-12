@@ -95,7 +95,8 @@ h6 {
   margin-bottom: 10px;
 }
 
-.blog-content td, .blog-content th {
+.blog-content td,
+.blog-content th {
   border: 1px solid #dddddd;
   text-align: left;
   padding: 8px;
@@ -354,10 +355,28 @@ h6 {
 }
 
 .categories-blog {
-  background-color: #F4F6F9;
+  background-color: #f4f6f9;
 }
-
 
 .categorie-link:hover {
   color: #2490eb;
+}
+.btn-card-doctor {
+  box-shadow: 0px 0px 30px 0 rgba(0, 20, 9, 0.1);
+}
+
+.card-doctor-btn {
+  z-index: 10;
+  margin-top: -20px;
+  transition: 0.5s;
+}
+.card-doctor:hover .card-doctor-btn {
+  margin-top: -50px;
+}
+.card-doctor img {
+  transition: 0.8s;
+}
+
+.card-doctor:hover img {
+  transform: scale(1.2);
 }

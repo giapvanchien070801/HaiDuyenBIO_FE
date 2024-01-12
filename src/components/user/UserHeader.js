@@ -132,15 +132,15 @@ export default function UserHeader() {
                 >
                   <ul className="w-max bg-white">
                     {listDepartment?.length &&
-                      listDepartment?.map((category, index) => (
+                      listDepartment?.map((department, index) => (
                         <li key={index} className="w-full">
                           {/* link đến tranh danh sách bài viết */}
                           <Link
-                            href={`/service-detail/${category?.id}`}
-                            as={`/service-detail/${category?.id}`}
+                            href={`/department-detail/${department?.Id}`}
+                            as={`/department-detail/${department?.Id}`}
                             className="hover:text-white block hover:bg-cyan-600 py-2 px-8 transition-all duration-300 lg:px-4 lg:py-2"
                           >
-                            {category?.Name}
+                            {department?.Name}
                           </Link>
                         </li>
                       ))}
@@ -181,7 +181,7 @@ export default function UserHeader() {
 
               <li className="h-full relative">
                 <Link
-                  href={`#`}
+                  href={`/list-doctor`}
                   className="h-full flex items-center px-2 hover:text-cyan-600 transition-all duration-300 lg:py-0 py-2"
                 >
                   Đội ngũ bác sỹ

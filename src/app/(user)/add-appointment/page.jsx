@@ -13,6 +13,7 @@ import CardLatestBlog from "@/components/user/CardLatestBlog";
 import { useMutation, useQuery } from "react-query";
 import Base from "@/app/models/Base";
 import moment from "moment";
+import { handleSrcImg } from "@/app/(admin)/common/functions/commonFunction";
 const { TextArea } = Input;
 
 export default function AddAppointment() {
@@ -105,6 +106,18 @@ export default function AddAppointment() {
     },
     {}
   );
+
+  const { data: listPost } = useQuery(["getListPostNewlist"], async () => {
+    const res = await Base.getListPostPagination({
+      Page: 1,
+      Size: 6,
+      KeySearch: "",
+      CategoryId: -1,
+    });
+
+    return res?.Data;
+  });
+  console.log("listPost", listPost);
 
   return (
     <div className="flex flex-col items-center">
@@ -319,37 +332,21 @@ export default function AddAppointment() {
             </div>
             <p className="text-5xl font-semibold mt-4">Xem bài viết mới nhất</p>
           </div>
-          <div className="flex gap-4">
-            <CardLatestBlog
-              title="Chiến lược truyền máu và phẫu thuật tim"
-              description="Một thực tế đã được chứng minh từ lâu là người đọc sẽ bị phân tâm bởi
-          cách bố trí của nó. Lorem Ipsum chỉ đơn giản là văn bản giả của ngành
-          in ấn và sắp chữ."
-              time="07/01/2024"
-              avatar="https://i.ytimg.com/vi/-U__FfOm9yA/maxresdefault.jpg"
-              createBy="ADMIN"
-              comment="1"
-            />
-            <CardLatestBlog
-              title="Các thực phẩm chức năng tốt cho hệ tiêu hóa"
-              description="Một thực tế đã được chứng minh từ lâu là người đọc sẽ bị phân tâm bởi
-          cách bố trí của nó. Lorem Ipsum chỉ đơn giản là văn bản giả của ngành
-          in ấn và sắp chữ."
-              time="08/01/2024"
-              avatar="https://nld.mediacdn.vn/2020/3/23/89963885102126374520495725234434303294701568o-15849685424641174163940.jpg"
-              createBy="ADMIN"
-              comment="8"
-            />
-            <CardLatestBlog
-              title="Các thực phẩm chức năng tốt cho hệ tiêu hóa"
-              description="Một thực tế đã được chứng minh từ lâu là người đọc sẽ bị phân tâm bởi
-          cách bố trí của nó. Lorem Ipsum chỉ đơn giản là văn bản giả của ngành
-          in ấn và sắp chữ."
-              time="02/01/2024"
-              avatar="https://image.congan.com.vn/thumbnail/CATP-5111-2020-3-23/chong-dich-covid-19-12.jpg"
-              createBy="ADMIN"
-              comment="10"
-            />
+          <div className="flex gap-4 flex-wrap">
+            {listPost?.length &&
+              listPost?.map((post, index) => (
+                <CardLatestBlog
+                  key={index}
+                  title={post?.Title}
+                  description={post?.Description}
+                  time={post?.CreatedAt}
+                  avatar={handleSrcImg(post?.ImagePath)}
+                  createBy={post?.AuthorName}
+                  comment="1"
+                  id={post?.Id}
+                  categoryId={post?.CategoryId}
+                />
+              ))}
           </div>
           {/* feedback */}
         </div>

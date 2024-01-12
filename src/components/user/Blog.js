@@ -13,17 +13,9 @@ import Comment from "./Comment";
 import Link from "next/link";
 import { useQuery } from "react-query";
 import Base from "@/app/models/Base";
+import SidebarUser from "./SidebarUser";
 
 export default async function Blog({ postId }) {
-  // api lấy danh sách tất cả thể loại
-  const { data: listCategory } = useQuery(
-    ["getAllCateMenu"],
-    async () => {
-      const res = await Base.getAllCategory();
-      return res;
-    },
-    {}
-  );
   const { data: dataPostDetail } = useQuery(
     ["getDetailPost", postId],
     async () => {
@@ -115,31 +107,8 @@ export default async function Blog({ postId }) {
           </div>
         </div>
 
-        <div className="another col-span-3 ">
-          <div className="categories-blog py-8 pl-4">
-            <p className="text-3xl mb-4">Thể Loại</p>
-            {listCategory?.length &&
-              listCategory?.map((category, index) => (
-                <p className="my-4" key={index}>
-                  <Link
-                    href={`/blog/${category?.Id}`}
-                    as={`/blog/${category?.Id}`}
-                    className="capitalize categorie-link transition-all duration-500"
-                  >
-                    <FontAwesomeIcon
-                      icon={faAngleRight}
-                      className="text_ocean"
-                    />{" "}
-                    {category?.Name}
-                  </Link>
-                </p>
-              ))}
-          </div>
-
-          <div className="categories-blog py-8 pl-4 mt-16">
-            <p className="text-3xl mb-4">Dịch Vụ</p>
-          </div>
-        </div>
+        {/* sidebar */}
+        <SidebarUser />
       </div>
     </>
   );
