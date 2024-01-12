@@ -4,12 +4,14 @@ import { PlusCircleOutlined } from "@ant-design/icons";
 import { useMutation, useQuery } from "react-query";
 import Base from "@/app/models/Base";
 import UploadAvatar from "../UploadAvatar";
+import UploadImage from "../UploadImage";
 
 const ModalCreateDoctor = (props) => {
   const { modalType, refetchData, idDoctor } = props;
 
   const isModalCreate = modalType === "create";
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [valueAvatar, setValueAvatar] = useState();
   const [form] = Form.useForm();
   const showModal = () => {
     setIsModalOpen(true);
@@ -31,6 +33,7 @@ const ModalCreateDoctor = (props) => {
         Name: dataDetailDoctor?.Name,
         Position: dataDetailDoctor?.Position,
       });
+      setValueAvatar(dataDetailDoctor?.ImagePath);
     }
   }, [dataDetailDoctor, idDoctor]);
 
@@ -71,14 +74,14 @@ const ModalCreateDoctor = (props) => {
         const valueCreate = {
           Name: value?.Name?.trim(),
           Position: value?.Position?.trim(),
-          ImagePath: "avatar.png",
+          ImagePath: valueAvatar,
         };
 
         const valueUpdate = {
           Id: idDoctor,
           Name: value?.Name?.trim(),
           Position: value?.Position?.trim(),
-          ImagePath: "avatar.png",
+          ImagePath: valueAvatar || dataDetailDoctor?.ImagePath,
         };
 
         if (isModalCreate) {
@@ -134,7 +137,13 @@ const ModalCreateDoctor = (props) => {
           form={form}
           layout="vertical"
         >
-          <UploadAvatar uploadType="avatar" />
+          <UploadImage
+            uploadType="avatar"
+            onChange={(value) => {
+              setValueAvatar(value);
+            }}
+            imgDetail={valueAvatar}
+          />
           <Form.Item
             className="mt-3 w-full"
             label="Tên nhân sự"

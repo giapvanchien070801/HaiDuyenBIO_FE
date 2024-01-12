@@ -79,13 +79,17 @@ const UploadImage = (props) => {
         customRequest={handleUpload}
       >
         {imageUrl ? (
-          <img
-            src={imageUrl}
-            alt="avatar"
-            style={{
-              width: "100%",
-            }}
-          />
+          <div
+            className={`${
+              isUploadAvatar ? "w-full h-full overflow-hidden rounded-full" : ""
+            }`}
+          >
+            <img
+              src={imageUrl}
+              alt="avatar"
+              className="w-full h-full object-cover"
+            />
+          </div>
         ) : (
           uploadButton
         )}
