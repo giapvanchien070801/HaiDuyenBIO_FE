@@ -24,6 +24,7 @@ const CreateOrEdit = (props) => {
   const router = useRouter();
 
   const [valueTextEditor, setValueTextEditor] = useState("");
+  const [valueAvatar, setValueAvatar] = useState();
 
   // tạo sửa Khoa
   const createDepartmentMutate = useMutation(Base.createDepartment, {
@@ -103,12 +104,12 @@ const CreateOrEdit = (props) => {
         const valueCreatePost = {
           ...value,
           Content: valueTextEditor,
-          ImagePath: "avatar.png",
+          ImagePath: valueAvatar,
         };
         const valueUpdatePost = {
           ...value,
-          Content: valueTextEditor,
-          ImagePath: "avatar.png",
+          Content: valueTextEditor || dataDetail?.Content,
+          ImagePath: valueAvatar || dataDetail?.ImagePath,
           Id: id,
         };
 
@@ -174,7 +175,8 @@ const CreateOrEdit = (props) => {
         Description: dataDetail?.Description,
         Title: dataDetail?.Title,
       });
-      setValueTextEditor(dataDetail?.Description);
+      setValueTextEditor(dataDetail?.Content);
+      setValueAvatar(dataDetail?.ImagePath);
     }
   }, [dataDetail, id]);
 
@@ -215,8 +217,13 @@ const CreateOrEdit = (props) => {
       >
         {isPost && (
           <div className="flex gap-3">
-            <UploadAvatar />
-            <UploadImage />
+            {/* <UploadAvatar /> */}
+            <UploadImage
+              onChange={(value) => {
+                setValueAvatar(value);
+              }}
+              imgDetail={valueAvatar}
+            />
             <div className="w-full">
               <Form.Item
                 name="Title"
