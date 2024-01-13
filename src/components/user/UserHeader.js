@@ -107,14 +107,14 @@ export default function UserHeader() {
                 </Link>
               </li>
 
-              <li className="h-full relative">
+              {/* <li className="h-full relative">
                 <Link
                   href={`#`}
                   className="h-full flex items-center px-2 hover:text-cyan-600 transition-all duration-300 lg:py-0 py-2"
                 >
                   Giới thiệu
                 </Link>
-              </li>
+              </li> */}
 
               <li className={`h-full relative ${layoutUserStyle.menu_item}`}>
                 <Link
@@ -237,7 +237,7 @@ export default function UserHeader() {
             </ul>
           </div>
           <div className="search flex">
-            <div className="search-container relative">
+            {/* <div className="search-container relative">
               <button
                 className="h-full flex items-center px-2 hover:text-cyan-600 transition-all duration-300 text-2xl relative"
                 onClick={() => showSearchBar()}
@@ -265,7 +265,7 @@ export default function UserHeader() {
               ) : (
                 <></>
               )}
-            </div>
+            </div> */}
 
             <button className="block lg:hidden">
               <FontAwesomeIcon icon={faBars} />
