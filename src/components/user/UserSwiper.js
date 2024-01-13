@@ -31,7 +31,7 @@ export default function UserSwiper() {
       {listSlider?.map((slider, index) => (
         <SwiperSlide key={index}>
           <img
-            src={handleSrcImg(slider?.ImagePath)}
+            src={handleSrcImg(slider)}
             className="w-full"
             style={{ height: "620px" }}
           />
