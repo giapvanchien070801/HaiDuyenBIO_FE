@@ -44,7 +44,7 @@ export default function DepartmentDetail({ params }) {
       <BannerBreadcrumb title={dataDepartment?.Name} breadcrumb={breadcrumb} />
 
       <div className="grid xl:grid-cols-10 gap-6 mt-12">
-        <div className="content-blog col-span-7 bg-white">
+        <div className="blog-content col-span-7 bg-white">
           <div
             dangerouslySetInnerHTML={{ __html: dataDepartment?.Description }}
           />
