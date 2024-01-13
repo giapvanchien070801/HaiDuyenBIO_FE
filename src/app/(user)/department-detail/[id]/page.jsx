@@ -5,12 +5,13 @@ import BannerBreadcrumb from "@/components/user/BannerBreadcrumb";
 import { useQuery } from "react-query";
 import Base from "@/app/models/Base";
 import SidebarUser from "@/components/user/SidebarUser";
+import { Spin } from "antd";
 
 export default function DepartmentDetail({ params }) {
   // Sử dụng query param từ URL
   const idDepartment = params?.id;
 
-  const { data: dataDepartment } = useQuery(
+  const { data: dataDepartment, isFetching } = useQuery(
     ["getDetailDepartment", idDepartment],
     async () => {
       const res = await Base.getDetailDepartment(idDepartment);
@@ -45,9 +46,11 @@ export default function DepartmentDetail({ params }) {
 
       <div className="grid xl:grid-cols-10 gap-6 mt-12">
         <div className="blog-content col-span-7 bg-white">
-          <div
-            dangerouslySetInnerHTML={{ __html: dataDepartment?.Description }}
-          />
+          <Spin spinning={isFetching}>
+            <div
+              dangerouslySetInnerHTML={{ __html: dataDepartment?.Description }}
+            />
+          </Spin>
         </div>
 
         {/* sidebar */}

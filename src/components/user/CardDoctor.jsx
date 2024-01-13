@@ -16,8 +16,10 @@ export default function CardDoctor(props) {
 
       <div className="w-full pb-6 flex justify-center">
         <div className="w-5/6 py-5 px-4 bg-white shadow-container-contact rounded flex flex-col items-center card-doctor-btn">
-          <p className="text-2xl font-semibold">{position}</p>
-          <p className="text-sm font-semibold text-[#2490eb]">{name}</p>
+          <p className="text-2xl font-semibold  text-center">{name}</p>
+          <p className="text-sm font-semibold text-[#2490eb] text-center">
+            {position}
+          </p>
         </div>
       </div>
     </div>

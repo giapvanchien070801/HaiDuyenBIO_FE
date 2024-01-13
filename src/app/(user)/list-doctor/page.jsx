@@ -5,6 +5,7 @@ import BannerBreadcrumb from "@/components/user/BannerBreadcrumb";
 import { useQuery } from "react-query";
 import Base from "@/app/models/Base";
 import CardDoctor from "@/components/user/CardDoctor";
+import { Spin } from "antd";
 
 export default function ListDoctor() {
   const breadcrumb = [
@@ -28,7 +29,7 @@ export default function ListDoctor() {
   ];
 
   // api lấy danh sách tất cả bác sĩ
-  const { data: listDoctor } = useQuery(
+  const { data: listDoctor, isFetching } = useQuery(
     ["getAllDoctorUser"],
     async () => {
       const res = await Base.getAllDoctor();
@@ -37,8 +38,6 @@ export default function ListDoctor() {
     },
     {}
   );
-
-  console.log("listDoctor", listDoctor);
 
   return (
     <div className="flex flex-col items-center mb-36 ">
@@ -54,18 +53,19 @@ export default function ListDoctor() {
             Những chuyên gia hàng đầu
           </p>
         </div>
-
-        <div className="flex gap-4 flex-wrap">
-          {listDoctor?.length &&
-            listDoctor?.map((doctor, index) => (
-              <CardDoctor
-                title={index}
-                name={doctor?.Name}
-                imagePath={doctor?.ImagePath}
-                position={doctor?.Position}
-              />
-            ))}
-        </div>
+        <Spin spinning={isFetching}>
+          <div className="flex gap-4 flex-wrap">
+            {listDoctor?.length &&
+              listDoctor?.map((doctor, index) => (
+                <CardDoctor
+                  title={index}
+                  name={doctor?.Name}
+                  imagePath={doctor?.ImagePath}
+                  position={doctor?.Position}
+                />
+              ))}
+          </div>
+        </Spin>
       </div>
     </div>
   );

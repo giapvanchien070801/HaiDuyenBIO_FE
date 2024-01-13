@@ -14,9 +14,10 @@ import Link from "next/link";
 import { useQuery } from "react-query";
 import Base from "@/app/models/Base";
 import SidebarUser from "./SidebarUser";
+import { Spin } from "antd";
 
 export default async function Blog({ postId }) {
-  const { data: dataPostDetail } = useQuery(
+  const { data: dataPostDetail, isFetching } = useQuery(
     ["getDetailPost", postId],
     async () => {
       const res = await Base.getDetailPost(postId);
@@ -60,10 +61,12 @@ export default async function Blog({ postId }) {
 
       <div className="grid xl:grid-cols-10 gap-6 mt-12">
         <div className="col-span-7 bg-white">
-          <div dangerouslySetInnerHTML={{ __html: dataPostDetail?.Content }} className="blog-content"/>
-          {/* <Suspense fallback={<div>Đang tải bình luận ...</div>}>
-            <Comment />
-          </Suspense> */}
+          <Spin spinning={isFetching}>
+            <div
+              dangerouslySetInnerHTML={{ __html: dataPostDetail?.Content }}
+              className="blog-content"
+            />
+          </Spin>
 
           <div className="write-comment mt-16">
             <p className="text-4xl font-medium mb-8">

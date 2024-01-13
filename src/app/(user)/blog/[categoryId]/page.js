@@ -13,6 +13,7 @@ import Link from "next/link";
 import BannerBreadcrumb from "@/components/user/BannerBreadcrumb";
 import CardLatestBlog from "@/components/user/CardLatestBlog";
 import SidebarUser from "@/components/user/SidebarUser";
+import { Spin } from "antd";
 
 export default async function ListPage({ params }) {
   const breadCrum = [
@@ -72,28 +73,29 @@ export default async function ListPage({ params }) {
   return (
     <div className=" pb-24">
       <BannerBreadcrumb title="Danh sách bài viết" breadcrumb={breadCrum} />
+      <Spin spinning={isFetching}>
+        <div className="grid xl:grid-cols-10 gap-6 container-original mx-auto mt-20">
+          <div className=" col-span-7 flex gap-4 flex-wrap justify-around ">
+            {listPost?.length &&
+              listPost?.map((post, index) => (
+                <CardLatestBlog
+                  key={index}
+                  isListPage
+                  title={post?.Title}
+                  description={post?.Description}
+                  time={post?.CreatedAt}
+                  avatar={handleSrcImg(post?.ImagePath)}
+                  createBy={post?.AuthorName}
+                  comment="1"
+                  id={post?.Id}
+                  categoryId={post?.CategoryId}
+                />
+              ))}
+          </div>
 
-      <div className="grid xl:grid-cols-10 gap-6 container-original mx-auto mt-20">
-        <div className=" col-span-7 flex gap-4 flex-wrap justify-around ">
-          {listPost?.length &&
-            listPost?.map((post, index) => (
-              <CardLatestBlog
-                key={index}
-                isListPage
-                title={post?.Title}
-                description={post?.Description}
-                time={post?.CreatedAt}
-                avatar={handleSrcImg(post?.ImagePath)}
-                createBy={post?.AuthorName}
-                comment="1"
-                id={post?.Id}
-                categoryId={post?.CategoryId}
-              />
-            ))}
+          <SidebarUser />
         </div>
-
-        <SidebarUser />
-      </div>
+      </Spin>
     </div>
   );
 }

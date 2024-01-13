@@ -1,6 +1,6 @@
 "use client";
 
-import { Collapse } from "antd";
+import { Collapse, Spin } from "antd";
 import { HomeOutlined, RightOutlined } from "@ant-design/icons";
 import styled from "@emotion/styled";
 import BannerBreadcrumb from "@/components/user/BannerBreadcrumb";
@@ -12,6 +12,24 @@ export default function ServiceDetail({ params }) {
   // Sử dụng query param từ URL
   const idService = params?.id;
 
+  // api lấy danh sách tất cả dịch vụ
+  const { data: listService } = useQuery(
+    ["getAllServiceMenu"],
+    async () => {
+      const res = await Base.getAllService();
+      return res;
+    },
+    {}
+  );
+  const { data: dataService, isFetching } = useQuery(
+    ["getDetailService", idService],
+    async () => {
+      const res = await Base.getDetailService(idService);
+
+      return res;
+    },
+    { enabled: !!idService }
+  );
   const breadcrumb = [
     {
       href: "/",
@@ -26,31 +44,11 @@ export default function ServiceDetail({ params }) {
       href: "/contact",
       title: (
         <>
-          <span className="text-[#2490eb]">Cộng hưởng từ</span>
+          <span className="text-[#2490eb]">{dataService?.Name}</span>
         </>
       ),
     },
   ];
-
-  // api lấy danh sách tất cả dịch vụ
-  const { data: listService } = useQuery(
-    ["getAllServiceMenu"],
-    async () => {
-      const res = await Base.getAllService();
-      return res;
-    },
-    {}
-  );
-
-  const { data: dataService } = useQuery(
-    ["getDetailService", idService],
-    async () => {
-      const res = await Base.getDetailService(idService);
-
-      return res;
-    },
-    { enabled: !!idService }
-  );
 
   const text = `
   A dog is a type of domesticated animal.
@@ -83,7 +81,7 @@ export default function ServiceDetail({ params }) {
 
   return (
     <div className="flex flex-col items-center">
-      <BannerBreadcrumb title="Cộng hưởng từ" breadcrumb={breadcrumb} />
+      <BannerBreadcrumb title={dataService?.Name} breadcrumb={breadcrumb} />
 
       <div className=" flex   container-original  py-32">
         <div className="w-4/12">
@@ -118,7 +116,11 @@ export default function ServiceDetail({ params }) {
           </div>
         </div>
         <div className="w-8/12 bg-red-40 h-full p-8">
-          <div dangerouslySetInnerHTML={{ __html: dataService?.Description }} />
+          <Spin spinning={isFetching}>
+            <div
+              dangerouslySetInnerHTML={{ __html: dataService?.Description }}
+            />
+          </Spin>
 
           {/* Lời khuyên & Thông tin về Sức khỏe */}
           <div className="mt-10">

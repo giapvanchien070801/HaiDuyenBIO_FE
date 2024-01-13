@@ -3,6 +3,7 @@
 import { Button } from "antd";
 import { UserOutlined, CommentOutlined, PlusOutlined } from "@ant-design/icons";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function CardLatestBlog(props) {
   const {
@@ -16,11 +17,13 @@ export default function CardLatestBlog(props) {
     id,
     categoryId,
   } = props;
+  const router = useRouter();
+
   return (
     <div
       className={`${
         isListPage ? "w-[45%] mb-10" : "w-[32%]"
-      }   bg-[#F4F6F9] rounded overflow-hidden`}
+      }   bg-[#F4F6F9] rounded overflow-hidden h-fit`}
     >
       <div className="h-[400px] overflow-hidden">
         <img
@@ -35,7 +38,7 @@ export default function CardLatestBlog(props) {
       >
         {time}
       </Button>
-      <div className="w-full p-8">
+      <div className="w-full px-8 pb-5">
         <div className="flex mb-4">
           <div className="flex items-center">
             <UserOutlined className="text-[#2490eb]" />
@@ -53,12 +56,14 @@ export default function CardLatestBlog(props) {
           href={`/blog/${categoryId}/${id}`}
           as={`/blog/${categoryId}/${id}`}
         >
-          <p className="text-2xl font-semibold leading-8 mt-4 hover:text-[#2490eb]">
+          <p className="text-2xl font-semibold leading-8 mt-4 hover:text-[#2490eb] h-16 overflow-hidden text-ellipsis line-clamp-2">
             {title}
           </p>
         </Link>
 
-        <p className="text-[#666666]  mt-4 leading-8 mb-4">{description}</p>
+        <p className="text-[#666666]  mt-4 leading-8 mb-4 h-24 overflow-hidden text-ellipsis line-clamp-3">
+          {description}
+        </p>
 
         <Link
           href={`/blog/${categoryId}/${id}`}
