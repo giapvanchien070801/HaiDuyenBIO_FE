@@ -10,7 +10,7 @@ import Link from "next/link";
 
 export default function UserFooter() {
   return (
-    <footer className={`${layoutUserStyle.background_footer} text-white`}>
+    <footer className={`${layoutUserStyle.background_footer} text-white transition-all duration-500`}>
       <div className="relative container mx-auto py-28">
         <div className={`${layoutUserStyle.send_email} z-10 p-6`}>
           <div className="flex justify-between text-2xl items-center">

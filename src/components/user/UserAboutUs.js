@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function UserAboutUs() {
   return (
-    <div className="container mx-auto grid grid-cols-2 gap-8 mt-24">
+    <div className="container mx-auto grid grid-cols-2 gap-8 mt-24 transition-all duration-500">
       <div>
         <img src="/images/aboutus.jpeg" />
       </div>

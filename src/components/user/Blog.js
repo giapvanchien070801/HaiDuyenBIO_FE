@@ -59,8 +59,8 @@ export default async function Blog({ postId }) {
       <BannerBreadcrumb title={dataPostDetail?.Title} breadcrumb={breadCrum} />
 
       <div className="grid xl:grid-cols-10 gap-6 mt-12">
-        <div className="content-blog col-span-7 bg-white">
-          <div dangerouslySetInnerHTML={{ __html: dataPostDetail?.Content }} />
+        <div className="col-span-7 bg-white">
+          <div dangerouslySetInnerHTML={{ __html: dataPostDetail?.Content }} className="blog-content"/>
           {/* <Suspense fallback={<div>Đang tải bình luận ...</div>}>
             <Comment />
           </Suspense> */}

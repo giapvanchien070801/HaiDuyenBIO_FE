@@ -1,10 +1,12 @@
 "use client";
-
 import "../globals.css";
 import UserHeader from "@/components/user/UserHeader";
-import UserFooter from "@/components/user/UserFooter";
+import dynamic from "next/dynamic";
 import { QueryClient, QueryClientProvider } from "react-query";
 
+const UserFooter = dynamic(()=>import("@/components/user/UserFooter"), {
+  ssr: false
+})
 export default function RootLayout({ children }) {
   const queryClient = new QueryClient();
 
