@@ -7,10 +7,12 @@ const UserAboutUs = dynamic(() => import("@/components/user/UserAboutUs"), {
   ssr: false,
 });
 
-const UserFacilities = dynamic(()=>import("@/components/user/UserFacilities"), {
-  ssr: false
-})
-
+const UserFacilities = dynamic(
+  () => import("@/components/user/UserFacilities"),
+  {
+    ssr: false,
+  }
+);
 
 export const metadata = {
   title: "Phòng Khám Hà Nội Lào Cai",

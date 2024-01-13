@@ -1,21 +1,27 @@
 "use client";
 import Blog from "@/components/user/Blog";
-import { HomeOutlined } from "@ant-design/icons";
-import { Suspense } from "react";
-import Loading from "../../loading";
-import {
-  handleSrcImg,
-  useDebounce,
-} from "@/app/(admin)/common/functions/commonFunction";
+import { HomeOutlined, SearchOutlined } from "@ant-design/icons";
+import { useEffect, useState } from "react";
+
+import { handleSrcImg } from "@/app/(admin)/common/functions/commonFunction";
 import { useQuery } from "react-query";
 import Base from "@/app/models/Base";
-import Link from "next/link";
+
 import BannerBreadcrumb from "@/components/user/BannerBreadcrumb";
 import CardLatestBlog from "@/components/user/CardLatestBlog";
 import SidebarUser from "@/components/user/SidebarUser";
-import { Spin } from "antd";
+import { Pagination, Spin } from "antd";
+
+import SearchCommon from "@/components/user/SearchCommon";
 
 export default async function ListPage({ params }) {
+  const [pagination, setPagination] = useState({
+    current: 1,
+    total: 0,
+    pageSize: 5,
+  });
+  const [valueSearch, setValueSearch] = useState("");
+
   const breadCrum = [
     {
       href: "/",
@@ -35,49 +41,41 @@ export default async function ListPage({ params }) {
       ),
     },
   ];
-  // const searchDebounce = useDebounce(valueSearch, 1000);
+
   const {
     data: listPost,
     refetch,
     isFetching,
-  } = useQuery(
-    [
-      "getListPostPaginationUser",
-      // searchDebounce,
-      // tableParams.pagination.current,
-      // tableParams.pagination.pageSize,
-      // valueSearchCate,
-    ],
-    async () => {
-      const res = await Base.getListPostPagination({
-        Page: 1,
-        Size: 10,
-        KeySearch: "",
-        CategoryId: params?.categoryId,
+  } = useQuery(["getListPostPaginationUser", pagination?.current], async () => {
+    const res = await Base.getListPostPagination({
+      Page: pagination.current,
+      Size: 5,
+      KeySearch: valueSearch,
+      CategoryId: params?.categoryId,
+    });
+
+    if (res.TotalRecord) {
+      setPagination({
+        ...pagination,
+        total: res.TotalRecord,
       });
-
-      // if (res.TotalRecord) {
-      //   setTableParams({
-      //     pagination: {
-      //       current: tableParams.pagination.current,
-      //       pageSize: tableParams.pagination.pageSize,
-      //       total: res.TotalRecord,
-      //     },
-      //   });
-      // }
-
-      return res?.Data;
     }
-  );
+
+    return res?.Data;
+  });
+
+  useEffect(() => {
+    refetch();
+  }, [valueSearch]);
 
   return (
     <div className=" pb-24">
       <BannerBreadcrumb title="Danh sách bài viết" breadcrumb={breadCrum} />
       <Spin spinning={isFetching}>
         <div className="grid xl:grid-cols-10 gap-6 container-original mx-auto mt-20">
-          <div className=" col-span-7 flex gap-4 flex-wrap justify-around ">
-            {listPost?.length &&
-              listPost?.map((post, index) => (
+          <div className=" col-span-7 flex flex-col items-center">
+            <div className=" flex gap-4 flex-wrap justify-between ">
+              {listPost?.map((post, index) => (
                 <CardLatestBlog
                   key={index}
                   isListPage
@@ -91,9 +89,27 @@ export default async function ListPage({ params }) {
                   categoryId={post?.CategoryId}
                 />
               ))}
+            </div>
+            <Pagination
+              onChange={(value) => {
+                setPagination({
+                  current: value,
+                  total: pagination.total,
+                  pageSize: pagination.pageSize,
+                });
+              }}
+              {...pagination}
+            />
           </div>
-
-          <SidebarUser />
+          <div className="col-span-3">
+            {/* search */}
+            <SearchCommon
+              onChange={(value) => {
+                setValueSearch(value);
+              }}
+            />
+            <SidebarUser />
+          </div>
         </div>
       </Spin>
     </div>

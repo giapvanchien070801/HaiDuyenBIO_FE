@@ -55,15 +55,14 @@ export default function ListDoctor() {
         </div>
         <Spin spinning={isFetching}>
           <div className="flex gap-4 flex-wrap">
-            {listDoctor?.length &&
-              listDoctor?.map((doctor, index) => (
-                <CardDoctor
-                  title={index}
-                  name={doctor?.Name}
-                  imagePath={doctor?.ImagePath}
-                  position={doctor?.Position}
-                />
-              ))}
+            {listDoctor?.map((doctor, index) => (
+              <CardDoctor
+                title={index}
+                name={doctor?.Name}
+                imagePath={doctor?.ImagePath}
+                position={doctor?.Position}
+              />
+            ))}
           </div>
         </Spin>
       </div>

@@ -164,7 +164,7 @@ export default function ListEmployee() {
         <Space size="middle">
           <ModalCreateDoctor
             modalType="edit"
-            idDoctor={record?.Id}
+            idDoctor={idDoctorSelected}
             refetchData={refetch}
           />
           <Popconfirm

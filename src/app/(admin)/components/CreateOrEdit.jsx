@@ -175,7 +175,7 @@ const CreateOrEdit = (props) => {
         Description: dataDetail?.Description,
         Title: dataDetail?.Title,
       });
-      setValueTextEditor(dataDetail?.Content);
+      setValueTextEditor(dataDetail?.Content || dataDetail?.Description);
       setValueAvatar(dataDetail?.ImagePath);
     }
   }, [dataDetail, id]);

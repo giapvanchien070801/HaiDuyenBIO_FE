@@ -46,9 +46,7 @@ export default function CardLatestBlog(props) {
           </div>
           <div className="flex items-center ml-4">
             <CommentOutlined className="text-[#2490eb]" />
-            <p className="text-[#666666] font-semibold ml-2">
-              {comment} COMMENTS
-            </p>
+            <p className="text-[#666666] font-semibold ml-2">0 COMMENTS</p>
           </div>
         </div>
         <hr />

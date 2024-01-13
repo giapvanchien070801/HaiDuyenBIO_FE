@@ -5,7 +5,7 @@ import axios from "axios";
 import { handleSrcImg } from "../common/functions/commonFunction";
 
 const UploadImage = (props) => {
-  const { onChange, uploadType, imgDetail } = props;
+  const { onChange, uploadType, imgDetail, resetValue } = props;
 
   // uploadType = avatar | null
 
@@ -17,7 +17,10 @@ const UploadImage = (props) => {
     if (imgDetail) {
       setImageUrl(handleSrcImg(imgDetail));
     }
-  }, [imgDetail]);
+    if (resetValue) {
+      setImageUrl();
+    }
+  }, [imgDetail, resetValue]);
 
   const authToken = sessionStorage.getItem("accessToken");
 

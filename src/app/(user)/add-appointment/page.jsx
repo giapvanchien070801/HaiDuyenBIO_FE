@@ -333,20 +333,19 @@ export default function AddAppointment() {
             <p className="text-5xl font-semibold mt-4">Xem bài viết mới nhất</p>
           </div>
           <div className="flex gap-4 flex-wrap">
-            {listPost?.length &&
-              listPost?.map((post, index) => (
-                <CardLatestBlog
-                  key={index}
-                  title={post?.Title}
-                  description={post?.Description}
-                  time={post?.CreatedAt}
-                  avatar={handleSrcImg(post?.ImagePath)}
-                  createBy={post?.AuthorName}
-                  comment="1"
-                  id={post?.Id}
-                  categoryId={post?.CategoryId}
-                />
-              ))}
+            {listPost?.map((post, index) => (
+              <CardLatestBlog
+                key={index}
+                title={post?.Title}
+                description={post?.Description}
+                time={post?.CreatedAt}
+                avatar={handleSrcImg(post?.ImagePath)}
+                createBy={post?.AuthorName}
+                comment="1"
+                id={post?.Id}
+                categoryId={post?.CategoryId}
+              />
+            ))}
           </div>
           {/* feedback */}
         </div>

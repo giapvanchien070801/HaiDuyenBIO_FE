@@ -1,11 +1,7 @@
 "use client";
-import { Breadcrumb, Modal, Upload } from "antd";
-import { HomeOutlined, PlusOutlined } from "@ant-design/icons";
-import styled from "@emotion/styled";
-import { useState } from "react";
-import { useQuery } from "react-query";
-import Base from "@/app/models/Base";
-import { handleSrcImg } from "../../common/functions/commonFunction";
+import { Breadcrumb } from "antd";
+import { HomeOutlined } from "@ant-design/icons";
+
 import UploadListImage from "../../components/UploadListImage";
 
 const getBase64 = (file) =>
@@ -36,25 +32,6 @@ export default function InternalFunction() {
       ),
     },
   ];
-
-  const uploadButton = (
-    <button
-      style={{
-        border: 0,
-        background: "none",
-      }}
-      type="button"
-    >
-      <PlusOutlined />
-      <div
-        style={{
-          marginTop: 8,
-        }}
-      >
-        Upload
-      </div>
-    </button>
-  );
 
   return (
     <div>

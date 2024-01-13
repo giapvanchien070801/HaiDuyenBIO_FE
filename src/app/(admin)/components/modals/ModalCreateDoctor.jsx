@@ -12,13 +12,14 @@ const ModalCreateDoctor = (props) => {
   const isModalCreate = modalType === "create";
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [valueAvatar, setValueAvatar] = useState();
+  const [resetValueAvatar, setResetValueAvatar] = useState(false);
   const [form] = Form.useForm();
   const showModal = () => {
     setIsModalOpen(true);
   };
 
   const { data: dataDetailDoctor } = useQuery(
-    ["getDetailDoctor", idDoctor],
+    ["getDetailDoctor", idDoctor, isModalOpen],
     async () => {
       const res = await Base.getDetailDoctor(idDoctor);
 
@@ -28,17 +29,18 @@ const ModalCreateDoctor = (props) => {
   );
 
   useEffect(() => {
-    if (dataDetailDoctor && idDoctor) {
+    if (dataDetailDoctor && idDoctor && isModalOpen) {
       form.setFieldsValue({
         Name: dataDetailDoctor?.Name,
         Position: dataDetailDoctor?.Position,
       });
       setValueAvatar(dataDetailDoctor?.ImagePath);
     }
-  }, [dataDetailDoctor, idDoctor]);
+  }, [dataDetailDoctor, idDoctor, isModalOpen]);
 
   const createDoctorMutate = useMutation(Base.createDoctor, {
     onSuccess: () => {
+      setResetValueAvatar(true);
       message.success("Tạo mới nhân sự thành công!");
       form.resetFields();
       if (refetchData) {
@@ -142,7 +144,8 @@ const ModalCreateDoctor = (props) => {
             onChange={(value) => {
               setValueAvatar(value);
             }}
-            imgDetail={valueAvatar}
+            imgDetail={dataDetailDoctor && idDoctor && valueAvatar}
+            resetValue={resetValueAvatar}
           />
           <Form.Item
             className="mt-3 w-full"
