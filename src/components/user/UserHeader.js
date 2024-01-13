@@ -228,14 +228,7 @@ export default function UserHeader() {
                   </ul>
                 </div>
               </li>
-              <li className="h-full relative">
-                <Link
-                  href={`/login-admin`}
-                  className="h-full flex items-center px-2 hover:text-cyan-600 transition-all duration-300 lg:py-0 py-2"
-                >
-                  Nội bộ
-                </Link>
-              </li>
+
               <li className="h-full relative">
                 <Link
                   href={`/contact`}

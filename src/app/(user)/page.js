@@ -23,7 +23,6 @@ export default function HomePage() {
       <div className="pb-48">
         <UserSwiper />
         <UserInfoImportant />
-        <UserMenuBody />
         <UserAboutUs />
         <UserFacilities />
       </div>

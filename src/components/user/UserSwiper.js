@@ -2,14 +2,25 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Autoplay } from "swiper/modules";
+import { useQuery } from "react-query";
+import Base from "@/app/models/Base";
+import { handleSrcImg } from "@/app/(admin)/common/functions/commonFunction";
 
 export default function UserSwiper() {
+  const { data: listSlider } = useQuery(
+    ["getListSliderUser"],
+    async () => {
+      const res = await Base.getAllSlider();
+      const listSliderString = res?.map((slider) => slider?.ImagePath);
+      return listSliderString;
+    },
+    {}
+  );
+
   return (
     <Swiper
       spaceBetween={50}
       slidesPerView={1}
-      onSlideChange={() => console.log("slide change")}
-      onSwiper={(swiper) => console.log(swiper)}
       modules={[Autoplay]}
       effect="coverflow"
       autoplay={{
@@ -17,27 +28,15 @@ export default function UserSwiper() {
         disableOnInteraction: false,
       }}
     >
-      <SwiperSlide>
-        <img
-          src="/images/slide1.jpg"
-          className="w-full"
-          style={{ height: "620px" }}
-        />
-      </SwiperSlide>
-      <SwiperSlide>
-        <img
-          src="/images/slide2.jpg"
-          className="w-full"
-          style={{ height: "620px" }}
-        />
-      </SwiperSlide>
-      <SwiperSlide>
-        <img
-          src="/images/slide3.jpg"
-          className="w-full"
-          style={{ height: "620px" }}
-        />
-      </SwiperSlide>
+      {listSlider?.map((slider, index) => (
+        <SwiperSlide key={index}>
+          <img
+            src={handleSrcImg(slider?.ImagePath)}
+            className="w-full"
+            style={{ height: "620px" }}
+          />
+        </SwiperSlide>
+      ))}
     </Swiper>
   );
 }

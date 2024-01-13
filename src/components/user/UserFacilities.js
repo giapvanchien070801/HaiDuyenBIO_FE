@@ -12,10 +12,10 @@ export default function UserFacilities() {
   return (
     <div className="container mx-auto mt-24">
       <div className="text-center px-2 ">
-        <span className="session_ocean1 px-2 text_ocean uppercase font-medium w-max">
+        <span className="session_ocean1 px-2 py-1 text_ocean uppercase font-medium w-max">
           Lợi ích chúng tôi có
         </span>
-        <p className="text-center text-4xl font-semibold capitalize">
+        <p className="text-center text-4xl font-semibold capitalize mt-5">
           Những Lợi Ích Mà Bạn Nhận Được
         </p>
       </div>

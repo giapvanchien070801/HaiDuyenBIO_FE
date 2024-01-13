@@ -225,6 +225,13 @@ class Base {
     return response?.data;
   };
 
+  // api sửa slider
+  updateSlider = async (data) => {
+    const urlApi = `/api/slider/update`;
+    const response = await requests.put(urlApi, data);
+    return response?.data;
+  };
+
   //------------------------------upload file--------------------//
   // api upload file
   uploadFile = async (data) => {
