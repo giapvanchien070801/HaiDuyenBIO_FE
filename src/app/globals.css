@@ -87,6 +87,16 @@ h6 {
   line-height: 1.75rem;
 }
 
+.blog-content img {
+  margin: 0 auto;
+}
+
+.blog-content em {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
 .blog-content table {
   font-family: arial, sans-serif;
   border-collapse: collapse;

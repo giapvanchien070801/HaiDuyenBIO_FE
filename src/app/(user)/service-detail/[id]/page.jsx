@@ -119,6 +119,7 @@ export default function ServiceDetail({ params }) {
           <Spin spinning={isFetching}>
             <div
               dangerouslySetInnerHTML={{ __html: dataService?.Description }}
+              className="blog-content"
             />
           </Spin>
 
