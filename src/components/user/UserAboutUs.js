@@ -5,11 +5,11 @@ import Link from "next/link";
 export default function UserAboutUs() {
   return (
     <div className="container mx-auto grid grid-cols-2 gap-8 mt-24 transition-all duration-500">
-      <div>
+      <div className="col-span-2 lg:col-span-1">
         <img src="/images/aboutus.jpeg" />
       </div>
 
-      <div className="short-info pl-4 flex flex-col justify-around">
+      <div className="short-info pl-4 flex flex-col justify-around col-span-2 lg:col-span-1">
         <span className="session_ocean1 px-2 text_ocean uppercase font-medium w-max py-1">
           Về Chúng Tôi
         </span>

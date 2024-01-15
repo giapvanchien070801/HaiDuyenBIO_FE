@@ -6,10 +6,10 @@ import Link from "next/link";
 export default function UserInfoImportant() {
   return (
     <div
-      className="container mx-auto grid grid-cols-3 gap-8 relative z-10 h-max"
+      className="container mx-auto sm:flex sm:flex-wrap justify-center lg:grid lg:grid-cols-3 lg:gap-8 relative z-10 h-max"
       style={{ marginTop: "-60px" }}
     >
-      <div className={`${LayoutUserInfoImportant.session} relative`}>
+      <div className={`${LayoutUserInfoImportant.session} relative basis-2/5 mx-4`}>
         <div
           className={`h-full px-6 py-6 ${LayoutUserInfoImportant.logo} ${LayoutUserInfoImportant.session_ocean} text-white`}
         >
@@ -37,7 +37,7 @@ export default function UserInfoImportant() {
         </div>
       </div>
 
-      <div className={`${LayoutUserInfoImportant.session} relative`}>
+      <div className={`${LayoutUserInfoImportant.session} relative basis-2/5 mx-4`}>
         <div
           className={`px-6 py-6 ${LayoutUserInfoImportant.logo} ${LayoutUserInfoImportant.session_blue} text-white h-full`}
         >
@@ -60,7 +60,7 @@ export default function UserInfoImportant() {
         </div>
       </div>
 
-      <div className={`${LayoutUserInfoImportant.session} relative`}>
+      <div className={`${LayoutUserInfoImportant.session} relative basis-2/5 mt-4`}>
         <div
           className={`h-full px-6 py-6 ${LayoutUserInfoImportant.logo} ${LayoutUserInfoImportant.session_ocean} text-white`}
         >
