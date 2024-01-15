@@ -31,11 +31,7 @@
 }
 
 .send_email {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   background-color: #2490eb;
-  position: absolute;
   width: 100%;
   top: -70px;
 }

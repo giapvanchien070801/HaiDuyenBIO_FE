@@ -278,32 +278,6 @@ h6 {
   max-width: 1240px;
 }
 
-.container-swiper {
-  width: 100%;
-  max-width: 1180px;
-}
-
-@media (max-width: 1169px) {
-  .container {
-    width: 100%;
-    max-width: 720px;
-  }
-
-  .container-original {
-    width: 100%;
-    max-width: 570px;
-  }
-}
-
-@media (max-width: 767px) {
-  .container {
-    width: calc(100% - 24px);
-  }
-
-  .container-original {
-    width: 100%;
-  }
-}
 .icon-contact {
   background-color: #2490eb;
 }

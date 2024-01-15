@@ -10,33 +10,37 @@ import Link from "next/link";
 
 export default function UserFooter() {
   return (
-    <footer className={`${layoutUserStyle.background_footer} text-white transition-all duration-500`}>
+    <footer
+      className={`${layoutUserStyle.background_footer} text-white transition-all duration-500`}
+    >
       <div className="relative container mx-auto py-28">
-        <div className={`${layoutUserStyle.send_email} z-10 p-6`}>
-          <div className="flex justify-between text-2xl items-center">
-            <div className="mail_logo text-8xl">
+        <div
+          className={`${layoutUserStyle.send_email} lg:flex lg:justify-between lg:items-center absolute z-10 p-6 w-full`}
+        >
+          <div className="flex items-center lg:w-1/2">
+            <div className="mail_logo text-8xl lg:text-3xl xl:text-8xl">
               <FontAwesomeIcon icon={faEnvelope} />
             </div>
-            <p className="ml-4">
+            <p className="ml-4 text-2xl lg:text-lg xl:text-2xl">
               Đăng Ký Email Để Nhận Thông Báo Mới Nhất Từ Chúng Tôi
             </p>
           </div>
 
-          <form className="w-1/2 flex justify-end">
+          <form className="lg:w-1/2 w-full md:flex md:justify-end">
             <input
               type="text"
               placeholder="Email"
-              className={`${layoutUserStyle.send_email_input} text-xl py-2 mr-6 px-4 w-2/3`}
+              className={`${layoutUserStyle.send_email_input} text-xl py-2 md:mr-6 px-4 md:w-2/3 w-full`}
             />
-            <button className="text-xl text-black bg-white py-2 px-4 transition-all duration-300 hover:text-white hover:bg-black">
+            <button className="text-xl text-black bg-white py-2 px-4 transition-all duration-300 hover:text-white hover:bg-black w-full mt-4 md:w-1/3 md:mt-0">
               Xác Nhận
             </button>
           </form>
         </div>
 
-        <div className="container mx-auto">
+        <div className="container mx-auto sm:mt-20 mt-32 lg:mt-0">
           <div className="grid grid-cols-4 gap-4">
-            <div className="footer_logo">
+            <div className="footer_logo md:col-span-2 col-span-4 xl:col-span-1">
               <div className="flex items-center mb-6">
                 <img src={`/images/logo.png`} className="w-14 h-14" />
                 <span className={`font-bold xl:text-2xl lg:text-2xl ml-2`}>
@@ -52,7 +56,7 @@ export default function UserFooter() {
               </p>
             </div>
 
-            <div className="footer_logo">
+            <div className="footer_logo md:col-span-2 col-span-4 xl:col-span-1">
               <div className="h-14 mb-6 flex items-center">
                 <p className="text-2xl font-medium ">Thời Gian Làm Việc</p>
               </div>
@@ -65,7 +69,7 @@ export default function UserFooter() {
               </div>
             </div>
 
-            <div className="newest_blogs">
+            <div className="newest_blogs md:col-span-2 col-span-4 xl:col-span-1">
               <div className="h-14 mb-6 flex items-center">
                 <p className="text-2xl font-medium ">Bài Viết Mới</p>
               </div>
@@ -114,7 +118,7 @@ export default function UserFooter() {
               </div>
             </div>
 
-            <div className="Contact_US">
+            <div className="Contact_US md:col-span-2 col-span-4 xl:col-span-1">
               <div className="h-14 mb-6 flex items-center">
                 <p className="text-2xl font-medium ">Liên Hệ Với Chúng Tôi</p>
               </div>
