@@ -30,7 +30,7 @@ export default function SidebarUser(props) {
   });
 
   return (
-    <div className="another col-span-3 ">
+    <div className="another col-span-3 lg:block hidden">
       <div className="categories-blog py-8 pl-4">
         <p className="text-3xl mb-4">Thể Loại</p>
         {listCategory?.map((category, index) => (

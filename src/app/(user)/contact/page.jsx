@@ -73,7 +73,7 @@ export default function Contact() {
     <div className="flex flex-col items-center">
       <BannerBreadcrumb title="Liên hệ" breadcrumb={breadcrumb} />
 
-      <div className="h-[600px]  flex items-center justify-between container-original gap-8">
+      <div className=" my-20 flex sm:flex-row  flex-col items-center justify-between container-original gap-8">
         <CardContact
           title="Vị trí của chúng tôi"
           icon={
@@ -104,7 +104,7 @@ export default function Contact() {
         />
       </div>
 
-      <div className="w-[900px] h-[670px]  bg-white -mb-10 z-10 rounded shadow-container-contact flex flex-col items-center px-[45px] py-14">
+      <div className=" w-4/5  bg-white -mb-10 z-10 rounded shadow-container-contact flex flex-col items-center px-[45px] py-14">
         <div className=" px-2 py-1 bg-[#d3e9fb] rounded">
           <p className="text-[#2490eb] font-semibold">Liên hệ</p>
         </div>
@@ -122,9 +122,9 @@ export default function Contact() {
             form={form}
             layout="vertical"
           >
-            <div className="flex gap-4 w-full mb-8">
+            <div className="sm:flex block gap-4 w-full mb-8">
               <Form.Item
-                className="w-1/2"
+                className="sm:w-1/2 w-full"
                 name="Name"
                 rules={[
                   {
@@ -135,13 +135,13 @@ export default function Contact() {
               >
                 <Input placeholder="Họ và tên" />
               </Form.Item>
-              <Form.Item className="w-1/2" name="Email">
+              <Form.Item className="sm:w-1/2 w-full" name="Email">
                 <Input placeholder="Email của bạn" />
               </Form.Item>
             </div>
-            <div className="flex gap-4 w-full mb-8">
+            <div className="sm:flex block gap-4 w-full mb-8">
               <Form.Item
-                className="w-1/2"
+                className="sm:w-1/2 w-full"
                 name="PhoneNumber"
                 rules={[
                   {
@@ -152,7 +152,7 @@ export default function Contact() {
               >
                 <Input placeholder="Số điện thoại của bạn" />
               </Form.Item>
-              <Form.Item className="w-1/2" name="Subject">
+              <Form.Item className="sm:w-1/2 w-full" name="Subject">
                 <Input placeholder="Triệu chứng của bạn" />
               </Form.Item>
             </div>

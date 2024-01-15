@@ -60,7 +60,7 @@ export default async function Blog({ postId }) {
       <BannerBreadcrumb title={dataPostDetail?.Title} breadcrumb={breadCrum} />
 
       <div className="grid xl:grid-cols-10 gap-6 mt-12">
-        <div className="col-span-7 bg-white">
+        <div className="col-span-7 bg-white md:p-0 p-4">
           <Spin spinning={isFetching}>
             <div
               dangerouslySetInnerHTML={{ __html: dataPostDetail?.Content }}

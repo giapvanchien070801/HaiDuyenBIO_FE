@@ -49,12 +49,12 @@ export default function ListDoctor() {
               Đội ngũ của chúng tôi
             </p>
           </div>
-          <p className="text-5xl font-semibold mt-4 mb-11">
+          <p className="text-5xl font-semibold mt-4 mb-11 text-center">
             Những chuyên gia hàng đầu
           </p>
         </div>
         <Spin spinning={isFetching}>
-          <div className="flex gap-4 flex-wrap">
+          <div className="flex gap-4 flex-wrap md:px-0 px-4">
             {listDoctor?.map((doctor, index) => (
               <CardDoctor
                 title={index}

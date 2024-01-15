@@ -1,8 +1,21 @@
+"use client";
+import Base from "@/app/models/Base";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
+import { useQuery } from "react-query";
 
 export default function UserAboutUs() {
+  // api lấy danh sách tất cả khoa
+  const { data: listDepartment } = useQuery(
+    ["getAllDepartmentHome"],
+    async () => {
+      const res = await Base.getAllDepartment();
+      return res;
+    },
+    {}
+  );
+
   return (
     <div className="container mx-auto grid grid-cols-2 gap-8 mt-24 transition-all duration-500">
       <div className="col-span-2 lg:col-span-1">
@@ -21,11 +34,14 @@ export default function UserAboutUs() {
           đầy đủ các chuyên khoa như
         </p>
 
-        <ul className="services">
-          <li className="font-semibold mb-4">
-            <FontAwesomeIcon icon={faCheck} className="text_ocean mr-2" />
-            nội tổng hợp
-          </li>
+        <ul className="services max-h-[19rem] overflow-y-scroll">
+          {listDepartment?.map((department, index) => (
+            <li key={index} className="font-semibold mb-4">
+              <FontAwesomeIcon icon={faCheck} className="text_ocean mr-2" />
+              {department?.Name}
+            </li>
+          ))}
+
           <li className="font-semibold mb-4">
             <FontAwesomeIcon icon={faCheck} className="text_ocean mr-2" />
             thần kinh

@@ -3,7 +3,7 @@
 export default function CardFeedback(props) {
   const { content, avatar, fullName, feedBackType } = props;
   return (
-    <div className=" w-1/2 p-8 bg-white rounded">
+    <div className="sm:w-1/2 w-full sm:mb-0 mb-5 p-8 bg-white rounded">
       <p className="text-[#666666]  mt-4 leading-8 mb-5">{content}</p>
       <hr />
       <div className="mt-8 flex items-center">

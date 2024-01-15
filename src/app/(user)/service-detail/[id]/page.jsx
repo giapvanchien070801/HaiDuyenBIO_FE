@@ -84,8 +84,8 @@ export default function ServiceDetail({ params }) {
       <BannerBreadcrumb title={dataService?.Name} breadcrumb={breadcrumb} />
 
       <div className=" flex   container-original  py-32">
-        <div className="w-4/12">
-          <div className="w-full bg-[#f4f6f9]  p-8 mb-12">
+        <div className="w-4/12 lg:block hidden">
+          <div className="w-full bg-[#f4f6f9]  p-8 mb-12 ">
             {listService?.map((service, index) => (
               <div
                 key={index}
@@ -115,7 +115,7 @@ export default function ServiceDetail({ params }) {
             </Link>
           </div>
         </div>
-        <div className="w-8/12 bg-red-40 h-full p-8">
+        <div className="lg:w-8/12 w-full  bg-red-40 h-full p-8">
           <Spin spinning={isFetching}>
             <div
               dangerouslySetInnerHTML={{ __html: dataService?.Description }}

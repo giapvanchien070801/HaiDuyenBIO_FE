@@ -124,8 +124,8 @@ export default function AddAppointment() {
       <BannerBreadcrumb title="Tạo lịch hẹn" breadcrumb={breadcrumb} />
 
       {/* section form đăng KÝ */}
-      <div className=" flex   container-original  ">
-        <div className="h-full w-1/2  py-32">
+      <div className="sm:flex block   container-original  ">
+        <div className="h-full sm:w-1/2 w-full sm:px-0 px-4  py-32">
           <div className="bg-[#F4F6F9] w-full h-full p-11">
             <CustomForm>
               <Form
@@ -170,9 +170,9 @@ export default function AddAppointment() {
                 >
                   <Input placeholder="Họ và tên" />
                 </Form.Item>
-                <div className="flex gap-4 w-full ">
+                <div className="sm:flex block gap-4 w-full ">
                   <Form.Item
-                    className="w-1/2"
+                    className="sm:w-1/2 w-full"
                     name="PhoneNumber"
                     rules={[
                       {
@@ -183,13 +183,13 @@ export default function AddAppointment() {
                   >
                     <Input placeholder="Số điện thoại của bạn" />
                   </Form.Item>
-                  <Form.Item className="w-1/2" name="Email">
+                  <Form.Item className="sm:w-1/2 w-full" name="Email">
                     <Input placeholder="Email của bạn" />
                   </Form.Item>
                 </div>
-                <div className="flex gap-4 w-full ">
+                <div className="sm:flex block gap-4 w-full ">
                   <Form.Item
-                    className="w-1/2"
+                    className="sm:w-1/2 w-full"
                     name="MeetDate"
                     rules={[
                       {
@@ -200,7 +200,7 @@ export default function AddAppointment() {
                   >
                     <DatePicker className="w-full" onChange={onChangeDate} />
                   </Form.Item>
-                  <Form.Item className="w-1/2" name="MeetTime">
+                  <Form.Item className="sm:w-1/2 w-full" name="MeetTime">
                     <Input placeholder="Thời gian" />
                   </Form.Item>
                 </div>
@@ -220,7 +220,7 @@ export default function AddAppointment() {
             </CustomForm>
           </div>
         </div>
-        <div className="h-full w-1/2 py-44">
+        <div className="h-full sm:w-1/2 sm:py-44 py-28">
           <div className="w-full h-full px-7">
             <img
               src="https://medicate.peacefulqode.com/wp-content/uploads/2022/04/doctor-.png"
@@ -232,8 +232,8 @@ export default function AddAppointment() {
 
       {/* section liên hệ */}
       <div className="bg-overlay w-full ">
-        <div className="flex justify-around items-center ">
-          <p className="font-semibold text-5xl py-20 text-white w-1/2">
+        <div className="sm:flex block sm:px-0 px-10 justify-around items-center ">
+          <p className="font-semibold text-5xl py-20 text-white sm:w-1/2 w-full text-center">
             Một nơi tuyệt vời của Trung tâm Bệnh viện Y tế & Chăm sóc Sức khỏe
           </p>
           <Button
@@ -241,7 +241,7 @@ export default function AddAppointment() {
             onClick={() => {
               router.push("/contact");
             }}
-            className="bg-[#2490eb] text-white h-12 py-3 px-5  font-semibold flex items-center"
+            className="bg-[#2490eb] text-white h-12 py-3 px-5  font-semibold flex items-center sm:mb-0 mb-10"
           >
             LIÊN HỆ CHÚNG TÔI <PlusOutlined />
           </Button>
@@ -251,13 +251,13 @@ export default function AddAppointment() {
       {/* sction khách hàng nói gì */}
       <div className="bg-[#F4F6F9] w-full  mb-11 flex flex-col items-center">
         <div className="container-original  py-32">
-          <div className="px-[15em] flex flex-col items-center mb-14">
+          <div className=" p-0 lg:px-[15em] flex flex-col items-center mb-14 sm:p-0 px-4">
             <div className=" px-2 py-1 bg-[#d3e9fb] rounded">
-              <p className="text-[#2490eb] font-semibold">
+              <p className="text-[#2490eb] font-semibold ">
                 KHÁCH HÀNG CỦA CHÚNG TÔI
               </p>
             </div>
-            <p className="text-5xl font-semibold mt-4">
+            <p className="text-5xl font-semibold mt-4 text-center">
               Khách hàng của chúng tôi hài lòng
             </p>
             <p className="text-[#666666] text-center mt-4 leading-8">
@@ -281,7 +281,7 @@ export default function AddAppointment() {
               }}
             >
               <SwiperSlide>
-                <div className="flex gap-4">
+                <div className="  sm:flex block gap-4">
                   <CardFeedback
                     avatar="https://faceinch.vn/upload/news/chup-anh-the-tha-toc-3007.jpg
         "
@@ -299,7 +299,7 @@ export default function AddAppointment() {
                 </div>
               </SwiperSlide>
               <SwiperSlide>
-                <div className="flex gap-4">
+                <div className="sm:flex block gap-4">
                   <CardFeedback
                     avatar="https://pgdmyloc.edu.vn/wp-content/uploads/2023/09/anh-the-dep.jpeg
         "
@@ -324,15 +324,17 @@ export default function AddAppointment() {
       {/* section bài viết mới nhất */}
       <div className=" w-full  mb-11 flex flex-col items-center">
         <div className="container-original  py-32">
-          <div className="px-[15em] flex flex-col items-center mb-14">
+          <div className="p-0 lg:px-[15em] flex flex-col items-center mb-14 sm:p-0 px-4">
             <div className=" px-2 py-1 bg-[#d3e9fb] rounded">
               <p className="text-[#2490eb] font-semibold">
                 BÀI VIẾT CỦA CHÚNG TÔI
               </p>
             </div>
-            <p className="text-5xl font-semibold mt-4">Xem bài viết mới nhất</p>
+            <p className="text-5xl font-semibold mt-4 text-center">
+              Xem bài viết mới nhất
+            </p>
           </div>
-          <div className="flex gap-4 flex-wrap">
+          <div className=" sm:flex block gap-4 flex-wrap sm:px-0 px-4 justify-center">
             {listPost?.map((post, index) => (
               <CardLatestBlog
                 key={index}

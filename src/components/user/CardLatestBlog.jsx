@@ -22,7 +22,9 @@ export default function CardLatestBlog(props) {
   return (
     <div
       className={`${
-        isListPage ? "w-[45%] mb-10" : "w-[32%]"
+        isListPage
+          ? "md:w-[45%] w-full mb-10 "
+          : "lg:w-[32%] md:w-[43%] w-full mb-10"
       }   bg-[#F4F6F9] rounded overflow-hidden h-fit`}
     >
       <div className="h-[400px] overflow-hidden">

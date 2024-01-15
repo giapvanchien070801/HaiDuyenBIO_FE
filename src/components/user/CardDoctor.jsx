@@ -5,7 +5,7 @@ import { handleSrcImg } from "@/app/(admin)/common/functions/commonFunction";
 export default function CardDoctor(props) {
   const { position, name, imagePath } = props;
   return (
-    <div className=" w-[32%]  bg-[#F4F6F9] rounded overflow-hidden card-doctor">
+    <div className=" sm:w-[32%] md:w-[45%] w-full  bg-[#F4F6F9] rounded overflow-hidden card-doctor">
       <div className="h-[400px] overflow-hidden">
         <img
           src={handleSrcImg(imagePath)}

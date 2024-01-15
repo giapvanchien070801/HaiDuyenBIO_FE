@@ -41,11 +41,11 @@ export default function DepartmentDetail({ params }) {
   ];
 
   return (
-    <div className="container mx-auto pb-24">
+    <div className="  pb-24">
       <BannerBreadcrumb title={dataDepartment?.Name} breadcrumb={breadcrumb} />
 
-      <div className="grid xl:grid-cols-10 gap-6 mt-12">
-        <div className="blog-content col-span-7 bg-white">
+      <div className="grid xl:grid-cols-10 gap-6 mt-12 container-original mx-auto">
+        <div className="blog-content col-span-7 bg-white md:px-0 px-4">
           <Spin spinning={isFetching}>
             <div
               dangerouslySetInnerHTML={{ __html: dataDepartment?.Description }}
