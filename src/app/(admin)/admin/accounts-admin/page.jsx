@@ -9,10 +9,10 @@ import { useState } from "react";
 import styled from "@emotion/styled";
 import { useRouter } from "next/navigation";
 import { useQuery } from "react-query";
-import Base from "@/app/models/Base";
+import Base from "@/models/Base";
 
-import { useDebounce } from "../../common/functions/commonFunction";
-import ModalCreateAccount from "../../components/modals/ModalCreateAccount";
+import { useDebounce } from "../../../../common/functions/commonFunction";
+import ModalCreateAccount from "../../../../components/admin/modals/ModalCreateAccount";
 
 export default function AccountAdmin() {
   const router = useRouter();

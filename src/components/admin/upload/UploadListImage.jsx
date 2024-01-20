@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { Upload, Button, message, Modal } from "antd";
 import { UploadOutlined, EyeOutlined } from "@ant-design/icons";
 import axios from "axios";
-import { handleSrcImg } from "../common/functions/commonFunction";
+import { handleSrcImg } from "../../../common/functions/commonFunction";
 import { useMutation, useQuery } from "react-query";
-import Base from "@/app/models/Base";
+import Base from "@/models/Base";
 
 const UploadListImage = () => {
   const [fileList, setFileList] = useState([]);

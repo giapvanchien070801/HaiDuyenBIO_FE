@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Button, Modal, Input, Form, message, DatePicker } from "antd";
 import { PlusCircleOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import { useMutation, useQuery } from "react-query";
-import Base from "@/app/models/Base";
-import UploadImage from "../UploadImage";
+import Base from "@/models/Base";
+import UploadImage from "../upload/UploadImage";
 import dayjs from "dayjs";
 
 const ModalCreateDoctor = (props) => {

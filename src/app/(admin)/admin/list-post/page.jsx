@@ -18,9 +18,9 @@ import {
 import styled from "@emotion/styled";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useDebounce } from "../../common/functions/commonFunction";
+import { useDebounce } from "../../../../common/functions/commonFunction";
 import { useMutation, useQuery } from "react-query";
-import Base from "@/app/models/Base";
+import Base from "@/models/Base";
 
 export default function ListPost() {
   const router = useRouter();

@@ -5,7 +5,7 @@ import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useQuery } from "react-query";
-import Base from "@/app/models/Base";
+import Base from "@/models/Base";
 
 export default function SidebarUser(props) {
   const { breadcrumb, title } = props;

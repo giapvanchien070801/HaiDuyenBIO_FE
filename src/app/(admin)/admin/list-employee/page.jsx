@@ -19,9 +19,9 @@ import { useState } from "react";
 import styled from "@emotion/styled";
 import { useRouter } from "next/navigation";
 import { useMutation, useQuery } from "react-query";
-import Base from "@/app/models/Base";
-import { useDebounce } from "../../common/functions/commonFunction";
-import ModalCreateDoctor from "../../components/modals/ModalCreateDoctor";
+import Base from "@/models/Base";
+import { useDebounce } from "../../../../common/functions/commonFunction";
+import ModalCreateDoctor from "../../../../components/admin/modals/ModalCreateDoctor";
 
 export default function ListEmployee() {
   const router = useRouter();

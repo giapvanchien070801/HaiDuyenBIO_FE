@@ -19,9 +19,9 @@ import { useState } from "react";
 import styled from "@emotion/styled";
 import { useRouter } from "next/navigation";
 import { useMutation, useQuery } from "react-query";
-import Base from "@/app/models/Base";
-import ModalCreateCategory from "../../components/modals/ModalCreateCategory";
-import { useDebounce } from "../../common/functions/commonFunction";
+import Base from "@/models/Base";
+import ModalCreateCategory from "../../../../components/admin/modals/ModalCreateCategory";
+import { useDebounce } from "../../../../common/functions/commonFunction";
 
 export default function Categorys() {
   const router = useRouter();

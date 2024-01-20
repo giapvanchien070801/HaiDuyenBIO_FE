@@ -3,8 +3,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Autoplay } from "swiper/modules";
 import { useQuery } from "react-query";
-import Base from "@/app/models/Base";
-import { handleSrcImg } from "@/app/(admin)/common/functions/commonFunction";
+import Base from "@/models/Base";
+import { handleSrcImg } from "@/common/functions/commonFunction";
 
 export default function UserSwiper() {
   const { data: listSlider } = useQuery(
@@ -32,8 +32,7 @@ export default function UserSwiper() {
         <SwiperSlide key={index}>
           <img
             src={handleSrcImg(slider)}
-            className="w-full"
-            style={{ height: "620px" }}
+            className="w-full slide-height"
           />
         </SwiperSlide>
       ))}

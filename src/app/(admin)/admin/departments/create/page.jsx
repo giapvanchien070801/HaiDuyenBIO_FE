@@ -7,7 +7,7 @@ import {
 } from "@ant-design/icons";
 import { useState } from "react";
 import styled from "@emotion/styled";
-import CreateOrEdit from "../../../components/CreateOrEdit";
+import CreateOrEdit from "../../../../../components/admin/common/CreateOrEdit";
 
 export default function CreateDepartment() {
   const breadcrumb = [

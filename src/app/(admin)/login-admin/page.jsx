@@ -1,6 +1,6 @@
 "use client";
 
-import Base from "@/app/models/Base";
+import Base from "@/models/Base";
 import styled from "@emotion/styled";
 import { Button, Checkbox, Form, Input, message, notification } from "antd";
 import { redirect, useRouter } from "next/navigation";

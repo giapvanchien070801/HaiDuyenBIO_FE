@@ -6,11 +6,10 @@ import Link from "next/link";
 export default function UserInfoImportant() {
   return (
     <div
-      className="container mx-auto sm:flex sm:flex-wrap justify-center lg:grid lg:grid-cols-3 lg:gap-8 relative z-10 h-max"
-      style={{ marginTop: "-60px" }}
+    className="user_info_important container mx-auto sm:flex sm:flex-wrap justify-center lg:grid lg:grid-cols-3 lg:gap-8 relative z-10 h-max mt-4"
     >
       <div
-        className={`${LayoutUserInfoImportant.session} relative basis-2/5 mx-4`}
+        className={`${LayoutUserInfoImportant.session} relative basis-2/5 mx-2`}
       >
         <div
           className={`h-full px-6 py-6 ${LayoutUserInfoImportant.logo} ${LayoutUserInfoImportant.session_ocean} text-white`}
@@ -49,7 +48,7 @@ export default function UserInfoImportant() {
       </div>
 
       <div
-        className={`${LayoutUserInfoImportant.session} relative basis-2/5 mx-4`}
+        className={`${LayoutUserInfoImportant.session} relative basis-2/5 mx-2 mt-4 sm:mt-0`}
       >
         <div
           className={`px-6 py-6 ${LayoutUserInfoImportant.logo} ${LayoutUserInfoImportant.session_blue} text-white h-full`}
@@ -65,7 +64,7 @@ export default function UserInfoImportant() {
             <img src="/images/doctor_2.png" className="w-24 h-24" />
           </div>
 
-          <div className="flex text-2xl items-center mt-4 absolute bottom-0 mb-6">
+          <div className="flex text-2xl items-center mt-4 sm:mt-0 absolute bottom-0 mb-6">
             <Link
               href={`/list-doctor`}
               className={`p-4 ${LayoutUserInfoImportant.link}`}
@@ -77,7 +76,7 @@ export default function UserInfoImportant() {
       </div>
 
       <div
-        className={`${LayoutUserInfoImportant.session} relative basis-2/5 mt-4`}
+        className={`${LayoutUserInfoImportant.session} relative basis-2/5 mt-4 lg:mt-0 mx-2`}
       >
         <div
           className={`h-full px-6 py-6 ${LayoutUserInfoImportant.logo} ${LayoutUserInfoImportant.session_ocean} text-white`}

@@ -3,9 +3,9 @@ import Blog from "@/components/user/Blog";
 import { HomeOutlined, SearchOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 
-import { handleSrcImg } from "@/app/(admin)/common/functions/commonFunction";
+import { handleSrcImg } from "@/common/functions/commonFunction";
 import { useQuery } from "react-query";
-import Base from "@/app/models/Base";
+import Base from "@/models/Base";
 
 import BannerBreadcrumb from "@/components/user/BannerBreadcrumb";
 import CardLatestBlog from "@/components/user/CardLatestBlog";

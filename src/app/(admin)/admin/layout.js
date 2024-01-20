@@ -9,7 +9,7 @@ import {
   MenuFoldOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import MenuSidebar from "../components/menus/MenuSidebar";
+import MenuSidebar from "../../../components/admin/menus/MenuSidebar";
 import { useRouter } from "next/navigation";
 
 export default function AdminHomeLayout({ children }) {

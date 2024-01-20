@@ -1,5 +1,5 @@
 "use client";
-import Base from "@/app/models/Base";
+import Base from "@/models/Base";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
@@ -17,9 +17,9 @@ export default function UserAboutUs() {
   );
 
   return (
-    <div className="container mx-auto grid grid-cols-2 gap-8 mt-24 transition-all duration-500">
+    <div className="container mx-auto grid grid-cols-2 gap-0 lg:gap-8 gap-y-8 mt-24 transition-all duration-500">
       <div className="col-span-2 lg:col-span-1">
-        <img src="/images/aboutus.jpeg" />
+        <img src="/images/aboutus.jpeg" className="w-full"/>
       </div>
 
       <div className="short-info pl-4 flex flex-col justify-around col-span-2 lg:col-span-1">

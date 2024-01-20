@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { Form, Input, Button, DatePicker, Select, Switch, message } from "antd";
 import "react-quill/dist/quill.snow.css";
 import TextEditor from "./TextEditor";
-import UploadAvatar from "./UploadAvatar";
+import UploadAvatar from "../upload/UploadAvatar";
 import { useRouter } from "next/navigation";
 import styled from "@emotion/styled";
 import { useMutation, useQuery } from "react-query";
-import Base from "@/app/models/Base";
-import UploadImage from "./UploadImage";
+import Base from "@/models/Base";
+import UploadImage from "../upload/UploadImage";
 
 const { TextArea } = Input;
 

@@ -11,9 +11,9 @@ import BannerBreadcrumb from "@/components/user/BannerBreadcrumb";
 import CardFeedback from "@/components/user/CardFeedback";
 import CardLatestBlog from "@/components/user/CardLatestBlog";
 import { useMutation, useQuery } from "react-query";
-import Base from "@/app/models/Base";
+import Base from "@/models/Base";
 import moment from "moment";
-import { handleSrcImg } from "@/app/(admin)/common/functions/commonFunction";
+import { handleSrcImg } from "@/common/functions/commonFunction";
 import dayjs from "dayjs";
 const { TextArea } = Input;
 

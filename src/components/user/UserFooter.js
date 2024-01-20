@@ -18,10 +18,10 @@ export default function UserFooter() {
           className={`${layoutUserStyle.send_email} lg:flex lg:justify-between lg:items-center absolute z-10 p-6 w-full`}
         >
           <div className="flex items-center lg:w-1/2">
-            <div className="mail_logo text-8xl lg:text-3xl xl:text-8xl">
+            <div className="mail_logo text-5xl lg:text-3xl xl:text-8xl">
               <FontAwesomeIcon icon={faEnvelope} />
             </div>
-            <p className="ml-4 text-2xl lg:text-lg xl:text-2xl">
+            <p className="ml-4 text-medium lg:text-lg xl:text-2xl">
               Đăng Ký Email Để Nhận Thông Báo Mới Nhất Từ Chúng Tôi
             </p>
           </div>
@@ -126,7 +126,7 @@ export default function UserFooter() {
                 </p>
                 <p className="mb-6">
                   <FontAwesomeIcon icon={faEnvelope} className="mr-4" />{" "}
-                  pkhnlc@gmail.com
+                  phongkhamhanoilaocai @gmail.com
                 </p>
 
                 <p>

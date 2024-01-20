@@ -6,7 +6,7 @@ import styled from "@emotion/styled";
 import BannerBreadcrumb from "@/components/user/BannerBreadcrumb";
 import Link from "next/link";
 import { useQuery } from "react-query";
-import Base from "@/app/models/Base";
+import Base from "@/models/Base";
 
 export default function ServiceDetail({ params }) {
   // Sử dụng query param từ URL

@@ -1,4 +1,4 @@
-import { API_ROOT } from "@/app/models/Base";
+import { API_ROOT } from "@/models/Base";
 import { useEffect, useState } from "react";
 
 export const useDebounce = (value, milliSeconds) => {

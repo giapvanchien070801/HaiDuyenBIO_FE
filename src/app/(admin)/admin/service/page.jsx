@@ -18,8 +18,8 @@ import styled from "@emotion/styled";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useMutation, useQuery } from "react-query";
-import Base from "@/app/models/Base";
-import { useDebounce } from "../../common/functions/commonFunction";
+import Base from "@/models/Base";
+import { useDebounce } from "../../../../common/functions/commonFunction";
 
 export default function Services() {
   const router = useRouter();

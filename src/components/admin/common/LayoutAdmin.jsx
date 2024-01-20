@@ -7,7 +7,7 @@ import {
   InteractionOutlined,
   MenuFoldOutlined,
 } from "@ant-design/icons";
-import MenuSidebar from "./menus/MenuSidebar";
+import MenuSidebar from "../menus/MenuSidebar";
 import { useRouter } from "next/router";
 
 const LayoutAdmin = ({ children }) => {

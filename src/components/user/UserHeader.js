@@ -11,7 +11,7 @@ import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { useQuery } from "react-query";
-import Base from "@/app/models/Base";
+import Base from "@/models/Base";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 export default function UserHeader() {
@@ -232,12 +232,12 @@ export default function UserHeader() {
 
           <Link
             href={`/add-appointment`}
-            className={`transition-all duration-300 flex items-center lg:p-4 p-2 py-4 text-white rounded-md hover:bg-slate-950 ${layoutUserStyle.apoiment}`}
+            className={`transition-all duration-300 flex items-center lg:p-4 lg:mr-2 p-2 py-4 text-white rounded-md hover:bg-slate-950 ${layoutUserStyle.apoiment}`}
           >
             Thêm lịch hẹn +
           </Link>
 
-          <div className="search flex">
+          <div className="search flex lg:hidden block">
             <button
               className="block lg:hidden p-4 session_ocean2 rounded-md text-white ml-2"
               onClick={() => toggleMenuMobile()}

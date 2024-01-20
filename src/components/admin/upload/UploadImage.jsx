@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Upload, Button, message } from "antd";
 import { UploadOutlined, PlusOutlined } from "@ant-design/icons";
 import axios from "axios";
-import { handleSrcImg } from "../common/functions/commonFunction";
+import { handleSrcImg } from "../../../common/functions/commonFunction";
 
 const UploadImage = (props) => {
   const { onChange, uploadType, imgDetail, resetValue } = props;

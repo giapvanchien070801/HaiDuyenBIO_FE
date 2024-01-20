@@ -15,7 +15,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "@emotion/styled";
 import BannerBreadcrumb from "@/components/user/BannerBreadcrumb";
 import { useMutation } from "react-query";
-import Base from "@/app/models/Base";
+import Base from "@/models/Base";
 const { TextArea } = Input;
 
 export default function Contact() {

@@ -18,8 +18,8 @@ import {
 import styled from "@emotion/styled";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Base from "@/app/models/Base";
-import { useDebounce } from "../../common/functions/commonFunction";
+import Base from "@/models/Base";
+import { useDebounce } from "../../../../common/functions/commonFunction";
 import { useMutation, useQuery } from "react-query";
 
 export default function Departments() {

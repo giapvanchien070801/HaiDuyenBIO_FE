@@ -394,3 +394,36 @@ h6 {
 .ant-btn-primary {
   background-color: #1677ff !important;
 }
+
+@media only screen and (min-width: 0px) {
+  .slide-height {
+    height: 250px !important;
+  }
+
+  .user_info_important {
+    margin-top: 8px !important;
+  }
+}
+
+@media only screen and (min-width: 640px) {
+.slide-height {
+  height: 350px !important;
+}
+}
+
+@media only screen and (min-width: 768px) {
+.slide-height {
+  height: 450px !important;
+}
+}
+
+
+@media only screen and (min-width: 1024px) { 
+.slide-height {
+  height: 620px !important;
+}
+
+.user_info_important {
+  margin-top: -60px !important;
+}
+}

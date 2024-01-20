@@ -3,9 +3,9 @@
 import { Breadcrumb } from "antd";
 import { HomeOutlined } from "@ant-design/icons";
 import { Line } from "@ant-design/plots";
-import { dataChart } from "../../common/data-fake/dataChartFake";
+import { dataChart } from "../../../../common/data-fake/dataChartFake";
 import { useQuery } from "react-query";
-import Base from "../../../models/Base";
+import Base from "../../../../models/Base";
 
 export default function Dashboard() {
   const data = dataChart;

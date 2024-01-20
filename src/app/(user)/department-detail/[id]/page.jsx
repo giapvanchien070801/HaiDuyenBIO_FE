@@ -3,7 +3,7 @@
 import { HomeOutlined } from "@ant-design/icons";
 import BannerBreadcrumb from "@/components/user/BannerBreadcrumb";
 import { useQuery } from "react-query";
-import Base from "@/app/models/Base";
+import Base from "@/models/Base";
 import SidebarUser from "@/components/user/SidebarUser";
 import { Spin } from "antd";
 

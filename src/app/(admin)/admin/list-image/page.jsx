@@ -2,7 +2,7 @@
 import { Breadcrumb } from "antd";
 import { HomeOutlined } from "@ant-design/icons";
 
-import UploadListImage from "../../components/UploadListImage";
+import UploadListImage from "../../../../components/admin/upload/UploadListImage";
 
 const getBase64 = (file) =>
   new Promise((resolve, reject) => {

@@ -12,7 +12,7 @@ import { Suspense } from "react";
 import Comment from "./Comment";
 import Link from "next/link";
 import { useQuery } from "react-query";
-import Base from "@/app/models/Base";
+import Base from "@/models/Base";
 import SidebarUser from "./SidebarUser";
 import { Spin } from "antd";
 

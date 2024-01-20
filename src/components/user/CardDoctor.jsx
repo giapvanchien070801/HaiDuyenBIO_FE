@@ -1,6 +1,6 @@
 "use client";
 
-import { handleSrcImg } from "@/app/(admin)/common/functions/commonFunction";
+import { handleSrcImg } from "@/common/functions/commonFunction";
 import { ArrowRightOutlined } from "@ant-design/icons";
 
 export default function CardDoctor(props) {
