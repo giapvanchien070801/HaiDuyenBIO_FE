@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Button, Modal, Input, Form, message } from "antd";
-import { PlusCircleOutlined } from "@ant-design/icons";
+import { Button, Modal, Input, Form, message, DatePicker } from "antd";
+import { PlusCircleOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import { useMutation, useQuery } from "react-query";
 import Base from "@/app/models/Base";
-import UploadAvatar from "../UploadAvatar";
 import UploadImage from "../UploadImage";
+import dayjs from "dayjs";
 
 const ModalCreateDoctor = (props) => {
   const { modalType, refetchData, idDoctor } = props;
@@ -13,11 +13,12 @@ const ModalCreateDoctor = (props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [valueAvatar, setValueAvatar] = useState();
   const [resetValueAvatar, setResetValueAvatar] = useState(false);
+
   const [form] = Form.useForm();
   const showModal = () => {
     setIsModalOpen(true);
   };
-
+  const dateFormat = "DD-MM-YYYY";
   const { data: dataDetailDoctor } = useQuery(
     ["getDetailDoctor", idDoctor, isModalOpen],
     async () => {
@@ -69,14 +70,23 @@ const ModalCreateDoctor = (props) => {
   const handleOk = () => {
     form.submit();
 
-    const listFieldName = ["Name", "Position"];
+    const listFieldName = ["Name", "Position", "StartWorkDate", "EndWorkDate"];
     form
       .validateFields(listFieldName)
       .then((value) => {
+        const StartWorkDate = dayjs(value?.StartWorkDate, dateFormat).format(
+          dateFormat
+        );
+        const EndWorkDate = dayjs(value?.EndWorkDate, dateFormat).format(
+          dateFormat
+        );
+
         const valueCreate = {
           Name: value?.Name?.trim(),
           Position: value?.Position?.trim(),
-          ImagePath: valueAvatar,
+          ImagePath: valueAvatar || "",
+          StartWorkDate: StartWorkDate,
+          EndWorkDate: EndWorkDate,
         };
 
         const valueUpdate = {
@@ -84,6 +94,14 @@ const ModalCreateDoctor = (props) => {
           Name: value?.Name?.trim(),
           Position: value?.Position?.trim(),
           ImagePath: valueAvatar || dataDetailDoctor?.ImagePath,
+          StartWorkDate:
+            StartWorkDate !== "Invalid Date"
+              ? StartWorkDate
+              : dataDetailDoctor?.StartWorkDate,
+          EndWorkDate:
+            EndWorkDate !== "Invalid Date"
+              ? EndWorkDate
+              : dataDetailDoctor?.EndWorkDate,
         };
 
         if (isModalCreate) {
@@ -168,6 +186,42 @@ const ModalCreateDoctor = (props) => {
           >
             <Input placeholder="Nhập chức danh cho nhân sự" />
           </Form.Item>
+          <div className="flex w-full gap-4">
+            {(dataDetailDoctor?.StartWorkDate || !idDoctor) && (
+              <Form.Item
+                className=" w-1/2"
+                label="Thời gian làm việc"
+                name="StartWorkDate"
+              >
+                <DatePicker
+                  format={dateFormat}
+                  className="w-full"
+                  placeholder="Từ ngày"
+                  defaultValue={
+                    dataDetailDoctor?.StartWorkDate
+                      ? dayjs(dataDetailDoctor?.StartWorkDate, dateFormat)
+                      : null
+                  }
+                />
+              </Form.Item>
+            )}
+
+            <ArrowRightOutlined />
+            {(dataDetailDoctor?.EndWorkDate || !idDoctor) && (
+              <Form.Item className=" w-1/2" label=" " name="EndWorkDate">
+                <DatePicker
+                  className="w-full"
+                  placeholder="Đến ngày"
+                  format={dateFormat}
+                  defaultValue={
+                    dataDetailDoctor?.EndWorkDate
+                      ? dayjs(dataDetailDoctor?.EndWorkDate, dateFormat)
+                      : null
+                  }
+                />
+              </Form.Item>
+            )}
+          </div>
         </Form>
       </Modal>
     </>

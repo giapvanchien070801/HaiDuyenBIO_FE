@@ -14,6 +14,7 @@ import { useMutation, useQuery } from "react-query";
 import Base from "@/app/models/Base";
 import moment from "moment";
 import { handleSrcImg } from "@/app/(admin)/common/functions/commonFunction";
+import dayjs from "dayjs";
 const { TextArea } = Input;
 
 export default function AddAppointment() {
@@ -66,7 +67,7 @@ export default function AddAppointment() {
       .then((value) => {
         const valueSubmit = {
           MeetTime: value?.MeetTime,
-          MeetDate: moment(value?.MeetDate).format("DD-MM-YYYY"),
+          MeetDate: dayjs(value?.MeetDate, "DD-MM-YYYY").format("DD-MM-YYYY"),
           Email: value?.Email,
           PhoneNumber: value?.PhoneNumber,
           FullName: value?.FullName,
@@ -76,7 +77,6 @@ export default function AddAppointment() {
         createSchedule.mutate(valueSubmit);
       })
       .catch(() => {});
-    // setIsModalOpen(false);
   };
 
   const onChange = (value) => {
@@ -117,7 +117,11 @@ export default function AddAppointment() {
 
     return res?.Data;
   });
-  console.log("listPost", listPost);
+
+  const disabledDate = (current) => {
+    // Nếu ngày được chọn (current) <= ngày hiện tại thì disable
+    return current && current < moment().startOf("day");
+  };
 
   return (
     <div className="flex flex-col items-center">
@@ -198,7 +202,13 @@ export default function AddAppointment() {
                       },
                     ]}
                   >
-                    <DatePicker className="w-full" onChange={onChangeDate} />
+                    <DatePicker
+                      className="w-full"
+                      onChange={onChangeDate}
+                      disabledDate={disabledDate}
+                      placeholder="Chọn ngày hẹn"
+                      format="DD-MM-YYYY"
+                    />
                   </Form.Item>
                   <Form.Item className="sm:w-1/2 w-full" name="MeetTime">
                     <Input placeholder="Thời gian" />

@@ -148,9 +148,14 @@ export default function ListEmployee() {
     },
 
     {
-      title: "Ngày tạo",
-      dataIndex: "CreatedAt",
-      key: "CreatedAt",
+      title: "Ngày bắt đầu làm việc",
+      dataIndex: "StartWorkDate",
+      key: "StartWorkDate",
+    },
+    {
+      title: "Ngày nghỉ",
+      dataIndex: "EndWorkDate",
+      key: "EndWorkDate",
     },
     {
       title: "Người tạo",

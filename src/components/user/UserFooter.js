@@ -11,9 +11,9 @@ import Link from "next/link";
 export default function UserFooter() {
   return (
     <footer
-      className={`${layoutUserStyle.background_footer} text-white transition-all duration-500`}
+      className={`${layoutUserStyle.background_footer} text-white transition-all duration-500 lg:p-0 p-4`}
     >
-      <div className="relative container mx-auto py-28">
+      <div className="relative container mx-auto sm:py-28 py-16">
         <div
           className={`${layoutUserStyle.send_email} lg:flex lg:justify-between lg:items-center absolute z-10 p-6 w-full`}
         >

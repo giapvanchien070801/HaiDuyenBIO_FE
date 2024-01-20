@@ -22,7 +22,7 @@ export const metadata = {
 export default function HomePage() {
   return (
     <>
-      <div className="pb-48">
+      <div className="pb-48 sm:px-0 px-4">
         <UserSwiper />
         <UserInfoImportant />
         <UserAboutUs />

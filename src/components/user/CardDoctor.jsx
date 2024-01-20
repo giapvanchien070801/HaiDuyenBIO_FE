@@ -1,11 +1,19 @@
 "use client";
 
 import { handleSrcImg } from "@/app/(admin)/common/functions/commonFunction";
+import { ArrowRightOutlined } from "@ant-design/icons";
 
 export default function CardDoctor(props) {
-  const { position, name, imagePath } = props;
+  const { position, name, imagePath, startWorkDate, endWorkDate } = props;
   return (
-    <div className=" sm:w-[32%] md:w-[45%] w-full  bg-[#F4F6F9] rounded overflow-hidden card-doctor">
+    <div className=" sm:w-[45%] lg:w-[32%] w-full  bg-[#F4F6F9] rounded overflow-hidden card-doctor">
+      <div className="bg-[#2490eb] absolute  z-10 flex justify-center flex-col items-center p-3 calender-card text-white lg:w-72 w-48">
+        <b className="text-xl">Lịch làm việc</b>
+        <p className="mt-2">
+          {startWorkDate} <ArrowRightOutlined />
+          {endWorkDate}
+        </p>
+      </div>
       <div className="h-[400px] overflow-hidden">
         <img
           src={handleSrcImg(imagePath)}

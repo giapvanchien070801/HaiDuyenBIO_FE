@@ -42,7 +42,7 @@ export default function ListDoctor() {
   return (
     <div className="flex flex-col items-center mb-36 ">
       <BannerBreadcrumb title="Danh sách nhân sự" breadcrumb={breadcrumb} />
-      <div className="container-original  pb-24 mt-32">
+      <div className="container-original  sm:pb-24 pb-0  sm:mt-32 mt-16">
         <div className="flex flex-col items-center">
           <div className=" px-2 py-1 bg-[#d3e9fb] rounded">
             <p className="text-[#2490eb] font-semibold">
@@ -54,13 +54,15 @@ export default function ListDoctor() {
           </p>
         </div>
         <Spin spinning={isFetching}>
-          <div className="flex gap-4 flex-wrap md:px-0 px-4">
+          <div className="flex gap-4 flex-wrap md:px-0 px-4 justify-center">
             {listDoctor?.map((doctor, index) => (
               <CardDoctor
                 title={index}
                 name={doctor?.Name}
                 imagePath={doctor?.ImagePath}
                 position={doctor?.Position}
+                startWorkDate={doctor?.StartWorkDate}
+                endWorkDate={doctor?.EndWorkDate}
               />
             ))}
           </div>

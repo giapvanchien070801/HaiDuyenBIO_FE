@@ -41,35 +41,6 @@ export default function UserAboutUs() {
               {department?.Name}
             </li>
           ))}
-
-          <li className="font-semibold mb-4">
-            <FontAwesomeIcon icon={faCheck} className="text_ocean mr-2" />
-            thần kinh
-          </li>
-          <li className="font-semibold mb-4">
-            <FontAwesomeIcon icon={faCheck} className="text_ocean mr-2" />
-            tiêu hóa
-          </li>
-          <li className="font-semibold mb-4">
-            <FontAwesomeIcon icon={faCheck} className="text_ocean mr-2" />
-            cơ xương khớp
-          </li>
-          <li className="font-semibold mb-4">
-            <FontAwesomeIcon icon={faCheck} className="text_ocean mr-2" />
-            ngoại tổng hợp
-          </li>
-          <li className="font-semibold mb-4">
-            <FontAwesomeIcon icon={faCheck} className="text_ocean mr-2" />
-            sản phụ khoa
-          </li>
-          <li className="font-semibold mb-4">
-            <FontAwesomeIcon icon={faCheck} className="text_ocean mr-2" />
-            nhi khoa
-          </li>
-          <li className="font-semibold">
-            <FontAwesomeIcon icon={faCheck} className="text_ocean mr-2" /> da
-            liễu
-          </li>
         </ul>
 
         <Link

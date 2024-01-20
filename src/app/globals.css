@@ -278,6 +278,19 @@ h6 {
   max-width: 1240px;
 }
 
+@media (max-width: 1169px) {
+  .container-original {
+    width: 100%;
+    max-width: 570px;
+  }
+}
+
+@media (max-width: 767px) {
+  .container-original {
+    width: 100%;
+  }
+}
+
 .icon-contact {
   background-color: #2490eb;
 }
@@ -363,4 +376,21 @@ h6 {
 
 .card-doctor:hover img {
   transform: scale(1.2);
+}
+
+.calender-card {
+  margin-top: 10px;
+  margin-left: -50px;
+  opacity: 0;
+  transition: 0.6s;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+.card-doctor:hover .calender-card {
+  margin-left: 0px;
+  opacity: 1;
+}
+
+.ant-btn-primary {
+  background-color: #1677ff !important;
 }

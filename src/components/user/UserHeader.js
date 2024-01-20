@@ -12,8 +12,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { useQuery } from "react-query";
 import Base from "@/app/models/Base";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 export default function UserHeader() {
+  const pathname = usePathname();
+
   // api lấy danh sách tất cả thể loại
   const { data: listCategory } = useQuery(
     ["getAllCate"],
@@ -45,6 +48,11 @@ export default function UserHeader() {
   );
 
   const [activeMobileMenu, setActiveMobileMenu] = useState(false);
+
+  useEffect(() => {
+    setActiveMobileMenu(false);
+  }, [pathname]);
+
   const toggleMenuMobile = () => {
     setActiveMobileMenu(!activeMobileMenu);
   };
@@ -74,15 +82,15 @@ export default function UserHeader() {
             </Link>
             <Link
               href={`https://zalo.me/0867585366`}
-              className="text-lg py-4 px-4 flex hover:bg-cyan-400"
+              className="text-lg p-2 flex hover:bg-cyan-400"
             >
-              <PushpinFilled />
+              Zalo
             </Link>
           </div>
         </div>
       </div>
 
-      <div className="container mx-auto flex justify-between items-center z-20 bg-white py-4">
+      <div className="container mx-auto flex justify-between items-center z-20 bg-white py-4 lg:px-0 px-4">
         <Link href={`/`} className="lg:hidden xl:block">
           <div className="flex items-center">
             <img src="/images/logo.png" className="w-14 h-14" />
@@ -97,7 +105,7 @@ export default function UserHeader() {
         <div className="flex justify-between lg:w-full xl:w-fit">
           <div className="navbar self-stretch lg:static absolute bg-white z-10 top-full w-full lg:w-fit left-0">
             <ul
-              className={`lg:flex items-center h-full md:container md:mx-auto ${
+              className={`lg:flex items-center h-full md:container md:mx-auto lg:p-0 p-4 ${
                 activeMobileMenu ? "lg:block" : "hidden lg:block"
               }`}
             >
@@ -179,15 +187,6 @@ export default function UserHeader() {
                   Đội ngũ bác sỹ
                 </Link>
               </li>
-
-              {/* <li className="h-full relative">
-                <Link
-                  href={`#`}
-                  className="h-full flex items-center hover:text-cyan-600 transition-all duration-300 py-2"
-                >
-                  Tuyển dụng
-                </Link>
-              </li> */}
 
               <li className={`h-full relative ${layoutUserStyle.menu_item}`}>
                 <Link
