@@ -5,6 +5,7 @@ import axios from "axios";
 import { handleSrcImg } from "../../../common/functions/commonFunction";
 import { useMutation, useQuery } from "react-query";
 import Base from "@/models/Base";
+import { Cookies } from "react-cookie";
 
 const UploadListImage = () => {
   const [fileList, setFileList] = useState([]);
@@ -33,7 +34,8 @@ const UploadListImage = () => {
     {}
   );
 
-  const authToken = sessionStorage.getItem("accessToken");
+  const cookies = new Cookies();
+  const authToken = cookies.get("accessToken");
 
   const updateSliderMutate = useMutation(Base.updateSlider, {
     onSuccess: () => {

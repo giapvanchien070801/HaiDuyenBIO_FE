@@ -1,3 +1,5 @@
+import { handleSrcImg } from "@/common/functions/commonFunction";
+import Base from "@/models/Base";
 import layoutUserStyle from "@/styles/layout_user_style.module.css";
 import {
   faCalendarDays,
@@ -7,8 +9,23 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
+import { useQuery } from "react-query";
 
 export default function UserFooter() {
+  const { data: listPost } = useQuery(
+    ["getListPostNewlistFooter"],
+    async () => {
+      const res = await Base.getListPostPagination({
+        Page: 1,
+        Size: 2,
+        KeySearch: "",
+        CategoryId: -1,
+      });
+
+      return res?.Data;
+    }
+  );
+
   return (
     <footer
       className={`${layoutUserStyle.background_footer} text-white transition-all duration-500 lg:p-0 p-4`}
@@ -71,47 +88,31 @@ export default function UserFooter() {
                 <p className="text-2xl font-medium ">Bài Viết Mới</p>
               </div>
               <div className="text-lg">
-                <div className="blog mb-6">
-                  <Link href={`#`}>
-                    <div className="flex items-center">
-                      <div>
-                        <div className="w-20 h-20">
-                          <img
-                            src="/images/blog1.jpg"
-                            className="w-full h-full"
-                          />
+                {listPost?.map((post, index) => (
+                  <div className="blog mb-6" key={index}>
+                    <Link href={`/blog/${post?.CategoryId}/${post?.Id}`}>
+                      <div className="flex items-center">
+                        <div>
+                          <div className="w-20 h-20">
+                            <img
+                              src={handleSrcImg(post?.ImagePath)}
+                              className="w-full h-full"
+                            />
+                          </div>
+                        </div>
+                        <div className="info_blog mx-4 ">
+                          <p>
+                            <FontAwesomeIcon icon={faCalendarDays} />{" "}
+                            {post?.CreatedAt}
+                          </p>
+                          <p className="max-h-16 overflow-y-hidden text-ellipsis line-clamp-2">
+                            {post?.Title}
+                          </p>
                         </div>
                       </div>
-                      <div className="info_blog mx-4 ">
-                        <p>
-                          <FontAwesomeIcon icon={faCalendarDays} /> 11/12/2023
-                        </p>
-                        <p>Get The Exercise Limited Mobility</p>
-                      </div>
-                    </div>
-                  </Link>
-                </div>
-
-                <div className="blog">
-                  <Link href={`#`}>
-                    <div className="flex items-center">
-                      <div>
-                        <div className="w-20 h-20">
-                          <img
-                            src="/images/blog1.jpg"
-                            className="w-full h-full"
-                          />
-                        </div>
-                      </div>
-                      <div className="info_blog mx-4 ">
-                        <p>
-                          <FontAwesomeIcon icon={faCalendarDays} /> 11/12/2023
-                        </p>
-                        <p>Get The Exercise Limited Mobility</p>
-                      </div>
-                    </div>
-                  </Link>
-                </div>
+                    </Link>
+                  </div>
+                ))}
               </div>
             </div>
 

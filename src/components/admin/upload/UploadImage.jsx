@@ -3,6 +3,7 @@ import { Upload, Button, message } from "antd";
 import { UploadOutlined, PlusOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { handleSrcImg } from "../../../common/functions/commonFunction";
+import { Cookies } from "react-cookie";
 
 const UploadImage = (props) => {
   const { onChange, uploadType, imgDetail, resetValue } = props;
@@ -22,7 +23,8 @@ const UploadImage = (props) => {
     }
   }, [imgDetail, resetValue]);
 
-  const authToken = sessionStorage.getItem("accessToken");
+  const cookies = new Cookies();
+  const authToken = cookies.get("accessToken");
 
   const handleUpload = async (options) => {
     const { file, onSuccess, onError } = options;

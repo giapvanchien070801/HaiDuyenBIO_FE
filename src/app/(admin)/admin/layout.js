@@ -11,23 +11,26 @@ import {
 } from "@ant-design/icons";
 import MenuSidebar from "../../../components/admin/menus/MenuSidebar";
 import { useRouter } from "next/navigation";
+import { Cookies } from "react-cookie";
 
 export default function AdminHomeLayout({ children }) {
   const [isCloseMenu, setIsCloseMenu] = useState(false);
   const router = useRouter();
+  const cookies = new Cookies();
 
   const handleClickSidebar = () => {
     setIsCloseMenu(!isCloseMenu);
   };
 
   const handleLogOut = () => {
-    sessionStorage.removeItem("accessToken");
-    sessionStorage.removeItem("adminInfor");
+    cookies.remove("accessToken");
+    cookies.remove("adminInfor");
+
     router.push("/login-admin");
     message.success("Đăng xuất thành công");
   };
 
-  const adminInfo = JSON.parse(sessionStorage.getItem("adminInfor"));
+  const adminInfo = cookies.get("adminInfor");
 
   const contentPopover = (
     <div className=" cursor-pointer">
@@ -87,9 +90,6 @@ export default function AdminHomeLayout({ children }) {
           </div>
 
           <div className=" gap-4 flex items-center mr-4">
-            <Badge count={5} size="default">
-              <BellOutlined style={{ fontSize: "20px", color: "gray" }} />
-            </Badge>
             <Popover
               content={contentPopover}
               title={titleHover}

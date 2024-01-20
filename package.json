@@ -24,6 +24,7 @@
     "quill-image-resize": "^3.0.9",
     "quill-image-resize-module-react": "^3.0.0",
     "react": "^18",
+    "react-cookie": "^7.0.1",
     "react-dom": "^18",
     "react-query": "^3.39.3",
     "react-quill": "^2.0.0",

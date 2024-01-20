@@ -74,7 +74,7 @@ export default async function ListPage({ params }) {
       <Spin spinning={isFetching}>
         <div className="grid xl:grid-cols-10 gap-6 container-original mx-auto mt-20">
           <div className=" col-span-7 flex flex-col items-center">
-            <div className=" flex gap-4 flex-wrap justify-center md:p-0 p-4">
+            <div className=" flex gap-4 flex-wrap justify-center md:p-0 p-4 w-full">
               {listPost?.map((post, index) => (
                 <CardLatestBlog
                   key={index}

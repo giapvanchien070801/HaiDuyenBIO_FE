@@ -307,17 +307,16 @@ h6 {
     );
 }
 .banner-contact {
-  background-image: url(https://medicate.peacefulqode.com/wp-content/uploads/2022/04/breadcrumb-image-1.jpg);
+  background-image: url("/images/breadcrumb-image-1.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: top center;
 }
 .bg-overlay {
-  background-image: url(https://medicate.peacefulqode.com/wp-content/uploads/2022/03/3.png);
+  background-image: url("/images/section3.jpg");
   background-position: center center;
   background-repeat: repeat;
   background-size: 60% auto;
-  /* opacity: 0.1; */
   background-color: #14457b;
 }
 .img-card-blog {
@@ -406,24 +405,23 @@ h6 {
 }
 
 @media only screen and (min-width: 640px) {
-.slide-height {
-  height: 350px !important;
-}
+  .slide-height {
+    height: 350px !important;
+  }
 }
 
 @media only screen and (min-width: 768px) {
-.slide-height {
-  height: 450px !important;
-}
-}
-
-
-@media only screen and (min-width: 1024px) { 
-.slide-height {
-  height: 620px !important;
+  .slide-height {
+    height: 450px !important;
+  }
 }
 
-.user_info_important {
-  margin-top: -60px !important;
-}
+@media only screen and (min-width: 1024px) {
+  .slide-height {
+    height: 620px !important;
+  }
+
+  .user_info_important {
+    margin-top: -60px !important;
+  }
 }

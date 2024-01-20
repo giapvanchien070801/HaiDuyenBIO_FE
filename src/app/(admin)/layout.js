@@ -5,14 +5,17 @@ import { usePathname, useRouter } from "next/navigation";
 import "/src/app/globals.css";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { message, notification } from "antd";
+import { Cookies } from "react-cookie";
 
 export default function AdminLayout({ children }) {
   const queryClient = new QueryClient();
   const router = useRouter();
   const pathname = usePathname();
+  const cookies = new Cookies();
 
   //kiểm tra trạng thái đăng nhập
-  const accessToken = sessionStorage.getItem("accessToken");
+  const accessToken = cookies.get("accessToken");
+
   const [api, contextHolder] = notification.useNotification();
 
   useEffect(() => {

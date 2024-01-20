@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Cookies } from "react-cookie";
 // export const API_ROOT = "https://stagingonedx.vnpt-technology.vn:6443";
 // export const API_ROOT = "http://192.168.0.103:3017";
 export const API_ROOT = "http://localhost:3017";
@@ -10,7 +11,8 @@ const axiosInstance = axios.create({
 // Thiết lập interceptor để thêm token vào mỗi request (nếu có)
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = sessionStorage.getItem("accessToken"); // Lấy token từ sessionStorage  hoặc nơi lưu trữ khác
+    const cookies = new Cookies();
+    const token = cookies.get("accessToken"); // Lấy token từ cookies  hoặc nơi lưu trữ khác
     if (token) {
       config.headers.Authorization = `Bearer ${token}`; // Thêm token vào header Authorization
     }

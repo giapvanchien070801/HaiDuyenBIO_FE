@@ -64,11 +64,7 @@ export default function SidebarUser(props) {
       </div>
       <div className="w-full mt-12">
         <Link href={`/contact`}>
-          <img
-            src="https://medicate.peacefulqode.com/wp-content/uploads/2022/03/call-img-1.jpg"
-            alt=""
-            className="w-full"
-          />
+          <img src="/images/call-img-1.jpg" alt="alt" className="w-full" />
         </Link>
       </div>
     </div>

@@ -11,7 +11,11 @@ import {
   UsergroupAddOutlined,
   UserOutlined,
   PartitionOutlined,
-  OrderedListOutlined,
+  InsertRowAboveOutlined,
+  UserSwitchOutlined,
+  PictureOutlined,
+  ContactsOutlined,
+  ScheduleOutlined,
 } from "@ant-design/icons";
 import CollapseMemuItem from "./CollapseMemuItem";
 
@@ -46,7 +50,7 @@ const MenuSidebar = (props) => {
 
     {
       text: "Quản lý Đội ngũ",
-      icon: <OrderedListOutlined />,
+      icon: <UsergroupAddOutlined />,
       listSubMenu: [
         {
           icon: <MenuOutlined className={`${isCloseMenu && "text-xs"}`} />,
@@ -68,7 +72,7 @@ const MenuSidebar = (props) => {
     },
     {
       text: "Quản lý Dịch vụ",
-      icon: <PartitionOutlined />,
+      icon: <InsertRowAboveOutlined />,
       listSubMenu: [
         {
           icon: <UserOutlined className={`${isCloseMenu && "text-xs"}`} />,
@@ -80,10 +84,10 @@ const MenuSidebar = (props) => {
 
     {
       text: "Quản lý Slide",
-      icon: <PartitionOutlined />,
+      icon: <PictureOutlined />,
       listSubMenu: [
         {
-          icon: <UserOutlined className={`${isCloseMenu && "text-xs"}`} />,
+          icon: <PictureOutlined className={`${isCloseMenu && "text-xs"}`} />,
           text: "Danh sách ảnh",
           pushTo: "/admin/list-image",
         },
@@ -92,7 +96,7 @@ const MenuSidebar = (props) => {
 
     {
       text: "Quản lý Liên hệ",
-      icon: <FolderOpenOutlined />,
+      icon: <ContactsOutlined />,
       listSubMenu: [
         {
           icon: <UploadOutlined className={`${isCloseMenu && "text-xs"}`} />,
@@ -103,10 +107,10 @@ const MenuSidebar = (props) => {
     },
     {
       text: "Quản lý Lịch hẹn",
-      icon: <FolderOpenOutlined />,
+      icon: <ScheduleOutlined />,
       listSubMenu: [
         {
-          icon: <UploadOutlined className={`${isCloseMenu && "text-xs"}`} />,
+          icon: <MenuOutlined className={`${isCloseMenu && "text-xs"}`} />,
           text: "Danh sách lịch hẹn",
           pushTo: "/admin/appointments",
         },
@@ -115,7 +119,7 @@ const MenuSidebar = (props) => {
 
     {
       text: "Quản lý Tài khoản",
-      icon: <UsergroupAddOutlined />,
+      icon: <UserSwitchOutlined />,
       listSubMenu: [
         {
           icon: <UserOutlined className={`${isCloseMenu && "text-xs"}`} />,

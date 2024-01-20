@@ -4,17 +4,19 @@ import Base from "@/models/Base";
 import styled from "@emotion/styled";
 import { Button, Checkbox, Form, Input, message, notification } from "antd";
 import { redirect, useRouter } from "next/navigation";
+import { Cookies } from "react-cookie";
 import { useMutation } from "react-query";
 
 function LoginPage() {
   const [form] = Form.useForm();
   const router = useRouter();
   const [api, contextHolder] = notification.useNotification();
+  const cookies = new Cookies();
 
   // delete Record
   const loginMutate = useMutation(Base.loginAdmin, {
     onSuccess: (value) => {
-      sessionStorage.setItem("accessToken", value.Token);
+      cookies.set("accessToken", value.Token);
       message.success("Đăng nhập thành công!");
       router.push("/admin/home");
 

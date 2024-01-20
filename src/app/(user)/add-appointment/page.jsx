@@ -232,10 +232,7 @@ export default function AddAppointment() {
         </div>
         <div className="h-full sm:w-1/2 sm:py-44 py-28">
           <div className="w-full h-full px-7">
-            <img
-              src="https://medicate.peacefulqode.com/wp-content/uploads/2022/04/doctor-.png"
-              alt="alt"
-            />
+            <img src="/images/doctor-.png" alt="alt" />
           </div>
         </div>
       </div>
@@ -281,8 +278,6 @@ export default function AddAppointment() {
             <Swiper
               spaceBetween={50}
               slidesPerView={1}
-              // onSlideChange={() => console.log("slide change")}
-              // onSwiper={(swiper) => console.log(swiper)}
               modules={[Autoplay]}
               effect="coverflow"
               autoplay={{
