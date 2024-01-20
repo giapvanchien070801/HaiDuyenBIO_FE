@@ -62,10 +62,7 @@ export default function UserFooter() {
               </div>
               <div className="text-lg">
                 <p className="mb-6">Giờ làm việc: 24/7</p>
-                <p>
-                  Khám bệnh: Sáng 07:30 - 12:00; Chiều 13:00 - 16:30; Tối: 16:30
-                  - 21:00
-                </p>
+                <p>Khám bệnh: Sáng 07:30 - 12:00; Chiều 13:45 - 17:00</p>
               </div>
             </div>
 
@@ -124,8 +121,8 @@ export default function UserFooter() {
               </div>
               <div className="text-lg">
                 <p className="mb-6">
-                  <FontAwesomeIcon icon={faPhone} className="mr-4" /> 0214 2202
-                  888
+                  <FontAwesomeIcon icon={faPhone} className="mr-4" />{" "}
+                  0867.585.366
                 </p>
                 <p className="mb-6">
                   <FontAwesomeIcon icon={faEnvelope} className="mr-4" />{" "}

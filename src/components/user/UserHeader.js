@@ -45,17 +45,19 @@ export default function UserHeader() {
   );
 
   const [activeMobileMenu, setActiveMobileMenu] = useState(false);
-  const toggleMenuMobile = ()=>{
+  const toggleMenuMobile = () => {
     setActiveMobileMenu(!activeMobileMenu);
-  }
+  };
 
   return (
     <header className="z-20 relative">
-      <div className={`${layoutUserStyle.background_info_top} z-20 hidden md:block`}>
+      <div
+        className={`${layoutUserStyle.background_info_top} z-20 hidden md:block`}
+      >
         <div className="container mx-auto text-white flex justify-between">
           <div className="flex items-center">
             <p className="px-2 flex">
-              <PhoneFilled /> <span className="mx-2">0214.2202.888</span>
+              <PhoneFilled /> <span className="mx-2">0867.585.366</span>
             </p>
             <p className="px-2 flex">
               <MailFilled />{" "}
@@ -65,13 +67,13 @@ export default function UserHeader() {
 
           <div className="flex items-center">
             <Link
-              href={`#`}
+              href={`https://www.facebook.com/profile.php?id=100057086214537&mibextid=ZbWKwL`}
               className="text-lg py-4 px-4 flex hover:bg-cyan-400"
             >
               <FacebookFilled />
             </Link>
             <Link
-              href={`#`}
+              href={`https://zalo.me/0867585366`}
               className="text-lg py-4 px-4 flex hover:bg-cyan-400"
             >
               <PushpinFilled />
@@ -87,14 +89,18 @@ export default function UserHeader() {
             <p
               className={`${layoutUserStyle.text_logo} font-bold xl:text-xl lg:text-base ml-2 hidden sm:block lg:hidden xl:block`}
             >
-              Phòng Khám HNLC
+              Phòng khám Đa khoa Hà Nội - Lào Cai
             </p>
           </div>
         </Link>
 
         <div className="flex justify-between lg:w-full xl:w-fit">
           <div className="navbar self-stretch lg:static absolute bg-white z-10 top-full w-full lg:w-fit left-0">
-            <ul className={`lg:flex items-center h-full md:container md:mx-auto ${activeMobileMenu? "lg:block" : "hidden lg:block"}`}>
+            <ul
+              className={`lg:flex items-center h-full md:container md:mx-auto ${
+                activeMobileMenu ? "lg:block" : "hidden lg:block"
+              }`}
+            >
               <li className="h-full relative">
                 <Link
                   href={`/`}
@@ -114,7 +120,7 @@ export default function UserHeader() {
                     style={{ fontSize: "14px", marginLeft: "5px" }}
                   />
                 </Link>
-          
+
                 <div
                   className={`${layoutUserStyle.submenu} lg:absolute lg:w-max w-full z-20`}
                 >
@@ -224,7 +230,6 @@ export default function UserHeader() {
               </li>
             </ul>
           </div>
-          
 
           <Link
             href={`/add-appointment`}
@@ -234,8 +239,9 @@ export default function UserHeader() {
           </Link>
 
           <div className="search flex">
-            <button className="block lg:hidden p-4 session_ocean2 rounded-md text-white ml-2"
-            onClick={()=>toggleMenuMobile()}
+            <button
+              className="block lg:hidden p-4 session_ocean2 rounded-md text-white ml-2"
+              onClick={() => toggleMenuMobile()}
             >
               <FontAwesomeIcon icon={faBars} />
             </button>
