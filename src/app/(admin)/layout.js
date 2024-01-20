@@ -38,6 +38,7 @@ export default function AdminLayout({ children }) {
     <html>
       <head>
         <link rel="shortcut icon" href="/favicon.ico" />
+        <title>Phòng Khám Đa Khoa Hà Nội Lào Cai</title>
       </head>
       <body>
         {contextHolder}
