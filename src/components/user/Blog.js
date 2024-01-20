@@ -15,8 +15,10 @@ import { useQuery } from "react-query";
 import Base from "@/models/Base";
 import SidebarUser from "./SidebarUser";
 import { Spin } from "antd";
+import CardLatestBlog from "./CardLatestBlog";
+import { handleSrcImg } from "@/common/functions/commonFunction";
 
-export default async function Blog({ postId }) {
+export default async function Blog({ postId, categoryId }) {
   const { data: dataPostDetail, isFetching } = useQuery(
     ["getDetailPost", postId],
     async () => {
@@ -54,6 +56,16 @@ export default async function Blog({ postId }) {
       ),
     },
   ];
+  const { data: listPost } = useQuery(["getListPostNewlistSame"], async () => {
+    const res = await Base.getListPostPagination({
+      Page: 1,
+      Size: 6,
+      KeySearch: "",
+      CategoryId: categoryId,
+    });
+
+    return res?.Data;
+  });
 
   return (
     <>
@@ -69,44 +81,23 @@ export default async function Blog({ postId }) {
           </Spin>
 
           <div className="write-comment mt-16">
-            <p className="text-4xl font-medium mb-8">
-              Để Lại Bình Luận Của Bạn
-            </p>
-            <form className="grid xl:grid-cols-3 xl:gap-4">
-              <div className="col-span-1">
-                <input
-                  placeholder="Họ Và Tên"
-                  className="w-full p-4 background-input-comment input-comment"
+            <p className="text-4xl font-medium mb-8">Các bài viết liên quan</p>
+            <div className=" sm:flex block gap-4 flex-wrap sm:px-0 px-4 justify-center">
+              {listPost?.map((post, index) => (
+                <CardLatestBlog
+                  isListPage
+                  key={index}
+                  title={post?.Title}
+                  description={post?.Description}
+                  time={post?.CreatedAt}
+                  avatar={handleSrcImg(post?.ImagePath)}
+                  createBy={post?.AuthorName}
+                  comment="1"
+                  id={post?.Id}
+                  categoryId={post?.CategoryId}
                 />
-              </div>
-
-              <div className="col-span-1">
-                <input
-                  placeholder="Email"
-                  className="w-full p-4 background-input-comment transition-all duration-500 input-comment"
-                />
-              </div>
-              <div className="col-span-1">
-                <input
-                  placeholder="Số Điện Thoại"
-                  className="w-full p-4 background-input-comment transition-all duration-500 input-comment"
-                />
-              </div>
-
-              <div className="col-span-3">
-                <textarea
-                  className="input-comment w-full p-4 background-input-comment transition-all duration-500"
-                  placeholder="Nội dung bình luận"
-                  rows={10}
-                />
-              </div>
-
-              <div className="col-span-1">
-                <button className="session_ocean2 text-white py-4 px-8 text-medium font-bold transition-all duration-500 hover:bg-black">
-                  Bình Luận
-                </button>
-              </div>
-            </form>
+              ))}
+            </div>
           </div>
         </div>
 

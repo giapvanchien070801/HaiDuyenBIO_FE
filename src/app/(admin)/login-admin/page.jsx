@@ -86,9 +86,8 @@ function LoginPage() {
 
               <Form.Item>
                 <Button
-                  type="primary"
                   onClick={() => handleSunmit()}
-                  className="w-full bg-[#2ba191] text-white mt-10"
+                  className="w-full !bg-[#2ba191] text-white mt-10"
                 >
                   Đăng nhập
                 </Button>

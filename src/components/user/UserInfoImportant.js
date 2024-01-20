@@ -1,13 +1,14 @@
+"use client";
 import LayoutUserInfoImportant from "@/styles/layout_user_info_important.module.css";
 import { faPhone, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Tooltip } from "antd";
 import Link from "next/link";
 
 export default function UserInfoImportant() {
+  const email = <span>phongkhamhanoilaocai@gmail.com</span>;
   return (
-    <div
-    className="user_info_important container mx-auto sm:flex sm:flex-wrap justify-center xl:grid xl:grid-cols-3 xl:gap-8 relative z-10 h-max mt-4"
-    >
+    <div className="user_info_important container mx-auto sm:flex sm:flex-wrap justify-center xl:grid xl:grid-cols-3 xl:gap-8 relative z-10 h-max mt-4">
       <div
         className={`${LayoutUserInfoImportant.session} relative basis-2/5 mx-2`}
       >
@@ -21,28 +22,22 @@ export default function UserInfoImportant() {
             <img src="/images/doctor.png" className="w-24 h-24" />
           </div>
           <div className="flex text-2xl items-center my-2">
-            <div
-              className={`${LayoutUserInfoImportant.text_ocean} bg-white w-14 h-14 rounded-full flex justify-center items-center`}
-            >
-              <FontAwesomeIcon icon={faEnvelope} />
-            </div>
-            <div className="ml-4 text-xl text-pretty">phongkhamhanoilaocai@gmail.com</div>
+            <FontAwesomeIcon icon={faEnvelope} className="text-white w-2/12" />
+            <Tooltip placement="top" title={email}>
+              <div className="ml-2 text-xl text-pretty w-10/12 overflow-hidden text-ellipsis">
+                {email}
+              </div>
+            </Tooltip>
           </div>
           <div className="flex text-2xl items-center my-2">
-            <div
-              className={`${LayoutUserInfoImportant.text_ocean} bg-white w-14 h-14 rounded-full flex justify-center items-center`}
-            >
-              <h5>Zalo</h5>
-            </div> 
-            <div className="ml-4 text-xl">0867.585.366</div>
+            <h5 className="text-white w-2/12 text-center">Zalo</h5>
+
+            <div className="ml-2 text-xl w-10/12 ">0867.585.366</div>
           </div>
           <div className="flex text-2xl items-center my-2">
-            <div
-              className={`${LayoutUserInfoImportant.text_ocean} bg-white w-14 h-14 rounded-full flex justify-center items-center`}
-            >
-              <FontAwesomeIcon icon={faPhone} />
-            </div>
-            <div className="ml-4 text-xl">0867.585.366</div>
+            <FontAwesomeIcon icon={faPhone} className="text-white w-2/12" />
+
+            <div className="ml-2 text-xl w-10/12 ">0867.585.366</div>
           </div>
         </div>
       </div>
