@@ -6,7 +6,7 @@ import Link from "next/link";
 export default function UserInfoImportant() {
   return (
     <div
-    className="user_info_important container mx-auto sm:flex sm:flex-wrap justify-center lg:grid lg:grid-cols-3 lg:gap-8 relative z-10 h-max mt-4"
+    className="user_info_important container mx-auto sm:flex sm:flex-wrap justify-center xl:grid xl:grid-cols-3 xl:gap-8 relative z-10 h-max mt-4"
     >
       <div
         className={`${LayoutUserInfoImportant.session} relative basis-2/5 mx-2`}
@@ -26,15 +26,15 @@ export default function UserInfoImportant() {
             >
               <FontAwesomeIcon icon={faEnvelope} />
             </div>
-            <div className="ml-4">0214.2202.888</div>
+            <div className="ml-4 text-xl text-pretty">phongkhamhanoilaocai@gmail.com</div>
           </div>
           <div className="flex text-2xl items-center my-2">
             <div
               className={`${LayoutUserInfoImportant.text_ocean} bg-white w-14 h-14 rounded-full flex justify-center items-center`}
             >
               <h5>Zalo</h5>
-            </div>
-            <div className="ml-4">0214.2202.888</div>
+            </div> 
+            <div className="ml-4 text-xl">0867.585.366</div>
           </div>
           <div className="flex text-2xl items-center my-2">
             <div
@@ -42,13 +42,13 @@ export default function UserInfoImportant() {
             >
               <FontAwesomeIcon icon={faPhone} />
             </div>
-            <div className="ml-4">0214.2202.888</div>
+            <div className="ml-4 text-xl">0867.585.366</div>
           </div>
         </div>
       </div>
 
       <div
-        className={`${LayoutUserInfoImportant.session} relative basis-2/5 mx-2 mt-4 sm:mt-0`}
+        className={`${LayoutUserInfoImportant.session} relative basis-2/5 mx-2 mt-4 lg:mt-0`}
       >
         <div
           className={`px-6 py-6 ${LayoutUserInfoImportant.logo} ${LayoutUserInfoImportant.session_blue} text-white h-full`}
@@ -76,7 +76,7 @@ export default function UserInfoImportant() {
       </div>
 
       <div
-        className={`${LayoutUserInfoImportant.session} relative basis-2/5 mt-4 lg:mt-0 mx-2`}
+        className={`${LayoutUserInfoImportant.session} relative basis-2/5 mt-4 xl:mt-0 mx-2`}
       >
         <div
           className={`h-full px-6 py-6 ${LayoutUserInfoImportant.logo} ${LayoutUserInfoImportant.session_ocean} text-white`}
