@@ -14,11 +14,6 @@ const UserFacilities = dynamic(
   }
 );
 
-export const metadata = {
-  title: "Phòng Khám Hà Nội Lào Cai",
-  description: "Phòng khám Hà Nội Lào Cai",
-};
-
 export default function HomePage() {
   return (
     <>

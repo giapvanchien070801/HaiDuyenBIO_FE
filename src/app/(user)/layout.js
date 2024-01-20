@@ -12,6 +12,9 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="en">
+      <head>
+        <title>Phòng Khám Đa Khoa Hà Nội Lào Cai</title>
+      </head>
       <body>
         <QueryClientProvider client={queryClient}>
           <UserHeader />
