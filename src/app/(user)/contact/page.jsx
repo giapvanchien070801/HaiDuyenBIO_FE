@@ -104,7 +104,7 @@ export default function Contact() {
         />
       </div>
 
-      <div className=" w-4/5  bg-white -mb-10 z-10 rounded shadow-container-contact flex flex-col items-center px-[45px] py-14">
+      <div className=" w-4/5 md:w-7/12  bg-white -mb-10 z-10 rounded shadow-container-contact flex flex-col items-center px-[45px] py-14">
         <div className=" px-2 py-1 bg-[#d3e9fb] rounded">
           <p className="text-[#2490eb] font-semibold">Liên hệ</p>
         </div>
@@ -156,7 +156,16 @@ export default function Contact() {
                 <Input placeholder="Triệu chứng của bạn" />
               </Form.Item>
             </div>
-            <Form.Item className="w-full mb-8" name="Message">
+            <Form.Item
+              className="w-full mb-8"
+              name="Message"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng nhập lời nhắn!",
+                },
+              ]}
+            >
               <TextArea rows={4} placeholder="Lời nhắn" />
             </Form.Item>
             <Form.Item>

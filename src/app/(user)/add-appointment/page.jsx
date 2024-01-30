@@ -288,36 +288,32 @@ export default function AddAppointment() {
               <SwiperSlide>
                 <div className="  sm:flex block gap-4">
                   <CardFeedback
-                    avatar="https://faceinch.vn/upload/news/chup-anh-the-tha-toc-3007.jpg
-        "
+                    avatar="/images/feedback1.jpg"
                     fullName="Ngô Quỳnh Anh"
                     feedBackType="Cancer Research"
-                    content="There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don’t look even believable.There are many variations of passages of Lorem Ipsum available"
+                    content="Tôi đã khám chữa bệnh tại phòng khám từ những ngày đầu thành lập đến nay. Phòng khám rất rộng rãi, thoáng mát, bác sĩ tận tình tư vấn cũng như điều trị bệnh cho tôi. Tôi rất hài lòng về phòng khám."
                   />
                   <CardFeedback
-                    avatar="https://toigingiuvedep.vn/wp-content/uploads/2021/07/mau-anh-the-dep-chat-luong.jpg
-        "
+                    avatar="/images/feedback2.jpg"
                     fullName="Hoàng Kiều Trang"
                     feedBackType="Cancer Research"
-                    content="There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don’t look even believable.There are many variations of passages of Lorem Ipsum available"
+                    content="Chúng tôi đã đăng ký khám cho nhân viên công ty tại phòng khám, tôi nhận thấy hình thức và cách sắp xếp tổ chức gọn gàng, chuyên nghiệp, có kết quả nhanh, đội ngũ bác sĩ vui vẻ, thân thiện, nhiệt huyết."
                   />
                 </div>
               </SwiperSlide>
               <SwiperSlide>
                 <div className="sm:flex block gap-4">
                   <CardFeedback
-                    avatar="https://pgdmyloc.edu.vn/wp-content/uploads/2023/09/anh-the-dep.jpeg
-        "
+                    avatar="/images/feedback3.jpg"
                     fullName="Nguyễn Thị Quỳnh"
                     feedBackType="Cancer Research"
-                    content="There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don’t look even believable.There are many variations of passages of Lorem Ipsum available"
+                    content="Bác sĩ tại phòng khám giải quyết thủ tục khám chữa bệnh rất nhanh, dặn dò bệnh nhân rất ân cần, chăm sóc bệnh nhân vui vẻ và chu đáo."
                   />
                   <CardFeedback
-                    avatar="https://inanhdepphanthiet.com/Uploads/images/ThietKeNha/2022/3/%E1%BA%A2nh%20th%E1%BA%BB%20%C4%91%E1%BA%B9p%20(2)_1115.jpg
-        "
-                    fullName="Nguyễn Thị Quỳnh Anh"
+                    avatar="/images/feedback4.jpg"
+                    fullName="Nguyễn Thị Thảo"
                     feedBackType="Cancer Research"
-                    content="There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don’t look even believable.There are many variations of passages of Lorem Ipsum available"
+                    content="Tôi đã khám chữa bệnh tại phòng khám từ rất lâu. Phòng khám rất rộng rãi, thoáng mát, bác sĩ tại phòng khám giải quyết thủ tục khám chữa bệnh rất nhanh."
                   />
                 </div>
               </SwiperSlide>
