@@ -82,33 +82,33 @@ export default function UserInfoImportant() {
             className="flex justify-between border-b-2 border-solid pb-4 mt-2"
             style={{ borderColor: "#47A2EE" }}
           >
-            <p className="leading-6 text-lg">Thứ 2 - Thứ 6</p>
-            <p className="leading-6 text-lg">7:30 - 17:30</p>
+            <p className="leading-6 text-lg">Mùa Hè</p>
+            <p className="leading-6 text-lg">7:00 - 11:30 / 13:30 - 16:30</p>
           </div>
 
           <div
             className="flex justify-between border-b-2 border-solid pb-4 mt-2"
             style={{ borderColor: "#47A2EE" }}
           >
-            <p className="leading-6 text-lg">Thứ 7</p>
-            <p className="leading-6 text-lg">7:30 - 17:30</p>
+            <p className="leading-6 text-lg">Mùa Đông</p>
+            <p className="leading-6 text-lg">7:30 - 12:00 / 13:45 - 17:00</p>
           </div>
 
-          <div
+          {/* <div
             className="flex justify-between border-b-2 border-solid pb-4 mt-2"
             style={{ borderColor: "#47A2EE" }}
           >
             <p className="leading-6 text-lg">Chủ Nhật</p>
             <p className="leading-6 text-lg">7:30 - 17:30</p>
-          </div>
-
+          </div> */}
+{/* 
           <div
             className="flex justify-between border-b-2 border-solid pb-4 mt-2"
             style={{ borderColor: "#47A2EE" }}
           >
             <p className="leading-6 text-lg">Khẩn Cấp</p>
             <p className="leading-6 text-lg">24 / 7</p>
-          </div>
+          </div> */}
 
           <div className={LayoutUserInfoImportant.logo_absolute}>
             <img src="/images/record.png" className="w-24 h-24" />
