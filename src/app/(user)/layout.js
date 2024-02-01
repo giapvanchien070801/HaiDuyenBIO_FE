@@ -2,11 +2,12 @@
 import "../globals.css";
 import UserHeader from "@/components/user/UserHeader";
 import dynamic from "next/dynamic";
+import Script from "next/script";
 import { QueryClient, QueryClientProvider } from "react-query";
 
-const UserFooter = dynamic(()=>import("@/components/user/UserFooter"), {
-  ssr: false
-})
+const UserFooter = dynamic(() => import("@/components/user/UserFooter"), {
+  ssr: false,
+});
 export default function RootLayout({ children }) {
   const queryClient = new QueryClient();
 
@@ -19,8 +20,12 @@ export default function RootLayout({ children }) {
         <QueryClientProvider client={queryClient}>
           <UserHeader />
           <main>{children}</main>
+          <div id="fb-root"></div>
+          <div id="fb-customer-chat" class="fb-customerchat"></div>
           <UserFooter />
         </QueryClientProvider>
+
+        <Script src="/scripts/ChatWithCustomer.js"/>
       </body>
     </html>
   );
