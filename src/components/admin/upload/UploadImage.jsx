@@ -18,10 +18,13 @@ const UploadImage = (props) => {
     if (imgDetail) {
       setImageUrl(handleSrcImg(imgDetail));
     }
+  }, [imgDetail]);
+
+  useEffect(() => {
     if (resetValue) {
       setImageUrl();
     }
-  }, [imgDetail, resetValue]);
+  }, [resetValue]);
 
   const cookies = new Cookies();
   const authToken = cookies.get("accessToken");

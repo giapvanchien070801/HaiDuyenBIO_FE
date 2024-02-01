@@ -41,6 +41,7 @@ const ModalCreateDoctor = (props) => {
 
   const createDoctorMutate = useMutation(Base.createDoctor, {
     onSuccess: () => {
+      setValueAvatar();
       setResetValueAvatar(true);
       message.success("Tạo mới nhân sự thành công!");
       form.resetFields();
@@ -55,6 +56,8 @@ const ModalCreateDoctor = (props) => {
   });
   const updateDoctorMutate = useMutation(Base.updateDoctor, {
     onSuccess: () => {
+      setValueAvatar();
+      setResetValueAvatar(true);
       message.success("Sửa nhân sự thành công!");
       form.resetFields();
       if (refetchData) {
@@ -190,8 +193,14 @@ const ModalCreateDoctor = (props) => {
             {(dataDetailDoctor?.StartWorkDate || !idDoctor) && (
               <Form.Item
                 className=" w-1/2"
-                label="Thời gian làm việc"
+                label="Thời gian bắt đầu làm việc"
                 name="StartWorkDate"
+                rules={[
+                  {
+                    required: isModalCreate,
+                    message: "Thời gian bắt đầu không được bỏ trống!",
+                  },
+                ]}
               >
                 <DatePicker
                   format={dateFormat}
@@ -208,7 +217,17 @@ const ModalCreateDoctor = (props) => {
 
             <ArrowRightOutlined />
             {(dataDetailDoctor?.EndWorkDate || !idDoctor) && (
-              <Form.Item className=" w-1/2" label=" " name="EndWorkDate">
+              <Form.Item
+                className=" w-1/2"
+                label="Thời gian nghỉ"
+                name="EndWorkDate"
+                rules={[
+                  {
+                    required: isModalCreate,
+                    message: "Thời gian nghỉ không được bỏ trống!",
+                  },
+                ]}
+              >
                 <DatePicker
                   className="w-full"
                   placeholder="Đến ngày"
