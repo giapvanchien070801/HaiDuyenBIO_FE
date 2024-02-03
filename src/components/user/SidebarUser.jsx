@@ -1,8 +1,6 @@
 "use client";
 
-import { SearchOutlined } from "@ant-design/icons";
-import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { RightOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import { useQuery } from "react-query";
 import Base from "@/models/Base";
@@ -40,8 +38,7 @@ export default function SidebarUser(props) {
               as={`/blog/${category?.Id}`}
               className="capitalize categorie-link transition-all duration-500"
             >
-              <FontAwesomeIcon icon={faAngleRight} className="text_ocean" />{" "}
-              {category?.Name}
+              <RightOutlined className="text_ocean" /> {category?.Name}
             </Link>
           </p>
         ))}
@@ -56,8 +53,7 @@ export default function SidebarUser(props) {
               as={`/service-detail/${service?.Id}`}
               className="capitalize categorie-link transition-all duration-500"
             >
-              <FontAwesomeIcon icon={faAngleRight} className="text_ocean" />{" "}
-              {service?.Name}
+              <RightOutlined className="text_ocean" /> {service?.Name}
             </Link>
           </p>
         ))}

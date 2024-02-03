@@ -1,17 +1,9 @@
 "use client";
 
-import { Breadcrumb, Tag, Input, Form, Button, message } from "antd";
-import { PlusCircleOutlined } from "@ant-design/icons";
+import { Input, Form, Button, message } from "antd";
+import { MailOutlined, PhoneFilled, PushpinFilled } from "@ant-design/icons";
 import { HomeOutlined } from "@ant-design/icons";
-
-import { useRouter } from "next/navigation";
 import CardContact from "@/components/user/CardContact";
-import {
-  faEnvelope,
-  faLocationPin,
-  faPhone,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "@emotion/styled";
 import BannerBreadcrumb from "@/components/user/BannerBreadcrumb";
 import { useMutation } from "react-query";
@@ -65,7 +57,7 @@ export default function Contact() {
       .then((value) => {
         createDoctorMutate.mutate(value);
       })
-      .catch(() => {});
+      .catch(() => { });
     // setIsModalOpen(false);
   };
 
@@ -77,27 +69,22 @@ export default function Contact() {
         <CardContact
           title="Vị trí của chúng tôi"
           icon={
-            <FontAwesomeIcon
-              icon={faLocationPin}
-              className=" text-white text-4xl"
-            />
+            <MailOutlined className=" text-white text-4xl" />
+
           }
           content="Số 022 đường Chiềng On, phường Bình Minh, thành phố Lào Cai, tỉnh Lào
           Cai"
         />
         <CardContact
           icon={
-            <FontAwesomeIcon icon={faPhone} className="text-white text-4xl" />
+            <PhoneFilled className="text-white text-4xl" />
           }
           title="Số điện thoại liên hệ"
           content="0214 2202 888"
         />
         <CardContact
           icon={
-            <FontAwesomeIcon
-              icon={faEnvelope}
-              className="text-white text-4xl"
-            />
+            <PushpinFilled className="text-white text-4xl" />
           }
           title="Email liên hệ"
           content="pkhnlc@gmail.com"

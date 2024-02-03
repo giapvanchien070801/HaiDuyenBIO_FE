@@ -8,10 +8,9 @@ import {
   MailFilled,
   FacebookFilled,
   PushpinFilled,
+  MenuOutlined,
 } from "@ant-design/icons";
 import { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
 const LayoutUser = ({ children }) => {
   const [activeSearchbar, setActiveSearchbar] = useState(false);
 
@@ -233,7 +232,7 @@ const LayoutUser = ({ children }) => {
               </div>
 
               <button className="block lg:hidden">
-                <FontAwesomeIcon icon={faBars} />
+                <MenuOutlined />
               </button>
               <Link
                 href={`#`}

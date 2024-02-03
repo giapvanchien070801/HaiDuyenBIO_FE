@@ -1,7 +1,6 @@
 "use client";
 import LayoutUserInfoImportant from "@/styles/layout_user_info_important.module.css";
-import { faPhone, faEnvelope } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { MailFilled, PhoneFilled } from "@ant-design/icons";
 import { Tooltip } from "antd";
 import Link from "next/link";
 
@@ -22,7 +21,7 @@ export default function UserInfoImportant() {
             <img src="/images/doctor.png" className="w-24 h-24" />
           </div>
           <div className="flex text-2xl items-center my-2">
-            <FontAwesomeIcon icon={faEnvelope} className="text-white w-2/12" />
+            <MailFilled className="text-white w-2/12" />
             <Tooltip placement="top" title={email}>
               <div className="ml-2 text-xl text-pretty w-10/12 overflow-hidden text-ellipsis">
                 {email}
@@ -35,8 +34,7 @@ export default function UserInfoImportant() {
             <div className="ml-2 text-xl w-10/12 ">0867.585.366</div>
           </div>
           <div className="flex text-2xl items-center my-2">
-            <FontAwesomeIcon icon={faPhone} className="text-white w-2/12" />
-
+            <PhoneFilled className="text-white w-2/12" />
             <div className="ml-2 text-xl w-10/12 ">0867.585.366</div>
           </div>
         </div>
@@ -101,7 +99,7 @@ export default function UserInfoImportant() {
             <p className="leading-6 text-lg">Chủ Nhật</p>
             <p className="leading-6 text-lg">7:30 - 17:30</p>
           </div> */}
-{/* 
+          {/* 
           <div
             className="flex justify-between border-b-2 border-solid pb-4 mt-2"
             style={{ borderColor: "#47A2EE" }}

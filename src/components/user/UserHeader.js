@@ -5,11 +5,9 @@ import {
   PhoneFilled,
   MailFilled,
   FacebookFilled,
-  PushpinFilled,
+  MenuOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { useQuery } from "react-query";
 import Base from "@/models/Base";
 import { useEffect, useState } from "react";
@@ -242,7 +240,7 @@ export default function UserHeader() {
               className="block lg:hidden p-4 session_ocean2 rounded-md text-white ml-2"
               onClick={() => toggleMenuMobile()}
             >
-              <FontAwesomeIcon icon={faBars} />
+              <MenuOutlined />
             </button>
           </div>
         </div>

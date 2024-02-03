@@ -1,5 +1,4 @@
 import UserInfoImportant from "@/components/user/UserInfoImportant";
-import UserMenuBody from "@/components/user/UserMenuBody";
 import UserSwiper from "@/components/user/UserSwiper";
 import dynamic from "next/dynamic";
 

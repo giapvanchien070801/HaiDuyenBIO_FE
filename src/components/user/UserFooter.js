@@ -1,13 +1,7 @@
 import { handleSrcImg } from "@/common/functions/commonFunction";
 import Base from "@/models/Base";
 import layoutUserStyle from "@/styles/layout_user_style.module.css";
-import {
-  faCalendarDays,
-  faEnvelope,
-  faLocationPin,
-  faPhone,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { ClockCircleFilled, ContactsFilled, MailFilled, PhoneFilled, PushpinFilled } from "@ant-design/icons";
 import Link from "next/link";
 import { useQuery } from "react-query";
 
@@ -35,8 +29,8 @@ export default function UserFooter() {
           className={`${layoutUserStyle.send_email} lg:flex lg:justify-between lg:items-center absolute z-10 p-6 w-full`}
         >
           <div className="flex items-center lg:w-1/2">
-            <div className="mail_logo text-5xl lg:text-3xl xl:text-8xl">
-              <FontAwesomeIcon icon={faEnvelope} />
+            <div className="mail_logo text-4xl lg:text-5xl">
+              <MailFilled />
             </div>
             <p className="ml-4 text-medium lg:text-lg xl:text-2xl">
               Đăng Ký Email Để Nhận Thông Báo Mới Nhất Từ Chúng Tôi
@@ -102,8 +96,7 @@ export default function UserFooter() {
                         </div>
                         <div className="info_blog mx-4 ">
                           <p>
-                            <FontAwesomeIcon icon={faCalendarDays} />{" "}
-                            {post?.CreatedAt}
+                          <ClockCircleFilled /> {post?.CreatedAt}
                           </p>
                           <p className="max-h-16 overflow-y-hidden text-ellipsis line-clamp-2">
                             {post?.Title}
@@ -122,18 +115,16 @@ export default function UserFooter() {
               </div>
               <div className="text-lg">
                 <p className="mb-6">
-                  <FontAwesomeIcon icon={faPhone} className="mr-4" />{" "}
-                  0867.585.366
+                  <PhoneFilled /> 0867.585.366
                 </p>
                 <p className="mb-6">
-                  <FontAwesomeIcon icon={faEnvelope} className="mr-4" />{" "}
-                  phongkhamhanoilaocai @gmail.com
+                  <ContactsFilled /> <span className="break-all">phongkhamhanoilaocai@gmail.com</span>
                 </p>
 
                 <p>
-                  <FontAwesomeIcon icon={faLocationPin} className="mr-4" />
-                  Địa chỉ: Số 022 đường Chiềng On, phường Bình Minh, thành phố
+                  <PushpinFilled /> Địa chỉ: Số 022 đường Chiềng On, phường Bình Minh, thành phố
                   Lào Cai, tỉnh Lào Cai
+
                 </p>
               </div>
             </div>

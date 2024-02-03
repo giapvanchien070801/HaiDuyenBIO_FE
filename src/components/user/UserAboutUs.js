@@ -1,7 +1,6 @@
 "use client";
 import Base from "@/models/Base";
-import { faCheck } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { CheckOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import { useQuery } from "react-query";
 
@@ -37,8 +36,7 @@ export default function UserAboutUs() {
         <ul className="services max-h-[19rem] overflow-y-scroll">
           {listDepartment?.map((department, index) => (
             <li key={index} className="font-semibold mb-4">
-              <FontAwesomeIcon icon={faCheck} className="text_ocean mr-2" />
-              {department?.Name}
+              <CheckOutlined className="text_ocean mr-2"/> {department?.Name}
             </li>
           ))}
         </ul>

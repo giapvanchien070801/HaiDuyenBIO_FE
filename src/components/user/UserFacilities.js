@@ -1,12 +1,4 @@
-import {
-  faCommentMedical,
-  faDoorOpen,
-  faHandHoldingDollar,
-  faHandshake,
-  faMicrochip,
-  faUserNurse,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { EuroCircleFilled, InfoCircleOutlined, MessageOutlined, OpenAIFilled, PlusCircleFilled, UserOutlined } from "@ant-design/icons";
 
 export default function UserFacilities() {
   return (
@@ -23,10 +15,7 @@ export default function UserFacilities() {
       <div className="flex mt-6 justify-center flex-wrap">
         <div className="facilities_container xl:basis-1/5 lg:basis-1/4 md:basis-1/3 basis-full mx-6 my-4">
           <p className="text-6xl text_ocean text-center">
-            <FontAwesomeIcon
-              icon={faDoorOpen}
-              className="icon transition-all duration-500"
-            />
+            <UserOutlined className="icon transition-all duration-500" />
           </p>
 
           <div className="flex justify-between items-center mt-2">
@@ -39,10 +28,7 @@ export default function UserFacilities() {
 
         <div className="facilities_container xl:basis-1/5 lg:basis-1/4 md:basis-1/3 basis-full mx-6 my-4">
           <p className="text-6xl text_ocean text-center">
-            <FontAwesomeIcon
-              icon={faUserNurse}
-              className="icon transition-all duration-500"
-            />
+            <PlusCircleFilled className="icon transition-all duration-500" />
           </p>
 
           <div className="flex justify-between items-center mt-2">
@@ -55,10 +41,7 @@ export default function UserFacilities() {
 
         <div className="facilities_container xl:basis-1/5 lg:basis-1/4 md:basis-1/3 basis-full mx-6 my-4">
           <p className="text-6xl text_ocean text-center">
-            <FontAwesomeIcon
-              icon={faCommentMedical}
-              className="icon transition-all duration-500"
-            />
+            <MessageOutlined className="icon transition-all duration-500" />
           </p>
 
           <div className="flex justify-between items-center mt-2">
@@ -71,10 +54,7 @@ export default function UserFacilities() {
 
         <div className="facilities_container xl:basis-1/5 lg:basis-1/4 md:basis-1/3 basis-full mx-6 my-4">
           <p className="text-6xl text_ocean text-center">
-            <FontAwesomeIcon
-              icon={faHandshake}
-              className="icon transition-all duration-500"
-            />
+            <InfoCircleOutlined className="icon transition-all duration-500" />
           </p>
 
           <div className="flex justify-between items-center mt-2">
@@ -87,10 +67,7 @@ export default function UserFacilities() {
 
         <div className="facilities_container xl:basis-1/5 lg:basis-1/4 md:basis-1/3 basis-full mx-6 my-4">
           <p className="text-6xl text_ocean text-center">
-            <FontAwesomeIcon
-              icon={faHandHoldingDollar}
-              className="icon transition-all duration-500"
-            />
+            <EuroCircleFilled className="icon transition-all duration-500" />
           </p>
 
           <div className="flex justify-between items-center mt-2">
@@ -103,10 +80,8 @@ export default function UserFacilities() {
 
         <div className="facilities_container xl:basis-1/5 lg:basis-1/4 md:basis-1/3 basis-full mx-6 my-4">
           <p className="text-6xl text_ocean text-center">
-            <FontAwesomeIcon
-              icon={faMicrochip}
-              className="icon transition-all duration-500"
-            />
+
+            <OpenAIFilled className="icon transition-all duration-500" />
           </p>
 
           <div className="flex justify-between items-center mt-2">

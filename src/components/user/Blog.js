@@ -2,15 +2,6 @@
 
 import { HomeOutlined } from "@ant-design/icons";
 import BannerBreadcrumb from "@/components/user/BannerBreadcrumb";
-import {
-  faAngleRight,
-  faComments,
-  faUser,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Suspense } from "react";
-import Comment from "./Comment";
-import Link from "next/link";
 import { useQuery } from "react-query";
 import Base from "@/models/Base";
 import SidebarUser from "./SidebarUser";
