@@ -1,8 +1,8 @@
 import axios from "axios";
 import { Cookies } from "react-cookie";
-// export const API_ROOT = "https://stagingonedx.vnpt-technology.vn:6443";
 // export const API_ROOT = "http://192.168.0.103:3017";
-export const API_ROOT = "http://localhost:3017";
+// export const API_ROOT = "http://localhost:3017";
+export const API_ROOT = "http://112.213.89.195:3007";
 
 const axiosInstance = axios.create({
   baseURL: API_ROOT,
