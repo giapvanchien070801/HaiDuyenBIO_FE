@@ -90,16 +90,18 @@ export default async function ListPage({ params }) {
                 />
               ))}
             </div>
-            <Pagination
-              onChange={(value) => {
-                setPagination({
-                  current: value,
-                  total: pagination.total,
-                  pageSize: pagination.pageSize,
-                });
-              }}
-              {...pagination}
-            />
+            {listPost?.length > 0 && (
+              <Pagination
+                onChange={(value) => {
+                  setPagination({
+                    current: value,
+                    total: pagination.total,
+                    pageSize: pagination.pageSize,
+                  });
+                }}
+                {...pagination}
+              />
+            )}
           </div>
           <div className="col-span-3 lg:block hidden">
             {/* search */}
