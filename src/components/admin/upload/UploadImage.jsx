@@ -4,6 +4,7 @@ import { UploadOutlined, PlusOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { handleSrcImg } from "../../../common/functions/commonFunction";
 import { Cookies } from "react-cookie";
+import { API_ROOT } from "@/models/Base";
 
 const UploadImage = (props) => {
   const { onChange, uploadType, imgDetail, resetValue } = props;
@@ -39,7 +40,7 @@ const UploadImage = (props) => {
     try {
       // Gửi yêu cầu tải lên bằng Axios
       const response = await axios.post(
-        "http://localhost:3017/api/upload/thumbnail",
+        `${API_ROOT}/api/upload/thumbnail`,
         formData,
         {
           headers: {
