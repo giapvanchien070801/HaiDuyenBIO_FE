@@ -12,6 +12,8 @@ import { useQuery } from "react-query";
 import Base from "@/models/Base";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import { Button, Popover } from "antd";
+
 export default function UserHeader() {
   const pathname = usePathname();
 
@@ -55,6 +57,68 @@ export default function UserHeader() {
     setActiveMobileMenu(!activeMobileMenu);
   };
 
+  const listSocial = [
+    {
+      id: 1,
+      name: "Menu 1",
+    },
+    {
+      id: 2,
+      name: "Menu 2",
+    },
+    {
+      id: 3,
+      name: "Menu 3",
+    },
+    {
+      id: 4,
+      name: "Menu 4",
+    },
+    {
+      id: 5,
+      name: "Menu 5",
+    },
+  ];
+
+  const menu2 = [
+    {
+      id: 1,
+      menu: "Menu 1",
+      submenu: [
+        {
+          id: 1,
+          name: "Submenu 1",
+        },
+        {
+          id: 2,
+          name: "Submenu 2",
+        },
+        {
+          id: 3,
+          name: "Submenu 3",
+        },
+      ],
+    },
+    {
+      id: 2,
+      menu: "Menu 2",
+      submenu: [
+        {
+          id: 1,
+          name: "Submenu 1",
+        },
+        {
+          id: 2,
+          name: "Submenu 2",
+        },
+        {
+          id: 3,
+          name: "Submenu 3",
+        },
+      ],
+    },
+  ];
+
   return (
     <header className="z-20 relative">
       <div
@@ -63,24 +127,23 @@ export default function UserHeader() {
         <div className="container mx-auto text-white flex justify-between">
           <div className="flex items-center">
             <p className="px-2 flex">
-              <PhoneFilled /> <span className="mx-2">0867.585.366</span>
+              <PhoneFilled /> <span className="mx-2">0123456789</span>
             </p>
             <p className="px-2 flex">
-              <MailFilled />{" "}
-              <span className="mx-2">phongkhamhanoilaocai@gmail.com</span>
+              <MailFilled /> <span className="mx-2">HaiDuyenBIO@gmail.com</span>
             </p>
           </div>
 
           <div className="flex items-center">
             <Link
               href={`https://www.facebook.com/profile.php?id=100057086214537&mibextid=ZbWKwL`}
-              className="text-lg py-4 px-4 flex hover:bg-cyan-400"
+              className="text-lg p-2 flex hover:bg-cyan-400"
             >
               <FacebookFilled />
             </Link>
             <Link
               href={`https://zalo.me/0867585366`}
-              className="text-lg p-2 flex hover:bg-cyan-400"
+              className="text-lg m-2 p-1 flex hover:bg-cyan-400"
             >
               Zalo
             </Link>
@@ -91,12 +154,7 @@ export default function UserHeader() {
       <div className="container mx-auto flex justify-between items-center z-20 bg-white py-4 lg:px-0 px-4">
         <Link href={`/`} className="lg:hidden xl:block">
           <div className="flex items-center">
-            <img src="/images/logo.png" className="w-14 h-14" />
-            <p
-              className={`${layoutUserStyle.text_logo} font-bold xl:text-xl lg:text-base ml-2 hidden sm:block lg:hidden xl:block`}
-            >
-              Phòng khám Đa khoa Hà Nội - Lào Cai
-            </p>
+            <img src="/images/logo-haiduyenbio-1.png" className=" h-14" />
           </div>
         </Link>
 
@@ -115,66 +173,116 @@ export default function UserHeader() {
                   <p>Trang chủ</p>
                 </Link>
               </li>
-
-              <li className={`h-full relative ${layoutUserStyle.menu_item}`}>
+              <li className="h-full relative">
                 <Link
-                  href={`#`}
-                  className="h-full flex items-center hover:text-cyan-600 transition-all duration-300 p-2"
+                  href={`/about`}
+                  className="h-full flex items-center p-2 hover:text-cyan-600 transition-all duration-300 py-2"
                 >
-                  Chuyên khoa
-                  <DownOutlined
-                    style={{ fontSize: "14px", marginLeft: "5px" }}
-                  />
+                  <p>Giới thiệu</p>
                 </Link>
-
-                <div
-                  className={`${layoutUserStyle.submenu} lg:absolute lg:w-max w-full z-20`}
-                >
-                  <ul className="w-max bg-white">
-                    {listDepartment?.map((department, index) => (
-                      <li key={index} className="w-full">
-                        {/* link đến tranh danh sách bài viết */}
-                        <Link
-                          href={`/department-detail/${department?.Id}`}
-                          as={`/department-detail/${department?.Id}`}
-                          className="hover:text-white block hover:bg-cyan-600 py-2 px-8 transition-all duration-300 lg:px-4 lg:py-2"
-                        >
-                          {department?.Name}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
               </li>
 
-              <li className={`h-full relative ${layoutUserStyle.menu_item}`}>
-                <Link
-                  href={`#`}
-                  className="h-full flex items-center hover:text-cyan-600 transition-all duration-300 p-2"
+              <li>
+                <Popover
+                  content={
+                    <ul className="w-max bg-white">
+                      {listSocial?.map((social, index) => (
+                        <li key={index} className="w-full">
+                          {/* link đến tranh danh sách bài viết */}
+                          <Link
+                            href={`/department-detail/${social?.id}`}
+                            as={`/department-detail/${social?.id}`}
+                            className="hover:text-white block hover:bg-cyan-600 py-2 px-8 transition-all duration-300 lg:px-4 lg:py-2 rounded"
+                          >
+                            {social?.name}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  }
+                  trigger="hover"
+                  placement="bottom"
                 >
-                  Dịch vụ
-                  <DownOutlined
-                    style={{ fontSize: "14px", marginLeft: "5px" }}
-                  />
-                </Link>
+                  <Link
+                    href={`#`}
+                    className="h-full flex items-center hover:text-cyan-600 transition-all duration-300 p-2"
+                  >
+                    Sản phẩm
+                    <DownOutlined
+                      style={{ fontSize: "14px", marginLeft: "5px" }}
+                    />
+                  </Link>
+                </Popover>
+              </li>
 
-                <div
-                  className={`${layoutUserStyle.submenu} lg:absolute lg:w-max w-full z-20`}
+              <li>
+                <Popover
+                  content={
+                    <div className="flex gap-4">
+                      {menu2?.map((menu, index) => (
+                        <ul className="w-max bg-white">
+                          <li className="text-lg font-bold">{menu?.menu}</li>
+                          {menu?.submenu?.map((submenu, index) => (
+                            <li key={index} className="w-full">
+                              <Link
+                                href={`/service-detail/${submenu?.id}`}
+                                as={`/service-detail/${submenu?.id}`}
+                                className="hover:text-white block hover:bg-cyan-600 py-2 px-8 transition-all duration-300 lg:px-4 lg:py-2 rounded"
+                              >
+                                {submenu?.name}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      ))}
+                    </div>
+                  }
+                  trigger="hover"
+                  placement="bottom"
                 >
-                  <ul className="w-max bg-white">
-                    {listService?.map((service, index) => (
-                      <li key={index} className="w-full">
-                        <Link
-                          href={`/service-detail/${service?.Id}`}
-                          as={`/service-detail/${service?.Id}`}
-                          className="hover:text-white block hover:bg-cyan-600 py-2 px-8 transition-all duration-300 lg:px-4 lg:py-2"
-                        >
-                          {service?.Name}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                  <Link
+                    href={`#`}
+                    className="h-full flex items-center hover:text-cyan-600 transition-all duration-300 p-2"
+                  >
+                    Nguyên liệu vi sinh
+                    <DownOutlined
+                      style={{ fontSize: "14px", marginLeft: "5px" }}
+                    />
+                  </Link>
+                </Popover>
+              </li>
+
+              <li>
+                <Popover
+                  content={
+                    <ul className="w-max bg-white">
+                      {listSocial?.map((social, index) => (
+                        <li key={index} className="w-full">
+                          {/* link đến tranh danh sách bài viết */}
+                          <Link
+                            href={`/department-detail/${social?.id}`}
+                            as={`/department-detail/${social?.id}`}
+                            className="hover:text-white block hover:bg-cyan-600 py-2 px-8 transition-all duration-300 lg:px-4 lg:py-2 rounded"
+                          >
+                            {social?.name}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  }
+                  trigger="hover"
+                  placement="bottom"
+                >
+                  <Link
+                    href={`#`}
+                    className="h-full flex items-center hover:text-cyan-600 transition-all duration-300 p-2"
+                  >
+                    Gia công vi sinh
+                    <DownOutlined
+                      style={{ fontSize: "14px", marginLeft: "5px" }}
+                    />
+                  </Link>
+                </Popover>
               </li>
 
               <li className="h-full relative">
@@ -182,7 +290,7 @@ export default function UserHeader() {
                   href={`/list-doctor`}
                   className="h-full flex items-center hover:text-cyan-600 transition-all duration-300 p-2"
                 >
-                  Đội ngũ bác sỹ
+                  Video
                 </Link>
               </li>
 
@@ -216,23 +324,14 @@ export default function UserHeader() {
                   </ul>
                 </div>
               </li>
-
-              <li className="h-full relative">
-                <Link
-                  href={`/contact`}
-                  className="h-full flex items-center hover:text-cyan-600 transition-all duration-300 p-2"
-                >
-                  Liên hệ
-                </Link>
-              </li>
             </ul>
           </div>
 
           <Link
-            href={`/add-appointment`}
-            className={`transition-all duration-300 flex items-center lg:p-4 lg:mr-2 p-2 py-4 text-white rounded-md hover:bg-slate-950 ${layoutUserStyle.apoiment}`}
+            href={`/contact`}
+            className={`transition-all duration-300 flex items-center lg:p-4 lg:mr-2 p-2 py-4 text-white rounded-md hover:bg-[#14457b] !bg-[#2cb1ab]`}
           >
-            Thêm lịch hẹn +
+            Liên hệ +
           </Link>
 
           <div className="search flex lg:hidden block">

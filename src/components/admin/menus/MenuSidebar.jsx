@@ -16,6 +16,10 @@ import {
   PictureOutlined,
   ContactsOutlined,
   ScheduleOutlined,
+  FullscreenOutlined,
+  OrderedListOutlined,
+  VideoCameraAddOutlined,
+  ShoppingCartOutlined,
 } from "@ant-design/icons";
 import CollapseMemuItem from "./CollapseMemuItem";
 
@@ -29,6 +33,51 @@ const MenuSidebar = (props) => {
       icon: <HomeOutlined />,
       pushTo: "/admin/home",
     },
+
+    // {
+    //   text: "Quản lý Đội ngũ",
+    //   icon: <UsergroupAddOutlined />,
+    //   listSubMenu: [
+    //     {
+    //       icon: <MenuOutlined className={`${isCloseMenu && "text-xs"}`} />,
+    //       text: "Danh sách nhân sự",
+    //       pushTo: "/admin/list-employee",
+    //     },
+    //   ],
+    // },
+    // {
+    //   text: "Quản lý Khoa",
+    //   icon: <PartitionOutlined />,
+    //   listSubMenu: [
+    //     {
+    //       icon: <UserOutlined className={`${isCloseMenu && "text-xs"}`} />,
+    //       text: "Danh sách Khoa",
+    //       pushTo: "/admin/departments",
+    //     },
+    //   ],
+    // },
+    {
+      text: "Quản lý Sản phẩm",
+      icon: <InsertRowAboveOutlined />,
+      listSubMenu: [
+        {
+          icon: (
+            <FullscreenOutlined className={`${isCloseMenu && "text-xs"}`} />
+          ),
+          text: "Danh mục Sản phẩm",
+          pushTo: "/admin/service/categories-service",
+        },
+        ,
+        {
+          icon: (
+            <OrderedListOutlined className={`${isCloseMenu && "text-xs"}`} />
+          ),
+          text: "Danh sách Sản phẩm",
+          pushTo: "/admin/service",
+        },
+      ],
+    },
+
     {
       text: "Quản trị nội dung",
       icon: <FileSearchOutlined />,
@@ -49,84 +98,63 @@ const MenuSidebar = (props) => {
     },
 
     {
-      text: "Quản lý Đội ngũ",
-      icon: <UsergroupAddOutlined />,
-      listSubMenu: [
-        {
-          icon: <MenuOutlined className={`${isCloseMenu && "text-xs"}`} />,
-          text: "Danh sách nhân sự",
-          pushTo: "/admin/list-employee",
-        },
-      ],
-    },
-    {
-      text: "Quản lý Khoa",
-      icon: <PartitionOutlined />,
-      listSubMenu: [
-        {
-          icon: <UserOutlined className={`${isCloseMenu && "text-xs"}`} />,
-          text: "Danh sách Khoa",
-          pushTo: "/admin/departments",
-        },
-      ],
-    },
-    {
-      text: "Quản lý Dịch vụ",
-      icon: <InsertRowAboveOutlined />,
-      listSubMenu: [
-        {
-          icon: <UserOutlined className={`${isCloseMenu && "text-xs"}`} />,
-          text: "Danh sách Dịch vụ",
-          pushTo: "/admin/service",
-        },
-      ],
-    },
-
-    {
-      text: "Quản lý Slide",
+      text: "Nguyên liệu vi sinh",
       icon: <PictureOutlined />,
       listSubMenu: [
         {
-          icon: <PictureOutlined className={`${isCloseMenu && "text-xs"}`} />,
-          text: "Danh sách ảnh",
-          pushTo: "/admin/list-image",
+          icon: (
+            <FullscreenOutlined className={`${isCloseMenu && "text-xs"}`} />
+          ),
+          text: "Loại nguyên liệu",
+          pushTo: "/admin/ingredient/categories-ingredient",
+        },
+        {
+          icon: (
+            <OrderedListOutlined className={`${isCloseMenu && "text-xs"}`} />
+          ),
+          text: "Danh sách nguyên liệu",
+          pushTo: "/admin/ingredient",
         },
       ],
     },
-
+    {
+      text: "Gia công vi sinh",
+      icon: <ScheduleOutlined />,
+      pushTo: "/admin/machining",
+      // listSubMenu: [
+      //   {
+      //     icon: <MenuOutlined className={`${isCloseMenu && "text-xs"}`} />,
+      //     text: "Danh sách lịch hẹn",
+      //     pushTo: "/admin/appointments",
+      //   },
+      // ],
+    },
     {
       text: "Quản lý Liên hệ",
       icon: <ContactsOutlined />,
-      listSubMenu: [
-        {
-          icon: <UploadOutlined className={`${isCloseMenu && "text-xs"}`} />,
-          text: "Danh sách liên hệ",
-          pushTo: "/admin/customer-contact",
-        },
-      ],
+      pushTo: "/admin/customer-contact",
+      // listSubMenu: [
+      //   {
+      //     icon: <ContactsOutlined  className={`${isCloseMenu && "text-xs"}`} />,
+      //     text: "Danh sách liên hệ",
+      //     pushTo: "/admin/customer-contact",
+      //   },
+      // ],
     },
     {
-      text: "Quản lý Lịch hẹn",
-      icon: <ScheduleOutlined />,
-      listSubMenu: [
-        {
-          icon: <MenuOutlined className={`${isCloseMenu && "text-xs"}`} />,
-          text: "Danh sách lịch hẹn",
-          pushTo: "/admin/appointments",
-        },
-      ],
+      text: "Quản lý Video",
+      icon: <VideoCameraAddOutlined />,
+      pushTo: "/admin/videos",
     },
-
+    {
+      text: "Quản lý đơn hàng",
+      icon: <ShoppingCartOutlined />,
+      pushTo: "/admin/orders",
+    },
     {
       text: "Quản lý Tài khoản",
       icon: <UserSwitchOutlined />,
-      listSubMenu: [
-        {
-          icon: <UserOutlined className={`${isCloseMenu && "text-xs"}`} />,
-          text: "Danh sách tài khoản",
-          pushTo: "/admin/accounts-admin",
-        },
-      ],
+      pushTo: "/admin/accounts-admin",
     },
   ];
 

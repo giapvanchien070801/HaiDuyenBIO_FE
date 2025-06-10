@@ -16,7 +16,12 @@ export default function UserSwiper() {
     },
     {}
   );
-
+  const listSliderFake = [
+    "https://haiduyenbio.com/wp-content/uploads/2024/07/vi-sinh-xu-ly-nuoc-min.jpg",
+    "https://haiduyenbio.com/wp-content/uploads/2024/07/sieu-men-duong-ruot-min.jpg",
+    "https://haiduyenbio.com/wp-content/uploads/2024/07/men-i-sinh-xu-ly-ao-nuoi-min.jpg",
+  ];
+  // handleSrcImg(slider)
   return (
     <Swiper
       spaceBetween={50}
@@ -28,12 +33,9 @@ export default function UserSwiper() {
         disableOnInteraction: false,
       }}
     >
-      {listSlider?.map((slider, index) => (
+      {listSliderFake?.map((slider, index) => (
         <SwiperSlide key={index}>
-          <img
-            src={handleSrcImg(slider)}
-            className="w-full slide-height"
-          />
+          <img src={slider} className="w-full slide-height" />
         </SwiperSlide>
       ))}
     </Swiper>

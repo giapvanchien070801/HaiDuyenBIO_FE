@@ -24,11 +24,11 @@ const LayoutUser = ({ children }) => {
           <div className="container mx-auto text-white flex justify-between">
             <div className="flex items-center">
               <p className="px-2 flex">
-                <PhoneFilled /> <span className="mx-2">0867.585.366</span>
+                <PhoneFilled /> <span className="mx-2">0123456789</span>
               </p>
               <p className="px-2 flex">
-                <MailFilled />{" "}
-                <span className="mx-2">phongkhamhanoilaocai@gmail.com</span>
+                <MailFilled />
+                <span className="mx-2">HaiDuyenBIO@gmail.com</span>
               </p>
             </div>
 

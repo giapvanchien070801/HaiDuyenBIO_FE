@@ -1,12 +1,7 @@
 "use client";
-import { Breadcrumb, Button, Input, Space, Table, Tag } from "antd";
-import {
-  HomeOutlined,
-  SearchOutlined,
-  PlusCircleOutlined,
-} from "@ant-design/icons";
-import { useState } from "react";
-import styled from "@emotion/styled";
+import { Breadcrumb } from "antd";
+import { HomeOutlined } from "@ant-design/icons";
+
 import dynamic from "next/dynamic";
 const CreateOrEdit = dynamic(
   () => import("@/components/admin/common/CreateOrEdit"),
@@ -14,8 +9,7 @@ const CreateOrEdit = dynamic(
     ssr: false,
   }
 );
-
-export default function CreateDepartment() {
+export default function CreateOrEditListPost() {
   const breadcrumb = [
     {
       href: "/admin/home",
@@ -27,18 +21,18 @@ export default function CreateDepartment() {
       ),
     },
     {
-      href: "/admin/departments",
+      href: "/admin/list-post",
       title: (
         <>
-          <span className="text-cyan-700">Danh sách khoa</span>
+          <span className="text-cyan-700">Danh sách nguyên liệu</span>
         </>
       ),
     },
     {
-      href: "/admin/departments/create",
+      href: "/admin/list-post/create",
       title: (
         <>
-          <span className="text-cyan-700">Tạo mới Khoa</span>
+          <span className="text-cyan-700">Tạo mới nguyên liệu</span>
         </>
       ),
     },
@@ -48,7 +42,7 @@ export default function CreateDepartment() {
     <div>
       <Breadcrumb className="mb-5" items={breadcrumb} />
 
-      <CreateOrEdit typePage="department" actionType="create" />
+      <CreateOrEdit typePage="post" actionType="create" />
     </div>
   );
 }

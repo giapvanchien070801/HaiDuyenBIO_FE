@@ -62,7 +62,11 @@ export default function AdminHomeLayout({ children }) {
           isCloseMenu ? "w-[70px]" : "w-64"
         }`}
       >
-        <img className="w-36 mb-5" src="/images/logo-login.png" alt="logo" />
+        <img
+          className="w-36 mb-4 mt-1"
+          src="/images/logo-haiduyenbio-1.png"
+          alt="logo"
+        />
 
         <MenuSidebar className="w-full h-full" isCloseMenu={isCloseMenu} />
       </div>

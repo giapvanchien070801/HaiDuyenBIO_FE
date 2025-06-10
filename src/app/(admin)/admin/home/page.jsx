@@ -29,12 +29,16 @@ export default function Dashboard() {
       <Breadcrumb className="mb-5" items={breadcrumb} />
       <div className="text-center">
         <p className="my-10 text-2xl">
-          Xin chào quản trị viên: {dataAdmin?.Name}
+          Xin chào quản trị viên! {dataAdmin?.Name}
         </p>
       </div>
 
       <div className="mx-auto">
-        <img src="/images/logo-login-cut.png" alt="logo" className="m-auto" />
+        <img
+          src="/images/logo-haiduyenbio-1.png"
+          alt="logo"
+          className="m-auto"
+        />
       </div>
     </div>
   );

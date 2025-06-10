@@ -3,40 +3,29 @@ import {
   Breadcrumb,
   Button,
   Input,
-  Table,
-  Space,
-  Tag,
-  Spin,
-  message,
   Popconfirm,
+  Space,
+  Spin,
+  Table,
+  message,
+  notification,
 } from "antd";
-import {
-  HomeOutlined,
-  SearchOutlined,
-  PlusCircleOutlined,
-} from "@ant-design/icons";
-import styled from "@emotion/styled";
+import { HomeOutlined, SearchOutlined } from "@ant-design/icons";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import styled from "@emotion/styled";
+import { useMutation, useQuery } from "react-query";
 import Base from "@/models/Base";
 import { useDebounce } from "../../../../common/functions/commonFunction";
-import { useMutation, useQuery } from "react-query";
 
-export default function Departments() {
-  const router = useRouter();
-
-  const handleGoCreateOrEdit = () => {
-    router.push("/admin/departments/create");
-  };
-
-  const [valueSearch, setValueSearch] = useState("");
-  const [idSelected, setIdSelected] = useState();
+export default function Appointments() {
+  const [valueSearchCate, setValueSearchCate] = useState("");
+  const [idCateSelected, setIdCateSelected] = useState();
 
   const [tableParams, setTableParams] = useState({
     pagination: {
       current: 1,
       pageSize: 5,
-      total: 20,
+      total: 200,
     },
   });
 
@@ -51,20 +40,20 @@ export default function Departments() {
     }
   };
 
-  const searchDebounce = useDebounce(valueSearch, 1000);
+  const searchDebounce = useDebounce(valueSearchCate, 1000);
   const {
-    data: listDepartment,
+    data: listSchedule,
     refetch,
     isFetching,
   } = useQuery(
     [
-      "getListDepartmentPagination",
+      "getListSchedulePagination",
       searchDebounce,
       tableParams.pagination.current,
       tableParams.pagination.pageSize,
     ],
     async () => {
-      const res = await Base.getListDepartmentPagination({
+      const res = await Base.getListSchedulePagination({
         Page: tableParams.pagination.current,
         Size: tableParams.pagination.pageSize,
         KeySearch: searchDebounce,
@@ -81,8 +70,12 @@ export default function Departments() {
       }
 
       return res?.Data;
+    },
+    {
+      enabled: false,
     }
   );
+
   const breadcrumb = [
     {
       href: "/admin/home",
@@ -97,25 +90,25 @@ export default function Departments() {
       href: "",
       title: (
         <>
-          <span className="text-cyan-700">Danh sách khoa</span>
+          <span className="text-cyan-700">Danh sách gia công vi sinh</span>
         </>
       ),
     },
   ];
 
-  const deleteMutate = useMutation(Base.deleteDepartment, {
+  const deleteScheduleMutate = useMutation(Base.deleteSchedule, {
     onSuccess: () => {
-      message.success("Xóa Khoa thành công!");
-      setIdSelected();
+      message.success("Xóa gia công vi sinh thành công!");
+      setIdCateSelected();
       refetch();
     },
     onError: (e) => {
-      message.error("Xóa Khoa thất bại!");
+      message.error("Xóa gia công vi sinh thất bại!");
     },
   });
 
-  const handleDelete = (e) => {
-    deleteMutate.mutate(idSelected);
+  const handleDeleteSchedule = (e) => {
+    deleteScheduleMutate.mutate(idCateSelected);
   };
 
   const columns = [
@@ -126,12 +119,23 @@ export default function Departments() {
       fixed: "left",
     },
     {
-      title: "Tên khoa",
-      dataIndex: "Name",
-      key: "Name",
+      title: "Tiêu đề",
+      dataIndex: "Title",
+      key: "Title",
       render: (text) => <a>{text}</a>,
+      width: 200,
     },
-
+    {
+      title: "Mô tả",
+      dataIndex: "Description",
+      key: "Description",
+      width: 300,
+    },
+    {
+      title: "Danh mục",
+      dataIndex: "CategoryName",
+      key: "CategoryName",
+    },
     {
       title: "Ngày tạo",
       dataIndex: "CreatedAt",
@@ -139,46 +143,44 @@ export default function Departments() {
     },
     {
       title: "Người tạo",
-      key: "CreatedBy",
-      dataIndex: "CreatedBy",
+      key: "AuthorName",
+      dataIndex: "AuthorName",
     },
     {
       title: "Hoạt động",
       key: "action",
-      render: (_, record) => {
-        return (
-          <Space size="middle">
-            <Button
-              size="middle"
-              className="border-teal-500 text-teal-500"
-              type="default"
-              onClick={() =>
-                router.push(`/admin/departments/edit/${record?.Id}`)
-              }
-            >
-              Xem chi tiết/Sửa
-            </Button>
+      render: (_, record) => (
+        <Space size="middle">
+          <Button
+            size="middle"
+            className="border-teal-500 text-teal-500"
+            type="default"
+            onClick={() => router.push(`/admin/list-post/edit/${record?.Id}`)}
+          >
+            Xem chi tiết/Sửa
+          </Button>
 
-            <Popconfirm
-              title="Xóa khoa"
-              description="Bạn có chắc chắn muốn xóa Khoa này?"
-              onConfirm={handleDelete}
-              okText="Xóa"
-              cancelText="Hủy"
-            >
-              <Button size="middle" type="default" danger>
-                Xóa
-              </Button>
-            </Popconfirm>
-          </Space>
-        );
-      },
+          <Popconfirm
+            title="Xóa vài viết"
+            description="Bạn có chắc chắn muốn xóa bài viết này?"
+            onConfirm={handleDelete}
+            okText="Xóa"
+            cancelText="Hủy"
+          >
+            <Button size="middle" type="default" danger>
+              Xóa
+            </Button>
+          </Popconfirm>
+        </Space>
+      ),
+      width: 200,
     },
   ];
 
   return (
     <div>
       <Breadcrumb className="mb-5" items={breadcrumb} />
+
       <Input
         allowClear
         prefix={
@@ -189,29 +191,21 @@ export default function Departments() {
           />
         }
         onChange={(e) => {
-          setValueSearch(e.target.value);
+          setValueSearchCate(e.target.value);
         }}
         className="w-1/3 mb-5"
         placeholder="Tìm kiếm"
       />
-      <Button
-        icon={<PlusCircleOutlined />}
-        size="middle"
-        type="primary"
-        className="float-right  bg-blue-700 text-white"
-        onClick={() => handleGoCreateOrEdit()}
-      >
-        Thêm mới
-      </Button>
+
       <Spin spinning={isFetching}>
         <CustomTable>
           <Table
             columns={columns}
-            dataSource={listDepartment}
+            dataSource={listSchedule}
             onRow={(record) => {
               return {
                 onClick: () => {
-                  setIdSelected(record.Id);
+                  setIdCateSelected(record.Id);
                 },
               };
             }}

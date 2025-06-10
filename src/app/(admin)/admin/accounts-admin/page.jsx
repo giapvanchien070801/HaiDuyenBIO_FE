@@ -1,5 +1,5 @@
 "use client";
-import { Breadcrumb, Input, Spin, Table } from "antd";
+import { Breadcrumb, Button, Form, Input, Spin, Table, message } from "antd";
 import {
   HomeOutlined,
   SearchOutlined,
@@ -8,69 +8,13 @@ import {
 import { useState } from "react";
 import styled from "@emotion/styled";
 import { useRouter } from "next/navigation";
-import { useQuery } from "react-query";
+import { useQuery, useMutation } from "react-query";
 import Base from "@/models/Base";
-
-import { useDebounce } from "../../../../common/functions/commonFunction";
-import ModalCreateAccount from "../../../../components/admin/modals/ModalCreateAccount";
+import { Cookies } from "react-cookie";
 
 export default function AccountAdmin() {
   const router = useRouter();
-
-  const [valueSearchCate, setValueSearchCate] = useState("");
-  const [idCateSelected, setIdCateSelected] = useState();
-
-  const [tableParams, setTableParams] = useState({
-    pagination: {
-      current: 1,
-      pageSize: 5,
-      total: 20,
-    },
-  });
-
-  const handleTableChange = (pagination, filters, sorter) => {
-    setTableParams({
-      pagination,
-      filters,
-      ...sorter,
-    });
-
-    if (pagination.pageSize !== tableParams.pagination?.pageSize) {
-    }
-  };
-
-  const searchDebounce = useDebounce(valueSearchCate, 1000);
-  const {
-    data: listCate,
-    refetch,
-    isFetching,
-  } = useQuery(
-    [
-      "getListCategory",
-      searchDebounce,
-      tableParams.pagination.current,
-      tableParams.pagination.pageSize,
-    ],
-    async () => {
-      const res = await Base.getListAccount({
-        Page: tableParams.pagination.current,
-        Size: tableParams.pagination.pageSize,
-        KeySearch: searchDebounce,
-      });
-
-      if (res.TotalRecord) {
-        setTableParams({
-          pagination: {
-            current: tableParams.pagination.current,
-            pageSize: tableParams.pagination.pageSize,
-            total: res.TotalRecord,
-          },
-        });
-      }
-
-      return res?.Data;
-    }
-  );
+  const cookies = new Cookies();
 
   const breadcrumb = [
     {
@@ -86,97 +30,89 @@ export default function AccountAdmin() {
       href: "",
       title: (
         <>
-          <span className="text-cyan-700">Danh sách tài khoản quản trị</span>
+          <span className="text-cyan-700">Tài khoản quản trị</span>
         </>
       ),
     },
   ];
 
-  const columns = [
-    {
-      title: "STT",
-      key: "stt",
-      dataIndex: "Id",
-      render: (value, item, index) => index,
-      fixed: "left",
+  const changePassMutate = useMutation(Base.changePass, {
+    onSuccess: () => {
+      message.success("Đổi mật khẩu thành công!");
+      cookies.remove("accessToken");
+      router.push("/login-admin");
     },
-    {
-      title: "Tên quản trị viên",
-      dataIndex: "Name",
-      key: "Name",
-      render: (text) => <a>{text}</a>,
+    onError: (e) => {
+      message.error("Đổi mật khẩu thất bại!");
     },
-    {
-      title: "Quyền",
-      dataIndex: "RoleName",
-      key: "RoleName",
-      render: (text) => <a>{text}</a>,
-    },
-    {
-      title: "Tài khoản",
-      dataIndex: "Account",
-      key: "Account",
-      render: (text) => <a>{text}</a>,
-    },
+  });
 
-    {
-      title: "Ngày tạo",
-      dataIndex: "CreatedAt",
-      key: "CreatedAt",
-    },
-  ];
+  const handleFinish = (values) => {
+    changePassMutate.mutate(values);
+  };
 
   return (
     <div>
       <Breadcrumb className="mb-5" items={breadcrumb} />
 
-      <Input
-        allowClear
-        prefix={
-          <SearchOutlined
-            style={{
-              color: "gray",
-            }}
-          />
-        }
-        onChange={(e) => {
-          setValueSearchCate(e.target.value);
-        }}
-        className="w-1/3 mb-5"
-        placeholder="Tìm kiếm"
-      />
-      <ModalCreateAccount modalType="create" refetchData={refetch} />
-      <Spin spinning={isFetching}>
-        <CustomTable>
-          <Table
-            columns={columns}
-            dataSource={listCate}
-            onRow={(record) => {
-              return {
-                onClick: () => {
-                  setIdCateSelected(record.Id);
-                },
-              };
-            }}
-            pagination={{
-              ...tableParams.pagination,
-              showSizeChanger: true, // Cho phép hiển thị Select chọn số lượng phần tử trên trang
-              pageSizeOptions: tableParams.pageSizeOptions, // Sử dụng pageSizeOptions từ tableParams
-            }}
-            onChange={handleTableChange}
-          />
-        </CustomTable>
-      </Spin>
+      <div className="max-w-xl mx-auto bg-white p-8 rounded-lg shadow-md">
+        <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+          Đổi mật khẩu
+        </h2>
+
+        <Spin spinning={changePassMutate.isLoading}>
+          <Form layout="vertical" onFinish={handleFinish}>
+            <Form.Item
+              label="Mật khẩu hiện tại"
+              name="currentPassword"
+              rules={[
+                { required: true, message: "Vui lòng nhập mật khẩu hiện tại!" },
+              ]}
+            >
+              <Input.Password
+                placeholder="Nhập mật khẩu hiện tại"
+                className="w-full"
+              />
+            </Form.Item>
+
+            <Form.Item
+              label="Mật khẩu mới"
+              name="newPassword"
+              rules={[
+                { required: true, message: "Vui lòng nhập mật khẩu mới!" },
+              ]}
+            >
+              <Input.Password
+                placeholder="Nhập mật khẩu mới"
+                className="w-full"
+              />
+            </Form.Item>
+
+            <Form.Item
+              label="Xác nhận mật khẩu mới"
+              name="confirmPassword"
+              rules={[
+                { required: true, message: "Vui lòng xác nhận mật khẩu mới!" },
+              ]}
+            >
+              <Input.Password
+                placeholder="Nhập lại mật khẩu mới"
+                className="w-full"
+              />
+            </Form.Item>
+
+            <Form.Item className="mb-0">
+              <Button
+                type="primary"
+                htmlType="submit"
+                className="w-full bg-blue-500"
+              >
+                Đổi mật khẩu
+              </Button>
+            </Form.Item>
+          </Form>
+        </Spin>
+      </div>
     </div>
   );
 }
-
-const CustomTable = styled.div`
-  & .ant-table-wrapper .ant-table-thead > tr > th,
-  :where(.css-dev-only-do-not-override-6j9yrn).ant-table-wrapper
-    .ant-table-thead
-    > tr
-    > td {
-    background: #cce3de;
-  }
-`;

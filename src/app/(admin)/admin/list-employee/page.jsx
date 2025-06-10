@@ -78,6 +78,9 @@ export default function ListEmployee() {
       }
 
       return res?.Data;
+    },
+    {
+      enabled: false,
     }
   );
 

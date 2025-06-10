@@ -4,7 +4,7 @@ import { PlusCircleOutlined } from "@ant-design/icons";
 import { useMutation, useQuery } from "react-query";
 import Base from "@/models/Base";
 
-const ModalCreateCategory = (props) => {
+const ModalCreateCategoryService = (props) => {
   const { modalType, refetchData, idCategory } = props;
 
   const isModalCreate = modalType === "create";
@@ -32,7 +32,7 @@ const ModalCreateCategory = (props) => {
 
   const createCateMutate = useMutation(Base.createCategory, {
     onSuccess: () => {
-      message.success("Tạo mới danh mục thành công!");
+      message.success("Tạo mới danh mục Sản phẩm thành công!");
       form.resetFields();
       if (refetchData) {
         refetchData();
@@ -40,12 +40,12 @@ const ModalCreateCategory = (props) => {
       setIsModalOpen(false);
     },
     onError: (e) => {
-      message.error("Tạo mới danh mục thất bại!");
+      message.error("Tạo mới danh mục Sản phẩm thất bại!");
     },
   });
   const updateCateMutate = useMutation(Base.updateCategory, {
     onSuccess: () => {
-      message.success("Sửa danh mục thành công!");
+      message.success("Sửa danh mục Sản phẩm thành công!");
       form.resetFields();
       if (refetchData) {
         refetchData();
@@ -53,7 +53,7 @@ const ModalCreateCategory = (props) => {
       setIsModalOpen(false);
     },
     onError: (e) => {
-      message.error("Sửa danh mục thất bại!");
+      message.error("Sửa danh mục Sản phẩm thất bại!");
     },
   });
 
@@ -108,7 +108,7 @@ const ModalCreateCategory = (props) => {
       )}
 
       <Modal
-        title={`${isModalCreate ? "Thêm" : "Sửa"} danh mục bài viết`}
+        title={`${isModalCreate ? "Thêm" : "Sửa"} danh mục Sản phẩm`}
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -126,17 +126,20 @@ const ModalCreateCategory = (props) => {
           layout="vertical"
         >
           <Form.Item
-            label="Tên danh mục"
+            label="Tên danh mục Sản phẩm"
             name="Name"
             rules={[
-              { required: true, message: "Tên danh mục không được bỏ trống!" },
+              {
+                required: true,
+                message: "Tên danh mục Sản phẩm không được bỏ trống!",
+              },
             ]}
           >
-            <Input placeholder="Nhập tên danh mục" />
+            <Input placeholder="Nhập tên danh mục Sản phẩm" />
           </Form.Item>
         </Form>
       </Modal>
     </>
   );
 };
-export default ModalCreateCategory;
+export default ModalCreateCategoryService;

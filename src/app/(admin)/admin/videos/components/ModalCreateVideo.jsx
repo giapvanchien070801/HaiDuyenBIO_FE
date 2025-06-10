@@ -4,7 +4,7 @@ import { PlusCircleOutlined } from "@ant-design/icons";
 import { useMutation, useQuery } from "react-query";
 import Base from "@/models/Base";
 
-const ModalCreateCategory = (props) => {
+const ModalCreateVideo = (props) => {
   const { modalType, refetchData, idCategory } = props;
 
   const isModalCreate = modalType === "create";
@@ -108,7 +108,7 @@ const ModalCreateCategory = (props) => {
       )}
 
       <Modal
-        title={`${isModalCreate ? "Thêm" : "Sửa"} danh mục bài viết`}
+        title={`${isModalCreate ? "Thêm" : "Sửa"} video`}
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -126,17 +126,24 @@ const ModalCreateCategory = (props) => {
           layout="vertical"
         >
           <Form.Item
-            label="Tên danh mục"
+            label="Link video"
             name="Name"
             rules={[
-              { required: true, message: "Tên danh mục không được bỏ trống!" },
+              { required: true, message: "Link video không được bỏ trống!" },
             ]}
           >
-            <Input placeholder="Nhập tên danh mục" />
+            <Input placeholder="Nhập link video" />
+          </Form.Item>
+          <Form.Item
+            label="Mô tả"
+            name="Description"
+            rules={[{ required: true, message: "Mô tả không được bỏ trống!" }]}
+          >
+            <Input.TextArea placeholder="Nhập mô tả" />
           </Form.Item>
         </Form>
       </Modal>
     </>
   );
 };
-export default ModalCreateCategory;
+export default ModalCreateVideo;

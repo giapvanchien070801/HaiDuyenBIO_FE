@@ -99,14 +99,14 @@ export default function ListPost() {
       href: "",
       title: (
         <>
-          <span className="text-cyan-700">Danh sách bài viết</span>
+          <span className="text-cyan-700">Danh sách nguyên liệu</span>
         </>
       ),
     },
   ];
 
   const handleGoCreateOrEdit = () => {
-    router.push("/admin/list-post/create");
+    router.push("/admin/ingredient/create");
   };
 
   const columns = [
@@ -117,7 +117,7 @@ export default function ListPost() {
       fixed: "left",
     },
     {
-      title: "Tiêu đề",
+      title: "Tên nguyên liệu",
       dataIndex: "Title",
       key: "Title",
       render: (text) => <a>{text}</a>,
@@ -153,14 +153,14 @@ export default function ListPost() {
             size="middle"
             className="border-teal-500 text-teal-500"
             type="default"
-            onClick={() => router.push(`/admin/list-post/edit/${record?.Id}`)}
+            onClick={() => router.push(`/admin/ingredient/edit/${record?.Id}`)}
           >
             Xem chi tiết/Sửa
           </Button>
 
           <Popconfirm
-            title="Xóa vài viết"
-            description="Bạn có chắc chắn muốn xóa bài viết này?"
+            title="Xóa nguyên liệu"
+            description="Bạn có chắc chắn muốn xóa nguyên liệu này?"
             onConfirm={handleDelete}
             okText="Xóa"
             cancelText="Hủy"
@@ -177,12 +177,12 @@ export default function ListPost() {
 
   const deleteMutate = useMutation(Base.deletePost, {
     onSuccess: () => {
-      message.success("Xóa bài viết thành công!");
+      message.success("Xóa nguyên liệu thành công!");
       setIdSelected();
       refetch();
     },
     onError: (e) => {
-      message.error("Xóa bài viết thất bại!");
+      message.error("Xóa nguyên liệu thất bại!");
     },
   });
 

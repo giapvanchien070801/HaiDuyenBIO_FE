@@ -78,6 +78,9 @@ export default function Categorys() {
       }
 
       return res?.Data;
+    },
+    {
+      enabled: false,
     }
   );
 

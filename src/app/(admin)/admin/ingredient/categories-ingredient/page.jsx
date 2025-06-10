@@ -10,14 +10,23 @@ import {
   message,
   notification,
 } from "antd";
-import { HomeOutlined, SearchOutlined } from "@ant-design/icons";
+import {
+  HomeOutlined,
+  SearchOutlined,
+  PlusCircleOutlined,
+} from "@ant-design/icons";
 import { useState } from "react";
 import styled from "@emotion/styled";
+import { useRouter } from "next/navigation";
 import { useMutation, useQuery } from "react-query";
 import Base from "@/models/Base";
-import { useDebounce } from "../../../../common/functions/commonFunction";
+import { useDebounce } from "@/common/functions/commonFunction";
+import ModalCreateCategoryService from "../components/ModalCreateCategoryIngredient";
+import ModalCreateCategoryIngredient from "../components/ModalCreateCategoryIngredient";
 
-export default function Appointments() {
+export default function Categorys() {
+  const router = useRouter();
+
   const [valueSearchCate, setValueSearchCate] = useState("");
   const [idCateSelected, setIdCateSelected] = useState();
 
@@ -25,7 +34,7 @@ export default function Appointments() {
     pagination: {
       current: 1,
       pageSize: 5,
-      total: 200,
+      total: 20,
     },
   });
 
@@ -42,18 +51,18 @@ export default function Appointments() {
 
   const searchDebounce = useDebounce(valueSearchCate, 1000);
   const {
-    data: listSchedule,
+    data: listCate,
     refetch,
     isFetching,
   } = useQuery(
     [
-      "getListSchedulePagination",
+      "getListCategory",
       searchDebounce,
       tableParams.pagination.current,
       tableParams.pagination.pageSize,
     ],
     async () => {
-      const res = await Base.getListSchedulePagination({
+      const res = await Base.getListCatePagination({
         Page: tableParams.pagination.current,
         Size: tableParams.pagination.pageSize,
         KeySearch: searchDebounce,
@@ -70,6 +79,9 @@ export default function Appointments() {
       }
 
       return res?.Data;
+    },
+    {
+      enabled: false,
     }
   );
 
@@ -87,25 +99,36 @@ export default function Appointments() {
       href: "",
       title: (
         <>
-          <span className="text-cyan-700">Danh sách lịch hẹn khám</span>
+          <span className="text-cyan-700">Danh mục nguyên liệu</span>
         </>
       ),
     },
   ];
 
-  const deleteScheduleMutate = useMutation(Base.deleteSchedule, {
+  const [api, contextHolder] = notification.useNotification();
+
+  const deleteCateMutate = useMutation(Base.deleteCategory, {
     onSuccess: () => {
-      message.success("Xóa lịch hẹn thành công!");
+      message.success("Xóa danh mục thành công!");
       setIdCateSelected();
       refetch();
     },
     onError: (e) => {
-      message.error("Xóa lịch hẹn thất bại!");
+      if (e?.response?.data?.Message === "Can not delete this category") {
+        // trường hợp danh mục Sản phẩm đã có Sản phẩm
+
+        api["error"]({
+          message: "Không thể xóa danh mục này",
+          description: "Đã có Sản phẩm thuộc danh mục này. Không thể xóa!",
+        });
+      } else {
+        message.error("Xóa danh mục thất bại!");
+      }
     },
   });
 
-  const handleDeleteSchedule = (e) => {
-    deleteScheduleMutate.mutate(idCateSelected);
+  const handleDeleteCate = (e) => {
+    deleteCateMutate.mutate(idCateSelected);
   };
 
   const columns = [
@@ -115,61 +138,38 @@ export default function Appointments() {
       dataIndex: "Id",
       render: (value, item, index) => index,
       fixed: "left",
-      width: 50,
     },
     {
-      title: "Họ và tên",
-      dataIndex: "FullName",
-      key: "FullName",
+      title: "Tên danh mục nguyên liệu",
+      dataIndex: "Name",
+      key: "Name",
       render: (text) => <a>{text}</a>,
-      width: 100,
     },
 
     {
-      title: "Email",
-      dataIndex: "Email",
-      key: "Email",
-      width: 150,
+      title: "Ngày tạo",
+      dataIndex: "CreatedAt",
+      key: "CreatedAt",
     },
     {
-      title: "Số điện thoại",
-      key: "PhoneNumber",
-      dataIndex: "PhoneNumber",
-      width: 100,
-    },
-    {
-      title: "Hẹn gặp với Bác sĩ",
-      key: "DoctorName",
-      dataIndex: "DoctorName",
-      width: 150,
-    },
-    {
-      title: "Ngày hẹn gặp",
-      key: "MeetDate",
-      dataIndex: "MeetDate",
-      width: 100,
-    },
-    {
-      title: "Thời gian hẹn gặp",
-      key: "MeetTime",
-      dataIndex: "MeetTime",
-      width: 100,
-    },
-    {
-      title: "Ghi chú",
-      key: "Note",
-      dataIndex: "Note",
-      width: 150,
+      title: "Người tạo",
+      key: "CreatedBy",
+      dataIndex: "CreatedBy",
     },
     {
       title: "Hoạt động",
       key: "action",
       render: (_, record) => (
         <Space size="middle">
+          <ModalCreateCategoryIngredient
+            modalType="edit"
+            idCategory={idCateSelected}
+            refetchData={refetch}
+          />
           <Popconfirm
-            title="Xóa lịch hẹn"
-            description="Bạn có chắc chắn muốn xóa lịch hẹn này?"
-            onConfirm={handleDeleteSchedule}
+            title="Xóa danh mục"
+            description="Bạn có chắc chắn muốn xóa danh mục này?"
+            onConfirm={handleDeleteCate}
             okText="Xóa"
             cancelText="Hủy"
           >
@@ -179,12 +179,12 @@ export default function Appointments() {
           </Popconfirm>
         </Space>
       ),
-      width: 50,
     },
   ];
 
   return (
     <div>
+      {contextHolder}
       <Breadcrumb className="mb-5" items={breadcrumb} />
 
       <Input
@@ -202,12 +202,12 @@ export default function Appointments() {
         className="w-1/3 mb-5"
         placeholder="Tìm kiếm"
       />
-
+      <ModalCreateCategoryService modalType="create" refetchData={refetch} />
       <Spin spinning={isFetching}>
         <CustomTable>
           <Table
             columns={columns}
-            dataSource={listSchedule}
+            dataSource={listCate}
             onRow={(record) => {
               return {
                 onClick: () => {

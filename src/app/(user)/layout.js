@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <title>Phòng Khám Đa Khoa Hà Nội Lào Cai</title>
+        <title>Hai Duyen Bio</title>
       </head>
       <body>
         <QueryClientProvider client={queryClient}>
@@ -25,7 +25,7 @@ export default function RootLayout({ children }) {
           <UserFooter />
         </QueryClientProvider>
 
-        <Script src="/scripts/ChatWithCustomer.js"/>
+        <Script src="/scripts/ChatWithCustomer.js" />
       </body>
     </html>
   );

@@ -1,10 +1,9 @@
 "use client";
 import { Breadcrumb } from "antd";
-import {
-  HomeOutlined,
-} from "@ant-design/icons";
+import { HomeOutlined } from "@ant-design/icons";
 
 import dynamic from "next/dynamic";
+import CreateOrEditService from "../components/CreateOrEditService";
 const CreateOrEdit = dynamic(
   () => import("@/components/admin/common/CreateOrEdit"),
   {
@@ -26,7 +25,7 @@ export default function CreateDepartment() {
       href: "/admin/service",
       title: (
         <>
-          <span className="text-cyan-700">Danh sách Dịch vụ</span>
+          <span className="text-cyan-700">Danh sách Sản phẩm</span>
         </>
       ),
     },
@@ -34,7 +33,7 @@ export default function CreateDepartment() {
       href: "",
       title: (
         <>
-          <span className="text-cyan-700">Tạo mới Dịch vụ</span>
+          <span className="text-cyan-700">Tạo mới Sản phẩm</span>
         </>
       ),
     },
@@ -44,7 +43,7 @@ export default function CreateDepartment() {
     <div>
       <Breadcrumb className="mb-5" items={breadcrumb} />
 
-      <CreateOrEdit typePage="service" actionType="create" />
+      <CreateOrEditService actionType="create" />
     </div>
   );
 }

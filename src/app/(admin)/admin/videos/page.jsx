@@ -10,16 +10,25 @@ import {
   message,
   notification,
 } from "antd";
-import { EyeOutlined, HomeOutlined, SearchOutlined } from "@ant-design/icons";
+import {
+  HomeOutlined,
+  SearchOutlined,
+  PlusCircleOutlined,
+} from "@ant-design/icons";
 import { useState } from "react";
 import styled from "@emotion/styled";
+import { useRouter } from "next/navigation";
 import { useMutation, useQuery } from "react-query";
 import Base from "@/models/Base";
+import ModalCreateCategory from "../../../../components/admin/modals/ModalCreateCategory";
 import { useDebounce } from "../../../../common/functions/commonFunction";
+import ModalCreateVideo from "./components/ModalCreateVideo";
 
-export default function CustomerContact() {
-  const [valueSearchContact, setValueSearchContact] = useState("");
-  const [idContactSelected, setIdContactSelected] = useState();
+export default function Categorys() {
+  const router = useRouter();
+
+  const [valueSearchCate, setValueSearchCate] = useState("");
+  const [idCateSelected, setIdCateSelected] = useState();
 
   const [tableParams, setTableParams] = useState({
     pagination: {
@@ -40,20 +49,20 @@ export default function CustomerContact() {
     }
   };
 
-  const searchDebounce = useDebounce(valueSearchContact, 1000);
+  const searchDebounce = useDebounce(valueSearchCate, 1000);
   const {
-    data: listContact,
+    data: listCate,
     refetch,
     isFetching,
   } = useQuery(
     [
-      "getListContactgory",
+      "getListCategory",
       searchDebounce,
       tableParams.pagination.current,
       tableParams.pagination.pageSize,
     ],
     async () => {
-      const res = await Base.getListContactPagination({
+      const res = await Base.getListCatePagination({
         Page: tableParams.pagination.current,
         Size: tableParams.pagination.pageSize,
         KeySearch: searchDebounce,
@@ -90,7 +99,7 @@ export default function CustomerContact() {
       href: "",
       title: (
         <>
-          <span className="text-cyan-700">Danh sách liên hệ</span>
+          <span className="text-cyan-700">Danh mục bài viết</span>
         </>
       ),
     },
@@ -98,28 +107,28 @@ export default function CustomerContact() {
 
   const [api, contextHolder] = notification.useNotification();
 
-  const deleteContactMutate = useMutation(Base.deleteContact, {
+  const deleteCateMutate = useMutation(Base.deleteCategory, {
     onSuccess: () => {
-      message.success("Xóa liên hệ thành công!");
-      setIdContactSelected();
+      message.success("Xóa danh mục thành công!");
+      setIdCateSelected();
       refetch();
     },
     onError: (e) => {
       if (e?.response?.data?.Message === "Can not delete this category") {
-        // trường hợp liên hệ bài viết đã có bài viết
+        // trường hợp danh mục bài viết đã có bài viết
 
         api["error"]({
-          message: "Không thể xóa liên hệ này",
-          description: "Đã có bài viết thuộc liên hệ này. Không thể xóa!",
+          message: "Không thể xóa danh mục này",
+          description: "Đã có bài viết thuộc danh mục này. Không thể xóa!",
         });
       } else {
-        message.error("Xóa liên hệ thất bại!");
+        message.error("Xóa danh mục thất bại!");
       }
     },
   });
 
-  const handleDeleteContact = (e) => {
-    deleteContactMutate.mutate(idContactSelected);
+  const handleDeleteCate = (e) => {
+    deleteCateMutate.mutate(idCateSelected);
   };
 
   const columns = [
@@ -131,49 +140,41 @@ export default function CustomerContact() {
       fixed: "left",
     },
     {
-      title: "Tên khách hàng",
+      title: "Link video",
       dataIndex: "Name",
       key: "Name",
       render: (text) => <a>{text}</a>,
     },
-    {
-      title: "Số điện thoại",
-      dataIndex: "PhoneNumber",
-      key: "PhoneNumber",
-      render: (text) => <a>{text}</a>,
-    },
 
     {
-      title: "Email",
-      dataIndex: "Email",
-      key: "Email",
-    },
-
-    {
-      title: "Lời nhắn",
-      dataIndex: "Message",
-      key: "Message",
+      title: "Ngày tạo",
+      dataIndex: "CreatedAt",
+      key: "CreatedAt",
     },
     {
-      title: "Trạng thái",
-      dataIndex: "Status",
-      key: "Status",
+      title: "Người tạo",
+      key: "CreatedBy",
+      dataIndex: "CreatedBy",
     },
-
     {
       title: "Hoạt động",
       key: "action",
       render: (_, record) => (
         <Space size="middle">
+          <ModalCreateVideo
+            modalType="edit"
+            idCategory={idCateSelected}
+            refetchData={refetch}
+          />
           <Popconfirm
-            title="Xóa liên hệ"
-            description="Bạn có chắc chắn muốn xóa liên hệ này?"
-            onConfirm={handleDeleteContact}
+            title="Xóa video"
+            description="Bạn có chắc chắn muốn xóa video này?"
+            onConfirm={handleDeleteCate}
             okText="Xóa"
             cancelText="Hủy"
           >
-            <Button size="middle" type="default" icon={<EyeOutlined />}>
-              Đã liên hệ
+            <Button size="middle" type="default" danger>
+              Xóa
             </Button>
           </Popconfirm>
         </Space>
@@ -196,21 +197,21 @@ export default function CustomerContact() {
           />
         }
         onChange={(e) => {
-          setValueSearchContact(e.target.value);
+          setValueSearchCate(e.target.value);
         }}
         className="w-1/3 mb-5"
         placeholder="Tìm kiếm"
       />
-
+      <ModalCreateVideo modalType="create" refetchData={refetch} />
       <Spin spinning={isFetching}>
         <CustomTable>
           <Table
             columns={columns}
-            dataSource={listContact}
+            dataSource={listCate}
             onRow={(record) => {
               return {
                 onClick: () => {
-                  setIdContactSelected(record.Id);
+                  setIdCateSelected(record.Id);
                 },
               };
             }}

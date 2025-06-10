@@ -80,6 +80,9 @@ export default function Services() {
       }
 
       return res?.Data;
+    },
+    {
+      enabled: false,
     }
   );
 
@@ -97,7 +100,7 @@ export default function Services() {
       href: "",
       title: (
         <>
-          <span className="text-cyan-700">Danh sách Dịch vụ</span>
+          <span className="text-cyan-700">Danh sách Sản phẩm</span>
         </>
       ),
     },
@@ -110,7 +113,7 @@ export default function Services() {
       render: (value, item, index) => index,
     },
     {
-      title: "Tên dịch vụ",
+      title: "Tên Sản phẩm",
       dataIndex: "Name",
       key: "Name",
       render: (text) => <a>{text}</a>,
@@ -141,8 +144,8 @@ export default function Services() {
           </Button>
 
           <Popconfirm
-            title="Xóa dịch vụ"
-            description="Bạn có chắc chắn muốn xóa dịch vụ này?"
+            title="Xóa Sản phẩm"
+            description="Bạn có chắc chắn muốn xóa Sản phẩm này?"
             onConfirm={handleDelete}
             okText="Xóa"
             cancelText="Hủy"
@@ -158,12 +161,12 @@ export default function Services() {
 
   const deleteMutate = useMutation(Base.deleteService, {
     onSuccess: () => {
-      message.success("Xóa dịch vụ thành công!");
+      message.success("Xóa Sản phẩm thành công!");
       setIdSelected();
       refetch();
     },
     onError: (e) => {
-      message.error("Xóa dịch vụ thất bại!");
+      message.error("Xóa Sản phẩm thất bại!");
     },
   });
 
