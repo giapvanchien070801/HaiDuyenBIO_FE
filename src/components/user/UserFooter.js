@@ -39,14 +39,14 @@ export default function UserFooter() {
     {
       Id: 2,
       Title: "Bài viết 2",
-      ImagePath: "/images/post2.jpg",
+      ImagePath: "/images/post1.jpg",
       CreatedAt: "2021-01-02",
       CategoryId: 1,
     },
     {
       Id: 3,
       Title: "Bài viết 3",
-      ImagePath: "/images/post3.jpg",
+      ImagePath: "/images/post1.jpg",
       CreatedAt: "2021-01-03",
       CategoryId: 1,
     },
@@ -111,7 +111,7 @@ export default function UserFooter() {
                         <div>
                           <div className="w-20 h-20">
                             <img
-                              src={handleSrcImg(post?.ImagePath)}
+                              src={post?.ImagePath}
                               className="w-full h-full"
                             />
                           </div>
@@ -162,7 +162,7 @@ export default function UserFooter() {
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d59472.50910802227!2d106.578903!3d21.309759!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x314a9e7eff3b02c7%3A0x4151a2dcebea0d91!2zTmFtIMSQaeG7h24sIEzhu6VjIE5n4bqhbiwgQuG6r2MgR2lhbmcsIFZp4buHdCBOYW0!5e0!3m2!1svi!2sus!4v1749575243560!5m2!1svi!2sus"
                 width="100%"
-                height="100%"
+                height="80%"
                 // style="border:0;"
                 allowfullscreen=""
                 loading="lazy"
