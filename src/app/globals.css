@@ -166,8 +166,10 @@ h6 {
   transition: 0.5s;
 }
 .main-sidebar {
-  box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08),
-    0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+  box-shadow:
+    0 6px 16px 0 rgba(0, 0, 0, 0.08),
+    0 3px 6px -4px rgba(0, 0, 0, 0.12),
+    0 9px 28px 8px rgba(0, 0, 0, 0.05);
 }
 .item-collapse-menu {
   height: 40px;
@@ -373,8 +375,12 @@ h6 {
   transition: 0.8s;
 }
 
-.card-doctor:hover img {
+.card-product:hover img {
   transform: scale(1.2);
+}
+
+.card-product img {
+  transition: 0.5s;
 }
 
 .calender-card {

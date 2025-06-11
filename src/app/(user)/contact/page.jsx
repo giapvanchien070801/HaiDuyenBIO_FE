@@ -5,10 +5,10 @@ import { MailOutlined, PhoneFilled, PushpinFilled } from "@ant-design/icons";
 import { HomeOutlined } from "@ant-design/icons";
 import CardContact from "@/components/user/CardContact";
 import styled from "@emotion/styled";
-import BannerBreadcrumb from "@/components/user/BannerBreadcrumb";
+import BannerBreadcrumb from "@/components/user/common-component/BannerBreadcrumb";
 import { useMutation } from "react-query";
 import Base from "@/models/Base";
-import UserSwiper from "@/components/user/UserSwiper";
+import UserSwiper from "@/components/user/common-component/UserSwiper";
 const { TextArea } = Input;
 
 export default function Contact() {

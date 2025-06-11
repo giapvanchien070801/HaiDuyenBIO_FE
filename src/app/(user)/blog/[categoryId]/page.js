@@ -7,9 +7,9 @@ import { handleSrcImg } from "@/common/functions/commonFunction";
 import { useQuery } from "react-query";
 import Base from "@/models/Base";
 
-import BannerBreadcrumb from "@/components/user/BannerBreadcrumb";
+import BannerBreadcrumb from "@/components/user/common-component/BannerBreadcrumb";
 import CardLatestBlog from "@/components/user/CardLatestBlog";
-import SidebarUser from "@/components/user/SidebarUser";
+import SidebarUser from "@/components/user/common-component/SidebarUser";
 import { Pagination, Spin } from "antd";
 
 import SearchCommon from "@/components/user/SearchCommon";
