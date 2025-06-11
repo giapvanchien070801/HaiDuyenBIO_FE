@@ -3,7 +3,7 @@
 import { Collapse, Spin } from "antd";
 import { HomeOutlined, RightOutlined } from "@ant-design/icons";
 import styled from "@emotion/styled";
-import BannerBreadcrumb from "@/components/user/BannerBreadcrumb";
+import BannerBreadcrumb from "@/components/user/common-component/BannerBreadcrumb";
 import Link from "next/link";
 import { useQuery } from "react-query";
 import Base from "@/models/Base";

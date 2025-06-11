@@ -2,35 +2,60 @@
 
 import { RightOutlined } from "@ant-design/icons";
 import Link from "next/link";
-import { useQuery } from "react-query";
-import Base from "@/models/Base";
 
 export default function SidebarUser(props) {
   const { breadcrumb, title } = props;
 
-  // api lấy danh sách tất cả thể loại
-  const { data: listCategory } = useQuery(
-    ["getAllCateMenu"],
-    async () => {
-      const res = await Base.getAllCategory();
-      return res;
+  const listCategory = [
+    {
+      Id: 1,
+      Name: "Sức khỏe tiêu hóa",
     },
-    {}
-  );
-  const { data: listService } = useQuery(["getListServiceUser"], async () => {
-    const res = await Base.getListServicePagination({
-      Page: 1,
-      Size: 5,
-      KeySearch: "",
-    });
+    {
+      Id: 2,
+      Name: "Vitamin & khoáng chất",
+    },
+    {
+      Id: 3,
+      Name: "Thực phẩm chức năng",
+    },
+    {
+      Id: 4,
+      Name: "Thuốc không kê đơn",
+    },
+    {
+      Id: 5,
+      Name: "Chăm sóc sức khỏe",
+    },
+  ];
 
-    return res?.Data;
-  });
+  const listService = [
+    {
+      Id: 1,
+      Name: "Men vi sinh Bifido",
+    },
+    {
+      Id: 2,
+      Name: "Men vi sinh Lacto",
+    },
+    {
+      Id: 3,
+      Name: "Men vi sinh Premium",
+    },
+    {
+      Id: 4,
+      Name: "Men vi sinh Plus",
+    },
+    {
+      Id: 5,
+      Name: "Men vi sinh Gold",
+    },
+  ];
 
   return (
     <div className="another col-span-3 lg:block hidden">
       <div className="categories-blog py-8 pl-4">
-        <p className="text-3xl mb-4">Thể Loại</p>
+        <p className="text-3xl mb-4">Bài viết mới nhất</p>
         {listCategory?.map((category, index) => (
           <p className="my-4" key={index}>
             <Link
@@ -45,7 +70,7 @@ export default function SidebarUser(props) {
       </div>
 
       <div className="categories-blog py-8 pl-4 mt-16">
-        <p className="text-3xl mb-4">Dịch Vụ</p>
+        <p className="text-3xl mb-4">Sản phẩm bán chạy</p>
         {listService?.map((service, index) => (
           <p className="my-4" key={index}>
             <Link

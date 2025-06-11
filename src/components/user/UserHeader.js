@@ -127,7 +127,7 @@ export default function UserHeader() {
         <div className="container mx-auto text-white flex justify-between">
           <div className="flex items-center">
             <p className="px-2 flex">
-              <PhoneFilled /> <span className="mx-2">0123456789</span>
+              <PhoneFilled /> <span className="mx-2">085.489.1993</span>
             </p>
             <p className="px-2 flex">
               <MailFilled /> <span className="mx-2">HaiDuyenBIO@gmail.com</span>
@@ -161,7 +161,7 @@ export default function UserHeader() {
         <div className="flex justify-between lg:w-full xl:w-fit">
           <div className="navbar self-stretch lg:static absolute bg-white z-10 top-full w-full lg:w-fit left-0">
             <ul
-              className={`lg:flex items-center h-full md:container md:mx-auto lg:p-0 p-4 ${
+              className={`lg:flex items-center h-full md:container md:mx-auto lg:p-0 p-4 gap-2 ${
                 activeMobileMenu ? "lg:block" : "hidden lg:block"
               }`}
             >
@@ -190,8 +190,8 @@ export default function UserHeader() {
                         <li key={index} className="w-full">
                           {/* link đến tranh danh sách bài viết */}
                           <Link
-                            href={`/department-detail/${social?.id}`}
-                            as={`/department-detail/${social?.id}`}
+                            href={`/product-detail/${social?.id}`}
+                            as={`/product-detail/${social?.id}`}
                             className="hover:text-white block hover:bg-cyan-600 py-2 px-8 transition-all duration-300 lg:px-4 lg:py-2 rounded"
                           >
                             {social?.name}
@@ -287,49 +287,27 @@ export default function UserHeader() {
 
               <li className="h-full relative">
                 <Link
-                  href={`/list-doctor`}
+                  href={`/news`}
+                  className="h-full flex items-center p-2 hover:text-cyan-600 transition-all duration-300 py-2"
+                >
+                  <p>Tin tức</p>
+                </Link>
+              </li>
+
+              <li className="h-full relative">
+                <Link
+                  href={`/list-videos`}
                   className="h-full flex items-center hover:text-cyan-600 transition-all duration-300 p-2"
                 >
                   Video
                 </Link>
-              </li>
-
-              <li className={`h-full relative ${layoutUserStyle.menu_item}`}>
-                <Link
-                  href={`#`}
-                  className="h-full flex items-center hover:text-cyan-600 transition-all duration-300 p-2"
-                >
-                  Tin tức
-                  <DownOutlined
-                    style={{ fontSize: "14px", marginLeft: "5px" }}
-                  />
-                </Link>
-
-                <div
-                  className={`${layoutUserStyle.submenu} lg:absolute lg:w-max w-full z-20`}
-                >
-                  <ul className="w-max bg-white">
-                    {listCategory?.map((category, index) => (
-                      <li key={index} className="w-full">
-                        {/* link đến tranh danh sách bài viết */}
-                        <Link
-                          href={`/blog/${category?.Id}`}
-                          as={`/blog/${category?.Id}`}
-                          className="hover:text-white block hover:bg-cyan-600 py-2 px-8 transition-all duration-300 lg:px-4 lg:py-2"
-                        >
-                          {category?.Name}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
               </li>
             </ul>
           </div>
 
           <Link
             href={`/contact`}
-            className={`transition-all duration-300 flex items-center lg:p-4 lg:mr-2 p-2 py-4 text-white rounded-md hover:bg-[#14457b] !bg-[#2cb1ab]`}
+            className={`transition-all ml-2 duration-300 flex items-center lg:p-4 lg:mr-2 p-2 py-4 text-white rounded-md hover:bg-[#14457b] !bg-[#2cb1ab]`}
           >
             Liên hệ +
           </Link>
