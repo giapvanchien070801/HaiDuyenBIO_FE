@@ -59,8 +59,8 @@ export default function SidebarUser(props) {
         {listCategory?.map((category, index) => (
           <p className="my-4" key={index}>
             <Link
-              href={`/blog/${category?.Id}`}
-              as={`/blog/${category?.Id}`}
+              href={`/news/${category?.Id}`}
+              as={`/news/${category?.Id}`}
               className="capitalize categorie-link transition-all duration-500"
             >
               <RightOutlined className="text_ocean" /> {category?.Name}
@@ -74,8 +74,8 @@ export default function SidebarUser(props) {
         {listService?.map((service, index) => (
           <p className="my-4" key={index}>
             <Link
-              href={`/service-detail/${service?.Id}`}
-              as={`/service-detail/${service?.Id}`}
+              href={`/product-detail/${service?.Id}`}
+              as={`/product-detail/${service?.Id}`}
               className="capitalize categorie-link transition-all duration-500"
             >
               <RightOutlined className="text_ocean" /> {service?.Name}

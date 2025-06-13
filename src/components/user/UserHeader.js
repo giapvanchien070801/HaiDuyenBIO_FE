@@ -6,13 +6,14 @@ import {
   MailFilled,
   FacebookFilled,
   MenuOutlined,
+  ShoppingOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";
 import { useQuery } from "react-query";
 import Base from "@/models/Base";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { Button, Popover } from "antd";
+import { Button, Popover, Tooltip } from "antd";
 
 export default function UserHeader() {
   const pathname = usePathname();
@@ -147,6 +148,12 @@ export default function UserHeader() {
             >
               Zalo
             </Link>
+
+            <Link href={`/shopping/step1`}>
+              <Tooltip title="Giỏ hàng">
+                <ShoppingOutlined className="text-2xl p-4 cursor-pointer flex hover:bg-cyan-400 animate-bounce hover:animate-none" />
+              </Tooltip>
+            </Link>
           </div>
         </div>
       </div>
@@ -170,7 +177,7 @@ export default function UserHeader() {
                   href={`/`}
                   className="h-full flex items-center p-2 hover:text-cyan-600 transition-all duration-300 py-2"
                 >
-                  <p>Trang chủ</p>
+                  <p>Trang chủ</p>
                 </Link>
               </li>
               <li className="h-full relative">
@@ -225,8 +232,8 @@ export default function UserHeader() {
                           {menu?.submenu?.map((submenu, index) => (
                             <li key={index} className="w-full">
                               <Link
-                                href={`/service-detail/${submenu?.id}`}
-                                as={`/service-detail/${submenu?.id}`}
+                                href={`/news/${submenu?.id}`}
+                                as={`/news/${submenu?.id}`}
                                 className="hover:text-white block hover:bg-cyan-600 py-2 px-8 transition-all duration-300 lg:px-4 lg:py-2 rounded"
                               >
                                 {submenu?.name}
@@ -260,8 +267,8 @@ export default function UserHeader() {
                         <li key={index} className="w-full">
                           {/* link đến tranh danh sách bài viết */}
                           <Link
-                            href={`/department-detail/${social?.id}`}
-                            as={`/department-detail/${social?.id}`}
+                            href={`/news/${social?.id}`}
+                            as={`/news/${social?.id}`}
                             className="hover:text-white block hover:bg-cyan-600 py-2 px-8 transition-all duration-300 lg:px-4 lg:py-2 rounded"
                           >
                             {social?.name}

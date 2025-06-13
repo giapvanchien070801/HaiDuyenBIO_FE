@@ -5,6 +5,7 @@ import SidebarUser from "@/components/user/common-component/SidebarUser";
 import { Breadcrumb, Pagination, Spin } from "antd";
 
 import { useState } from "react";
+import CardPNews from "@/components/user/common-component/CardPNews";
 
 export default function NewsPage() {
   const news = [
@@ -88,30 +89,7 @@ export default function NewsPage() {
           <Spin spinning={false}>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {news.map((item) => (
-                <div
-                  key={item.id}
-                  className="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden hover:shadow-lg transition duration-300"
-                >
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    className="w-full h-48 object-cover"
-                  />
-                  <div className="p-4">
-                    <h3 className="text-xl font-semibold mb-2 hover:text-cyan-600 transition-colors duration-300">
-                      {item.title}
-                    </h3>
-                    <p className="text-gray-600 text-sm mb-3">
-                      {item.description}
-                    </p>
-                    <div className="flex items-center text-gray-500 text-sm">
-                      <ClockCircleOutlined className="mr-1" />
-                      <span>
-                        {new Date(item.publishDate).toLocaleDateString("vi-VN")}
-                      </span>
-                    </div>
-                  </div>
-                </div>
+                <CardPNews key={item.id} dataNews={item} />
               ))}
             </div>
             <div className="flex justify-center my-4">

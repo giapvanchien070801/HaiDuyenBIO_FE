@@ -141,7 +141,7 @@ export default function ProductDetailPage({ params }) {
       href: "/contact",
       title: (
         <>
-          <span className="text-[#2490eb]">Sản phẩm 1</span>
+          <span className="text-[#2490eb]">Bài viết 11</span>
         </>
       ),
     },
@@ -155,22 +155,8 @@ export default function ProductDetailPage({ params }) {
         <div className="blog-content col-span-7 bg-white md:px-0 px-4">
           <Breadcrumb className="my-5" items={breadcrumb} />
 
-          <TitleList title="Danh sách sản phẩm" />
+          <TitleList title="Bài viết 11" />
           <Spin spinning={false}>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
-              {products.map((product) => (
-                <CardProduct key={product.id} product={product} />
-              ))}
-            </div>
-            <div className="flex justify-center my-4">
-              <Pagination
-                className="p-0"
-                total={products.length}
-                pageSize={3}
-                showSizeChanger={false}
-              />
-            </div>
-
             <div
               dangerouslySetInnerHTML={{ __html: valueTextEditor }}
               className="blog-content my-5"
