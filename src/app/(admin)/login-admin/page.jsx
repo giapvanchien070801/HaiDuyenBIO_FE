@@ -35,6 +35,7 @@ function LoginPage() {
   });
 
   const handleSunmit = () => {
+    router.push("/admin/home");
     form.submit();
 
     const listFieldName = ["password", "account"];
