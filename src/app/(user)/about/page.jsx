@@ -1,5 +1,7 @@
 "use client";
 
+import dynamic from "next/dynamic";
+
 import {
   HomeOutlined,
   GlobalOutlined,
@@ -11,18 +13,23 @@ import {
   PhoneOutlined,
   ArrowRightOutlined,
 } from "@ant-design/icons";
-import BannerBreadcrumb from "@/components/user/common-component/BannerBreadcrumb";
-import { useQuery } from "react-query";
-import Base from "@/models/Base";
-import SidebarUser from "@/components/user/common-component/SidebarUser";
-import { Breadcrumb, Pagination, Spin } from "antd";
-import UserSwiper from "@/components/user/common-component/UserSwiper";
-import ListCardProduct from "@/components/user/common-component/ListCardProduct";
-import CardProduct from "@/components/user/common-component/CardProduct";
-import TextEditor from "@/components/admin/common/TextEditor";
-import { useState } from "react";
-import TitleList from "@/components/user/common-component/TitleList";
 import { useRouter } from "next/navigation";
+import { Breadcrumb, Spin } from "antd";
+
+// Dynamically import components
+const SidebarUser = dynamic(
+  () => import("@/components/user/common-component/SidebarUser"),
+  {
+    ssr: false,
+  }
+);
+
+const TitleList = dynamic(
+  () => import("@/components/user/common-component/TitleList"),
+  {
+    ssr: false,
+  }
+);
 
 export default function AboutPage({ params }) {
   const router = useRouter();
