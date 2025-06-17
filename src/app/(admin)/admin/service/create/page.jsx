@@ -1,15 +1,24 @@
 "use client";
 import { Breadcrumb } from "antd";
 import { HomeOutlined } from "@ant-design/icons";
-
 import dynamic from "next/dynamic";
-import CreateOrEditService from "../components/CreateOrEditService";
+
+// Dynamic import cho CreateOrEditService
+const CreateOrEditService = dynamic(
+  () => import("../components/CreateOrEditService"),
+  {
+    ssr: false,
+    loading: () => <div>Đang tải...</div>,
+  }
+);
+
 const CreateOrEdit = dynamic(
   () => import("@/components/admin/common/CreateOrEdit"),
   {
     ssr: false,
   }
 );
+
 export default function CreateDepartment() {
   const breadcrumb = [
     {
@@ -42,7 +51,6 @@ export default function CreateDepartment() {
   return (
     <div>
       <Breadcrumb className="mb-5" items={breadcrumb} />
-
       <CreateOrEditService actionType="create" />
     </div>
   );
