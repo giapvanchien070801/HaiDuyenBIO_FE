@@ -101,8 +101,12 @@ export default function ShoppingPage({ params }) {
               current={Number(stepCurrent.replace("step", "") - 1)}
             />
 
-            {stepCurrent === "step1" && <ShoppingStep1 />}
-            {stepCurrent === "step2" && <ShoppingStep2 />}
+            {stepCurrent === "step1" && (
+              <ShoppingStep1 setStep={setStepCurrent} />
+            )}
+            {stepCurrent === "step2" && (
+              <ShoppingStep2 setStep={setStepCurrent} />
+            )}
             {stepCurrent === "step3" && (
               <Result
                 status="success"
@@ -112,11 +116,18 @@ export default function ShoppingPage({ params }) {
                   <Button
                     type="default"
                     key="console"
-                    onClick={() => router.push("/shopping/step1")}
+                    onClick={() => {
+                      setStepCurrent("step1");
+                    }}
                   >
                     Về giỏ hàng
                   </Button>,
-                  <Button className="!bg-[#2cb1ab] !text-white">
+                  <Button
+                    className="!bg-[#2cb1ab] !text-white"
+                    onClick={() => {
+                      router.push("/");
+                    }}
+                  >
                     Mua hàng tiếp
                   </Button>,
                 ]}

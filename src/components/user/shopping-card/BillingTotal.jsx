@@ -8,7 +8,7 @@ import {
 } from "@ant-design/icons";
 import { Button } from "antd";
 
-export default function BillingTotal() {
+export default function BillingTotal({ setStep }) {
   return (
     <div className="bg-white p-6 rounded-lg shadow-md w-1/3">
       <h2 className="text-2xl font-semibold mb-6 border-b pb-4 flex items-center gap-2">
@@ -47,6 +47,9 @@ export default function BillingTotal() {
           size="large"
           type="default"
           className="w-full bg-[#2cb1ab] text-white py-3 rounded-lg hover:bg-[#2cb1ab] transition duration-200 mt-6 flex items-center justify-center gap-2"
+          onClick={() => {
+            setStep("step2");
+          }}
         >
           <ShoppingCartOutlined />
           Tiến hành thanh toán
