@@ -35,6 +35,7 @@ function LoginPage() {
   });
 
   const handleSunmit = () => {
+    router.push("/admin/home");
     form.submit();
 
     const listFieldName = ["password", "account"];
@@ -103,7 +104,7 @@ function LoginPage() {
         </div>
         <div className="w-1/2 bg-[#2ba191] flex items-center flex-col justify-center">
           <p className="text-white mb-3 text-4xl font-mono">Wellcom Back</p>
-          <img src="/images/logo-login-cut.png" alt="logo" />
+          <img src="/images/LOGO.JPG" alt="logo" />
         </div>
       </div>
     </div>

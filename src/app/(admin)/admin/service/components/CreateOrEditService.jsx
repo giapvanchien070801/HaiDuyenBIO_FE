@@ -53,14 +53,12 @@ const CreateOrEditService = (props) => {
     if (isCreate) {
       const valueCreate = {
         ...values,
-        Description: valueTextEditor,
       };
       createServiceMutate.mutate(valueCreate);
     } else {
       const valueUpdate = {
         Id: id,
         ...values,
-        Description: valueTextEditor,
       };
       updateServiceMutate.mutate(valueUpdate);
     }
