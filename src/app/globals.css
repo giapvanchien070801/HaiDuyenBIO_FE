@@ -424,25 +424,25 @@ h6 {
 
 @media only screen and (min-width: 640px) {
   .slide-height {
-    height: 300px !important;
+    height: 250px !important;
   }
 }
 
 @media only screen and (min-width: 768px) {
   .slide-height {
-    height: 350px !important;
+    height: 300px !important;
   }
 }
 
 @media only screen and (min-width: 992px) {
   .slide-height {
-    height: 400px !important;
+    height: 350px !important;
   }
 }
 
 @media only screen and (min-width: 1024px) {
   .slide-height {
-    height: 600px !important;
+    height: 400px !important;
   }
 
   .user_info_important {
@@ -452,7 +452,7 @@ h6 {
 
 @media only screen and (min-width: 1500px) {
   .slide-height {
-    height: 700px !important;
+    height: 600px !important;
   }
 }
 

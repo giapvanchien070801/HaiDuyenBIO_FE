@@ -14,6 +14,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
+        <link rel="shortcut icon" href="/images/LOGO.JPG" />
         <title>Hai Duyen Bio</title>
       </head>
       <body>
