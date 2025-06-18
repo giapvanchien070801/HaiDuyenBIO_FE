@@ -1,5 +1,5 @@
-import Link from "next/link";
-import headerStyle from "@/styles/header_style.module.css";
+import Link from 'next/link';
+import headerStyle from '@/styles/header_style.module.css';
 import {
   DownOutlined,
   SearchOutlined,
@@ -8,9 +8,8 @@ import {
   MailFilled,
   FacebookFilled,
   PushpinFilled,
-  MenuOutlined,
-} from "@ant-design/icons";
-import { useState } from "react";
+} from '@ant-design/icons';
+import { useState } from 'react';
 const LayoutUser = ({ children }) => {
   const [activeSearchbar, setActiveSearchbar] = useState(false);
 
@@ -23,6 +22,11 @@ const LayoutUser = ({ children }) => {
         <div className={`${headerStyle.background_info_top}`}>
           <div className="container mx-auto text-white flex justify-between">
             <div className="flex items-center">
+              <Link href={`/`} className="lg:hidden xl:block">
+                <div className="flex items-center">
+                  <img src="/images/logo-haiduyenbio-1.png" className=" h-14" />
+                </div>
+              </Link>
               <p className="px-2 flex">
                 <PhoneFilled /> <span className="mx-2">085.489.1993</span>
               </p>
@@ -33,16 +37,10 @@ const LayoutUser = ({ children }) => {
             </div>
 
             <div className="flex items-center">
-              <Link
-                href={`#`}
-                className="text-lg py-4 px-4 flex hover:bg-cyan-400"
-              >
+              <Link href={`#`} className="text-lg py-4 px-4 flex hover:bg-cyan-400">
                 <FacebookFilled />
               </Link>
-              <Link
-                href={`#`}
-                className="text-lg py-4 px-4 flex hover:bg-cyan-400"
-              >
+              <Link href={`#`} className="text-lg py-4 px-4 flex hover:bg-cyan-400">
                 <PushpinFilled />
               </Link>
             </div>
@@ -53,9 +51,7 @@ const LayoutUser = ({ children }) => {
           <Link href={`#`}>
             <div className="flex items-center">
               <img src="/images/logo.png" className="w-14 h-14" />
-              <p
-                className={`${headerStyle.text_logo} font-bold xl:text-xl lg:text-base`}
-              >
+              <p className={`${headerStyle.text_logo} font-bold xl:text-xl lg:text-base`}>
                 Phòng Khám HNLC
               </p>
             </div>
@@ -87,15 +83,10 @@ const LayoutUser = ({ children }) => {
                     href={`#`}
                     className="h-full flex items-center px-2 hover:text-cyan-600 transition-all duration-300 lg:py-0 py-2"
                   >
-                    Chuyên khoa{" "}
-                    <DownOutlined
-                      style={{ fontSize: "14px", marginLeft: "5px" }}
-                    />
+                    Chuyên khoa <DownOutlined style={{ fontSize: '14px', marginLeft: '5px' }} />
                   </Link>
 
-                  <div
-                    className={`${headerStyle.submenu} lg:absolute lg:w-max w-full`}
-                  >
+                  <div className={`${headerStyle.submenu} lg:absolute lg:w-max w-full`}>
                     <ul className="w-max bg-white">
                       <li className="w-full">
                         <Link
@@ -210,9 +201,7 @@ const LayoutUser = ({ children }) => {
                 </button>
 
                 {activeSearchbar ? (
-                  <div
-                    className={`${headerStyle.searchbar} absolute w-max right-1 py-4 px-2`}
-                  >
+                  <div className={`${headerStyle.searchbar} absolute w-max right-1 py-4 px-2`}>
                     <form>
                       <input
                         type="text"
