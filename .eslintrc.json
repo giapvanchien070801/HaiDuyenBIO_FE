@@ -1,40 +1,41 @@
 {
-  "extends": ["next/core-web-vitals", "prettier", "eslint:recommended"],
-  "rules": {
-    "no-undef": "error",
-    "react-hooks/exhaustive-deps": "off",
-    "react/display-name": "off",
-    "@next/next/no-img-element": "off",
-    "react/no-unescaped-entities": "off",
-    "import/no-anonymous-default-export": "off",
-
-    "lines-around-comment": [
-      "error",
-      {
-        "beforeLineComment": true,
-        "beforeBlockComment": true,
-        "allowBlockStart": true,
-        "allowClassStart": true,
-        "allowObjectStart": true,
-        "allowArrayStart": true
-      }
-    ],
-    // add new line above return
-    "newline-before-return": "error",
-    // add new line below import
-    "import/newline-after-import": [
-      "error",
-      {
-        "count": 1
-      }
-    ]
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
   },
-  "parser": "babel-eslint",
-  "plugins": ["import"],
-
-  "overrides": [
-    {
-      "files": ["src/iconify-bundle/*"]
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:import/recommended",
+    "plugin:@next/next/recommended",
+    "prettier"
+  ],
+  "plugins": ["react", "react-hooks", "import"],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
     }
-  ]
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "rules": {
+    "no-undef": "error", // ❗ Báo lỗi khi dùng biến chưa khai báo
+    "no-unused-vars": "error", // ❗ Báo lỗi khi khai báo biến nhưng không sử dụng
+    "no-use-before-define": "error", // ❗ Báo lỗi khi sử dụng biến trước khi khai báo
+    "react/react-in-jsx-scope": "off", // ✅ Không bắt buộc import React (React 17+)
+    "react/prop-types": "off", // ✅ Không yêu cầu khai báo PropTypes
+    "react/display-name": "off", // ✅ Không bắt buộc đặt tên cho components
+    "import/no-anonymous-default-export": "off", // ✅ Cho phép export mặc định không tên
+    "import/no-unresolved": "error", // ❗ Báo lỗi khi import không tồn tại
+    "import/named": "error", // ❗ Báo lỗi khi import named export không tồn tại
+    "import/default": "error", // ❗ Báo lỗi khi import default export không tồn tại
+    "import/namespace": "error" // ❗ Báo lỗi khi import namespace không tồn tại
+  }
 }

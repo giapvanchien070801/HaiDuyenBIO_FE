@@ -1,14 +1,61 @@
 "use client";
 
 import { ShoppingCartOutlined, ShoppingOutlined } from "@ant-design/icons";
-import { Button } from "antd";
+import { Button, message } from "antd";
+import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 
 export default function CardProduct(props) {
   const { product } = props;
+  const [listProducts, setListProducts] = useState([]);
+  const router = useRouter();
+
+  // Load listProducts from localStorage on component mount
+  useEffect(() => {
+    const savedListProducts = localStorage.getItem("listProducts");
+    if (savedListProducts) {
+      setListProducts(JSON.parse(savedListProducts));
+    }
+  }, []);
+
+  // Function to add product to listProducts
+  const addToCart = () => {
+    const existingListProducts = localStorage.getItem("listProducts");
+    let currentListProducts = existingListProducts
+      ? JSON.parse(existingListProducts)
+      : [];
+
+    // Check if product already exists in listProducts
+    const existingProductIndex = currentListProducts.findIndex(
+      (item) => item.id === product.id
+    );
+
+    if (existingProductIndex !== -1) {
+      // If product exists, increase quantity
+      currentListProducts[existingProductIndex].quantity += 1;
+    } else {
+      // If product doesn't exist, add new product with quantity 1
+      currentListProducts.push({
+        ...product,
+        quantity: 1,
+      });
+    }
+
+    // Save updated listProducts to localStorage
+    localStorage.setItem("listProducts", JSON.stringify(currentListProducts));
+    setListProducts(currentListProducts);
+
+    // Show success message
+    message.success("Đã thêm sản phẩm vào giỏ hàng!");
+  };
 
   return (
     <>
-      <div className="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden relative hover:shadow-lg transition-shadow duration-300 card-product">
+      <div
+        onClick={() => {
+          router.push(`/product-detail/${product.id}`);
+        }}
+        className="  cursor-pointer bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden relative hover:shadow-lg transition-shadow duration-300 card-product">
         <div className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-sm z-10">
           -{product.discount}%
         </div>
@@ -36,14 +83,20 @@ export default function CardProduct(props) {
               type="default"
               icon={<ShoppingCartOutlined />}
               className="flex-1 text-sm sm:text-base px-1"
-            >
+              onClick={addToCart}>
               Thêm vào giỏ
             </Button>
             <Button
+              onClick={() => {
+                router.push(`/shopping/step2`);
+                localStorage.setItem(
+                  "buyNowProducts",
+                  JSON.stringify([{ ...product, quantity: 1 }])
+                );
+              }}
               //   type="primary"
               className="flex-1 !bg-[#2cb1ab] text-sm sm:text-base px-1 text-white"
-              icon={<ShoppingOutlined />}
-            >
+              icon={<ShoppingOutlined />}>
               Mua ngay
             </Button>
           </div>

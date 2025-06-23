@@ -8,8 +8,12 @@ import {
   FileTextOutlined,
 } from "@ant-design/icons";
 
-export default function BillingDetailForm() {
-  const [form] = Form.useForm();
+export default function BillingDetailForm({ form }) {
+  const onFinish = (values) => {
+    console.log(values);
+
+    localStorage.removeItem("selectedProducts");
+  };
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md w-1/2">
@@ -18,12 +22,15 @@ export default function BillingDetailForm() {
         Thông Tin Khách Hàng
       </h2>
 
-      <Form form={form} layout="vertical" className="space-y-4">
+      <Form
+        form={form}
+        layout="vertical"
+        className="space-y-4"
+        onFinish={onFinish}>
         <Form.Item
           name="fullName"
           label="Họ và tên"
-          rules={[{ required: true, message: "Vui lòng nhập họ tên" }]}
-        >
+          rules={[{ required: true, message: "Vui lòng nhập họ tên" }]}>
           <Input
             size="large"
             prefix={<UserOutlined />}
@@ -34,8 +41,7 @@ export default function BillingDetailForm() {
         <Form.Item
           name="address"
           label="Địa chỉ"
-          rules={[{ required: true, message: "Vui lòng nhập địa chỉ" }]}
-        >
+          rules={[{ required: true, message: "Vui lòng nhập địa chỉ" }]}>
           <Input
             size="large"
             prefix={<HomeOutlined />}
@@ -49,8 +55,7 @@ export default function BillingDetailForm() {
           rules={[
             { required: true, message: "Vui lòng nhập số điện thoại" },
             { pattern: /^[0-9]{10}$/, message: "Số điện thoại không hợp lệ" },
-          ]}
-        >
+          ]}>
           <Input
             size="large"
             prefix={<PhoneOutlined />}

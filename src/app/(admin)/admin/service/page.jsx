@@ -20,6 +20,7 @@ import { useRouter } from "next/navigation";
 import { useMutation, useQuery } from "react-query";
 import Base from "@/models/Base";
 import { useDebounce } from "../../../../common/functions/commonFunction";
+import Product from "@/models/Product";
 
 export default function Services() {
   const router = useRouter();
@@ -63,10 +64,11 @@ export default function Services() {
       tableParams.pagination.pageSize,
     ],
     async () => {
-      const res = await Base.getListServicePagination({
-        Page: tableParams.pagination.current,
-        Size: tableParams.pagination.pageSize,
-        KeySearch: searchDebounce,
+      const res = await Product.getProductList({
+        page: tableParams.pagination.current,
+        size: tableParams.pagination.pageSize,
+        search: searchDebounce,
+        categoryId: -1,
       });
 
       if (res.TotalRecord) {
@@ -82,7 +84,7 @@ export default function Services() {
       return res?.Data;
     },
     {
-      enabled: false,
+      enabled: true,
     }
   );
 
@@ -138,8 +140,7 @@ export default function Services() {
             size="middle"
             className="border-teal-500 text-teal-500"
             type="default"
-            onClick={() => router.push(`/admin/service/edit/${record?.Id}`)}
-          >
+            onClick={() => router.push(`/admin/service/edit/${record?.Id}`)}>
             Xem chi tiết/Sửa
           </Button>
 
@@ -148,8 +149,7 @@ export default function Services() {
             description="Bạn có chắc chắn muốn xóa Sản phẩm này?"
             onConfirm={handleDelete}
             okText="Xóa"
-            cancelText="Hủy"
-          >
+            cancelText="Hủy">
             <Button size="middle" type="default" danger>
               Xóa
             </Button>
@@ -197,8 +197,7 @@ export default function Services() {
         size="middle"
         type="primary"
         className="float-right  bg-blue-700 text-white"
-        onClick={() => handleGoCreateOrEdit()}
-      >
+        onClick={() => handleGoCreateOrEdit()}>
         Thêm mới
       </Button>
       <Spin spinning={isFetching}>
