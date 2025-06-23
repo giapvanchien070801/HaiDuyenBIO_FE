@@ -13,16 +13,22 @@ import {
   FileTextOutlined,
   PlayCircleOutlined,
   ContactsOutlined,
+  TruckOutlined,
+  SearchOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";
 import { useQuery } from "react-query";
 import Base from "@/models/Base";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { Badge, Button, Popover, Tooltip } from "antd";
+import { Badge, Button, Popover, Input, Tooltip } from "antd";
+
+const { Search } = Input;
 
 export default function UserHeader() {
   const pathname = usePathname();
+  const [cartTotal, setCartTotal] = useState(0);
+  const [cartCount, setCartCount] = useState(0);
 
   // api lấy danh sách tất cả thể loại
   const { data: listCategory } = useQuery(
@@ -59,6 +65,50 @@ export default function UserHeader() {
   useEffect(() => {
     setActiveMobileMenu(false);
   }, [pathname]);
+
+  // Tính toán tổng giá trị giỏ hàng từ localStorage
+  const calculateCartTotal = () => {
+    try {
+      const listProducts = JSON.parse(
+        localStorage.getItem("listProducts") || "[]"
+      );
+      const total = listProducts.reduce((sum, product) => {
+        return sum + (product.price || 0);
+      }, 0);
+      setCartTotal(total);
+      setCartCount(listProducts.length);
+    } catch (error) {
+      console.error("Error calculating cart total:", error);
+      setCartTotal(0);
+      setCartCount(0);
+    }
+  };
+
+  useEffect(() => {
+    calculateCartTotal();
+
+    // Lắng nghe sự thay đổi của localStorage
+    const handleStorageChange = () => {
+      calculateCartTotal();
+    };
+
+    // Lắng nghe custom event để cập nhật ngay lập tức
+    const handleCartUpdate = () => {
+      calculateCartTotal();
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    window.addEventListener("cartUpdated", handleCartUpdate);
+
+    // Thêm event listener cho custom event cartItemAdded
+    window.addEventListener("cartItemAdded", handleCartUpdate);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("cartUpdated", handleCartUpdate);
+      window.removeEventListener("cartItemAdded", handleCartUpdate);
+    };
+  }, []);
 
   const toggleMenuMobile = () => {
     setActiveMobileMenu(!activeMobileMenu);
@@ -131,7 +181,7 @@ export default function UserHeader() {
       <div className={` z-20 hidden md:block`}>
         <div className="container mx-auto  flex justify-between py-5">
           <div className="flex items-center gap-5">
-            <Link href={`/`} className="lg:hidden xl:block">
+            <Link href={`/`} className="">
               <div className="flex items-center">
                 <img src="/images/logo-haiduyenbio-1.png" className=" h-14" />
               </div>
@@ -139,35 +189,38 @@ export default function UserHeader() {
             <p className="flex">
               <PhoneFilled /> <span className="mx-2">085.489.1993</span>
             </p>
-            <p className="flex">
-              <MailFilled /> <span className="mx-2">HaiDuyenBIO@gmail.com</span>
-            </p>
           </div>
 
-          
-            <Link href={`/shopping/step1`} className="hover:bg-cyan-400 flex items-center gap-7 p-2">
-              <Badge count={5}>
+          <div className="flex items-center gap-7">
+            <Link href={`/check-shopping`} className="flex items-center gap-2">
+              <TruckOutlined className="mb-2" />
+              <p className=" text-sm font-medium ">Kiểm tra đơn hàng</p>
+            </Link>
+            <Link href={`/shopping/step1`}>
+              <Badge count={cartCount}>
                 <Tooltip title="Giỏ hàng">
                   <ShoppingOutlined className="text-4xl cursor-pointer flex  " />
                 </Tooltip>
               </Badge>
-              <div>
-                <p className=" text-sm font-medium text-[#777]">Giỏ hàng</p>
-                <p className=" text-xs underline">0đ</p>
-              </div>
             </Link>
-         
+            <div>
+              <p className=" text-sm font-medium text-[#777]">Giỏ hàng</p>
+              <p className=" text-xs underline">
+                {cartTotal.toLocaleString("vi-VN")}đ
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div className="  bg-[#14457b] py-4 lg:px-0 px-4 flex justify-center">
+      <div className="  bg-[#14457b] py-4 lg:px-0 px-4  flex  lg:justify-center justify-between">
         {/* <Link href={`/`} className="lg:hidden xl:block">
           <div className="flex items-center">
             <img src="/images/logo-haiduyenbio-1.png" className=" h-14" />
           </div>
         </Link> */}
 
-        <div className="flex  items-center  justify-between w-3/4 text-white">
+        <div className="flex  items-center  justify-between w-full lg:w-3/4 text-white">
           <Popover
             content={
               <ul className="w-max bg-white">
@@ -204,7 +257,7 @@ export default function UserHeader() {
                     content={
                       <div className="flex gap-4">
                         {menu2?.map((menu, index) => (
-                          <ul className="w-max bg-white">
+                          <ul key={index} className="w-max bg-white">
                             <li className="text-lg font-bold">{menu?.menu}</li>
                             {menu?.submenu?.map((submenu, index) => (
                               <li key={index} className="w-full">
@@ -262,26 +315,47 @@ export default function UserHeader() {
             }
             trigger="hover"
             placement="bottom">
-            <div className="flex items-center gap-3 cursor-pointer">
+            <Link
+              href={`/`}
+              className="flex items-center gap-3 cursor-pointer ">
               <MenuOutlined className=" text-2xl" />
-              <p>MAIN MENU</p>
-              <DownOutlined />
-            </div>
+              <p className="hidden sm:block">MAIN MENU</p>
+              <DownOutlined className="hidden lg:block" />
+            </Link>
           </Popover>
+
+          <div className="flex items-center w-3/4 lg:w-auto">
+            <input
+              type="hidden"
+              style={{ display: "none" }}
+              aria-hidden="true"
+            />
+            <Search
+              placeholder="Tìm kiếm..."
+              allowClear
+              enterButton={<SearchOutlined />}
+              size="large"
+              className="w-full lg:w-[250px] md:w-[200px] sm:w-[180px] lg:mr-0 mr-4"
+              onSearch={(value) => {
+                // Xử lý tìm kiếm ở đây
+                console.log("Tìm kiếm:", value);
+              }}
+            />
+          </div>
 
           <div className=" self-stretch lg:static absolute  z-10 top-full w-full lg:w-fit left-0">
             <ul
               className={`lg:flex items-center h-full md:container md:mx-auto lg:p-0 p-4 gap-2 ${
                 activeMobileMenu ? "lg:block" : "hidden lg:block"
               }`}>
-              <li className="h-full relative">
+              {/* <li className="h-full relative">
                 <Link
                   href={`/`}
                   className="h-full flex items-center p-2 hover:text-cyan-600 transition-all duration-300 py-2">
                   <HomeOutlined className="mr-2" />
                   <p>Trang chủ</p>
                 </Link>
-              </li>
+              </li> */}
               <li className="h-full relative">
                 <Link
                   href={`/about`}

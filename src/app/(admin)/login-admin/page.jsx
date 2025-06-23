@@ -1,9 +1,10 @@
 "use client";
 
-import Base from "@/models/Base";
+import React from "react";
+import Login from "@/models/Login";
 import styled from "@emotion/styled";
 import { Button, Checkbox, Form, Input, message, notification } from "antd";
-import { redirect, useRouter } from "next/navigation";
+import {  useRouter } from "next/navigation";
 import { Cookies } from "react-cookie";
 import { useMutation } from "react-query";
 
@@ -14,13 +15,14 @@ function LoginPage() {
   const cookies = new Cookies();
 
   // delete Record
-  const loginMutate = useMutation(Base.loginAdmin, {
+  const loginMutate = useMutation(Login.loginAdmin, {
     onSuccess: (value) => {
       cookies.set("accessToken", value.Token);
       message.success("Đăng nhập thành công!");
       router.push("/admin/home");
 
       // set token
+
     },
     onError: (e) => {
       if (e?.response?.data?.Message === "Unauthorized") {
@@ -34,18 +36,10 @@ function LoginPage() {
     },
   });
 
-  const handleSunmit = () => {
-    router.push("/admin/home");
-    form.submit();
-
-    const listFieldName = ["password", "account"];
-    form
-      .validateFields(listFieldName)
-      .then((value) => {
-        loginMutate.mutate(value);
-      })
-      .catch(() => {});
+  const handleSunmit = (values) => {
+    loginMutate.mutate(values);
   };
+
   const notAcc = `Don't have an account?`;
 
   return (
@@ -60,11 +54,12 @@ function LoginPage() {
               initialValues={{ remember: true }}
               className="w-full"
               form={form}
+              onFinish={handleSunmit}
             >
               {/* <p className="mb-1">Tài khoản:</p> */}
               <Form.Item
                 label="Tài khoản"
-                name="account"
+                name="userName"
                 rules={[
                   { required: true, message: "Vui lòng nhập tên đăng nhập!" },
                 ]}
@@ -87,8 +82,10 @@ function LoginPage() {
 
               <Form.Item>
                 <Button
-                  onClick={() => handleSunmit()}
+                  htmlType="submit"
+                  // onClick={() => handleSunmit()}
                   className="w-full !bg-[#2ba191] text-white mt-10"
+                  loading={loginMutate.isLoading}
                 >
                   Đăng nhập
                 </Button>

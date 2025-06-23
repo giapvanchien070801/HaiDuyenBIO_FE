@@ -9,18 +9,76 @@ import {
   CreditCardOutlined,
 } from "@ant-design/icons";
 import { Button, Table } from "antd";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-export default function BillingDetailsStep2({ setStep }) {
-  const cartItems = [
-    {
-      key: "1",
-      name: "Sản phẩm 1",
-      quantity: 2,
-      price: "1,175,000đ",
-      total: "2,350,000đ",
-    },
-  ];
+export default function BillingDetailsStep2({ setStep, form }) {
+  const [cartItems, setCartItems] = useState([]);
+  const [subtotal, setSubtotal] = useState(0);
+  const [shippingFee] = useState(30000);
+  const [total, setTotal] = useState(0);
+
+  // Load selected products from localStorage
+  useEffect(() => {
+    const savedSelectedProducts = localStorage.getItem("selectedProducts");
+    if (savedSelectedProducts) {
+      const selectedProducts = JSON.parse(savedSelectedProducts);
+
+      // Transform data for table display
+      const transformedItems = selectedProducts.map((product) => ({
+        key: product.id.toString(),
+        name: product.name,
+        quantity: product.quantity,
+        price: formatPrice(product.price),
+        total: formatPrice(product.price * product.quantity),
+      }));
+
+      setCartItems(transformedItems);
+
+      // Calculate subtotal
+      const calculatedSubtotal = selectedProducts.reduce(
+        (sum, product) => sum + product.price * product.quantity,
+        0
+      );
+
+      setSubtotal(calculatedSubtotal);
+      setTotal(calculatedSubtotal + shippingFee);
+    }
+  }, []);
+
+  // Load buyNow products from localStorage
+  useEffect(() => {
+    const savedBuyNowProducts = localStorage.getItem("buyNowProducts");
+    if (savedBuyNowProducts) {
+      const buyNowProducts = JSON.parse(savedBuyNowProducts);
+
+      // Transform data for table display
+      const transformedItems = buyNowProducts.map((product) => ({
+        key: product.id.toString(),
+        name: product.name,
+        quantity: 1,
+        price: formatPrice(product.price),
+        total: formatPrice(product.price),
+      }));
+
+      setCartItems(transformedItems);
+
+      // Calculate subtotal
+      const calculatedSubtotal = buyNowProducts.reduce(
+        (sum, product) => sum + product.price * product.quantity,
+        0
+      );
+
+      setSubtotal(calculatedSubtotal);
+      setTotal(calculatedSubtotal + shippingFee);
+    }
+  }, []);
+
+  const formatPrice = (price) => {
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(price);
+  };
 
   const columns = [
     {
@@ -56,7 +114,10 @@ export default function BillingDetailsStep2({ setStep }) {
         <Table
           dataSource={cartItems}
           columns={columns}
-          pagination={false}
+          pagination={{
+            pageSize: 5,
+            showTotal: (total) => `Tổng ${total} sản phẩm`,
+          }}
           className="border rounded-lg"
         />
 
@@ -66,7 +127,7 @@ export default function BillingDetailsStep2({ setStep }) {
               <ShoppingCartOutlined />
               Tạm tính:
             </span>
-            <span className="font-medium">2,350,000đ</span>
+            <span className="font-medium">{formatPrice(subtotal)}</span>
           </div>
 
           <div className="flex justify-between items-center">
@@ -74,7 +135,7 @@ export default function BillingDetailsStep2({ setStep }) {
               <CarOutlined />
               Phí vận chuyển:
             </span>
-            <span className="font-medium">30,000đ</span>
+            <span className="font-medium">{formatPrice(shippingFee)}</span>
           </div>
 
           <div className="border-t pt-4">
@@ -83,7 +144,9 @@ export default function BillingDetailsStep2({ setStep }) {
                 <DollarOutlined />
                 Tổng tiền:
               </span>
-              <span className="text-xl font-bold text-red-600">2,380,000đ</span>
+              <span className="text-xl font-bold text-red-600">
+                {formatPrice(total)}
+              </span>
             </div>
           </div>
         </div>
@@ -95,12 +158,12 @@ export default function BillingDetailsStep2({ setStep }) {
 
         <Button
           onClick={() => {
-            setStep("step3");
+            // setStep("step3");
+            form.submit();
           }}
           size="large"
           type="default"
-          className="w-full bg-[#2cb1ab] text-white py-3 rounded-lg hover:bg-[#2cb1ab] transition duration-200 flex items-center justify-center gap-2"
-        >
+          className="w-full bg-[#2cb1ab] text-white py-3 rounded-lg hover:bg-[#2cb1ab] transition duration-200 flex items-center justify-center gap-2">
           <ShoppingCartOutlined />
           Đặt hàng
         </Button>

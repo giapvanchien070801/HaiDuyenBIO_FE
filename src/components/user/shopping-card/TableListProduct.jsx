@@ -64,15 +64,13 @@ const EditableCell = ({
       <Form.Item
         style={{ margin: 0 }}
         name={dataIndex}
-        rules={[{ required: true, message: `${title} là bắt buộc.` }]}
-      >
+        rules={[{ required: true, message: `${title} là bắt buộc.` }]}>
         <Input ref={inputRef} onPressEnter={save} onBlur={save} />
       </Form.Item>
     ) : (
       <div
         className="editable-cell-value-wrap cursor-pointer hover:bg-gray-50 p-2 rounded"
-        onClick={toggleEdit}
-      >
+        onClick={toggleEdit}>
         {children}
       </div>
     );
@@ -81,29 +79,90 @@ const EditableCell = ({
   return <td {...restProps}>{childNode}</td>;
 };
 
-const TableListProduct = () => {
-  const [dataSource, setDataSource] = useState([
-    {
-      key: "0",
-      name: "Sản phẩm 1",
-      age: "150.000đ",
-      address: "Còn hàng",
-      quantity: 1,
-    },
-    {
-      key: "1",
-      name: "Sản phẩm 2",
-      age: "200.000đ",
-      address: "Còn hàng",
-      quantity: 1,
-    },
-  ]);
+const TableListProduct = ({ onChange }) => {
+  const [dataSource, setDataSource] = useState([]);
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
-  const [count, setCount] = useState(2);
+  // Load data from localStorage on component mount
+  useEffect(() => {
+    const savedListProducts = localStorage.getItem("listProducts");
+    if (savedListProducts) {
+      const products = JSON.parse(savedListProducts);
+      // Transform data to match table structure
+      const transformedData = products.map((product) => ({
+        key: product.id.toString(),
+        id: product.id,
+        name: product.name,
+        image: product.image,
+        price: product.price,
+        oldPrice: product.oldPrice,
+        discount: product.discount,
+        quantity: product.quantity,
+      }));
+      setDataSource(transformedData);
+    }
+  }, []);
+
+  // Load selected products from localStorage on component mount
+  useEffect(() => {
+    const savedSelectedProducts = localStorage.getItem("selectedProducts");
+    if (savedSelectedProducts) {
+      const selectedProducts = JSON.parse(savedSelectedProducts);
+      const selectedIds = selectedProducts.map((product) =>
+        product?.id?.toString()
+      );
+      setSelectedRowKeys(selectedIds);
+
+      // Call onChange with selected products data
+      if (onChange && dataSource.length > 0) {
+        onChange(selectedProducts);
+      }
+    }
+  }, [dataSource, onChange]);
 
   const handleDelete = (key) => {
     const newData = dataSource.filter((item) => item.key !== key);
     setDataSource(newData);
+
+    // Remove from selectedRowKeys if it was selected
+    setSelectedRowKeys((prevKeys) => {
+      const newSelectedKeys = prevKeys.filter(
+        (selectedKey) => selectedKey !== key
+      );
+
+      // Get current selected products from localStorage
+      const savedSelectedProducts = localStorage.getItem("selectedProducts");
+      let selectedProducts = [];
+      if (savedSelectedProducts) {
+        selectedProducts = JSON.parse(savedSelectedProducts);
+      }
+
+      // Remove the deleted product from selectedProducts
+      const updatedSelectedProducts = selectedProducts.filter(
+        (product) => product?.id?.toString() !== key
+      );
+
+      // Update localStorage with new selected products
+      localStorage.setItem(
+        "selectedProducts",
+        JSON.stringify(updatedSelectedProducts)
+      );
+
+      return newSelectedKeys;
+    });
+
+    // Update localStorage
+    const updatedProducts = newData.map(({ key, ...rest }) => ({
+      id: rest.id,
+      name: rest.name,
+      image: rest.image,
+      price: rest.price,
+      oldPrice: rest.oldPrice,
+      discount: rest.discount,
+      quantity: rest.quantity,
+    }));
+    localStorage.setItem("listProducts", JSON.stringify(updatedProducts));
+
     message.success("Đã xóa sản phẩm khỏi giỏ hàng!");
   };
 
@@ -112,6 +171,35 @@ const TableListProduct = () => {
     const index = newData.findIndex((item) => item.key === key);
     newData[index].quantity = value;
     setDataSource(newData);
+
+    // Remove the product from selectedRowKeys when quantity changes
+    setSelectedRowKeys((prevKeys) => {
+      const newSelectedKeys = prevKeys.filter(
+        (selectedKey) => selectedKey !== key
+      );
+      // Update localStorage with new selected keys
+      localStorage.setItem("selectedProducts", JSON.stringify(newSelectedKeys));
+      return newSelectedKeys;
+    });
+
+    // Update localStorage
+    const updatedProducts = newData.map(({ key, ...rest }) => ({
+      id: rest.id,
+      name: rest.name,
+      image: rest.image,
+      price: rest.price,
+      oldPrice: rest.oldPrice,
+      discount: rest.discount,
+      quantity: rest.quantity,
+    }));
+    localStorage.setItem("listProducts", JSON.stringify(updatedProducts));
+  };
+
+  const formatPrice = (price) => {
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(price);
   };
 
   const defaultColumns = [
@@ -123,8 +211,18 @@ const TableListProduct = () => {
     },
     {
       title: "Giá",
-      dataIndex: "age",
+      dataIndex: "price",
       width: "20%",
+      render: (price, record) => (
+        <div>
+          <div className="text-red-600 font-semibold">{formatPrice(price)}</div>
+          {record.oldPrice && record.oldPrice > price && (
+            <div className="text-gray-500 line-through text-sm">
+              {formatPrice(record.oldPrice)}
+            </div>
+          )}
+        </div>
+      ),
     },
     {
       title: "Số lượng",
@@ -133,7 +231,7 @@ const TableListProduct = () => {
       render: (_, record) => (
         <InputNumber
           min={1}
-          defaultValue={record.quantity}
+          value={record.quantity}
           onChange={(value) => handleQuantityChange(value, record.key)}
           className="w-20"
         />
@@ -150,13 +248,12 @@ const TableListProduct = () => {
             description="Bạn có chắc chắn muốn xóa sản phẩm này không?"
             onConfirm={() => handleDelete(record.key)}
             okText="Đồng ý"
-            cancelText="Hủy"
-          >
+            cancelText="Hủy">
             <Button
               icon={<DeleteOutlined />}
               danger
-              className="hover:opacity-80"
-            >
+              disabled={selectedRowKeys.includes(record.key)}
+              className="hover:opacity-80">
               Xóa
             </Button>
           </Popconfirm>
@@ -164,24 +261,24 @@ const TableListProduct = () => {
     },
   ];
 
-  const handleAdd = () => {
-    const newData = {
-      key: count,
-      name: `Sản phẩm ${count + 1}`,
-      age: "100.000đ",
-      address: "Còn hàng",
-      quantity: 1,
-    };
-    setDataSource([...dataSource, newData]);
-    setCount(count + 1);
-  };
-
   const handleSave = (row) => {
     const newData = [...dataSource];
     const index = newData.findIndex((item) => row.key === item.key);
     const item = newData[index];
     newData.splice(index, 1, { ...item, ...row });
     setDataSource(newData);
+
+    // Update localStorage
+    const updatedProducts = newData.map(({ key, ...rest }) => ({
+      id: rest.id,
+      name: rest.name,
+      image: rest.image,
+      price: rest.price,
+      oldPrice: rest.oldPrice,
+      discount: rest.discount,
+      quantity: rest.quantity,
+    }));
+    localStorage.setItem("listProducts", JSON.stringify(updatedProducts));
   };
 
   const components = {
@@ -207,22 +304,31 @@ const TableListProduct = () => {
     };
   });
 
+  // Row selection configuration
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: (newSelectedRowKeys, selectedRows) => {
+      setSelectedRowKeys(newSelectedRowKeys);
+
+      // Save selected product IDs to localStorage
+      localStorage.setItem("selectedProducts", JSON.stringify(selectedRows));
+
+      // Call the onChange prop with selected products
+      if (onChange) {
+        onChange(selectedRows);
+      }
+    },
+  };
+
   return (
     <div className="w-full max-w-4xl mx-auto p-4">
-      <Button
-        onClick={handleAdd}
-        type="primary"
-        icon={<PlusOutlined />}
-        className="mb-4 hover:opacity-80"
-      >
-        Thêm sản phẩm
-      </Button>
       <Table
         components={components}
         rowClassName={() => "editable-row"}
         bordered
         dataSource={dataSource}
         columns={columns}
+        rowSelection={rowSelection}
         pagination={{
           pageSize: 5,
           showTotal: (total) => `Tổng ${total} sản phẩm`,
