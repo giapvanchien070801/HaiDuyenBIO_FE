@@ -12,13 +12,6 @@ const CreateOrEditService = dynamic(
   }
 );
 
-const CreateOrEdit = dynamic(
-  () => import("@/components/admin/common/CreateOrEdit"),
-  {
-    ssr: false,
-  }
-);
-
 export default function CreateDepartment() {
   const breadcrumb = [
     {

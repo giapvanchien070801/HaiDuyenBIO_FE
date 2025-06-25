@@ -1,23 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { Button, Modal, Input, Form, message } from "antd";
+import { Button, Modal, Input, Form, message, Spin } from "antd";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import { useMutation, useQuery } from "react-query";
-import Base from "@/models/Base";
+import CategoryProduct from "@/models/CategoryProduct";
+import { omitField } from "@/common/functions/commonFunction";
 
 const ModalCreateCategoryService = (props) => {
-  const { modalType, refetchData, idCategory } = props;
+  const { refetchData, idCategory = null, isModalOpen, setIsModalOpen } = props;
 
-  const isModalCreate = modalType === "create";
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const isModalCreate = idCategory === null;
   const [form] = Form.useForm();
+
   const showModal = () => {
     setIsModalOpen(true);
   };
 
-  const { data: dataDetailCate } = useQuery(
+  const { data: dataDetailCate, isFetching: isFetchingDetailCate } = useQuery(
     ["getDetailCate", idCategory],
     async () => {
-      const res = await Base.getDetailCate(idCategory);
+      const res = await CategoryProduct.getDetailCategoryProduct(idCategory);
 
       return res;
     },
@@ -25,15 +26,15 @@ const ModalCreateCategoryService = (props) => {
   );
 
   useEffect(() => {
-    if (dataDetailCate && idCategory) {
-      form.setFieldValue("Name", dataDetailCate?.Name);
+    if (dataDetailCate && !!idCategory) {
+      form.setFieldsValue(dataDetailCate);
     }
   }, [dataDetailCate, idCategory]);
 
-  const createCateMutate = useMutation(Base.createCategory, {
+  const createCateMutate = useMutation(CategoryProduct.createCategoryProduct, {
     onSuccess: () => {
       message.success("Tạo mới danh mục Sản phẩm thành công!");
-      form.resetFields();
+
       if (refetchData) {
         refetchData();
       }
@@ -43,101 +44,103 @@ const ModalCreateCategoryService = (props) => {
       message.error("Tạo mới danh mục Sản phẩm thất bại!");
     },
   });
-  const updateCateMutate = useMutation(Base.updateCategory, {
-    onSuccess: () => {
-      message.success("Sửa danh mục Sản phẩm thành công!");
-      form.resetFields();
-      if (refetchData) {
-        refetchData();
-      }
-      setIsModalOpen(false);
-    },
-    onError: (e) => {
-      message.error("Sửa danh mục Sản phẩm thất bại!");
-    },
-  });
+
+  const updateCateMutate = useMutation(
+    (data) =>
+      CategoryProduct.updateCategoryProduct(data.id, omitField(data, "id")),
+    {
+      onSuccess: () => {
+        message.success("Sửa danh mục Sản phẩm thành công!");
+        if (refetchData) {
+          refetchData();
+        }
+        setIsModalOpen(false);
+      },
+      onError: (e) => {
+        message.error("Sửa danh mục Sản phẩm thất bại!");
+      },
+    }
+  );
 
   const handleOk = () => {
     form.submit();
-
-    const listFieldName = ["Name"];
-    form
-      .validateFields(listFieldName)
-      .then((value) => {
-        const valueCreate = {
-          Name: value?.Name?.trim(),
-        };
-        const valueUpdate = {
-          Id: idCategory,
-          Name: value?.Name?.trim(),
-        };
-
-        if (isModalCreate) {
-          createCateMutate.mutate(valueCreate);
-        } else {
-          updateCateMutate.mutate(valueUpdate);
-        }
-      })
-      .catch(() => {});
   };
+
   const handleCancel = () => {
     setIsModalOpen(false);
   };
 
+  const handleFinish = (values) => {
+    const valueUpdate = {
+      id: idCategory,
+      ...values,
+    };
+
+    if (isModalCreate) {
+      createCateMutate.mutate(values);
+    } else {
+      updateCateMutate.mutate(valueUpdate);
+    }
+  };
+
   return (
     <>
-      {isModalCreate ? (
-        <Button
-          icon={<PlusCircleOutlined />}
-          size="middle"
-          type="primary"
-          className="float-right  bg-blue-700 text-white"
-          onClick={showModal}
-        >
-          Thêm mới
-        </Button>
-      ) : (
-        <Button
-          size="middle"
-          className="border-teal-500 text-teal-500"
-          type="default"
-          onClick={showModal}
-        >
-          Xem chi tiết/Sửa
-        </Button>
-      )}
-
       <Modal
         title={`${isModalCreate ? "Thêm" : "Sửa"} danh mục Sản phẩm`}
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
         okText={isModalCreate ? "Tạo" : "Sửa"}
-        cancelText="Hủy"
-      >
-        <Form
-          className="w-full"
-          initialValues={{
-            requiredSelect: undefined,
-            optionalSelect: undefined,
-            optionalInput: "",
-          }}
-          form={form}
-          layout="vertical"
-        >
-          <Form.Item
-            label="Tên danh mục Sản phẩm"
-            name="Name"
-            rules={[
-              {
-                required: true,
-                message: "Tên danh mục Sản phẩm không được bỏ trống!",
-              },
-            ]}
-          >
-            <Input placeholder="Nhập tên danh mục Sản phẩm" />
-          </Form.Item>
-        </Form>
+        okButtonProps={{
+          loading: createCateMutate.isLoading || updateCateMutate.isLoading,
+        }}
+        cancelText="Hủy">
+        <Spin
+          spinning={
+            createCateMutate.isLoading ||
+            updateCateMutate.isLoading ||
+            isFetchingDetailCate
+          }>
+          <Form
+            className="w-full"
+            form={form}
+            onFinish={handleFinish}
+            layout="vertical">
+            <Form.Item
+              label="Tên danh mục Sản phẩm"
+              name="name"
+              rules={[
+                {
+                  required: true,
+                  message: "Tên danh mục Sản phẩm không được bỏ trống!",
+                },
+              ]}>
+              <Input placeholder="Nhập tên danh mục Sản phẩm" />
+            </Form.Item>
+            <Form.Item
+              label="Slug"
+              name="slug"
+              rules={[
+                {
+                  required: true,
+                  message: "Slug không được bỏ trống!",
+                },
+              ]}>
+              <Input placeholder="Nhập slug" />
+            </Form.Item>
+            <Form.Item
+              label="Mô tả"
+              name="description"
+              rules={[
+                {
+                  required: true,
+                  message: "Mô tả không được bỏ trống!",
+                },
+              ]}>
+              <Input.TextArea placeholder="Nhập mô tả" />
+            </Form.Item>
+          </Form>
+        </Spin>
       </Modal>
     </>
   );

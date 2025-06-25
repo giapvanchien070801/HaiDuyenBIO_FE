@@ -8,6 +8,7 @@ import {
 import { useState } from "react";
 import styled from "@emotion/styled";
 import CreateOrEdit from "../../../../../../components/admin/common/CreateOrEdit";
+import CreateOrEditService from "../../components/CreateOrEditService";
 
 export default function EditDepartment({ params }) {
   const breadcrumb = [
@@ -21,18 +22,18 @@ export default function EditDepartment({ params }) {
       ),
     },
     {
-      href: "/admin/departments",
+      href: "/admin/service",
       title: (
         <>
-          <span className="text-cyan-700">Danh sách khoa</span>
+          <span className="text-cyan-700">Danh sách Sản phẩm</span>
         </>
       ),
     },
     {
-      href: "/admin/departments/create",
+      href: "/admin/service/create",
       title: (
         <>
-          <span className="text-cyan-700">Chỉnh sửa Khoa</span>
+          <span className="text-cyan-700">Chỉnh sửa Sản phẩm</span>
         </>
       ),
     },
@@ -42,7 +43,7 @@ export default function EditDepartment({ params }) {
     <div>
       <Breadcrumb className="mb-5" items={breadcrumb} />
 
-      <CreateOrEdit typePage="service" id={params?.id} actionType="edit" />
+      <CreateOrEditService actionType="edit" id={params?.id} />
     </div>
   );
 }

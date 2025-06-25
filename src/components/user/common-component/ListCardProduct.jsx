@@ -1,118 +1,74 @@
 "use client";
 
-import { Button } from "antd";
-import { ShoppingCartOutlined, ShoppingOutlined } from "@ant-design/icons";
+import { Button, Input, Pagination, Select, Spin } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
 import TitleList from "./TitleList";
 import CardProduct from "./CardProduct";
+import { useQuery } from "react-query";
+import { useRef, useState } from "react";
+import {
+  removeEmptyFields,
+  useDebounce,
+} from "@/common/functions/commonFunction";
+import CategoryProduct from "@/models/CategoryProduct";
+import Product from "@/models/Product";
 
 export default function ListCardProduct() {
-  const products = [
-    {
-      id: 1,
-      name: "Men vi sinh Bifido",
-      image: "/images/product1.jpg",
-      price: 450000,
-      oldPrice: 500000,
-      discount: 10,
+  const __pagination = useRef({
+    page: 1,
+    size: 10,
+    categoryId: -1,
+  });
+
+  const handleTableChange = (pagination, filters, sorter) => {
+    __pagination.current.page = pagination.current;
+    __pagination.current.size = pagination.pageSize;
+    refetch();
+  };
+
+  const {
+    data: listProduct,
+    refetch,
+    isFetching,
+  } = useQuery(
+    [
+      "getListServicePagination",
+
+      __pagination.current.page,
+      __pagination.current.size,
+    ],
+    async () => {
+      const params = {
+        ...__pagination.current,
+        page: __pagination.current.page - 1,
+        search: "",
+        count: null,
+      };
+
+      const res = await Product.getProductList(removeEmptyFields(params));
+
+      __pagination.current.count = res?.totalElements;
+
+      return res?.content;
     },
     {
-      id: 2,
-      name: "Men vi sinh Lacto",
-      image: "/images/product1.jpg",
-      price: 380000,
-      oldPrice: 420000,
-      discount: 15,
-    },
-    {
-      id: 3,
-      name: "Men vi sinh Premium",
-      image: "/images/product1.jpg",
-      price: 550000,
-      oldPrice: 600000,
-      discount: 8,
-    },
-    {
-      id: 4,
-      name: "Men vi sinh Plus",
-      image: "/images/product1.jpg",
-      price: 420000,
-      oldPrice: 460000,
-      discount: 12,
-    },
-    {
-      id: 5,
-      name: "Men vi sinh Gold",
-      image: "/images/product1.jpg",
-      price: 480000,
-      oldPrice: 520000,
-      discount: 8,
-    },
-    {
-      id: 6,
-      name: "Men vi sinh Extra",
-      image: "/images/product1.jpg",
-      price: 400000,
-      oldPrice: 450000,
-      discount: 11,
-    },
-    {
-      id: 7,
-      name: "Men vi sinh Advanced",
-      image: "/images/product1.jpg",
-      price: 520000,
-      oldPrice: 580000,
-      discount: 10,
-    },
-    {
-      id: 8,
-      name: "Men vi sinh Ultra",
-      image: "/images/product1.jpg",
-      price: 600000,
-      oldPrice: 650000,
-      discount: 8,
-    },
-    {
-      id: 9,
-      name: "Men vi sinh Pro",
-      image: "/images/product1.jpg",
-      price: 470000,
-      oldPrice: 510000,
-      discount: 8,
-    },
-    {
-      id: 10,
-      name: "Men vi sinh Max",
-      image: "/images/product1.jpg",
-      price: 550000,
-      oldPrice: 600000,
-      discount: 8,
-    },
-    {
-      id: 11,
-      name: "Men vi sinh Elite",
-      image: "/images/product1.jpg",
-      price: 580000,
-      oldPrice: 630000,
-      discount: 8,
-    },
-    {
-      id: 12,
-      name: "Men vi sinh Supreme",
-      image: "/images/product1.jpg",
-      price: 620000,
-      oldPrice: 680000,
-      discount: 9,
-    },
-  ];
+      enabled: true,
+    }
+  );
 
   return (
     <div className="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
       <TitleList title="Sản phẩm nổi bật" />
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-        {products.map((product) => (
-          <CardProduct key={product.id} product={product} />
-        ))}
-      </div>
+
+      <Spin spinning={isFetching}>
+        <div className="flex flex-col items-center gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+            {listProduct?.map((product) => (
+              <CardProduct key={product?.id} product={product} />
+            ))}
+          </div>
+        </div>
+      </Spin>
     </div>
   );
 }

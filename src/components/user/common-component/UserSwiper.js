@@ -17,9 +17,9 @@ export default function UserSwiper() {
     {}
   );
   const listSliderFake = [
-    "https://haiduyenbio.com/wp-content/uploads/2024/07/vi-sinh-xu-ly-nuoc-min.jpg",
-    "https://haiduyenbio.com/wp-content/uploads/2024/07/sieu-men-duong-ruot-min.jpg",
-    "https://haiduyenbio.com/wp-content/uploads/2024/07/men-i-sinh-xu-ly-ao-nuoi-min.jpg",
+    "/images/vi-sinh-xu-ly-nuoc-min_banner1.jpg",
+    "/images/sieu-men-duong-ruot-min_banner2.jpg",
+    "/images/men-i-sinh-xu-ly-ao-nuoi-min_banner_3.jpg",
   ];
   // handleSrcImg(slider)
   return (
@@ -31,8 +31,7 @@ export default function UserSwiper() {
       autoplay={{
         delay: 3500,
         disableOnInteraction: false,
-      }}
-    >
+      }}>
       {listSliderFake?.map((slider, index) => (
         <SwiperSlide key={index}>
           <img src={slider} className="w-full slide-height" />

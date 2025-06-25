@@ -1,5 +1,15 @@
 import { useEffect, useState } from "react";
-import { Form, Input, Button, DatePicker, Select, Switch, message } from "antd";
+import {
+  Form,
+  Input,
+  Button,
+  DatePicker,
+  Select,
+  Switch,
+  message,
+  Spin,
+  InputNumber,
+} from "antd";
 import "react-quill/dist/quill.snow.css";
 import TextEditor from "./TextEditor";
 import UploadAvatar from "../upload/UploadAvatar";
@@ -8,165 +18,53 @@ import styled from "@emotion/styled";
 import { useMutation, useQuery } from "react-query";
 import Base from "@/models/Base";
 import UploadImage from "../upload/UploadImage";
+import Product from "@/models/Product";
+import CategoryProduct from "@/models/CategoryProduct";
 
 const { TextArea } = Input;
 
 const CreateOrEdit = (props) => {
-  const { typePage, id, actionType } = props;
+  const { id, actionType } = props;
   const [form] = Form.useForm();
 
-  // typePage = post | department | service
   // actionType = create | update
   const isCreate = actionType === "create";
 
-  const isPost = typePage === "post";
-
   const router = useRouter();
 
-  const [valueTextEditor, setValueTextEditor] = useState("");
-  const [valueAvatar, setValueAvatar] = useState();
-
   // tạo sửa Khoa
-  const createDepartmentMutate = useMutation(Base.createDepartment, {
+  const createProductMutate = useMutation(Product.createProduct, {
     onSuccess: () => {
-      message.success("Tạo mới Khoa thành công!");
+      message.success("Tạo mới sản phẩm thành công!");
       form.resetFields();
       router.back();
     },
     onError: (e) => {
-      message.error("Tạo mới khoa thất bại!");
+      message.error("Tạo mới sản phẩm thất bại!");
     },
   });
-  const updateDepartmentMutate = useMutation(Base.updateDepartment, {
+
+  const updateProductMutate = useMutation(Product.updateProduct, {
     onSuccess: () => {
-      message.success("Sửa Khoa thành công!");
+      message.success("Sửa sản phẩm thành công!");
       form.resetFields();
       router.back();
     },
     onError: (e) => {
-      message.error("Sửa Khoa thất bại!");
+      message.error("Sửa sản phẩm thất bại!");
     },
   });
 
-  // tạo sửa dịch vụ
-  const createServiceMutate = useMutation(Base.createService, {
-    onSuccess: () => {
-      message.success("Tạo mới Dịch vụ thành công!");
-      form.resetFields();
-      router.back();
-    },
-    onError: (e) => {
-      message.error("Tạo mới Dịch vụ thất bại!");
-    },
-  });
-  const updateServiceMutate = useMutation(Base.updateService, {
-    onSuccess: () => {
-      message.success("Sửa Dịch vụ thành công!");
-      form.resetFields();
-      router.back();
-    },
-    onError: (e) => {
-      message.error("Sửa Dịch vụ thất bại!");
-    },
-  });
-
-  // tạo sửa bài viết
-  const createPostMutate = useMutation(Base.createPost, {
-    onSuccess: () => {
-      message.success("Tạo mới bài viết thành công!");
-      form.resetFields();
-      router.back();
-    },
-    onError: (e) => {
-      message.error("Tạo mới bài viết thất bại!");
-    },
-  });
-  const updatePostMutate = useMutation(Base.updatePost, {
-    onSuccess: () => {
-      message.success("Sửa bài viết thành công!");
-      form.resetFields();
-      router.back();
-    },
-    onError: (e) => {
-      message.error("Sửa bài viết thất bại!");
-    },
-  });
-
-  const handleCreate = () => {
-    form.submit();
-
-    const listFieldName = ["Name"];
-    const listFieldNamePost = ["Title", "Description", "CategoryId"];
-    const listFields = isPost ? listFieldNamePost : listFieldName;
-    form
-      .validateFields(listFields)
-      .then((value) => {
-        const valueCreatePost = {
-          ...value,
-          Content: valueTextEditor,
-          ImagePath: valueAvatar,
-        };
-        const valueUpdatePost = {
-          ...value,
-          Content: valueTextEditor || dataDetail?.Content,
-          ImagePath: valueAvatar || dataDetail?.ImagePath,
-          Id: id,
-        };
-
-        const valueCreate = {
-          Name: value?.Name?.trim(),
-          Description: valueTextEditor,
-        };
-
-        const valueUpdate = {
-          Id: id,
-          Name: value?.Name?.trim(),
-          Description: valueTextEditor,
-        };
-
-        if (typePage === "department") {
-          if (isCreate) {
-            createDepartmentMutate.mutate(valueCreate);
-          } else {
-            updateDepartmentMutate.mutate(valueUpdate);
-          }
-        }
-        if (typePage === "service") {
-          if (isCreate) {
-            createServiceMutate.mutate(valueCreate);
-          } else {
-            updateServiceMutate.mutate(valueUpdate);
-          }
-        }
-        if (typePage === "post") {
-          if (isCreate) {
-            createPostMutate.mutate(valueCreatePost);
-          } else {
-            updatePostMutate.mutate(valueUpdatePost);
-          }
-        }
-      })
-      .catch(() => {});
-  };
-
-  const { data: dataDetail } = useQuery(
+  const { data: dataDetail, isFetching: isFetchingDetail } = useQuery(
     ["getDetail", id],
     async () => {
-      let res;
-      if (typePage === "department") {
-        res = await Base.getDetailDepartment(id);
-      }
-      if (typePage === "service") {
-        res = await Base.getDetailService(id);
-      }
-      if (typePage === "post") {
-        res = await Base.getDetailPost(id);
-      }
+      const res = await Product.getProductDetail(id);
 
       return res;
     },
     { enabled: !!id }
   );
+
   useEffect(() => {
     if (dataDetail && id) {
       form.setFieldsValue({
@@ -174,18 +72,12 @@ const CreateOrEdit = (props) => {
         CategoryId: dataDetail?.CategoryId,
         Description: dataDetail?.Description,
         Title: dataDetail?.Title,
+        Price: dataDetail?.Price,
+        Content: dataDetail?.Content,
+        ImagePath: dataDetail?.ImagePath,
       });
-      setValueTextEditor(dataDetail?.Content || dataDetail?.Description);
-      setValueAvatar(dataDetail?.ImagePath);
     }
   }, [dataDetail, id]);
-
-  const onChangeSelect = (value) => {
-    console.log(`selected ${value}`);
-  };
-  const onSearch = (value) => {
-    console.log("search:", value);
-  };
 
   // Filter `option.label` match the user type `input`
   const filterOption = (input, option) =>
@@ -195,7 +87,7 @@ const CreateOrEdit = (props) => {
   const { data: listCategory } = useQuery(
     ["getAllCateAdmin"],
     async () => {
-      const res = await Base.getAllCategory();
+      const res = await CategoryProduct.getCategoryProductList();
 
       const dataConver = res?.map((category) => {
         return { label: category?.Name, value: category?.Id };
@@ -205,139 +97,176 @@ const CreateOrEdit = (props) => {
     {}
   );
 
+  const onFinish = (values) => {
+    const valueCreate = {
+      Name: values?.Name?.trim(),
+      Description: valueTextEditor,
+    };
+
+    const valueUpdate = {
+      Id: id,
+      Name: values?.Name?.trim(),
+      Description: valueTextEditor,
+    };
+
+    if (isCreate) {
+      createProductMutate.mutate(valueCreate);
+    } else {
+      updateProductMutate.mutate(valueUpdate);
+    }
+  };
+
   return (
     <CustomForm className="w-full h-full ">
-      <Form
-        layout="vertical"
-        initialValues={{
-          remember: true,
-        }}
-        scrollToFirstError
-        form={form}
-      >
-        {isPost && (
-          <div className="flex gap-3">
-            {/* <UploadAvatar /> */}
-            <UploadImage
-              onChange={(value) => {
-                setValueAvatar(value);
-              }}
-              imgDetail={valueAvatar}
-            />
-            <div className="w-full">
-              <Form.Item
-                name="Title"
-                rules={[
-                  {
-                    required: true,
-                    message: "Tiêu đề không được bỏ trống!",
-                  },
-                ]}
-                className="w-full mb-3 "
-                label="Tiêu đề"
-              >
-                <Input
-                  maxLength={500}
-                  allowClear
-                  className=" mb-5"
-                  placeholder="Nhập tiêu đề"
-                />
-              </Form.Item>
-              <Form.Item
-                name="Description"
-                rules={[
-                  {
-                    required: true,
-                    message: "Mô tả không được bỏ trống!",
-                  },
-                ]}
-                className="w-full"
-                label="Mô tả ngắn"
-              >
-                <TextArea rows={4} placeholder="Nhập mô tả" maxLength={500} />
-              </Form.Item>
-            </div>
-          </div>
-        )}
-        {(typePage === "department" || typePage === "service") && (
-          <Form.Item
-            name="Name"
-            rules={[
-              {
-                required: true,
-                message: "Không được bỏ trống!",
-              },
-            ]}
-            className="w-1/2 mb-3 "
-            label={typePage === "department" ? "Tên khoa" : "Tên dịch vụ"}
-          >
-            <Input
-              allowClear
-              className=" mb-5"
-              placeholder={
-                typePage === "department" ? "Nhập tên khoa" : "Nhập tên Dịch vụ"
-              }
-            />
-          </Form.Item>
-        )}
-
-        <p className="mb-2">{isPost ? "Nội dung trang:" : "Mô tả:"}</p>
-
-        <TextEditor
-          onChange={(value) => {
-            setValueTextEditor(value);
+      <Spin
+        spinning={
+          createProductMutate.isLoading ||
+          updateProductMutate.isLoading ||
+          isFetchingDetail
+        }>
+        <Form
+          layout="vertical"
+          initialValues={{
+            remember: true,
           }}
-          valueDetail={valueTextEditor}
-        />
+          scrollToFirstError
+          onFinish={onFinish}
+          form={form}>
+          <div className="flex justify-center">
+            {/* <UploadAvatar /> */}
+            <Form.Item name="ImagePath">
+              <UploadImage
+                onChange={(value) => {
+                  form.setFieldsValue({
+                    ImagePath: value,
+                  });
+                }}
+                imgDetail={form.getFieldValue("ImagePath")}
+              />
+            </Form.Item>
+          </div>
 
-        {isPost && (
+          <div className="flex gap-5">
+            <Form.Item
+              name="name"
+              className="w-1/2"
+              rules={[
+                {
+                  required: true,
+                  message: "Không được bỏ trống!",
+                },
+              ]}
+              label={"Tên sản phẩm"}>
+              <Input
+                allowClear
+                className=" mb-5"
+                placeholder="Nhập tên sản phẩm"
+              />
+            </Form.Item>
+
+            <Form.Item
+              rules={[
+                {
+                  required: true,
+                  message: "Danh mục không được bỏ trống!",
+                },
+              ]}
+              name="categoryId"
+              className="w-1/2"
+              label="Danh mục">
+              <Select
+                showSearch
+                placeholder="Chọn danh mục"
+                optionFilterProp="children"
+                filterOption={filterOption}
+                options={listCategory}
+              />
+            </Form.Item>
+          </div>
+
+          <div className="flex gap-5">
+            <Form.Item
+              name="price"
+              className="w-1/2"
+              rules={[
+                {
+                  required: true,
+                  message: "Giá không được bỏ trống!",
+                },
+              ]}
+              label={"Giá"}>
+              <Input allowClear className=" mb-5" placeholder="Nhập giá" />
+            </Form.Item>
+
+            <Form.Item
+              rules={[
+                {
+                  required: true,
+                  message: "Giảm giá không được bỏ trống!",
+                },
+              ]}
+              name="discount"
+              className="w-1/2"
+              label="Giảm giá">
+              <InputNumber
+                allowClear
+                placeholder="Nhập giảm giá"
+                min={0}
+                max={100}
+                formatter={(value) => `${value}%`}
+                // parser={(value) => value.replace("%", "")}
+                className="w-full"
+              />
+            </Form.Item>
+          </div>
+
           <Form.Item
+            name="Description"
             rules={[
               {
                 required: true,
-                message: "Danh mục không được bỏ trống!",
+                message: "Mô tả không được bỏ trống!",
               },
             ]}
-            name="CategoryId"
-            className="w-4/12 mt-5"
-            label="Danh mục"
-          >
-            <Select
-              showSearch
-              placeholder="Chọn danh mục"
-              optionFilterProp="children"
-              onChange={onChangeSelect}
-              onSearch={onSearch}
-              filterOption={filterOption}
-              options={listCategory}
+            className="w-full"
+            label="Mô tả ngắn">
+            <TextArea rows={4} placeholder="Nhập mô tả" maxLength={500} />
+          </Form.Item>
+
+          <Form.Item name="content" label="Mô tả chi tiết">
+            <TextEditor
+              onChange={(value) => {
+                form.setFieldsValue({
+                  Content: value,
+                });
+              }}
+              valueDetail={form.getFieldValue("content")}
             />
           </Form.Item>
-        )}
 
-        <div className="gap-3 mt-5 float-right flex">
-          <Button
-            type="text"
-            className="text-[#2c3d94]  border border-solid border-[#2c3d94]"
-            onClick={() => {
-              router.back();
-            }}
-          >
-            Hủy
-          </Button>
-          <Form.Item>
+          <div className="gap-3 mt-5 float-right flex">
             <Button
+              type="text"
+              className="text-[#2c3d94]  border border-solid border-[#2c3d94]"
               onClick={() => {
-                handleCreate();
-              }}
-              type="primary"
-              htmlType="submit"
-              className="bg-[#2c3d94]"
-            >
-              {id ? "Sửa" : "Tạo"}
+                router.back();
+              }}>
+              Hủy
             </Button>
-          </Form.Item>
-        </div>
-      </Form>
+            <Form.Item>
+              <Button
+                // onClick={() => {
+                //   form.submit();
+                // }}
+                type="primary"
+                htmlType="submit"
+                className="bg-[#2c3d94]">
+                {id ? "Sửa" : "Tạo"}
+              </Button>
+            </Form.Item>
+          </div>
+        </Form>
+      </Spin>
     </CustomForm>
   );
 };

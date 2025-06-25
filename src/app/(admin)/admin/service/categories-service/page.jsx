@@ -12,40 +12,34 @@ import {
 } from "antd";
 import {
   HomeOutlined,
-  SearchOutlined,
   PlusCircleOutlined,
+  SearchOutlined,
 } from "@ant-design/icons";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import styled from "@emotion/styled";
 import { useRouter } from "next/navigation";
 import { useMutation, useQuery } from "react-query";
 import Base from "@/models/Base";
-import { useDebounce } from "@/common/functions/commonFunction";
+import {
+  removeEmptyFields,
+  useDebounce,
+} from "@/common/functions/commonFunction";
 import ModalCreateCategoryService from "../components/ModalCreateCategoryService";
+import CategoryProduct from "@/models/CategoryProduct";
 
 export default function Categorys() {
-  const router = useRouter();
-
   const [valueSearchCate, setValueSearchCate] = useState("");
-  const [idCateSelected, setIdCateSelected] = useState();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const [tableParams, setTableParams] = useState({
-    pagination: {
-      current: 1,
-      pageSize: 5,
-      total: 20,
-    },
+  const __pagination = useRef({
+    page_num: 1,
+    page_size: 10,
   });
 
   const handleTableChange = (pagination, filters, sorter) => {
-    setTableParams({
-      pagination,
-      filters,
-      ...sorter,
-    });
-
-    if (pagination.pageSize !== tableParams.pagination?.pageSize) {
-    }
+    __pagination.current.page_num = pagination.current;
+    __pagination.current.page_size = pagination.pageSize;
+    refetch();
   };
 
   const searchDebounce = useDebounce(valueSearchCate, 1000);
@@ -57,30 +51,24 @@ export default function Categorys() {
     [
       "getListCategory",
       searchDebounce,
-      tableParams.pagination.current,
-      tableParams.pagination.pageSize,
+      __pagination.current.page_num,
+      __pagination.current.page_size,
     ],
     async () => {
-      const res = await Base.getListCatePagination({
-        Page: tableParams.pagination.current,
-        Size: tableParams.pagination.pageSize,
-        KeySearch: searchDebounce,
-      });
+      const res = await CategoryProduct.getCategoryProductList(
+        removeEmptyFields({
+          Page: __pagination.current.page_num,
+          Size: __pagination.current.page_size,
+          search: searchDebounce,
+        })
+      );
 
-      if (res.TotalRecord) {
-        setTableParams({
-          pagination: {
-            current: tableParams.pagination.current,
-            pageSize: tableParams.pagination.pageSize,
-            total: res.TotalRecord,
-          },
-        });
-      }
+      __pagination.current.count = res.totalElements;
 
-      return res?.Data;
+      return res?.content;
     },
     {
-      enabled: false,
+      enabled: true,
     }
   );
 
@@ -106,10 +94,10 @@ export default function Categorys() {
 
   const [api, contextHolder] = notification.useNotification();
 
-  const deleteCateMutate = useMutation(Base.deleteCategory, {
+  const deleteCateMutate = useMutation(CategoryProduct.deleteCategoryProduct, {
     onSuccess: () => {
       message.success("Xóa danh mục thành công!");
-      setIdCateSelected();
+
       refetch();
     },
     onError: (e) => {
@@ -126,8 +114,21 @@ export default function Categorys() {
     },
   });
 
-  const handleDeleteCate = (e) => {
-    deleteCateMutate.mutate(idCateSelected);
+  const _itemSelected = useRef(null);
+
+  const onActions = (record, action) => {
+    switch (action) {
+      case "delete":
+        deleteCateMutate.mutate(record.id);
+        break;
+      case "create":
+        setIsModalOpen(true);
+        break;
+      case "edit":
+        _itemSelected.current = record;
+        setIsModalOpen(true);
+        break;
+    }
   };
 
   const columns = [
@@ -140,38 +141,35 @@ export default function Categorys() {
     },
     {
       title: "Tên danh mục Sản phẩm",
-      dataIndex: "Name",
-      key: "Name",
+      dataIndex: "name",
+      key: "name",
       render: (text) => <a>{text}</a>,
     },
 
     {
-      title: "Ngày tạo",
-      dataIndex: "CreatedAt",
-      key: "CreatedAt",
+      title: "Mô tả",
+      dataIndex: "description",
+      key: "description",
     },
-    {
-      title: "Người tạo",
-      key: "CreatedBy",
-      dataIndex: "CreatedBy",
-    },
+
     {
       title: "Hoạt động",
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <ModalCreateCategory
-            modalType="edit"
-            idCategory={idCateSelected}
-            refetchData={refetch}
-          />
+          <Button
+            size="middle"
+            className="border-teal-500 text-teal-500"
+            type="default"
+            onClick={() => onActions(record, "edit")}>
+            Xem chi tiết/Sửa
+          </Button>
           <Popconfirm
             title="Xóa danh mục"
             description="Bạn có chắc chắn muốn xóa danh mục này?"
-            onConfirm={handleDeleteCate}
+            onConfirm={() => onActions(record, "delete")}
             okText="Xóa"
-            cancelText="Hủy"
-          >
+            cancelText="Hủy">
             <Button size="middle" type="default" danger>
               Xóa
             </Button>
@@ -201,27 +199,42 @@ export default function Categorys() {
         className="w-1/3 mb-5"
         placeholder="Tìm kiếm"
       />
-      <ModalCreateCategoryService modalType="create" refetchData={refetch} />
+
+      <Button
+        icon={<PlusCircleOutlined />}
+        size="middle"
+        type="primary"
+        className="float-right  bg-blue-700 text-white"
+        onClick={() => onActions(null, "create")}>
+        Thêm mới
+      </Button>
+
       <Spin spinning={isFetching}>
         <CustomTable>
           <Table
+            size="small"
             columns={columns}
             dataSource={listCate}
-            onRow={(record) => {
-              return {
-                onClick: () => {
-                  setIdCateSelected(record.Id);
-                },
-              };
-            }}
             pagination={{
-              ...tableParams.pagination,
-              showSizeChanger: true, // Cho phép hiển thị Select chọn số lượng phần tử trên trang
-              pageSizeOptions: tableParams.pageSizeOptions, // Sử dụng pageSizeOptions từ tableParams
+              current: __pagination.current.page_num,
+              pageSize: __pagination.current.page_size,
+              total: __pagination.current.count,
+              showSizeChanger: true,
+              pageSizeOptions: [10, 20, 50, 100],
             }}
+            loading={deleteCateMutate.isLoading}
             onChange={handleTableChange}
           />
         </CustomTable>
+
+        {isModalOpen && (
+          <ModalCreateCategoryService
+            idCategory={_itemSelected?.current?.id}
+            refetchData={refetch}
+            isModalOpen={isModalOpen}
+            setIsModalOpen={setIsModalOpen}
+          />
+        )}
       </Spin>
     </div>
   );

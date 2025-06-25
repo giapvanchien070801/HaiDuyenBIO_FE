@@ -47,7 +47,7 @@ export default function UserFooter() {
         <div className="container mx-auto sm:mt-20 mt-32 lg:mt-0">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Logo & About */}
-            <div className="footer_logo bg-white h-full rounded p-4 text-black flex flex-col items-center">
+            <div className="footer_logo h-full  flex flex-col items-center">
               <div className="flex items-center mb-4">
                 <img
                   src={`/images/logo-haiduyenbio-1.png`}
@@ -55,12 +55,11 @@ export default function UserFooter() {
                   alt="Hai Duyen Bio Logo"
                 />
               </div>
-              <p className="text-lg text-center p-2">
-                <span className="font-bold text-cyan-700">HẢI DUYÊN BIO</span>{" "}
-                là thương hiệu thuộc Công ty TNHH Ứng dụng công nghệ Vi sinh
-                JAPAN. Chúng tôi chuyên cung cấp giải pháp sinh học xử lý môi
-                trường và ao nuôi tôm, hiện đang sản xuất và phân phối trực tiếp
-                các sản phẩm men vi sinh cho nuôi trồng thủy sản.
+              <p className="text-lg text-left p-2">
+                HẢI DUYÊN BIO là thương hiệu thuộc Công ty TNHH Ứng dụng công
+                nghệ Vi sinh JAPAN. Chúng tôi chuyên cung cấp giải pháp sinh học
+                xử lý môi trường và ao nuôi tôm, hiện đang sản xuất và phân phối
+                trực tiếp các sản phẩm men vi sinh cho nuôi trồng thủy sản.
               </p>
               <div className="flex gap-3 mt-4">
                 <Link
@@ -97,9 +96,9 @@ export default function UserFooter() {
 
             {/* Contact Info */}
             <div className="flex flex-col gap-4">
-              <h3 className="text-2xl font-semibold mb-2 flex items-center gap-2">
+              <p className="text-2xl font-semibold mb-2 flex items-center gap-2 border-b  border-white pb-2">
                 <PhoneFilled className="text-[#27ae60]" /> Liên hệ
-              </h3>
+              </p>
               <div className="flex items-start gap-3">
                 <PhoneFilled className="text-xl mt-1 text-white" />
                 <div>
@@ -140,9 +139,9 @@ export default function UserFooter() {
 
             {/* Quick Links */}
             <div className="flex flex-col gap-4">
-              <h3 className="text-2xl font-semibold mb-2 flex items-center gap-2">
+              <p className="text-2xl font-semibold mb-2 flex items-center gap-2 border-b  border-white pb-2">
                 <GlobalOutlined style={{ color: "#0A66C2" }} /> Liên kết nhanh
-              </h3>
+              </p>
               <ul className="space-y-2">
                 <li>
                   <Link
@@ -189,9 +188,9 @@ export default function UserFooter() {
 
             {/* Social & Map */}
             <div className="flex flex-col gap-4">
-              <h3 className="text-2xl font-semibold mb-2 flex items-center gap-2">
+              <p className="text-2xl font-semibold mb-2 flex items-center gap-2 border-b  border-white pb-2">
                 <FacebookFilled style={{ color: "#1877f3" }} /> Mạng xã hội
-              </h3>
+              </p>
               <div className="flex gap-4 mb-4">
                 <Link
                   href="https://www.facebook.com/profile.php?id=100063795834247"

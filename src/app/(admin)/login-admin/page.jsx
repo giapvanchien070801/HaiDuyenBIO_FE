@@ -4,7 +4,7 @@ import React from "react";
 import Login from "@/models/Login";
 import styled from "@emotion/styled";
 import { Button, Checkbox, Form, Input, message, notification } from "antd";
-import {  useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Cookies } from "react-cookie";
 import { useMutation } from "react-query";
 
@@ -17,12 +17,9 @@ function LoginPage() {
   // delete Record
   const loginMutate = useMutation(Login.loginAdmin, {
     onSuccess: (value) => {
-      cookies.set("accessToken", value.Token);
+      cookies.set("accessToken", value.accessToken);
       message.success("Đăng nhập thành công!");
       router.push("/admin/home");
-
-      // set token
-
     },
     onError: (e) => {
       if (e?.response?.data?.Message === "Unauthorized") {
@@ -54,16 +51,14 @@ function LoginPage() {
               initialValues={{ remember: true }}
               className="w-full"
               form={form}
-              onFinish={handleSunmit}
-            >
+              onFinish={handleSunmit}>
               {/* <p className="mb-1">Tài khoản:</p> */}
               <Form.Item
                 label="Tài khoản"
                 name="userName"
                 rules={[
                   { required: true, message: "Vui lòng nhập tên đăng nhập!" },
-                ]}
-              >
+                ]}>
                 <Input placeholder="Tên đăng nhập" className="mb-4" />
               </Form.Item>
 
@@ -71,8 +66,9 @@ function LoginPage() {
               <Form.Item
                 label="Mật khẩu"
                 name="password"
-                rules={[{ required: true, message: "Vui lòng nhập mật khẩu!" }]}
-              >
+                rules={[
+                  { required: true, message: "Vui lòng nhập mật khẩu!" },
+                ]}>
                 <Input.Password placeholder="Mật khẩu" className="mb-4" />
               </Form.Item>
 
@@ -85,8 +81,7 @@ function LoginPage() {
                   htmlType="submit"
                   // onClick={() => handleSunmit()}
                   className="w-full !bg-[#2ba191] text-white mt-10"
-                  loading={loginMutate.isLoading}
-                >
+                  loading={loginMutate.isLoading}>
                   Đăng nhập
                 </Button>
               </Form.Item>

@@ -1,8 +1,9 @@
 import { requests } from "./Base";
+const version = "/api/v1";
 
 class Login {
   loginAdmin = async (data) => {
-    const urlApi = `/api/user/login`;
+    const urlApi = `${version}/auth/login`;
     const response = await requests.post(urlApi, data);
     return response?.data;
   };

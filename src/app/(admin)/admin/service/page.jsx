@@ -8,6 +8,7 @@ import {
   Popconfirm,
   Spin,
   message,
+  Select,
 } from "antd";
 import {
   HomeOutlined,
@@ -15,12 +16,16 @@ import {
   PlusCircleOutlined,
 } from "@ant-design/icons";
 import styled from "@emotion/styled";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useMutation, useQuery } from "react-query";
-import Base from "@/models/Base";
-import { useDebounce } from "../../../../common/functions/commonFunction";
+
+import {
+  removeEmptyFields,
+  useDebounce,
+} from "../../../../common/functions/commonFunction";
 import Product from "@/models/Product";
+import CategoryProduct from "@/models/CategoryProduct";
 
 export default function Services() {
   const router = useRouter();
@@ -30,58 +35,44 @@ export default function Services() {
   };
 
   const [valueSearch, setValueSearch] = useState("");
-  const [idSelected, setIdSelected] = useState();
 
-  const [tableParams, setTableParams] = useState({
-    pagination: {
-      current: 1,
-      pageSize: 5,
-      total: 20,
-    },
+  const __pagination = useRef({
+    page: 1,
+    size: 10,
+    categoryId: -1,
   });
 
   const handleTableChange = (pagination, filters, sorter) => {
-    setTableParams({
-      pagination,
-      filters,
-      ...sorter,
-    });
-
-    if (pagination.pageSize !== tableParams.pagination?.pageSize) {
-    }
+    __pagination.current.page = pagination.current;
+    __pagination.current.size = pagination.pageSize;
+    refetch();
   };
 
   const searchDebounce = useDebounce(valueSearch, 1000);
   const {
-    data: listService,
+    data: listProduct,
     refetch,
     isFetching,
   } = useQuery(
     [
       "getListServicePagination",
       searchDebounce,
-      tableParams.pagination.current,
-      tableParams.pagination.pageSize,
+      __pagination.current.page,
+      __pagination.current.size,
     ],
     async () => {
-      const res = await Product.getProductList({
-        page: tableParams.pagination.current,
-        size: tableParams.pagination.pageSize,
+      const params = {
+        ...__pagination.current,
+        page: __pagination.current.page - 1,
         search: searchDebounce,
-        categoryId: -1,
-      });
+        count: null,
+      };
 
-      if (res.TotalRecord) {
-        setTableParams({
-          pagination: {
-            current: tableParams.pagination.current,
-            pageSize: tableParams.pagination.pageSize,
-            total: res.TotalRecord,
-          },
-        });
-      }
+      const res = await Product.getProductList(removeEmptyFields(params));
 
-      return res?.Data;
+      __pagination.current.count = res?.totalElements;
+
+      return res?.content;
     },
     {
       enabled: true,
@@ -116,21 +107,29 @@ export default function Services() {
     },
     {
       title: "Tên Sản phẩm",
-      dataIndex: "Name",
-      key: "Name",
+      dataIndex: "name",
+      key: "name",
+      render: (text) => <a>{text}</a>,
+    },
+    {
+      title: "Danh mục",
+      dataIndex: "categoryName",
+      key: "categoryName",
+      render: (text) => <a>{text}</a>,
+    },
+    {
+      title: "Giá",
+      dataIndex: "price",
+      key: "Price",
+      render: (text) => <a>{text}</a>,
+    },
+    {
+      title: "Số lượng",
+      dataIndex: "stock",
+      key: "stock",
       render: (text) => <a>{text}</a>,
     },
 
-    {
-      title: "Ngày tạo",
-      dataIndex: "CreatedAt",
-      key: "CreatedAt",
-    },
-    {
-      title: "Người tạo",
-      key: "CreatedBy",
-      dataIndex: "CreatedBy",
-    },
     {
       title: "Hoạt động",
       key: "action",
@@ -140,14 +139,14 @@ export default function Services() {
             size="middle"
             className="border-teal-500 text-teal-500"
             type="default"
-            onClick={() => router.push(`/admin/service/edit/${record?.Id}`)}>
+            onClick={() => router.push(`/admin/service/edit/${record?.id}`)}>
             Xem chi tiết/Sửa
           </Button>
 
           <Popconfirm
             title="Xóa Sản phẩm"
             description="Bạn có chắc chắn muốn xóa Sản phẩm này?"
-            onConfirm={handleDelete}
+            onConfirm={() => handleDelete(record?.id)}
             okText="Xóa"
             cancelText="Hủy">
             <Button size="middle" type="default" danger>
@@ -159,10 +158,10 @@ export default function Services() {
     },
   ];
 
-  const deleteMutate = useMutation(Base.deleteService, {
+  const deleteMutate = useMutation(Product.deleteProduct, {
     onSuccess: () => {
       message.success("Xóa Sản phẩm thành công!");
-      setIdSelected();
+
       refetch();
     },
     onError: (e) => {
@@ -170,52 +169,85 @@ export default function Services() {
     },
   });
 
-  const handleDelete = (e) => {
-    deleteMutate.mutate(idSelected);
+  const handleDelete = (productId) => {
+    deleteMutate.mutate(productId);
   };
+
+  const { data: listCategory } = useQuery(
+    ["getListCategory-Service"],
+    async () => {
+      const res = await CategoryProduct.getCategoryProductList(
+        removeEmptyFields({
+          Page: 1,
+          Size: 1000,
+          search: "",
+        })
+      );
+
+      return res?.content?.map((item) => ({
+        label: item.name,
+        value: item.id,
+      }));
+    },
+    {
+      enabled: true,
+    }
+  );
 
   return (
     <div>
       <Breadcrumb className="mb-5" items={breadcrumb} />
-      <Input
-        allowClear
-        prefix={
-          <SearchOutlined
-            style={{
-              color: "gray",
+      <div className="flex  items-center justify-between mb-5">
+        <div className="flex gap-5 w-1/2">
+          <Input
+            allowClear
+            prefix={
+              <SearchOutlined
+                style={{
+                  color: "gray",
+                }}
+              />
+            }
+            onChange={(e) => {
+              setValueSearch(e.target.value);
             }}
+            className="w-1/2"
+            placeholder="Tìm kiếm"
           />
-        }
-        onChange={(e) => {
-          setValueSearch(e.target.value);
-        }}
-        className="w-1/3 mb-5"
-        placeholder="Tìm kiếm"
-      />
-      <Button
-        icon={<PlusCircleOutlined />}
-        size="middle"
-        type="primary"
-        className="float-right  bg-blue-700 text-white"
-        onClick={() => handleGoCreateOrEdit()}>
-        Thêm mới
-      </Button>
+
+          <Select
+            allowClear
+            options={listCategory}
+            onChange={(value) => {
+              __pagination.current.categoryId = value;
+              refetch();
+            }}
+            className="w-1/2"
+            placeholder="Chọn danh mục"
+          />
+        </div>
+        <Button
+          icon={<PlusCircleOutlined />}
+          size="middle"
+          type="primary"
+          className="float-right  bg-blue-700 text-white"
+          onClick={() => handleGoCreateOrEdit()}>
+          Thêm mới
+        </Button>
+      </div>
+
       <Spin spinning={isFetching}>
         <CustomTable>
           <Table
             columns={columns}
-            dataSource={listService}
-            onRow={(record) => {
-              return {
-                onClick: () => {
-                  setIdSelected(record.Id);
-                },
-              };
-            }}
+            size="small"
+            dataSource={listProduct}
             pagination={{
-              ...tableParams.pagination,
-              showSizeChanger: true, // Cho phép hiển thị Select chọn số lượng phần tử trên trang
-              pageSizeOptions: tableParams.pageSizeOptions, // Sử dụng pageSizeOptions từ tableParams
+              current: __pagination.current.page,
+              pageSize: __pagination.current.size,
+              total: __pagination.current.count,
+              showSizeChanger: true,
+              pageSizeOptions: [10, 20, 50, 100],
             }}
             onChange={handleTableChange}
           />
