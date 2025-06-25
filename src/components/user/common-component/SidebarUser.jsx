@@ -29,7 +29,7 @@ export default function SidebarUser(props) {
     },
   ];
 
-  const listService = [
+  const listProduct = [
     {
       Id: 1,
       Name: "Men vi sinh Bifido",
@@ -61,8 +61,7 @@ export default function SidebarUser(props) {
             <Link
               href={`/news/${category?.Id}`}
               as={`/news/${category?.Id}`}
-              className="capitalize categorie-link transition-all duration-500"
-            >
+              className="capitalize categorie-link transition-all duration-500">
               <RightOutlined className="text_ocean" /> {category?.Name}
             </Link>
           </p>
@@ -71,13 +70,12 @@ export default function SidebarUser(props) {
 
       <div className="categories-blog py-8 pl-4 mt-16">
         <p className="text-3xl mb-4">Sản phẩm bán chạy</p>
-        {listService?.map((service, index) => (
+        {listProduct?.map((service, index) => (
           <p className="my-4" key={index}>
             <Link
               href={`/product-detail/${service?.Id}`}
               as={`/product-detail/${service?.Id}`}
-              className="capitalize categorie-link transition-all duration-500"
-            >
+              className="capitalize categorie-link transition-all duration-500">
               <RightOutlined className="text_ocean" /> {service?.Name}
             </Link>
           </p>

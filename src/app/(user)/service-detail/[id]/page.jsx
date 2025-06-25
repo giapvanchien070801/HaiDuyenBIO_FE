@@ -13,7 +13,7 @@ export default function ServiceDetail({ params }) {
   const idService = params?.id;
 
   // api lấy danh sách tất cả dịch vụ
-  const { data: listService } = useQuery(
+  const { data: listProduct } = useQuery(
     ["getAllServiceMenu"],
     async () => {
       const res = await Base.getAllService();
@@ -86,19 +86,17 @@ export default function ServiceDetail({ params }) {
       <div className=" flex   container-original  py-32">
         <div className="w-4/12 lg:block hidden">
           <div className="w-full bg-[#f4f6f9]  p-8 mb-12 ">
-            {listService?.map((service, index) => (
+            {listProduct?.map((service, index) => (
               <div
                 key={index}
                 className={`${
                   service?.Id === Number(idService)
                     ? "bg-[#2490eb] text-white"
                     : "bg-white"
-                } mb-2 rounded`}
-              >
+                } mb-2 rounded`}>
                 <Link
                   href={`/service-detail/${service?.Id}`}
-                  className=" flex py-4 px-6  justify-between text-base font-medium"
-                >
+                  className=" flex py-4 px-6  justify-between text-base font-medium">
                   {service?.Name}
                   <RightOutlined />
                 </Link>

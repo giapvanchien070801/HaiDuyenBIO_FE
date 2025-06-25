@@ -20,13 +20,13 @@ export default function AdminLayout({ children }) {
 
   useEffect(() => {
     // Nếu đường dẫn là /admin và chưa đăng nhập, điều hướng đến trang login
-    // if (pathname?.split("/").includes("admin") && !accessToken) {
-    //   api["warning"]({
-    //     message: "Bạn chưa đăng nhập",
-    //     description: "Hãy đăng nhập để có quyền truy cập!",
-    //   });
-    //   router.push("/login-admin");
-    // }
+    if (pathname?.split("/").includes("admin") && !accessToken) {
+      api["warning"]({
+        message: "Bạn chưa đăng nhập",
+        description: "Hãy đăng nhập để có quyền truy cập!",
+      });
+      router.push("/login-admin");
+    }
 
     // trường hợp đã đăng nhập nhưng nhập url login
     if (pathname?.split("/").includes("login-admin") && accessToken) {

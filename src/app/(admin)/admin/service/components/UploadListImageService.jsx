@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import { Image, Upload } from "antd";
+import FilesRepository from "@/models/FilesRepository";
+import { useMutation } from "react-query";
 
 const getBase64 = (file) =>
   new Promise((resolve, reject) => {
@@ -25,16 +27,17 @@ const UploadListImageService = ({ value, onChange }) => {
 
   const handleChange = ({ fileList: newFileList }) => {
     setFileList(newFileList);
+    console.log("newFileList", newFileList);
     // Convert fileList to array of URLs for form value
-    const urls = newFileList
-      .map((file) => {
-        if (file.status === "done") {
-          return file.url || file.response?.url;
+    onChange(
+      newFileList.map((el) => {
+        if (el.response) {
+          el.id = el.response.id;
+          el.fileName = el.response.fileName;
         }
-        return null;
+        return el;
       })
-      .filter((url) => url);
-    onChange(urls);
+    );
   };
 
   const uploadButton = (
@@ -44,6 +47,29 @@ const UploadListImageService = ({ value, onChange }) => {
     </button>
   );
 
+  const uploadFileMutation = useMutation({
+    mutationFn: FilesRepository.uploadFile,
+    onSuccess: (data) => {
+      console.log("data", data);
+      message.success("Tải lên thành công");
+    },
+    onError: (error) => {
+      message.error("Tải lên thất bại");
+    },
+  });
+
+  const handleInsertFile = async ({ file, onSuccess, onError }) => {
+    try {
+      const formData = new FormData();
+      formData.append("files", file);
+      formData.append("fileSize", file.size);
+      const res = await uploadFileMutation.mutateAsync(formData);
+      onSuccess(res);
+    } catch (e) {
+      onError("Không tải được");
+    }
+  };
+
   return (
     <>
       <Upload
@@ -51,8 +77,8 @@ const UploadListImageService = ({ value, onChange }) => {
         listType="picture-card"
         fileList={fileList}
         onPreview={handlePreview}
-        onChange={handleChange}
-      >
+        customRequest={handleInsertFile}
+        onChange={handleChange}>
         {fileList.length >= 3 ? null : uploadButton}
       </Upload>
       {previewImage && (

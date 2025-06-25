@@ -20,7 +20,7 @@ export default function RootLayout({ children }) {
       <body>
         <QueryClientProvider client={queryClient}>
           <UserHeader />
-          <main>{children}</main>
+          <main className="mt-20">{children}</main>
           <div id="fb-root"></div>
           <div id="fb-customer-chat" class="fb-customerchat"></div>
           <UserFooter />

@@ -7,29 +7,16 @@ import PricingBanner from "@/components/user/common-component/PricingBanner";
 import AquacultureProbioticsList from "@/components/user/common-component/AquacultureProbioticsList";
 import ListVideos from "@/components/user/common-component/ListVideos";
 
-const UserAboutUs = dynamic(() => import("@/components/user/UserAboutUs"), {
-  ssr: false,
-});
-
-const UserFacilities = dynamic(
-  () => import("@/components/user/UserFacilities"),
-  {
-    ssr: false,
-  }
-);
-
 export default function HomePage() {
   return (
     <>
-      <div className="pb-48">
+      <div className="pb-48 ">
         <UserSwiper />
         <ListCartBanner />
         <ListCardProduct />
         <PricingBanner />
         <AquacultureProbioticsList />
         <ListVideos />
-        {/* <UserAboutUs />
-        <UserFacilities /> */}
       </div>
     </>
   );

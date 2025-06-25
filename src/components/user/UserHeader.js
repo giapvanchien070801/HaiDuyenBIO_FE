@@ -22,6 +22,7 @@ import Base from "@/models/Base";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Badge, Button, Popover, Input, Tooltip } from "antd";
+import CategoryProduct from "@/models/CategoryProduct";
 
 const { Search } = Input;
 
@@ -29,15 +30,24 @@ export default function UserHeader() {
   const pathname = usePathname();
   const [cartTotal, setCartTotal] = useState(0);
   const [cartCount, setCartCount] = useState(0);
+  const [scrollY, setScrollY] = useState(0);
+  const [header1Height, setHeader1Height] = useState(0);
 
   // api lấy danh sách tất cả thể loại
   const { data: listCategory } = useQuery(
-    ["getAllCate"],
+    ["getListCategory-UserHeader"],
     async () => {
-      const res = await Base.getAllCategory();
-      return res;
+      const res = await CategoryProduct.getCategoryProductList({
+        Page: 1,
+        Size: 1000,
+        search: "",
+      });
+
+      return res?.content;
     },
-    {}
+    {
+      enabled: true,
+    }
   );
 
   // api lấy danh sách tất cả khoa
@@ -51,7 +61,7 @@ export default function UserHeader() {
   );
 
   // api lấy danh sách tất cả dịch vụ
-  const { data: listService } = useQuery(
+  const { data: listProduct } = useQuery(
     ["getAllServiceUser"],
     async () => {
       const res = await Base.getAllService();
@@ -110,9 +120,23 @@ export default function UserHeader() {
     };
   }, []);
 
-  const toggleMenuMobile = () => {
-    setActiveMobileMenu(!activeMobileMenu);
-  };
+  // Xử lý scroll event
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Lấy chiều cao của header 1
+  useEffect(() => {
+    const header1Element = document.querySelector(".header-1");
+    if (header1Element) {
+      setHeader1Height(header1Element.offsetHeight);
+    }
+  }, []);
 
   const listSocial = [
     {
@@ -176,10 +200,20 @@ export default function UserHeader() {
     },
   ];
 
+  // Tính toán transform cho header 1
+  const header1Transform = Math.max(-header1Height, -scrollY);
+  const header2Top = Math.max(0, header1Height + header1Transform);
+
   return (
-    <header className="z-20 relative">
-      <div className={` z-20 hidden md:block`}>
-        <div className="container mx-auto  flex justify-between py-5">
+    <header className="relative">
+      {/* header 1 */}
+      <div
+        className="header-1 z-20 hidden md:block bg-white"
+        style={{
+          transform: `translateY(${header1Transform}px)`,
+          transition: "transform 0.4s ease-out",
+        }}>
+        <div className="container mx-auto flex justify-between py-5">
           <div className="flex items-center gap-5">
             <Link href={`/`} className="">
               <div className="flex items-center">
@@ -213,14 +247,17 @@ export default function UserHeader() {
         </div>
       </div>
 
-      <div className="  bg-[#14457b] py-4 lg:px-0 px-4  flex  lg:justify-center justify-between">
-        {/* <Link href={`/`} className="lg:hidden xl:block">
-          <div className="flex items-center">
-            <img src="/images/logo-haiduyenbio-1.png" className=" h-14" />
-          </div>
-        </Link> */}
-
-        <div className="flex  items-center  justify-between w-full lg:w-3/4 text-white">
+      {/* header 2 */}
+      <div
+        className="bg-[#14457b] py-4 lg:px-0 px-4 flex lg:justify-center justify-between z-50"
+        style={{
+          position: "fixed",
+          top: `${header2Top}px`,
+          left: 0,
+          right: 0,
+          transition: "top 0 ease-out",
+        }}>
+        <div className="flex items-center justify-between w-full lg:w-3/4 text-white">
           <Popover
             content={
               <ul className="w-max bg-white">
@@ -228,14 +265,14 @@ export default function UserHeader() {
                   <Popover
                     content={
                       <ul className="w-max bg-white">
-                        {listSocial?.map((social, index) => (
+                        {listCategory?.map((category, index) => (
                           <li key={index} className="w-full">
                             {/* link đến tranh danh sách bài viết */}
                             <Link
-                              href={`/product-detail/${social?.id}`}
-                              as={`/product-detail/${social?.id}`}
+                              href={`/product-list/${category?.id}`}
+                              as={`/product-list/${category?.id}`}
                               className="hover:text-white block hover:bg-cyan-600 py-2 px-8 transition-all duration-300 lg:px-4 lg:py-2 rounded">
-                              {social?.name}
+                              {category?.name}
                             </Link>
                           </li>
                         ))}

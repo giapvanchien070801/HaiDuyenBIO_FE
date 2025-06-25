@@ -23,11 +23,14 @@ export default function AdminHomeLayout({ children }) {
   };
 
   const handleLogOut = () => {
-    cookies.remove("accessToken");
-    cookies.remove("adminInfor");
+    cookies.remove("accessToken").then(() => {
+      cookies.remove("refreshToken");
+    });
 
-    router.push("/login-admin");
-    message.success("Đăng xuất thành công");
+    setTimeout(() => {
+      router.push("/login-admin");
+      message.success("Đăng xuất thành công");
+    }, 3000);
   };
 
   const adminInfo = cookies.get("adminInfor");
@@ -36,8 +39,7 @@ export default function AdminHomeLayout({ children }) {
     <div className=" cursor-pointer">
       <div
         onClick={() => handleLogOut()}
-        className="text-red-700 flex items-center pr-4 py-3 gap-2 border-b hover:bg-[#4361ee1a] p-2"
-      >
+        className="text-red-700 flex items-center pr-4 py-3 gap-2 border-b hover:bg-[#4361ee1a] p-2">
         <LogoutOutlined />
         <p>Sign Out</p>
       </div>
@@ -60,8 +62,7 @@ export default function AdminHomeLayout({ children }) {
       <div
         className={`  absolute  min-h-[100vh] main-sidebar flex flex-col items-center p-3 ${
           isCloseMenu ? "w-[70px]" : "w-64"
-        }`}
-      >
+        }`}>
         <img
           className="w-36 mb-4 mt-1"
           src="/images/logo-haiduyenbio-1.png"
@@ -75,8 +76,7 @@ export default function AdminHomeLayout({ children }) {
       <div
         className={` w-full min-h-[100vh] content-wraper bg-[#f3f3f5] ${
           isCloseMenu ? "ml-[70px]" : "ml-64"
-        }`}
-      >
+        }`}>
         {/* header */}
         <div className="h-14 border-y border-solid border-[#dee2e6] p-2 flex justify-between items-center ">
           <div>
@@ -97,8 +97,7 @@ export default function AdminHomeLayout({ children }) {
             <Popover
               content={contentPopover}
               title={titleHover}
-              trigger="click"
-            >
+              trigger="click">
               <div className="w-8 h-8 rounded-full bg-slate-300 flex items-center justify-center">
                 <UserOutlined className="text-xl text-slate-800" />
               </div>

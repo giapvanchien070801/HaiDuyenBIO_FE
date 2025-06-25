@@ -20,6 +20,7 @@ import {
 } from "antd";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Product from "@/models/Product";
 
 export default function ProductDetailPage({ params }) {
   // Sử dụng query param từ URL
@@ -77,6 +78,14 @@ export default function ProductDetailPage({ params }) {
       ),
     },
     {
+      href: "/product-list",
+      title: (
+        <>
+          <span className="text-[#2490eb]">Danh sách sản phẩm</span>
+        </>
+      ),
+    },
+    {
       href: "/contact",
       title: (
         <>
@@ -85,6 +94,18 @@ export default function ProductDetailPage({ params }) {
       ),
     },
   ];
+
+  const { data: dataDetail } = useQuery(
+    ["getDetail", idProduct],
+    async () => {
+      const res = await Product.getProductDetail(idProduct);
+
+      return res;
+    },
+    { enabled: !!idProduct }
+  );
+
+  console.log("dataDetail", dataDetail);
 
   // Function to add product to cart
   const addToCart = () => {
@@ -147,20 +168,36 @@ export default function ProductDetailPage({ params }) {
     }
   };
 
+  //   {
+  //     "slug": "sdsdfdsf",
+  //     "name": "Sản phẩm 12h13, sửa lúc 12h 38",
+  //     "description": "<h2><strong>1. Thành phần của men EM GỐC SUPER</strong></h2><p>Trong men EM GỐC SUPER có chứa các thành phần chính là các chủng vi sinh vật có lợi đó là:</p><ul><li>Saccharomyces cerevisiae:&nbsp;10^10 cfu/L</li><li>Bacillus licheniformis:&nbsp;10^10 cfu/L</li><li>Bacillus subtillis:&nbsp;10^10 cfu/L</li></ul><h2><strong>2. Tác dụng&nbsp;men EM GỐC SUPER</strong></h2><p>Men EM GỐC SUPER đem đến những công dụng tuyệt vời, phù hợp ứng dụng cho nhiều lĩnh vực. Đó là:</p><ul><li>Men EM GỐC SUPER chính là chìa khóa nuôi ruồi lính đen, phun chuồng trại tiên tiến và ủ phân bón cây trồng.</li><li>Phân giải chất hữu cơ thải, ứng dụng trong xử lý môi trường chăn nuôi, thuỷ sản.</li><li>Ức chế các vi sinh vật, yếu tố gây hại trong nguyên liệu, môi trường, tăng cường các vi sinh vật có ích.</li><li>Tăng hiệu quả sử dụng chất hữu cơ trong phân bón, môi trường chăn nuôi.</li></ul><p><strong><img src=\"https://visinhjapan.com/wp-content/uploads/2025/06/Artboard-1@4x-100-1024x768.jpg\"></strong><em>Men Sinh Học EM GỐC SUPER được thiết kế đặc biệt để tối ưu hóa quá trình thuỷ phân đạm cá và chất thải hữu cơ trong môi trường chăn nuôi thuỷ sản. Sản phẩm giúp phân giải chất đạm một cách hiệu quả hơn và có thể ứng dụng cho nhiều lĩnh vực khác nhau.</em></p><p>&nbsp;</p><h2><strong>3. Hướng dẫn sử dụng men EM GỐC SUPER</strong></h2><p>Sau đây chúng tôi xin hướng dẫn bà con cách sử dụng men EM GỐC SUPER để sử dụng đúng cách:</p><ul><li>Quy trình nhân sinh khối: 1L EM GỐC SUPER + 5 kg mật rỉ đường + 100 lit nước. Ủ kín trong 48 giờ thu được sản phẩm cấp 1 sử dụng cho các mục đích khác nhau (nuôi ruồi lính đen, phun chuồng trại, tạo đệm lót sinh học cho chuồng trại,…).</li><li>Quy trình ủ đạm hữu cơ (cá, đỗ tương, rau củ…): 1L EM GỐC SUPER + 5 kg mật rỉ đường + 100kg nguyên liệu hữu cơ (cá, đỗ tương, rau củ…) + 5 kg cám gạo. Trộn đều và cho vào trùng phuy 200 lit. Đổ 50% nước, khuấy đều, đậy kín sau 30 ngày. Sử dụng tưới cho cây trồng hoặc làm dinh dưỡng thức ăn chăn nuôi.</li><li>Quy trình ủ rác hữu cơ: 1L EM GỐC SUPER + 100 ~ 200 kg rác hữu cơ. Trộn đều và đậy kín lại sau 20 – 30 ngày có thể sử dụng bón cây trồng.&nbsp;</li><li><strong><img src=\"https://visinhjapan.com/wp-content/uploads/2025/06/Artboard-1-copy@4x-100-1024x768.jpg\"></strong><em>Men Sinh Học EM GỐC SUPER được thiết kế đặc biệt để tối ưu hóa quá trình thuỷ phân đạm cá và chất thải hữu cơ trong môi trường chăn nuôi thuỷ sản. Sản phẩm giúp phân giải chất đạm một cách hiệu quả hơn và có thể ứng dụng cho nhiều lĩnh vực khác nhau.</em></li></ul><h2><strong>4. Một số lưu ý khi sử dụng men EM GỐC SUPER</strong></h2><p>Trên đây chúng tôi đã hướng dẫn bà con cách sử dụng. Và trong quá trình sử dụng men thì bà con cần lưu ý một số vấn đề sau:</p><ul><li>Đọc kỹ hướng dẫn sử dụng của nhà sản xuất trước khi sử dụng sản phẩm.</li><li>Bảo quản men EM GỐC SUPER ở nơi khô ráo, thoáng mát, tránh ánh nắng trực tiếp.</li><li>Nếu không sử dụng hết men hãy bảo quản kỹ, tránh ẩm mốc, gây vón cục, ảnh hưởng tới chất lượng men.</li></ul><p><strong><img src=\"https://visinhjapan.com/wp-content/uploads/2025/06/Artboard-1-copy-2@4x-100-1024x768.jpg\"></strong><em>Men Sinh Học EM GỐC SUPER được thiết kế đặc biệt để tối ưu hóa quá trình thuỷ phân đạm cá và chất thải hữu cơ trong môi trường chăn nuôi thuỷ sản. Sản phẩm giúp phân giải chất đạm một cách hiệu quả hơn và có thể ứng dụng cho nhiều lĩnh vực khác nhau.</em></p><h2><strong>Mua EM GỐC SUPER&nbsp;ở đâu uy tín?</strong></h2><p>Hiện nay, EM GỐC SUPER đã có mặt ở hầu khắp các địa phương trên cả nước với nhiều đại lý phân phối. Để có thể mua hàng chính hãng thì bà con nên làm theo các bước hướng dẫn sau đây:</p><ul><li>Đặt hàng trực tiếp ngay trên website:&nbsp;<strong>visinhjapan.com</strong>&nbsp;hoặc liên hệ hotline:&nbsp;<strong>0985 209 921</strong>&nbsp;để gặp nhân viên chăm sóc khách hàng và được tư vấn chi tiết sản phẩm. Hoặc nhân viên sẽ hướng dẫn quý bà con đến với các đại lý gần nhất để mua hàng.</li><li>Bà con có thể đến trực tiếp tại các đại lý gần khu vực chăn nuôi hoặc nơi mình sinh sống để mua hàng.</li><li>Bà con có thể mua EM GỐC SUPER tại:</li></ul><p><strong>CÔNG TY TNHH ỨNG DỤNG CÔNG NGHỆ VI SINH JAPAN</strong></p><p><strong>Địa chỉ: Nam Điện – Nam Dương – Tx. Chũ – Bắc Giang</strong></p><p><strong>Liên hệ: 0985 209 921</strong></p><p><strong>—————————————————</strong></p><p><strong>➨ Theo dõi kênh:&nbsp;</strong><a href=\"https://www.youtube.com/@LeDuyChu\" rel=\"noopener noreferrer\" target=\"_blank\">https://www.youtube.com/@LeDuyChu</a></p><p><strong>➨ Fanpage:&nbsp;</strong><a href=\"https://www.facebook.com/congtyvisinhjapan\" rel=\"noopener noreferrer\" target=\"_blank\">https://www.facebook.com/congtyvisinhjapan</a></p><p><strong>➨ Website:&nbsp;</strong><a href=\"http://visinhjapan.com/\" rel=\"noopener noreferrer\" target=\"_blank\">http://visinhjapan.com/</a></p>",
+  //     "price": 10000000,
+  //     "imageUrl": [],
+  //     "stock": 10,
+  //     "categoryId": 10,
+  //     "summary": "mô tả ngắn của sản pẩme",
+  //     "createdAt": "2025-06-25 17:14:15",
+  //     "categoryName": "Men Vi Sinh Thực Phẩm",
+  //     "priceFrom": 8500000,
+  //     "discountPercent": 15,
+  //     "discountValue": null
+  // }
+
   // Create tabs for images
-  const imageTabs = mockProduct.images.map((image, index) => ({
+  const imageTabs = dataDetail?.imageUrl?.map((image, index) => ({
     key: index.toString(),
     label: `Ảnh ${index + 1}`,
     children: (
       <div className="relative">
         <img
           src={image}
-          alt={`${mockProduct.name} - Ảnh ${index + 1}`}
+          alt={`${dataDetail?.name} - Ảnh ${index + 1}`}
           className="w-full h-96 object-cover rounded-lg shadow-md"
         />
         <div className="absolute top-4 left-4">
           <Tag color="red" className="font-bold">
-            -{mockProduct.discount}%
+            -{dataDetail?.discountPercent}%
           </Tag>
         </div>
       </div>
@@ -190,10 +227,10 @@ export default function ProductDetailPage({ params }) {
             <div className="space-y-6">
               <div>
                 <h1 className="text-2xl font-bold text-gray-800 mb-2">
-                  {mockProduct.name}
+                  {dataDetail?.name}
                 </h1>
                 <p className="text-gray-600 text-sm leading-relaxed">
-                  {mockProduct.subDescription}
+                  {dataDetail?.summary}
                 </p>
               </div>
 
@@ -201,15 +238,15 @@ export default function ProductDetailPage({ params }) {
               <div className="space-y-2">
                 <div className="flex items-center gap-3">
                   <span className="text-3xl font-bold text-red-500">
-                    {mockProduct.price.toLocaleString("vi-VN")}đ
+                    {dataDetail?.price.toLocaleString("vi-VN")}đ
                   </span>
                   <span className="text-lg text-gray-400 line-through">
-                    {mockProduct.oldPrice.toLocaleString("vi-VN")}đ
+                    {dataDetail?.priceFrom.toLocaleString("vi-VN")}đ
                   </span>
                 </div>
                 <p className="text-sm text-gray-500">
                   Tiết kiệm:{" "}
-                  {(mockProduct.oldPrice - mockProduct.price).toLocaleString(
+                  {(dataDetail?.priceFrom - dataDetail?.price).toLocaleString(
                     "vi-VN"
                   )}
                   đ
@@ -267,12 +304,13 @@ export default function ProductDetailPage({ params }) {
               <Divider />
             </div>
             <div>
-              <h3 className="text-lg font-semibold text-gray-800 mb-3">
+              <p className="text-lg font-semibold text-gray-800 mb-3">
                 Mô tả sản phẩm
-              </h3>
-              <p className="text-gray-600 leading-relaxed">
-                {mockProduct.description}
               </p>
+              <div
+                className="text-gray-600 leading-relaxed"
+                dangerouslySetInnerHTML={{ __html: dataDetail?.description }}
+              />
             </div>
           </div>
         </div>
