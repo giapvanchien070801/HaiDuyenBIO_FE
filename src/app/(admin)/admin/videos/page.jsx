@@ -20,7 +20,6 @@ import styled from "@emotion/styled";
 import { useRouter } from "next/navigation";
 import { useMutation, useQuery } from "react-query";
 import Base from "@/models/Base";
-import ModalCreateCategory from "../../../../components/admin/modals/ModalCreateCategory";
 import { useDebounce } from "../../../../common/functions/commonFunction";
 import ModalCreateVideo from "./components/ModalCreateVideo";
 
@@ -171,8 +170,7 @@ export default function Categorys() {
             description="Bạn có chắc chắn muốn xóa video này?"
             onConfirm={handleDeleteCate}
             okText="Xóa"
-            cancelText="Hủy"
-          >
+            cancelText="Hủy">
             <Button size="middle" type="default" danger>
               Xóa
             </Button>
