@@ -21,6 +21,7 @@ import {
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Product from "@/models/Product";
+import RelatedProducts from "@/components/user/common-component/RelatedProducts";
 
 export default function ProductDetailPage({ params }) {
   // Sử dụng query param từ URL
@@ -67,6 +68,16 @@ export default function ProductDetailPage({ params }) {
   //   { enabled: !!idProduct }
   // );
 
+  const { data: dataDetail } = useQuery(
+    ["getDetail", idProduct],
+    async () => {
+      const res = await Product.getProductDetail(idProduct);
+
+      return res;
+    },
+    { enabled: !!idProduct }
+  );
+
   const breadcrumb = [
     {
       href: "/",
@@ -78,7 +89,7 @@ export default function ProductDetailPage({ params }) {
       ),
     },
     {
-      href: "/product-list",
+      href: `/product-list/${dataDetail?.categoryId}`,
       title: (
         <>
           <span className="text-[#2490eb]">Danh sách sản phẩm</span>
@@ -94,18 +105,6 @@ export default function ProductDetailPage({ params }) {
       ),
     },
   ];
-
-  const { data: dataDetail } = useQuery(
-    ["getDetail", idProduct],
-    async () => {
-      const res = await Product.getProductDetail(idProduct);
-
-      return res;
-    },
-    { enabled: !!idProduct }
-  );
-
-  console.log("dataDetail", dataDetail);
 
   // Function to add product to cart
   const addToCart = () => {
@@ -189,16 +188,18 @@ export default function ProductDetailPage({ params }) {
     key: index.toString(),
     label: `Ảnh ${index + 1}`,
     children: (
-      <div className="relative">
-        <img
-          src={image}
-          alt={`${dataDetail?.name} - Ảnh ${index + 1}`}
-          className="w-full h-96 object-cover rounded-lg shadow-md"
-        />
-        <div className="absolute top-4 left-4">
-          <Tag color="red" className="font-bold">
-            -{dataDetail?.discountPercent}%
-          </Tag>
+      <div className="rounded-lg shadow-md">
+        <div className="h-96 w-full relative">
+          <img
+            src={image}
+            alt={`${dataDetail?.name} - Ảnh ${index + 1}`}
+            className="w-full h-full object-cover scale-75"
+          />
+          <div className="absolute top-4 left-4">
+            <Tag color="red" className="font-bold">
+              -{dataDetail?.discountPercent}%
+            </Tag>
+          </div>
         </div>
       </div>
     ),
@@ -206,12 +207,12 @@ export default function ProductDetailPage({ params }) {
 
   return (
     <div className="pb-24 container-original mx-auto">
-      <div className=" gap-6 mt-12  flex justify-center">
-        <div className="blog-content  bg-white md:px-0 px-4">
+      <div className=" mt-12  flex justify-center">
+        <div className=" bg-white md:px-0 px-4">
           <Breadcrumb className="my-5" items={breadcrumb} />
 
           {/* Product Detail Section */}
-          <div className="grid md:grid-cols-2 gap-8 p-6">
+          <div className="grid md:grid-cols-2 p-6 gap-6">
             {/* Product Image with Tabs */}
             <div className="space-y-4">
               <Tabs
@@ -224,7 +225,7 @@ export default function ProductDetailPage({ params }) {
             </div>
 
             {/* Product Info */}
-            <div className="space-y-6">
+            <div className="space-y-6 pt-10">
               <div>
                 <h1 className="text-2xl font-bold text-gray-800 mb-2">
                   {dataDetail?.name}
@@ -282,7 +283,7 @@ export default function ProductDetailPage({ params }) {
               </div>
 
               {/* Action Buttons */}
-              <div className=" pt-4 flex  gap-3">
+              <div className=" pt-4 flex flex-col md:flex-row gap-3">
                 <Button
                   type="primary"
                   size="large"
@@ -299,11 +300,11 @@ export default function ProductDetailPage({ params }) {
                   Mua ngay
                 </Button>
               </div>
-
-              {/* Product Description */}
-              <Divider />
             </div>
+          </div>
+          <div className=" blog-content px-5 md:px-10 ">
             <div>
+              <Divider />
               <p className="text-lg font-semibold text-gray-800 mb-3">
                 Mô tả sản phẩm
               </p>
@@ -313,6 +314,10 @@ export default function ProductDetailPage({ params }) {
               />
             </div>
           </div>
+          <RelatedProducts
+            currentCategoryId={dataDetail?.categoryId}
+            currentProductId={idProduct}
+          />
         </div>
       </div>
     </div>

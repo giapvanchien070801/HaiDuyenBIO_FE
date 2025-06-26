@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import { Image, Upload } from "antd";
 import FilesRepository from "@/models/FilesRepository";
@@ -12,10 +12,29 @@ const getBase64 = (file) =>
     reader.onerror = (error) => reject(error);
   });
 
-const UploadListImageService = ({ value, onChange }) => {
+const UploadListImageService = ({ value, listImageDetail, onChange }) => {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [fileList, setFileList] = useState(value || []);
+  const [listImageResponse, setListImageResponse] = useState([]);
+
+  useEffect(() => {
+    onChange(listImageResponse);
+  }, [listImageResponse]);
+
+  useEffect(() => {
+    if (listImageDetail && Array.isArray(listImageDetail)) {
+      const convertedFileList = listImageDetail.map((url, index) => ({
+        uid: `existing-${index}`,
+        name: `image-${index}`,
+        status: "done",
+        url: url,
+        thumbUrl: url,
+      }));
+      setFileList(convertedFileList);
+      setListImageResponse(listImageDetail);
+    }
+  }, [listImageDetail]);
 
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
@@ -27,17 +46,17 @@ const UploadListImageService = ({ value, onChange }) => {
 
   const handleChange = ({ fileList: newFileList }) => {
     setFileList(newFileList);
-    console.log("newFileList", newFileList);
+
     // Convert fileList to array of URLs for form value
-    onChange(
-      newFileList.map((el) => {
-        if (el.response) {
-          el.id = el.response.id;
-          el.fileName = el.response.fileName;
-        }
-        return el;
-      })
-    );
+    // onChange(
+    //   newFileList.map((el) => {
+    //     if (el.response) {
+    //       el.id = el.response.id;
+    //       el.fileName = el.response.fileName;
+    //     }
+    //     return el;
+    //   })
+    // );
   };
 
   const uploadButton = (
@@ -50,7 +69,7 @@ const UploadListImageService = ({ value, onChange }) => {
   const uploadFileMutation = useMutation({
     mutationFn: FilesRepository.uploadFile,
     onSuccess: (data) => {
-      console.log("data", data);
+      setListImageResponse([...listImageResponse, data]);
       message.success("Tải lên thành công");
     },
     onError: (error) => {
@@ -61,9 +80,10 @@ const UploadListImageService = ({ value, onChange }) => {
   const handleInsertFile = async ({ file, onSuccess, onError }) => {
     try {
       const formData = new FormData();
-      formData.append("files", file);
+      formData.append("file", file);
       formData.append("fileSize", file.size);
       const res = await uploadFileMutation.mutateAsync(formData);
+
       onSuccess(res);
     } catch (e) {
       onError("Không tải được");
