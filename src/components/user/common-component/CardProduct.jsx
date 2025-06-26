@@ -1,7 +1,7 @@
 "use client";
 
 import { ShoppingCartOutlined, ShoppingOutlined } from "@ant-design/icons";
-import { Button, message } from "antd";
+import { Button, message, Tooltip } from "antd";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
@@ -69,9 +69,11 @@ export default function CardProduct(props) {
           />
         </div>
         <div className="p-3 sm:p-4">
-          <p className="font-semibold text-base sm:text-lg mb-2 line-clamp-2">
-            {product?.name}
-          </p>
+          <Tooltip title={product?.name}>
+            <h1 className="font-semibold text-base sm:text-lg mb-2 line-clamp-2 h-14">
+              {product?.name}
+            </h1>
+          </Tooltip>
           <div className="flex items-center gap-2 mb-3 sm:mb-4">
             <span className="text-red-500 font-bold text-lg sm:text-xl">
               {product?.price?.toLocaleString("vi-VN")}đ

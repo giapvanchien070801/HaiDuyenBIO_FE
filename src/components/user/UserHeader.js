@@ -50,26 +50,6 @@ export default function UserHeader() {
     }
   );
 
-  // api lấy danh sách tất cả khoa
-  const { data: listDepartment } = useQuery(
-    ["getAllDepartment"],
-    async () => {
-      const res = await Base.getAllDepartment();
-      return res;
-    },
-    {}
-  );
-
-  // api lấy danh sách tất cả dịch vụ
-  const { data: listProduct } = useQuery(
-    ["getAllServiceUser"],
-    async () => {
-      const res = await Base.getAllService();
-      return res;
-    },
-    {}
-  );
-
   const [activeMobileMenu, setActiveMobileMenu] = useState(false);
 
   useEffect(() => {
@@ -208,13 +188,13 @@ export default function UserHeader() {
     <header className="relative">
       {/* header 1 */}
       <div
-        className="header-1 z-20 hidden md:block bg-white"
+        className="header-1 z-20  bg-white"
         style={{
           transform: `translateY(${header1Transform}px)`,
           transition: "transform 0.4s ease-out",
         }}>
         <div className="container mx-auto flex justify-between py-5">
-          <div className="flex items-center gap-5">
+          <div className="items-center gap-5 hidden md:flex">
             <Link href={`/`} className="">
               <div className="flex items-center">
                 <img src="/images/logo-haiduyenbio-1.png" className=" h-14" />
@@ -225,7 +205,7 @@ export default function UserHeader() {
             </p>
           </div>
 
-          <div className="flex items-center gap-7">
+          <div className="flex items-center gap-7 justify-between px-5 md:px-0 w-full md:w-auto">
             <Link href={`/check-shopping`} className="flex items-center gap-2">
               <TruckOutlined className="mb-2" />
               <p className=" text-sm font-medium ">Kiểm tra đơn hàng</p>
@@ -237,7 +217,7 @@ export default function UserHeader() {
                 </Tooltip>
               </Badge>
             </Link>
-            <div>
+            <div className="hidden md:block">
               <p className=" text-sm font-medium text-[#777]">Giỏ hàng</p>
               <p className=" text-xs underline">
                 {cartTotal.toLocaleString("vi-VN")}đ
@@ -281,7 +261,7 @@ export default function UserHeader() {
                     trigger="hover"
                     placement="right">
                     <Link
-                      href={`#`}
+                      href={`/product-list/-1`}
                       className="h-full flex items-center hover:text-cyan-600 transition-all duration-300 p-2 w-full justify-between gap-4">
                       Sản phẩm
                       <RightOutlined />
@@ -361,22 +341,13 @@ export default function UserHeader() {
             </Link>
           </Popover>
 
-          <div className="flex items-center w-3/4 lg:w-auto">
-            <input
-              type="hidden"
-              style={{ display: "none" }}
-              aria-hidden="true"
-            />
-            <Search
+          <div className="flex items-center w-2/3 lg:w-5/12">
+            <Input.Search
               placeholder="Tìm kiếm..."
               allowClear
               enterButton={<SearchOutlined />}
-              size="large"
-              className="w-full lg:w-[250px] md:w-[200px] sm:w-[180px] lg:mr-0 mr-4"
-              onSearch={(value) => {
-                // Xử lý tìm kiếm ở đây
-                console.log("Tìm kiếm:", value);
-              }}
+              size="middle"
+              className="w-full"
             />
           </div>
 

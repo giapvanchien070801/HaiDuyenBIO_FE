@@ -123,12 +123,17 @@ const CreateOrEditService = (props) => {
           scrollToFirstError
           form={form}
           onFinish={handleCreate}>
-          <Form.Item name="imageUrl" label="Ảnh">
+          <Form.Item
+            name="imageUrl"
+            label="Ảnh"
+            rules={[{ required: true, message: "Ảnh không được bỏ trống!" }]}>
             <UploadListImageService
-              onChange={(value) => {
-                console.log("value", value);
+              onChange={(listImageResponse) => {
+                form.setFieldsValue({
+                  imageUrl: listImageResponse,
+                });
               }}
-              imgDetail={""}
+              listImageDetail={dataDetail?.imageUrl}
             />
           </Form.Item>
 
