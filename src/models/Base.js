@@ -3,7 +3,8 @@ import { Cookies } from "react-cookie";
 // export const API_ROOT = "http://192.168.0.103:3017";
 // export const API_ROOT = "http://localhost:3017";
 // export const API_ROOT = "https://nogulstore-base.onrender.com";
-export const API_ROOT = "http://103.90.226.77:8080";
+// export const API_ROOT = "http://103.90.226.77:8080";
+export const API_ROOT = "https://haiduyenbiobe.haiduyenbio.com";
 
 const axiosInstance = axios.create({
   baseURL: API_ROOT,
