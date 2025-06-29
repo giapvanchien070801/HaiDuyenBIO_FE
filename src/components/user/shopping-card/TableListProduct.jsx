@@ -94,8 +94,8 @@ const TableListProduct = ({ onChange }) => {
         id: product.id,
         name: product.name,
         image: product.image,
+        priceFrom: product.priceFrom,
         price: product.price,
-        oldPrice: product.oldPrice,
         discount: product.discount,
         quantity: product.quantity,
       }));
@@ -156,8 +156,8 @@ const TableListProduct = ({ onChange }) => {
       id: rest.id,
       name: rest.name,
       image: rest.image,
+      priceFrom: rest.priceFrom,
       price: rest.price,
-      oldPrice: rest.oldPrice,
       discount: rest.discount,
       quantity: rest.quantity,
     }));
@@ -187,8 +187,8 @@ const TableListProduct = ({ onChange }) => {
       id: rest.id,
       name: rest.name,
       image: rest.image,
+      priceFrom: rest.priceFrom,
       price: rest.price,
-      oldPrice: rest.oldPrice,
       discount: rest.discount,
       quantity: rest.quantity,
     }));
@@ -211,14 +211,16 @@ const TableListProduct = ({ onChange }) => {
     },
     {
       title: "Giá",
-      dataIndex: "price",
+      dataIndex: "priceFrom",
       width: "20%",
-      render: (price, record) => (
+      render: (priceFrom, record) => (
         <div>
-          <div className="text-red-600 font-semibold">{formatPrice(price)}</div>
-          {record.oldPrice && record.oldPrice > price && (
+          <div className="text-red-600 font-semibold">
+            {formatPrice(priceFrom)}
+          </div>
+          {record.price && (
             <div className="text-gray-500 line-through text-sm">
-              {formatPrice(record.oldPrice)}
+              {formatPrice(record.price)}
             </div>
           )}
         </div>
@@ -273,8 +275,8 @@ const TableListProduct = ({ onChange }) => {
       id: rest.id,
       name: rest.name,
       image: rest.image,
+      priceFrom: rest.priceFrom,
       price: rest.price,
-      oldPrice: rest.oldPrice,
       discount: rest.discount,
       quantity: rest.quantity,
     }));

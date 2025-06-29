@@ -112,9 +112,11 @@ export default function UserHeader() {
 
   // Lấy chiều cao của header 1
   useEffect(() => {
-    const header1Element = document.querySelector(".header-1");
-    if (header1Element) {
-      setHeader1Height(header1Element.offsetHeight);
+    if (typeof window !== "undefined") {
+      const header1Element = document.querySelector(".header-1");
+      if (header1Element) {
+        setHeader1Height(header1Element.offsetHeight);
+      }
     }
   }, []);
 
@@ -197,12 +199,22 @@ export default function UserHeader() {
           <div className="items-center gap-5 hidden md:flex">
             <Link href={`/`} className="">
               <div className="flex items-center">
-                <img src="/images/logo-haiduyenbio-1.png" className=" h-14" />
+                <img
+                  src="/images/logo-haiduyenbio-1.png"
+                  className=" h-14"
+                  alt="logo"
+                />
               </div>
             </Link>
-            <p className="flex">
-              <PhoneFilled /> <span className="mx-2">085.489.1993</span>
-            </p>
+            <div className="flex items-center gap-2">
+              <div className="flex items-center justify-center w-10 h-10 bg-orange-500 rounded-full">
+                <PhoneFilled className="text-white" />
+              </div>
+              <div>
+                <p className="text-sm font-bold">Hotline: 085 489 1993</p>
+                <p className="text-xs">Hỗ trợ tư vấn 24/7</p>
+              </div>
+            </div>
           </div>
 
           <div className="flex items-center gap-7 justify-between px-5 md:px-0 w-full md:w-auto">

@@ -15,7 +15,6 @@ import { Cookies } from "react-cookie";
 export default function AccountAdmin() {
   const router = useRouter();
   const cookies = new Cookies();
-
   const breadcrumb = [
     {
       href: "/admin/home",
@@ -67,8 +66,7 @@ export default function AccountAdmin() {
               name="currentPassword"
               rules={[
                 { required: true, message: "Vui lòng nhập mật khẩu hiện tại!" },
-              ]}
-            >
+              ]}>
               <Input.Password
                 placeholder="Nhập mật khẩu hiện tại"
                 className="w-full"
@@ -80,8 +78,7 @@ export default function AccountAdmin() {
               name="newPassword"
               rules={[
                 { required: true, message: "Vui lòng nhập mật khẩu mới!" },
-              ]}
-            >
+              ]}>
               <Input.Password
                 placeholder="Nhập mật khẩu mới"
                 className="w-full"
@@ -93,8 +90,7 @@ export default function AccountAdmin() {
               name="confirmPassword"
               rules={[
                 { required: true, message: "Vui lòng xác nhận mật khẩu mới!" },
-              ]}
-            >
+              ]}>
               <Input.Password
                 placeholder="Nhập lại mật khẩu mới"
                 className="w-full"
@@ -105,8 +101,7 @@ export default function AccountAdmin() {
               <Button
                 type="primary"
                 htmlType="submit"
-                className="w-full bg-blue-500"
-              >
+                className="w-full bg-blue-500">
                 Đổi mật khẩu
               </Button>
             </Form.Item>

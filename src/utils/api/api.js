@@ -53,7 +53,7 @@ axiosConfig.interceptors.response.use(
     if (manuallyAborted) return;
 
     /** Trường hợp lỗi xảy ra ngoài ý muốn */
-    if (!window.navigator.onLine) {
+    if (typeof window !== "undefined" && !window.navigator.onLine) {
       // Mất mạng
       message.error("Network Error");
     } else if (response && response.status === 502) {

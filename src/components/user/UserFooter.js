@@ -10,10 +10,63 @@ import {
   EnvironmentFilled,
   ClockCircleFilled,
   GlobalOutlined,
+  RightOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";
+import { useState } from "react";
+import ContactModel from "@/models/Contact";
+import { message } from "antd";
+import { useMutation } from "react-query";
 
 export default function UserFooter() {
+  const [email, setEmail] = useState("");
+
+  const listLink = [
+    {
+      title: "Trang chủ",
+      href: "/",
+    },
+    {
+      title: "Giới thiệu",
+      href: "/about",
+    },
+    {
+      title: "Sản phẩm",
+      href: "/products",
+    },
+    {
+      title: "Tin tức",
+      href: "/news",
+    },
+    {
+      title: "Liên hệ",
+      href: "/contact",
+    },
+  ];
+
+  const subscribeEmailMutation = useMutation(ContactModel.createContact, {
+    onSuccess: () => {
+      message.success(
+        "Tạo liên hệ thành công, chúng tôi sẽ liên hệ lại với bạn sớm nhất có thể!"
+      );
+      setEmail("");
+    },
+    onError: (e) => {
+      message.error("Tạo liên hệ thất bại!");
+    },
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!email) {
+      message.warning("Vui lòng nhập email của bạn!");
+      return;
+    }
+
+    subscribeEmailMutation.mutate({ email });
+  };
+
   return (
     <footer
       className={`${layoutUserStyle.background_footer} text-white transition-all duration-500 lg:p-0 p-4`}>
@@ -29,16 +82,22 @@ export default function UserFooter() {
               Đăng ký Email để nhận thông báo mới nhất từ chúng tôi
             </p>
           </div>
-          <form className="lg:w-1/2 w-full flex flex-col md:flex-row md:justify-end">
+          <form
+            onSubmit={handleSubmit}
+            className="lg:w-1/2 w-full flex flex-col md:flex-row md:justify-end">
             <input
               type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="Nhập email của bạn"
               className={`${layoutUserStyle.send_email_input} text-xl py-2 md:mr-6 px-4 md:w-2/3 w-full rounded mb-4 md:mb-0`}
+              disabled={subscribeEmailMutation.isPending}
             />
             <button
               type="submit"
-              className="rounded text-xl text-black bg-white py-2 px-4 transition-all duration-300 hover:text-white hover:bg-black w-full md:w-1/3">
-              Xác nhận
+              disabled={subscribeEmailMutation.isPending}
+              className="rounded text-xl text-black bg-white py-2 px-4 transition-all duration-300 hover:text-white hover:bg-black w-full md:w-1/3 disabled:opacity-50 disabled:cursor-not-allowed">
+              {subscribeEmailMutation.isPending ? "Đang xử lý..." : "Xác nhận"}
             </button>
           </form>
         </div>
@@ -96,7 +155,7 @@ export default function UserFooter() {
 
             {/* Contact Info */}
             <div className="flex flex-col gap-4">
-              <p className="text-2xl font-semibold mb-2 flex items-center gap-2 border-b  border-white pb-2">
+              <p className="text-2xl font-semibold mb-2 flex items-center gap-2 border-b-2  border-white pb-2">
                 <PhoneFilled className="text-[#27ae60]" /> Liên hệ
               </p>
               <div className="flex items-start gap-3">
@@ -139,56 +198,26 @@ export default function UserFooter() {
 
             {/* Quick Links */}
             <div className="flex flex-col gap-4">
-              <p className="text-2xl font-semibold mb-2 flex items-center gap-2 border-b  border-white pb-2">
+              <p className="text-2xl font-semibold mb-2 flex items-center gap-2 border-b-2  border-white pb-2">
                 <GlobalOutlined style={{ color: "#0A66C2" }} /> Liên kết nhanh
               </p>
-              <ul className="space-y-2">
-                <li>
-                  <Link
-                    href="/"
-                    className="hover:underline flex items-center gap-2">
-                    <span className="inline-block w-2 h-2 bg-cyan-400 rounded-full" />{" "}
-                    Trang chủ
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/about"
-                    className="hover:underline flex items-center gap-2">
-                    <span className="inline-block w-2 h-2 bg-cyan-400 rounded-full" />{" "}
-                    Giới thiệu
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/products"
-                    className="hover:underline flex items-center gap-2">
-                    <span className="inline-block w-2 h-2 bg-cyan-400 rounded-full" />{" "}
-                    Sản phẩm
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/services"
-                    className="hover:underline flex items-center gap-2">
-                    <span className="inline-block w-2 h-2 bg-cyan-400 rounded-full" />{" "}
-                    Dịch vụ
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/contact"
-                    className="hover:underline flex items-center gap-2">
-                    <span className="inline-block w-2 h-2 bg-cyan-400 rounded-full" />{" "}
-                    Liên hệ
-                  </Link>
-                </li>
+              <ul className="space-y-2 ">
+                {listLink.map((item, index) => (
+                  <li key={index} className="border-b border-white pb-2">
+                    <Link
+                      href={item.href}
+                      className="hover:underline flex items-center gap-2">
+                      <RightOutlined />
+                      {item.title}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
 
             {/* Social & Map */}
             <div className="flex flex-col gap-4">
-              <p className="text-2xl font-semibold mb-2 flex items-center gap-2 border-b  border-white pb-2">
+              <p className="text-2xl font-semibold mb-2 flex items-center gap-2 border-b-2   border-white pb-2">
                 <FacebookFilled style={{ color: "#1877f3" }} /> Mạng xã hội
               </p>
               <div className="flex gap-4 mb-4">

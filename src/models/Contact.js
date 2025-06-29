@@ -2,7 +2,7 @@ import { requests } from "./Base";
 
 const version = "/api/v1";
 
-class Contact {
+class ContactModel {
   getContactList = async (params) => {
     const urlApi = `${version}/contacts`;
     const response = await requests.get(urlApi, { params });
@@ -18,4 +18,4 @@ class Contact {
   };
 }
 
-export default new Contact();
+export default new ContactModel();

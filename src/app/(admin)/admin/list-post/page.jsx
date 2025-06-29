@@ -16,11 +16,12 @@ import {
   PlusCircleOutlined,
 } from "@ant-design/icons";
 import styled from "@emotion/styled";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useDebounce } from "../../../../common/functions/commonFunction";
 import { useMutation, useQuery } from "react-query";
 import Base from "@/models/Base";
+import ArticleModal from "@/models/ArticleModal";
 
 export default function ListPost() {
   const router = useRouter();
@@ -29,23 +30,16 @@ export default function ListPost() {
   const [valueSearchCate, setValueSearchCate] = useState(-1);
   const [idSelected, setIdSelected] = useState();
 
-  const [tableParams, setTableParams] = useState({
-    pagination: {
-      current: 1,
-      pageSize: 5,
-      total: 20,
-    },
+  const __pagination = useRef({
+    page_num: 1,
+    page_size: 5,
+    count: 0,
   });
 
   const handleTableChange = (pagination, filters, sorter) => {
-    setTableParams({
-      pagination,
-      filters,
-      ...sorter,
-    });
-
-    if (pagination.pageSize !== tableParams.pagination?.pageSize) {
-    }
+    __pagination.current.page_num = pagination.current;
+    __pagination.current.page_size = pagination.pageSize;
+    refetch();
   };
 
   const searchDebounce = useDebounce(valueSearch, 1000);
@@ -57,32 +51,23 @@ export default function ListPost() {
     [
       "getListPostPagination",
       searchDebounce,
-      tableParams.pagination.current,
-      tableParams.pagination.pageSize,
-      valueSearchCate,
+      __pagination.current.page_num,
+      __pagination.current.page_size,
     ],
     async () => {
-      const res = await Base.getListPostPagination({
-        Page: tableParams.pagination.current,
-        Size: tableParams.pagination.pageSize,
-        KeySearch: searchDebounce,
-        CategoryId: valueSearchCate,
+      const res = await ArticleModal.getArticleList({
+        Page: __pagination.current.page_num - 1,
+        Size: __pagination.current.page_size,
+        search: searchDebounce,
+        categoryId: valueSearchCate,
       });
 
-      if (res.TotalRecord) {
-        setTableParams({
-          pagination: {
-            current: tableParams.pagination.current,
-            pageSize: tableParams.pagination.pageSize,
-            total: res.TotalRecord,
-          },
-        });
-      }
+      __pagination.current.count = res.totalElements;
 
-      return res?.Data;
+      return res?.content;
     },
     {
-      enabled: false,
+      enabled: true,
     }
   );
   const breadcrumb = [
@@ -118,8 +103,8 @@ export default function ListPost() {
     },
     {
       title: "Tiêu đề",
-      dataIndex: "Title",
-      key: "Title",
+      dataIndex: "title",
+      key: "title",
       render: (text) => <a>{text}</a>,
       width: 200,
     },
@@ -153,8 +138,7 @@ export default function ListPost() {
             size="middle"
             className="border-teal-500 text-teal-500"
             type="default"
-            onClick={() => router.push(`/admin/list-post/edit/${record?.Id}`)}
-          >
+            onClick={() => router.push(`/admin/list-post/edit/${record?.Id}`)}>
             Xem chi tiết/Sửa
           </Button>
 
@@ -163,8 +147,7 @@ export default function ListPost() {
             description="Bạn có chắc chắn muốn xóa bài viết này?"
             onConfirm={handleDelete}
             okText="Xóa"
-            cancelText="Hủy"
-          >
+            cancelText="Hủy">
             <Button size="middle" type="default" danger>
               Xóa
             </Button>
@@ -243,8 +226,7 @@ export default function ListPost() {
         size="middle"
         type="primary"
         className="float-right  bg-blue-700 text-white"
-        onClick={() => handleGoCreateOrEdit()}
-      >
+        onClick={() => handleGoCreateOrEdit()}>
         Thêm mới
       </Button>
       <Spin spinning={isFetching}>
@@ -260,9 +242,11 @@ export default function ListPost() {
               };
             }}
             pagination={{
-              ...tableParams.pagination,
-              showSizeChanger: true, // Cho phép hiển thị Select chọn số lượng phần tử trên trang
-              pageSizeOptions: tableParams.pageSizeOptions, // Sử dụng pageSizeOptions từ tableParams
+              current: __pagination.current.page_num,
+              pageSize: __pagination.current.page_size,
+              total: __pagination.current.count,
+              showSizeChanger: true,
+              pageSizeOptions: [10, 20, 50, 100],
             }}
             onChange={handleTableChange}
           />

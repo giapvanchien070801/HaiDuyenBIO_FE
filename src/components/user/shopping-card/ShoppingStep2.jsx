@@ -9,7 +9,7 @@ export default function ShoppingStep2({ setStep }) {
 
   return (
     <div className="flex gap-4">
-      <BillingDetailForm form={form} />
+      <BillingDetailForm form={form} setStep={setStep} />
       <BillingDetailsStep2 setStep={setStep} form={form} />
     </div>
   );

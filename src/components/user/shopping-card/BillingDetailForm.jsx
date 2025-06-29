@@ -7,12 +7,34 @@ import {
   PhoneOutlined,
   FileTextOutlined,
 } from "@ant-design/icons";
+import Order from "@/models/Order";
+import { useMutation } from "react-query";
 
-export default function BillingDetailForm({ form }) {
+export default function BillingDetailForm({ form, setStep }) {
+  const selectedProducts = JSON.parse(localStorage.getItem("selectedProducts"));
+  console.log(selectedProducts, "selectedProducts");
+
+  const orderMutation = useMutation({
+    mutationFn: (values) => {
+      return Order.createOrder(values);
+    },
+    onSuccess: () => {
+      message.success("Đặt hàng thành công");
+      localStorage.removeItem("selectedProducts");
+      setStep("step3");
+    },
+    onError: () => {
+      message.error("Đặt hàng thất bại");
+    },
+  });
   const onFinish = (values) => {
-    console.log(values);
-
-    localStorage.removeItem("selectedProducts");
+    orderMutation.mutate({
+      ...values,
+      listProducts: selectedProducts?.map((product) => ({
+        productId: product?.id,
+        quantity: product?.quantity,
+      })),
+    });
   };
 
   return (
@@ -63,7 +85,7 @@ export default function BillingDetailForm({ form }) {
           />
         </Form.Item>
 
-        <Form.Item name="note" label="Ghi chú">
+        <Form.Item name="additionalInformation" label="Ghi chú">
           <Input.TextArea
             size="large"
             prefix={<FileTextOutlined />}

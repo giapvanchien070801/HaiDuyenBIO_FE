@@ -26,7 +26,10 @@ export default function RootLayout({ children }) {
           <UserFooter />
         </QueryClientProvider>
 
-        <Script src="/scripts/ChatWithCustomer.js" />
+        <Script
+          src="/scripts/ChatWithCustomer.js"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );

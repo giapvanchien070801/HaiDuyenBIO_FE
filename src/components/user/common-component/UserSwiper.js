@@ -34,7 +34,7 @@ export default function UserSwiper() {
       }}>
       {listSliderFake?.map((slider, index) => (
         <SwiperSlide key={index}>
-          <img src={slider} className="w-full slide-height" />
+          <img src={slider} className="w-full slide-height" alt="slider" />
         </SwiperSlide>
       ))}
     </Swiper>

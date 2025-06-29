@@ -39,8 +39,7 @@ export default function ListCartBanner() {
           {cardData.map((card) => (
             <div
               key={card.id}
-              className="flex flex-col bg-white rounded-lg shadow-md border border-gray-100 overflow-hidden hover:shadow-lg transition-shadow"
-            >
+              className="flex flex-col bg-white rounded-lg shadow-md border border-gray-100 overflow-hidden hover:shadow-lg transition-shadow">
               <div className="flex p-4 gap-4">
                 <img
                   src={card.image}
