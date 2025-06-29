@@ -68,7 +68,6 @@ export default function UserHeader() {
       setCartTotal(total);
       setCartCount(listProducts.length);
     } catch (error) {
-      console.error("Error calculating cart total:", error);
       setCartTotal(0);
       setCartCount(0);
     }

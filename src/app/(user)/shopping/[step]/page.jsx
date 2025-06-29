@@ -118,16 +118,14 @@ export default function ShoppingPage({ params }) {
                     key="console"
                     onClick={() => {
                       setStepCurrent("step1");
-                    }}
-                  >
+                    }}>
                     Về giỏ hàng
                   </Button>,
                   <Button
                     className="!bg-[#2cb1ab] !text-white"
                     onClick={() => {
                       router.push("/");
-                    }}
-                  >
+                    }}>
                     Mua hàng tiếp
                   </Button>,
                 ]}

@@ -47,7 +47,6 @@ const UploadAvatar = (props) => {
       message.success("Tải ảnh lên thành công!");
     },
     onError: (e) => {
-      console.log("e", e);
       message.error("Tải ảnh lên thất bại!");
     },
   });
@@ -91,8 +90,7 @@ const UploadAvatar = (props) => {
       <div
         style={{
           marginTop: 8,
-        }}
-      >
+        }}>
         Upload
       </div>
     </div>
@@ -108,8 +106,7 @@ const UploadAvatar = (props) => {
         action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
         beforeUpload={beforeUpload}
         onChange={handleChange}
-        customRequest={handleInsertImage}
-      >
+        customRequest={handleInsertImage}>
         {imageUrl ? (
           <img
             src={imageUrl}

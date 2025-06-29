@@ -37,6 +37,13 @@ class Order {
 
     return response?.data;
   };
+
+  updateStatusOrder = async (id, data) => {
+    const urlApi = `${version}/orders/${id}/status`;
+    const response = await requests.put(urlApi, data);
+
+    return response?.data;
+  };
 }
 
 export default new Order();

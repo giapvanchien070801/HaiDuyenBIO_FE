@@ -1,6 +1,6 @@
 "use client";
 
-import { CheckCircleFilled } from "@ant-design/icons";
+import { CheckCircleFilled, ClockCircleOutlined } from "@ant-design/icons";
 
 export default function CardVideo(props) {
   const { video } = props;
@@ -8,16 +8,14 @@ export default function CardVideo(props) {
   return (
     <div
       key={video.id}
-      className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300"
-    >
+      className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300">
       <div className="aspect-video relative group cursor-pointer">
         <iframe
           src={video.url.replace("youtu.be/", "youtube.com/embed/")}
           title={video.title}
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
-          className="w-full h-full"
-        ></iframe>
+          className="w-full h-full"></iframe>
         <div className="absolute bottom-2 right-2 bg-black text-white text-xs px-1 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity">
           Xem ngay
         </div>
@@ -43,7 +41,9 @@ export default function CardVideo(props) {
           </div>
           <div className="text-sm text-gray-600">
             <span>{video.views} lượt xem</span>
-            <span className="mx-1">•</span>
+            <span className="mx-1 ml-5">
+              <ClockCircleOutlined />
+            </span>
             <span>{video.timestamp}</span>
           </div>
         </div>

@@ -1,3 +1,4 @@
+import { message } from "antd";
 import axios from "axios";
 import { Cookies } from "react-cookie";
 // export const API_ROOT = "http://192.168.0.103:3017";
@@ -21,6 +22,22 @@ axiosInstance.interceptors.request.use(
     return config;
   },
   (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Thiết lập interceptor để xử lý response và kiểm tra token expired
+axiosInstance.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.status === 401) {
+      message.error("Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại!");
+      const cookies = new Cookies();
+      cookies.remove("accessToken");
+      window.location.href = "/login-admin";
+    }
     return Promise.reject(error);
   }
 );
