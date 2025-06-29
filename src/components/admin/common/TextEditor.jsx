@@ -1,11 +1,28 @@
 import styled from "@emotion/styled";
 import React, { useEffect, useState } from "react";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+import dynamic from "next/dynamic";
+
+// Dynamic import ReactQuill to avoid SSR issues
+const ReactQuill = dynamic(() => import("react-quill"), {
+  ssr: false,
+  loading: () => <p>Loading...</p>,
+});
 
 const TextEditor = (props) => {
   const { onChange, valueDetail } = props;
   const [valueEditor, setValueEditor] = useState("");
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      import("react-quill/dist/quill.snow.css");
+    }
+  }, []);
+
   const onChangeEditor = (value) => {
     setValueEditor(value);
     onChange(value);
@@ -16,6 +33,10 @@ const TextEditor = (props) => {
       setValueEditor(valueDetail);
     }
   }, [valueDetail]);
+
+  if (!isClient) {
+    return <div>Loading editor...</div>;
+  }
 
   return (
     <CustomQuill>

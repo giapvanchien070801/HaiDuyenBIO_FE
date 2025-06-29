@@ -22,6 +22,8 @@ import { useDebounce } from "../../../../common/functions/commonFunction";
 import { useMutation, useQuery } from "react-query";
 import Base from "@/models/Base";
 import ArticleModal from "@/models/ArticleModal";
+import moment from "moment";
+import CategoryProduct from "@/models/CategoryProduct";
 
 export default function ListPost() {
   const router = useRouter();
@@ -32,7 +34,7 @@ export default function ListPost() {
 
   const __pagination = useRef({
     page_num: 1,
-    page_size: 5,
+    page_size: 10,
     count: 0,
   });
 
@@ -53,11 +55,12 @@ export default function ListPost() {
       searchDebounce,
       __pagination.current.page_num,
       __pagination.current.page_size,
+      valueSearchCate,
     ],
     async () => {
       const res = await ArticleModal.getArticleList({
-        Page: __pagination.current.page_num - 1,
-        Size: __pagination.current.page_size,
+        page: __pagination.current.page_num - 1,
+        size: __pagination.current.page_size,
         search: searchDebounce,
         categoryId: valueSearchCate,
       });
@@ -110,24 +113,21 @@ export default function ListPost() {
     },
     {
       title: "Mô tả",
-      dataIndex: "Description",
-      key: "Description",
+      dataIndex: "content",
+      key: "content",
       width: 300,
+      render: (text) => <>{text?.slice(0, 100)}...</>,
     },
     {
       title: "Danh mục",
-      dataIndex: "CategoryName",
-      key: "CategoryName",
+      dataIndex: "categoryName",
+      key: "categoryName",
     },
     {
       title: "Ngày tạo",
-      dataIndex: "CreatedAt",
-      key: "CreatedAt",
-    },
-    {
-      title: "Người tạo",
-      key: "AuthorName",
-      dataIndex: "AuthorName",
+      dataIndex: "createdAt",
+      key: "createdAt",
+      render: (text) => <>{moment(text).format("DD/MM/YYYY")}</>,
     },
     {
       title: "Hoạt động",
@@ -138,7 +138,9 @@ export default function ListPost() {
             size="middle"
             className="border-teal-500 text-teal-500"
             type="default"
-            onClick={() => router.push(`/admin/list-post/edit/${record?.Id}`)}>
+            onClick={() =>
+              router.push(`/admin/list-post/edit/${record?.slug}`)
+            }>
             Xem chi tiết/Sửa
           </Button>
 
@@ -184,12 +186,17 @@ export default function ListPost() {
   const { data: listCategory } = useQuery(
     ["getAllCateAdminSearch"],
     async () => {
-      const res = await Base.getAllCategory();
-
-      const dataConver = res?.map((category) => {
-        return { label: category?.Name, value: category?.Id };
+      const res = await CategoryProduct.getCategoryProductList({
+        page: 0,
+        size: 1000,
+        search: "",
+        type: "ARTICLE",
       });
-      return dataConver;
+
+      const dataConvert = res?.content?.map((category) => {
+        return { label: category?.name, value: category?.id };
+      });
+      return dataConvert;
     },
     {}
   );
@@ -213,6 +220,7 @@ export default function ListPost() {
         placeholder="Tìm kiếm theo tiêu đề"
       />
       <Select
+        allowClear
         className="w-1/3 mb-5 ml-5"
         showSearch
         placeholder="Tìm kiếm theo danh mục"

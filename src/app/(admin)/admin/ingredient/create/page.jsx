@@ -4,7 +4,7 @@ import { HomeOutlined } from "@ant-design/icons";
 
 import dynamic from "next/dynamic";
 const CreateOrEdit = dynamic(
-  () => import("@/components/admin/common/CreateOrEdit"),
+  () => import("@/components/admin/common/CreateOrEditArticle"),
   {
     ssr: false,
   }

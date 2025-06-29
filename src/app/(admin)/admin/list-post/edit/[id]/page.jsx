@@ -1,13 +1,8 @@
 "use client";
-import { Breadcrumb, Button, Input, Space, Table, Tag } from "antd";
-import {
-  HomeOutlined,
-  SearchOutlined,
-  PlusCircleOutlined,
-} from "@ant-design/icons";
-import { useState } from "react";
-import styled from "@emotion/styled";
-import CreateOrEdit from "../../../../../../components/admin/common/CreateOrEdit";
+import { Breadcrumb } from "antd";
+import { HomeOutlined } from "@ant-design/icons";
+
+import CreateOrEditArticle from "@/components/admin/common/CreateOrEditArticle";
 
 export default function EditPost({ params }) {
   const breadcrumb = [
@@ -42,7 +37,7 @@ export default function EditPost({ params }) {
     <div>
       <Breadcrumb className="mb-5" items={breadcrumb} />
 
-      <CreateOrEdit typePage="post" id={params?.id} />
+      <CreateOrEditArticle typePage="post" id={params?.id} />
     </div>
   );
 }

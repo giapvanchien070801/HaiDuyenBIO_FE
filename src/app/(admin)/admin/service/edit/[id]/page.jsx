@@ -7,7 +7,7 @@ import {
 } from "@ant-design/icons";
 import { useState } from "react";
 import styled from "@emotion/styled";
-import CreateOrEdit from "../../../../../../components/admin/common/CreateOrEdit";
+import CreateOrEdit from "../../../../../../components/admin/common/CreateOrEditArticle";
 import CreateOrEditService from "../../components/CreateOrEditService";
 
 export default function EditDepartment({ params }) {

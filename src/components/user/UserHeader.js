@@ -23,6 +23,7 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Badge, Button, Popover, Input, Tooltip } from "antd";
 import CategoryProduct from "@/models/CategoryProduct";
+import ListArticleByCategory from "./home-page/ListArticleByCategory";
 
 const { Search } = Input;
 
@@ -34,13 +35,31 @@ export default function UserHeader() {
   const [header1Height, setHeader1Height] = useState(0);
 
   // api lấy danh sách tất cả thể loại
-  const { data: listCategory } = useQuery(
-    ["getListCategory-UserHeader"],
+  const { data: listCategoryProduct } = useQuery(
+    ["getListCategory-UserHeader-Product"],
     async () => {
       const res = await CategoryProduct.getCategoryProductList({
-        Page: 1,
-        Size: 1000,
+        page: 0,
+        size: 1000,
         search: "",
+        type: "PRODUCT",
+      });
+
+      return res?.content;
+    },
+    {
+      enabled: true,
+    }
+  );
+
+  const { data: listCategoryArticle } = useQuery(
+    ["getListCategory-UserHeader-Article"],
+    async () => {
+      const res = await CategoryProduct.getCategoryProductList({
+        page: 0,
+        size: 1000,
+        search: "",
+        type: "ARTICLE",
       });
 
       return res?.content;
@@ -256,7 +275,7 @@ export default function UserHeader() {
                   <Popover
                     content={
                       <ul className="w-max bg-white">
-                        {listCategory?.map((category, index) => (
+                        {listCategoryProduct?.map((category, index) => (
                           <li key={index} className="w-full">
                             {/* link đến tranh danh sách bài viết */}
                             <Link
@@ -280,65 +299,23 @@ export default function UserHeader() {
                   </Popover>
                 </li>
 
-                <li>
-                  <Popover
-                    content={
-                      <div className="flex gap-4">
-                        {menu2?.map((menu, index) => (
-                          <ul key={index} className="w-max bg-white">
-                            <li className="text-lg font-bold">{menu?.menu}</li>
-                            {menu?.submenu?.map((submenu, index) => (
-                              <li key={index} className="w-full">
-                                <Link
-                                  href={`/news/${submenu?.id}`}
-                                  as={`/news/${submenu?.id}`}
-                                  className="hover:text-white block hover:bg-cyan-600 py-2 px-8 transition-all duration-300 lg:px-4 lg:py-2 rounded">
-                                  {submenu?.name}
-                                </Link>
-                              </li>
-                            ))}
-                          </ul>
-                        ))}
-                      </div>
-                    }
-                    trigger="hover"
-                    placement="right">
-                    <Link
-                      href={`#`}
-                      className="h-full flex items-center hover:text-cyan-600 transition-all duration-300 p-2 w-full justify-between gap-4">
-                      Nguyên liệu vi sinh
-                      <RightOutlined />
-                    </Link>
-                  </Popover>
-                </li>
-
-                <li>
-                  <Popover
-                    content={
-                      <ul className="w-max bg-white">
-                        {listSocial?.map((social, index) => (
-                          <li key={index} className="w-full">
-                            {/* link đến tranh danh sách bài viết */}
-                            <Link
-                              href={`/news/${social?.id}`}
-                              as={`/news/${social?.id}`}
-                              className="hover:text-white block hover:bg-cyan-600 py-2 px-8 transition-all duration-300 lg:px-4 lg:py-2 rounded">
-                              {social?.name}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    }
-                    trigger="hover"
-                    placement="right">
-                    <Link
-                      href={`#`}
-                      className="h-full flex items-center  hover:text-cyan-600 transition-all duration-300 p-2 w-full justify-between gap-4">
-                      Gia công vi sinh
-                      <RightOutlined />
-                    </Link>
-                  </Popover>
-                </li>
+                {listCategoryArticle?.map((category, index) => (
+                  <li>
+                    <Popover
+                      content={
+                        <ListArticleByCategory categoryId={category?.id} />
+                      }
+                      trigger="hover"
+                      placement="right">
+                      <Link
+                        href={`#`}
+                        className="h-full flex items-center  hover:text-cyan-600 transition-all duration-300 p-2 w-full justify-between gap-4">
+                        {category?.name}
+                        <RightOutlined />
+                      </Link>
+                    </Popover>
+                  </li>
+                ))}
               </ul>
             }
             trigger="hover"

@@ -87,7 +87,7 @@ const MenuSidebar = (props) => {
             <UnorderedListOutlined className={`${isCloseMenu && "text-xs"}`} />
           ),
           text: "Danh mục bài viết",
-          pushTo: "/admin/categorys",
+          pushTo: "/admin/list-post/categories-post",
         },
         {
           icon: <FileTextOutlined className={`${isCloseMenu && "text-xs"}`} />,
@@ -97,38 +97,38 @@ const MenuSidebar = (props) => {
       ],
     },
 
-    {
-      text: "Nguyên liệu vi sinh",
-      icon: <PictureOutlined />,
-      listSubMenu: [
-        {
-          icon: (
-            <FullscreenOutlined className={`${isCloseMenu && "text-xs"}`} />
-          ),
-          text: "Loại nguyên liệu",
-          pushTo: "/admin/ingredient/categories-ingredient",
-        },
-        {
-          icon: (
-            <OrderedListOutlined className={`${isCloseMenu && "text-xs"}`} />
-          ),
-          text: "Danh sách nguyên liệu",
-          pushTo: "/admin/ingredient",
-        },
-      ],
-    },
-    {
-      text: "Gia công vi sinh",
-      icon: <ScheduleOutlined />,
-      pushTo: "/admin/machining",
-      // listSubMenu: [
-      //   {
-      //     icon: <MenuOutlined className={`${isCloseMenu && "text-xs"}`} />,
-      //     text: "Danh sách lịch hẹn",
-      //     pushTo: "/admin/appointments",
-      //   },
-      // ],
-    },
+    // {
+    //   text: "Nguyên liệu vi sinh",
+    //   icon: <PictureOutlined />,
+    //   listSubMenu: [
+    //     {
+    //       icon: (
+    //         <FullscreenOutlined className={`${isCloseMenu && "text-xs"}`} />
+    //       ),
+    //       text: "Loại nguyên liệu",
+    //       pushTo: "/admin/ingredient/categories-ingredient",
+    //     },
+    //     {
+    //       icon: (
+    //         <OrderedListOutlined className={`${isCloseMenu && "text-xs"}`} />
+    //       ),
+    //       text: "Danh sách nguyên liệu",
+    //       pushTo: "/admin/ingredient",
+    //     },
+    //   ],
+    // },
+    // {
+    //   text: "Gia công vi sinh",
+    //   icon: <ScheduleOutlined />,
+    //   pushTo: "/admin/machining",
+    //   // listSubMenu: [
+    //   //   {
+    //   //     icon: <MenuOutlined className={`${isCloseMenu && "text-xs"}`} />,
+    //   //     text: "Danh sách lịch hẹn",
+    //   //     pushTo: "/admin/appointments",
+    //   //   },
+    //   // ],
+    // },
     {
       text: "Quản lý Liên hệ",
       icon: <ContactsOutlined />,

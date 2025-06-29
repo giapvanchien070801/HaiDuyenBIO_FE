@@ -32,7 +32,7 @@ export default function UserFooter() {
     },
     {
       title: "Sản phẩm",
-      href: "/products",
+      href: "product-list/-1",
     },
     {
       title: "Tin tức",
@@ -199,7 +199,8 @@ export default function UserFooter() {
             {/* Quick Links */}
             <div className="flex flex-col gap-4">
               <p className="text-2xl font-semibold mb-2 flex items-center gap-2 border-b-2  border-white pb-2">
-                <GlobalOutlined style={{ color: "#0A66C2" }} /> Liên kết nhanh
+                <GlobalOutlined style={{ color: "#0A66C2" }} />
+                Liên kết nhanh
               </p>
               <ul className="space-y-2 ">
                 {listLink.map((item, index) => (

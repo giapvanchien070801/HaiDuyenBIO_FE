@@ -1,22 +1,20 @@
-import { useEffect, useState } from "react";
 import { Form, Input, Button, Select, message, Spin } from "antd";
 import { useRouter } from "next/navigation";
 import styled from "@emotion/styled";
 import { useMutation, useQuery } from "react-query";
-import Base from "@/models/Base";
 import TextEditor from "@/components/admin/common/TextEditor";
-import UploadImage from "@/components/admin/upload/UploadImage";
-import UploadListImageService from "./UploadListImageService";
-import Product from "@/models/Product";
 import CategoryProduct from "@/models/CategoryProduct";
 import {
   omitField,
   removeEmptyFields,
 } from "@/common/functions/commonFunction";
 
+import ArticleModal from "@/models/ArticleModal";
+import UploadListImageArticle from "@/app/(admin)/admin/list-post/components/UploadListImageArticle";
+
 const { TextArea } = Input;
 
-const CreateOrEditService = (props) => {
+const CreateOrEditArticle = (props) => {
   const { id, actionType } = props;
   const [form] = Form.useForm();
 
@@ -27,7 +25,7 @@ const CreateOrEditService = (props) => {
   const router = useRouter();
 
   // tạo sửa Sản phẩm
-  const createServiceMutate = useMutation(Product.createProduct, {
+  const createServiceMutate = useMutation(ArticleModal.createArticle, {
     onSuccess: () => {
       message.success("Tạo mới Sản phẩm thành công!");
       router.back();
@@ -38,7 +36,7 @@ const CreateOrEditService = (props) => {
   });
 
   const updateServiceMutate = useMutation(
-    (values) => Product.updateProduct(id, omitField(values, "id")),
+    (values) => ArticleModal.updateArticle(id, omitField(values, "id")),
     {
       onSuccess: () => {
         message.success("Sửa Sản phẩm thành công!");
@@ -66,7 +64,7 @@ const CreateOrEditService = (props) => {
   const { data: dataDetail } = useQuery(
     ["getDetail", id],
     async () => {
-      const res = await Product.getProductDetail(id);
+      const res = await ArticleModal.getArticleDetail(id);
       form.setFieldsValue(res);
       return res;
     },
@@ -93,7 +91,7 @@ const CreateOrEditService = (props) => {
           Page: 1,
           Size: 1000,
           search: "",
-          type: "PRODUCT",
+          type: "ARTICLE",
         })
       );
 
@@ -125,83 +123,33 @@ const CreateOrEditService = (props) => {
             name="imageUrl"
             label="Ảnh"
             rules={[{ required: true, message: "Ảnh không được bỏ trống!" }]}>
-            <UploadListImageService
-              onChange={(listImageResponse) => {
+            <UploadListImageArticle
+              onChange={(imageResponse) => {
                 form.setFieldsValue({
-                  imageUrl: listImageResponse,
+                  imageUrl: imageResponse,
                 });
               }}
-              listImageDetail={dataDetail?.imageUrl}
+              imageDetail={dataDetail?.imageUrl}
             />
           </Form.Item>
 
-          <div className="flex gap-3">
-            <Form.Item
-              name="name"
-              rules={[
-                {
-                  required: true,
-                  message: "Tiêu đề không được bỏ trống!",
-                },
-              ]}
-              className="w-1/2 mb-3 "
-              label="Tên sản phẩm">
-              <Input
-                maxLength={500}
-                allowClear
-                className=" mb-5"
-                placeholder="Nhập tên sản phẩm"
-              />
-            </Form.Item>
-            <Form.Item
-              rules={[
-                {
-                  required: true,
-                  message: "Danh mục không được bỏ trống!",
-                },
-              ]}
-              name="categoryId"
-              className="w-1/2"
-              label="Danh mục">
-              <Select
-                showSearch
-                placeholder="Chọn danh mục"
-                optionFilterProp="children"
-                onChange={onChangeSelect}
-                onSearch={onSearch}
-                filterOption={filterOption}
-                options={listCategory}
-              />
-            </Form.Item>
-          </div>
-
-          <div className="flex gap-3 justify-between">
-            <Form.Item
-              name="stock"
-              rules={[
-                {
-                  required: true,
-                  message: "Không được bỏ trống!",
-                },
-              ]}
-              className="w-1/2"
-              label={"Số lượng"}>
-              <Input allowClear placeholder={"Nhập số lượng"} />
-            </Form.Item>
-
-            <Form.Item
-              name="price"
-              rules={[
-                {
-                  required: true,
-                  message: "Không được bỏ trống!",
-                },
-              ]}
-              className="w-1/2"
-              label={"Giá"}>
-              <Input allowClear placeholder={"Nhập giá"} />
-            </Form.Item>
-          </div>
+          <Form.Item
+            name="title"
+            rules={[
+              {
+                required: true,
+                message: "Tiêu đề không được bỏ trống!",
+              },
+            ]}
+            className="w-full mb-3 "
+            label="Tên bài viết">
+            <Input
+              maxLength={500}
+              allowClear
+              className=" mb-5"
+              placeholder="Nhập tên bài viết"
+            />
+          </Form.Item>
 
           <div className="flex gap-3">
             <Form.Item
@@ -216,22 +164,29 @@ const CreateOrEditService = (props) => {
               label={"Slug"}>
               <Input allowClear placeholder={"Nhập slug"} />
             </Form.Item>
-
             <Form.Item
-              name="discountPercent"
               rules={[
                 {
                   required: true,
-                  message: "Giảm giá không được bỏ trống!",
+                  message: "Danh mục không được bỏ trống!",
                 },
               ]}
+              name="categoryId"
               className="w-1/2"
-              label={"Giảm giá (%)"}>
-              <Input allowClear placeholder={"Nhập giảm giá"} />
+              label="Danh mục bài viết">
+              <Select
+                showSearch
+                placeholder="Chọn danh mục"
+                optionFilterProp="children"
+                onChange={onChangeSelect}
+                onSearch={onSearch}
+                filterOption={filterOption}
+                options={listCategory}
+              />
             </Form.Item>
           </div>
 
-          <Form.Item
+          {/* <Form.Item
             name="summary"
             rules={[
               {
@@ -242,10 +197,10 @@ const CreateOrEditService = (props) => {
             className="w-full"
             label="Mô tả ngắn">
             <TextArea rows={4} placeholder="Nhập mô tả ngắn" maxLength={500} />
-          </Form.Item>
+          </Form.Item> */}
 
           <Form.Item
-            name="description"
+            name="content"
             label="Mô tả chi tiết"
             rules={[{ required: true, message: "Mô tả không được bỏ trống!" }]}>
             <TextEditor
@@ -293,4 +248,4 @@ const CustomForm = styled.div`
   }
 `;
 
-export default CreateOrEditService;
+export default CreateOrEditArticle;

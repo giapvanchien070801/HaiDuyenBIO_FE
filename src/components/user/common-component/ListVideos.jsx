@@ -12,7 +12,7 @@ import FilesRepository from "@/models/FilesRepository";
 export default function ListVideos() {
   const __pagination = useRef({
     page_num: 1,
-    page_size: 5,
+    page_size: 10,
     count: 0,
   });
   const {
@@ -27,7 +27,7 @@ export default function ListVideos() {
     ],
     async () => {
       const res = await FilesRepository.getFiles({
-        page: __pagination.current.page_num - 1,
+        page: __pagination.current.page_num,
         size: __pagination.current.page_size,
         type: 2,
       });
