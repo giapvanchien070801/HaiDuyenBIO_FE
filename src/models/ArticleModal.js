@@ -16,6 +16,27 @@ class ArticleModal {
 
     return response?.data;
   };
+
+  updateArticle = async (id, data) => {
+    const urlApi = `${version}/articles/${id}`;
+    const response = await requests.put(urlApi, data);
+
+    return response?.data;
+  };
+
+  deleteArticle = async (id) => {
+    const urlApi = `${version}/articles/${id}`;
+    const response = await requests.delete(urlApi);
+
+    return response?.data;
+  };
+
+  getArticleDetail = async (id) => {
+    const urlApi = `${version}/articles/${id}`;
+    const response = await requests.get(urlApi);
+
+    return response?.data;
+  };
 }
 
 export default new ArticleModal();

@@ -81,7 +81,7 @@ const ModalCreateCategoryService = (props) => {
   const handleFinish = (values) => {
     const valueUpdate = {
       id: idCategory,
-      type: "PRODUCT",
+      type: "ARTICLE",
       ...values,
     };
 

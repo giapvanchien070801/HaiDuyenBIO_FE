@@ -1,8 +1,13 @@
 "use client";
 
+import {
+  LIST_STATUS_ORDER,
+  ORDERS_STATUS_COLOR,
+} from "@/common/constants/commonConstant";
 import { useDebounce } from "@/common/functions/commonFunction";
+import ModalDetailsOrder from "@/components/admin/modals/ModalDetailsOrder";
 import Order from "@/models/Order";
-import { HomeOutlined, SearchOutlined } from "@ant-design/icons";
+import { EyeOutlined, HomeOutlined, SearchOutlined } from "@ant-design/icons";
 import styled from "@emotion/styled";
 import {
   Breadcrumb,
@@ -13,6 +18,8 @@ import {
   Space,
   Typography,
   Tag,
+  Select,
+  Empty,
 } from "antd";
 import { useRef, useState } from "react";
 import { useQuery } from "react-query";
@@ -23,6 +30,8 @@ const { Title } = Typography;
 export default function CheckShoppingPage() {
   const [valueSearch, setValueSearch] = useState("");
   const [valueSearchPhone, setValueSearchPhone] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [itemSelected, setItemSelected] = useState(null);
 
   const __pagination = useRef({
     page_num: 1,
@@ -60,7 +69,7 @@ export default function CheckShoppingPage() {
 
       __pagination.current.count = res.totalElements;
 
-      return res?.content;
+      return valueSearchPhone ? res?.content : [];
     },
     {
       enabled: true,
@@ -130,7 +139,7 @@ export default function CheckShoppingPage() {
       dataIndex: "status",
       key: "status",
       render: (text) => (
-        <Select value={text} defaultValue={"PENDING"}>
+        <Select value={text} defaultValue={"PENDING"} disabled>
           {LIST_STATUS_ORDER.map((item) => (
             <Select.Option key={item.value} value={item.value}>
               <Tag color={ORDERS_STATUS_COLOR[item.value]}>{item.label}</Tag>
@@ -181,7 +190,7 @@ export default function CheckShoppingPage() {
                   <p className="mb-2 text-gray-600">
                     Nhập số điện thoại để kiểm tra đơn hàng:
                   </p>
-                  <Input
+                  {/* <Input
                     allowClear
                     prefix={
                       <SearchOutlined
@@ -195,7 +204,7 @@ export default function CheckShoppingPage() {
                     }}
                     className="w-1/3 mb-5"
                     placeholder="Tìm kiếm"
-                  />
+                  /> */}
 
                   <Input
                     allowClear
@@ -209,7 +218,7 @@ export default function CheckShoppingPage() {
                     onChange={(e) => {
                       setValueSearchPhone(e.target.value);
                     }}
-                    className="w-1/3 mb-5 ml-5"
+                    className="w-1/3"
                     placeholder="Nhập số điện thoại"
                   />
                 </div>
@@ -235,17 +244,32 @@ export default function CheckShoppingPage() {
                     }}
                     onChange={handleTableChange}
                     loading={isFetching}
+                    locale={{
+                      emptyText: (
+                        <Empty
+                          description="Không có dữ liệu"
+                          image={Empty.PRESENTED_IMAGE_SIMPLE}
+                        />
+                      ),
+                    }}
                   />
 
-                  <div className="text-right">
+                  {/* <div className="text-right">
                     <Title level={4}>Tổng cộng: 123</Title>
-                  </div>
+                  </div> */}
                 </CustomTable>
               </Space>
             </Card>
           </div>
         </div>
       </div>
+      {isModalOpen && (
+        <ModalDetailsOrder
+          dataOrder={itemSelected}
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+        />
+      )}
     </div>
   );
 }

@@ -178,9 +178,10 @@ export default function Services() {
     async () => {
       const res = await CategoryProduct.getCategoryProductList(
         removeEmptyFields({
-          Page: 1,
-          Size: 1000,
+          page: 0,
+          size: 1000,
           search: "",
+          type: "PRODUCT",
         })
       );
 

@@ -1,16 +1,8 @@
 "use client";
-import { Breadcrumb} from "antd";
-import {
-  HomeOutlined,
-} from "@ant-design/icons";
+import { Breadcrumb } from "antd";
+import { HomeOutlined } from "@ant-design/icons";
+import CreateOrEditArticle from "@/components/admin/common/CreateOrEditArticle";
 
-import dynamic from "next/dynamic";
-const CreateOrEdit = dynamic(
-  () => import("@/components/admin/common/CreateOrEdit"),
-  {
-    ssr: false,
-  }
-);
 export default function CreateOrEditListPost() {
   const breadcrumb = [
     {
@@ -44,7 +36,7 @@ export default function CreateOrEditListPost() {
     <div>
       <Breadcrumb className="mb-5" items={breadcrumb} />
 
-      <CreateOrEdit typePage="post" actionType="create" />
+      <CreateOrEditArticle typePage="post" actionType="create" />
     </div>
   );
 }

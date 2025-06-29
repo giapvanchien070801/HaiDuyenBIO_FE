@@ -19,7 +19,7 @@ import { useRef, useState } from "react";
 import styled from "@emotion/styled";
 import { useRouter } from "next/navigation";
 import { useMutation, useQuery } from "react-query";
-import Base from "@/models/Base";
+
 import {
   removeEmptyFields,
   useDebounce,
@@ -60,7 +60,7 @@ export default function Categorys() {
           page: __pagination.current.page_num - 1,
           size: __pagination.current.page_size,
           search: searchDebounce,
-          type: "PRODUCT",
+          type: "ARTICLE",
         })
       );
 

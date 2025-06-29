@@ -10,8 +10,7 @@ import {
   Spin,
   InputNumber,
 } from "antd";
-import "react-quill/dist/quill.snow.css";
-import TextEditor from "./TextEditor";
+import TextEditor from "@/components/admin/common/TextEditor";
 import UploadAvatar from "../upload/UploadAvatar";
 import { useRouter } from "next/navigation";
 import styled from "@emotion/styled";
@@ -20,6 +19,10 @@ import Base from "@/models/Base";
 import UploadImage from "../upload/UploadImage";
 import Product from "@/models/Product";
 import CategoryProduct from "@/models/CategoryProduct";
+import {
+  omitField,
+  removeEmptyFields,
+} from "@/common/functions/commonFunction";
 
 const { TextArea } = Input;
 
