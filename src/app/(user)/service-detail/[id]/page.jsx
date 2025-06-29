@@ -107,7 +107,7 @@ export default function ServiceDetail({ params }) {
             <Link href={`/contact`}>
               <img
                 src="https://medicate.peacefulqode.com/wp-content/uploads/2022/03/call-img-1.jpg"
-                alt=""
+                alt="contact"
                 className="w-full"
               />
             </Link>

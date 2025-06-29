@@ -14,7 +14,7 @@ export default function BillingTotal({ setStep, selectedProducts }) {
 
   useEffect(() => {
     const total = selectedProducts.reduce(
-      (acc, product) => acc + product.price * product.quantity,
+      (acc, product) => acc + product?.priceFrom * product?.quantity,
       0
     );
     setTotalPrice(total.toLocaleString("vi-VN"));
@@ -41,7 +41,7 @@ export default function BillingTotal({ setStep, selectedProducts }) {
             <CarOutlined />
             Phí vận chuyển:
           </span>
-          <span className="font-medium">30,000đ</span>
+          <span className="font-medium">...</span>
         </div>
 
         <div className="border-t pt-4 mt-4">

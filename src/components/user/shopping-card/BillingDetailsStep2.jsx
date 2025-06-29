@@ -14,7 +14,6 @@ import { useState, useEffect } from "react";
 export default function BillingDetailsStep2({ setStep, form }) {
   const [cartItems, setCartItems] = useState([]);
   const [subtotal, setSubtotal] = useState(0);
-  const [shippingFee] = useState(30000);
   const [total, setTotal] = useState(0);
 
   // Load selected products from localStorage
@@ -41,7 +40,7 @@ export default function BillingDetailsStep2({ setStep, form }) {
       );
 
       setSubtotal(calculatedSubtotal);
-      setTotal(calculatedSubtotal + shippingFee);
+      setTotal(calculatedSubtotal);
     }
   }, []);
 
@@ -69,7 +68,7 @@ export default function BillingDetailsStep2({ setStep, form }) {
       );
 
       setSubtotal(calculatedSubtotal);
-      setTotal(calculatedSubtotal + shippingFee);
+      setTotal(calculatedSubtotal);
     }
   }, []);
 
@@ -135,7 +134,7 @@ export default function BillingDetailsStep2({ setStep, form }) {
               <CarOutlined />
               Phí vận chuyển:
             </span>
-            <span className="font-medium">{formatPrice(shippingFee)}</span>
+            <span className="font-medium">...</span>
           </div>
 
           <div className="border-t pt-4">

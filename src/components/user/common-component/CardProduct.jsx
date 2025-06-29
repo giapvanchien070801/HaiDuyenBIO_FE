@@ -76,10 +76,10 @@ export default function CardProduct(props) {
           </Tooltip>
           <div className="flex items-center gap-2 mb-3 sm:mb-4">
             <span className="text-red-500 font-bold text-lg sm:text-xl">
-              {product?.price?.toLocaleString("vi-VN")}đ
+              {product?.priceFrom?.toLocaleString("vi-VN")}đ
             </span>
             <span className="text-gray-400 line-through text-xs sm:text-sm">
-              {product?.priceFrom?.toLocaleString("vi-VN")}đ
+              {product?.price?.toLocaleString("vi-VN")}đ
             </span>
           </div>
           <div className="flex gap-2 flex-col sm:flex-row">

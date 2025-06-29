@@ -46,7 +46,85 @@ export const modulesTextEditor = {
     matchVisual: false,
   },
   imageResize: {
-    parchment: Quill.import("parchment"),
+    parchment:
+      typeof window !== "undefined"
+        ? require("react-quill").Quill.import("parchment")
+        : null,
     modules: ["Resize", "DisplaySize"],
   },
+};
+// PENDING, PROCESSING, COMPLETED, CANCELLED, UNSET
+export const ORDERS_STATUS = {
+  PENDING: "PENDING",
+  PROCESSING: "PROCESSING",
+  COMPLETED: "COMPLETED",
+  CANCELLED: "CANCELLED",
+  UNSET: "UNSET",
+};
+
+export const ORDERS_STATUS_COLOR = {
+  PENDING: "orange",
+  PROCESSING: "blue",
+  COMPLETED: "green",
+  CANCELLED: "red",
+  UNSET: "gray",
+};
+
+export const ORDERS_STATUS_TEXT = {
+  PENDING: "Chờ xác nhận",
+  PROCESSING: "Đang xử lý",
+  COMPLETED: "Đã hoàn thành",
+  CANCELLED: "Đã hủy",
+  UNSET: "Chưa xác nhận",
+};
+
+export const LIST_STATUS_ORDER = [
+  {
+    label: "Chờ xác nhận",
+    value: "PENDING",
+  },
+  {
+    label: "Đang xử lý",
+    value: "PROCESSING",
+  },
+  {
+    label: "Đã hoàn thành",
+    value: "COMPLETED",
+  },
+  {
+    label: "Đã hủy",
+    value: "CANCELLED",
+  },
+  {
+    label: "Chưa xác nhận",
+    value: "UNSET",
+  },
+];
+
+// ACTIVE, INACTIVE, DELETED
+export const LIST_STATUS_CUSTOMER_CONTACT = [
+  {
+    label: "Đã xử lý",
+    value: "ACTIVE",
+  },
+  {
+    label: "Chưa xử lý",
+    value: "INACTIVE",
+  },
+  // {
+  //   label: "Xóa",
+  //   value: "DELETED",
+  // },
+];
+
+export const CUSTOMER_CONTACT_STATUS_COLOR = {
+  ACTIVE: "green",
+  INACTIVE: "blue",
+  // DELETED: "red",
+};
+
+export const CUSTOMER_CONTACT_STATUS_TEXT = {
+  ACTIVE: "Đã xử lý",
+  INACTIVE: "Chưa xử lý",
+  // DELETED: "Xóa",
 };

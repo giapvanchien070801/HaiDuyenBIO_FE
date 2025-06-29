@@ -2,7 +2,7 @@ import { requests } from "./Base";
 
 const version = "/api/v1";
 
-class Article {
+class ArticleModal {
   getArticleList = async (params) => {
     const urlApi = `${version}/articles`;
     const response = await requests.get(urlApi, { params });
@@ -18,4 +18,4 @@ class Article {
   };
 }
 
-export default new Article();
+export default new ArticleModal();

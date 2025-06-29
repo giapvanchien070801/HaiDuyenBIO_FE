@@ -1,14 +1,15 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import { Upload, Button, message } from "antd";
 import { UploadOutlined, PlusOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { handleSrcImg } from "../../../common/functions/commonFunction";
-import { Cookies } from "react-cookie";
 import { API_ROOT } from "@/models/Base";
+import { Cookies } from "react-cookie";
 
 const UploadImage = (props) => {
   const { onChange, uploadType, imgDetail, resetValue } = props;
-
+  const cookies = new Cookies();
   // uploadType = avatar | null
 
   const [imageUrl, setImageUrl] = useState();
@@ -27,7 +28,6 @@ const UploadImage = (props) => {
     }
   }, [resetValue]);
 
-  const cookies = new Cookies();
   const authToken = cookies.get("accessToken");
 
   const handleUpload = async (options) => {
@@ -70,8 +70,7 @@ const UploadImage = (props) => {
       <div
         style={{
           marginTop: 8,
-        }}
-      >
+        }}>
         Upload
       </div>
     </div>
@@ -85,14 +84,12 @@ const UploadImage = (props) => {
         listType={isUploadAvatar ? "picture-circle" : "picture-card"}
         className="avatar-uploader"
         showUploadList={false}
-        customRequest={handleUpload}
-      >
+        customRequest={handleUpload}>
         {imageUrl ? (
           <div
             className={`${
               isUploadAvatar ? "w-full h-full overflow-hidden rounded-full" : ""
-            }`}
-          >
+            }`}>
             <img
               src={imageUrl}
               alt="avatar"

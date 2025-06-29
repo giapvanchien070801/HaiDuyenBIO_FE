@@ -1,5 +1,5 @@
 "use client";
-import { Avatar, Badge, Popover, message } from "antd";
+import { Avatar, Badge, Button, Popover, message } from "antd";
 import { useState } from "react";
 import {
   MenuUnfoldOutlined,
@@ -16,6 +16,7 @@ import { Cookies } from "react-cookie";
 export default function AdminHomeLayout({ children }) {
   const [isCloseMenu, setIsCloseMenu] = useState(false);
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const cookies = new Cookies();
 
   const handleClickSidebar = () => {
@@ -23,27 +24,25 @@ export default function AdminHomeLayout({ children }) {
   };
 
   const handleLogOut = () => {
-    cookies.remove("accessToken").then(() => {
-      cookies.remove("refreshToken");
-    });
+    setIsLoading(true);
+
+    cookies.remove("accessToken");
 
     setTimeout(() => {
+      setIsLoading(false);
       router.push("/login-admin");
       message.success("Đăng xuất thành công");
-    }, 3000);
+    }, 1000);
   };
 
-  const adminInfo = cookies.get("adminInfor");
-
   const contentPopover = (
-    <div className=" cursor-pointer">
-      <div
-        onClick={() => handleLogOut()}
-        className="text-red-700 flex items-center pr-4 py-3 gap-2 border-b hover:bg-[#4361ee1a] p-2">
-        <LogoutOutlined />
-        <p>Sign Out</p>
-      </div>
-    </div>
+    <Button
+      loading={isLoading}
+      icon={<LogoutOutlined />}
+      onClick={() => handleLogOut()}
+      className="w-full my-2">
+      Log out
+    </Button>
   );
   const titleHover = (
     <div className=" flex gap-2 cursor-pointer items-center">
@@ -51,16 +50,17 @@ export default function AdminHomeLayout({ children }) {
         <UserOutlined className="text-2xl text-slate-800" />
       </div>
       <div>
-        <b>{adminInfo?.Name}</b>
-        <p>{adminInfo?.RoleName}</p>
+        <b>Quản trị viên</b>
+        <p>leduychu@gmail.com</p>
       </div>
     </div>
   );
+
   return (
-    <div className=" flex">
-      {/* siderbar */}
+    <div className="flex">
+      {/* Sidebar */}
       <div
-        className={`  absolute  min-h-[100vh] main-sidebar flex flex-col items-center p-3 ${
+        className={`absolute min-h-[100vh] main-sidebar flex flex-col items-center p-3 ${
           isCloseMenu ? "w-[70px]" : "w-64"
         }`}>
         <img
@@ -68,32 +68,31 @@ export default function AdminHomeLayout({ children }) {
           src="/images/logo-haiduyenbio-1.png"
           alt="logo"
         />
-
         <MenuSidebar className="w-full h-full" isCloseMenu={isCloseMenu} />
       </div>
 
-      {/* main content */}
+      {/* Main content */}
       <div
-        className={` w-full min-h-[100vh] content-wraper bg-[#f3f3f5] ${
+        className={`w-full min-h-[100vh] content-wraper bg-[#f3f3f5] ${
           isCloseMenu ? "ml-[70px]" : "ml-64"
         }`}>
-        {/* header */}
-        <div className="h-14 border-y border-solid border-[#dee2e6] p-2 flex justify-between items-center ">
+        {/* Header */}
+        <div className="h-14 border-y border-solid border-[#dee2e6] p-2 flex justify-between items-center">
           <div>
             {isCloseMenu ? (
               <MenuUnfoldOutlined
                 className="ml-3 text-2xl text-gray-500 hover:text-gray-700"
-                onClick={() => handleClickSidebar()}
+                onClick={handleClickSidebar}
               />
             ) : (
               <MenuFoldOutlined
                 className="ml-3 text-2xl text-gray-500 hover:text-gray-700"
-                onClick={() => handleClickSidebar()}
+                onClick={handleClickSidebar}
               />
             )}
           </div>
 
-          <div className=" gap-4 flex items-center mr-4">
+          <div className="gap-4 flex items-center mr-4">
             <Popover
               content={contentPopover}
               title={titleHover}
@@ -104,7 +103,8 @@ export default function AdminHomeLayout({ children }) {
             </Popover>
           </div>
         </div>
-        {/* nội dung trang */}
+
+        {/* Nội dung */}
         <main className="p-8">{children}</main>
       </div>
     </div>

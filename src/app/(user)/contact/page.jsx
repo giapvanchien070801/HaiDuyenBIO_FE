@@ -7,8 +7,8 @@ import CardContact from "@/components/user/CardContact";
 import styled from "@emotion/styled";
 import BannerBreadcrumb from "@/components/user/common-component/BannerBreadcrumb";
 import { useMutation } from "react-query";
-import Base from "@/models/Base";
 import UserSwiper from "@/components/user/common-component/UserSwiper";
+import ContactModel from "@/models/Contact";
 const { TextArea } = Input;
 
 export default function Contact() {
@@ -33,9 +33,11 @@ export default function Contact() {
     },
   ];
 
-  const createDoctorMutate = useMutation(Base.createContact, {
+  const createContactMutate = useMutation(ContactModel.createContact, {
     onSuccess: () => {
-      message.success("Tạo liên hệ thành công!");
+      message.success(
+        "Tạo liên hệ thành công, chúng tôi sẽ liên hệ lại với bạn sớm nhất có thể!"
+      );
       form.resetFields();
     },
     onError: (e) => {
@@ -43,23 +45,12 @@ export default function Contact() {
     },
   });
 
+  const handleSubmit = (values) => {
+    createContactMutate.mutate(values);
+  };
+
   const handleSunmit = () => {
     form.submit();
-
-    const listFieldName = [
-      "Name",
-      "Message",
-      "Subject",
-      "PhoneNumber",
-      "Email",
-    ];
-    form
-      .validateFields(listFieldName)
-      .then((value) => {
-        createDoctorMutate.mutate(value);
-      })
-      .catch(() => {});
-    // setIsModalOpen(false);
   };
 
   return (
@@ -110,60 +101,50 @@ export default function Contact() {
                 optionalInput: "",
               }}
               form={form}
-              layout="vertical"
-            >
+              onFinish={handleSubmit}
+              layout="vertical">
               <div className="sm:flex block gap-4 w-full mb-8">
                 <Form.Item
-                  className="sm:w-1/2 w-full"
-                  name="Name"
+                  className=" w-full"
+                  name="fullName"
                   rules={[
                     {
                       required: true,
                       message: "Vui lòng nhập họ tên của bạn!",
                     },
-                  ]}
-                >
+                  ]}>
                   <Input placeholder="Họ và tên" />
-                </Form.Item>
-                <Form.Item className="sm:w-1/2 w-full" name="Email">
-                  <Input placeholder="Email của bạn" />
                 </Form.Item>
               </div>
               <div className="sm:flex block gap-4 w-full mb-8">
                 <Form.Item
                   className="sm:w-1/2 w-full"
-                  name="PhoneNumber"
+                  name="phone"
                   rules={[
                     {
                       required: true,
-                      message: "Vui lòng nhập số điện thoại của bạn",
+                      message: "Vui lòng nhập số điện thoại của bạn!`",
                     },
-                  ]}
-                >
+                  ]}>
                   <Input placeholder="Số điện thoại của bạn" />
                 </Form.Item>
-                <Form.Item className="sm:w-1/2 w-full" name="Subject">
-                  <Input placeholder="Triệu chứng của bạn" />
+                <Form.Item
+                  className="sm:w-1/2 w-full"
+                  name="email"
+                  rules={[
+                    { required: true, message: "Vui lòng nhập email của bạn!" },
+                  ]}>
+                  <Input placeholder="Email của bạn" type="email" />
                 </Form.Item>
               </div>
-              <Form.Item
-                className="w-full mb-8"
-                name="Message"
-                rules={[
-                  {
-                    required: true,
-                    message: "Vui lòng nhập lời nhắn!",
-                  },
-                ]}
-              >
+              <Form.Item className="w-full mb-8" name="message">
                 <TextArea rows={4} placeholder="Lời nhắn" />
               </Form.Item>
               <Form.Item>
                 <Button
                   type="primary"
                   onClick={() => handleSunmit()}
-                  className="bg-[#2490eb] text-white py-3 px-5 h-auto font-semibold"
-                >
+                  className="bg-[#2490eb] text-white py-3 px-5 h-auto font-semibold">
                   ĐĂNG KÝ NGAY
                 </Button>
               </Form.Item>
@@ -178,8 +159,7 @@ export default function Contact() {
             // style="border:0;"
             allowfullscreen=""
             loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-          ></iframe>
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
       </div>
     </div>

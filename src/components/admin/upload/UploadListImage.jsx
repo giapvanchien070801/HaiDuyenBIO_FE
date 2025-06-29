@@ -11,7 +11,7 @@ const UploadListImage = () => {
   const [fileList, setFileList] = useState([]);
   const [previewVisible, setPreviewVisible] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
-
+  const cookies = new Cookies();
   const { data: listSlider, refetch } = useQuery(
     ["getListSlider"],
     async () => {
@@ -34,7 +34,6 @@ const UploadListImage = () => {
     {}
   );
 
-  const cookies = new Cookies();
   const authToken = cookies.get("accessToken");
 
   const updateSliderMutate = useMutation(Base.updateSlider, {
@@ -131,8 +130,7 @@ const UploadListImage = () => {
         onChange={onChange}
         fileList={fileList}
         onRemove={onRemove}
-        listType="picture-card"
-      >
+        listType="picture-card">
         {fileList.length >= 8 ? null : uploadButton}
       </Upload>
 

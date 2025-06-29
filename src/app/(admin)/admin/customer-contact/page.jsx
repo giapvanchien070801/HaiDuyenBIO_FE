@@ -4,40 +4,47 @@ import {
   Button,
   Input,
   Popconfirm,
+  Select,
   Space,
   Spin,
   Table,
+  Tag,
   message,
   notification,
 } from "antd";
-import { EyeOutlined, HomeOutlined, SearchOutlined } from "@ant-design/icons";
-import { useState } from "react";
+import {
+  DeleteOutlined,
+  HomeOutlined,
+  SearchOutlined,
+} from "@ant-design/icons";
+import { useRef, useState } from "react";
 import styled from "@emotion/styled";
 import { useMutation, useQuery } from "react-query";
 import Base from "@/models/Base";
-import { useDebounce } from "../../../../common/functions/commonFunction";
+import {
+  removeEmptyFields,
+  useDebounce,
+} from "../../../../common/functions/commonFunction";
+import Contact from "@/models/Contact";
+import {
+  CUSTOMER_CONTACT_STATUS_COLOR,
+  LIST_STATUS_CUSTOMER_CONTACT,
+} from "@/common/constants/commonConstant";
 
 export default function CustomerContact() {
   const [valueSearchContact, setValueSearchContact] = useState("");
   const [idContactSelected, setIdContactSelected] = useState();
 
-  const [tableParams, setTableParams] = useState({
-    pagination: {
-      current: 1,
-      pageSize: 5,
-      total: 20,
-    },
+  const __pagination = useRef({
+    page_num: 1,
+    page_size: 10,
+    count: 0,
   });
 
   const handleTableChange = (pagination, filters, sorter) => {
-    setTableParams({
-      pagination,
-      filters,
-      ...sorter,
-    });
-
-    if (pagination.pageSize !== tableParams.pagination?.pageSize) {
-    }
+    __pagination.current.page_num = pagination.current;
+    __pagination.current.page_size = pagination.pageSize;
+    refetch();
   };
 
   const searchDebounce = useDebounce(valueSearchContact, 1000);
@@ -49,30 +56,24 @@ export default function CustomerContact() {
     [
       "getListContactgory",
       searchDebounce,
-      tableParams.pagination.current,
-      tableParams.pagination.pageSize,
+      __pagination.current.page_num,
+      __pagination.current.page_size,
     ],
     async () => {
-      const res = await Base.getListContactPagination({
-        Page: tableParams.pagination.current,
-        Size: tableParams.pagination.pageSize,
-        KeySearch: searchDebounce,
-      });
+      const res = await Contact.getContactList(
+        removeEmptyFields({
+          page: __pagination.current.page_num - 1,
+          size: __pagination.current.page_size,
+          search: searchDebounce,
+        })
+      );
 
-      if (res.TotalRecord) {
-        setTableParams({
-          pagination: {
-            current: tableParams.pagination.current,
-            pageSize: tableParams.pagination.pageSize,
-            total: res.TotalRecord,
-          },
-        });
-      }
+      __pagination.current.count = res.totalElements;
 
-      return res?.Data;
+      return res?.content;
     },
     {
-      enabled: false,
+      enabled: true,
     }
   );
 
@@ -98,29 +99,7 @@ export default function CustomerContact() {
 
   const [api, contextHolder] = notification.useNotification();
 
-  const deleteContactMutate = useMutation(Base.deleteContact, {
-    onSuccess: () => {
-      message.success("Xóa liên hệ thành công!");
-      setIdContactSelected();
-      refetch();
-    },
-    onError: (e) => {
-      if (e?.response?.data?.Message === "Can not delete this category") {
-        // trường hợp liên hệ bài viết đã có bài viết
-
-        api["error"]({
-          message: "Không thể xóa liên hệ này",
-          description: "Đã có bài viết thuộc liên hệ này. Không thể xóa!",
-        });
-      } else {
-        message.error("Xóa liên hệ thất bại!");
-      }
-    },
-  });
-
-  const handleDeleteContact = (e) => {
-    deleteContactMutate.mutate(idContactSelected);
-  };
+  const handleDeleteContact = (id) => {};
 
   const columns = [
     {
@@ -132,51 +111,57 @@ export default function CustomerContact() {
     },
     {
       title: "Tên khách hàng",
-      dataIndex: "Name",
-      key: "Name",
+      dataIndex: "fullName",
+      key: "fullName",
       render: (text) => <a>{text}</a>,
     },
     {
       title: "Số điện thoại",
-      dataIndex: "PhoneNumber",
-      key: "PhoneNumber",
+      dataIndex: "phone",
+      key: "phone",
       render: (text) => <a>{text}</a>,
     },
 
     {
       title: "Email",
-      dataIndex: "Email",
-      key: "Email",
+      dataIndex: "email",
+      key: "email",
     },
 
     {
       title: "Lời nhắn",
-      dataIndex: "Message",
-      key: "Message",
+      dataIndex: "message",
+      key: "message",
     },
     {
       title: "Trạng thái",
-      dataIndex: "Status",
-      key: "Status",
+      dataIndex: "status",
+      key: "status",
+      render: (text) => (
+        <Select value={text} defaultValue={"PENDING"}>
+          {LIST_STATUS_CUSTOMER_CONTACT.map((item) => (
+            <Select.Option key={item.value} value={item.value}>
+              <Tag color={CUSTOMER_CONTACT_STATUS_COLOR[item.value]}>
+                {item.label}
+              </Tag>
+            </Select.Option>
+          ))}
+        </Select>
+      ),
     },
 
     {
       title: "Hoạt động",
       key: "action",
       render: (_, record) => (
-        <Space size="middle">
-          <Popconfirm
-            title="Xóa liên hệ"
-            description="Bạn có chắc chắn muốn xóa liên hệ này?"
-            onConfirm={handleDeleteContact}
-            okText="Xóa"
-            cancelText="Hủy"
-          >
-            <Button size="middle" type="default" icon={<EyeOutlined />}>
-              Đã liên hệ
-            </Button>
-          </Popconfirm>
-        </Space>
+        <Button
+          size="small"
+          type="default"
+          icon={<DeleteOutlined />}
+          danger
+          onClick={() => handleDeleteContact(record.Id)}>
+          Xóa liên hệ
+        </Button>
       ),
     },
   ];
@@ -205,6 +190,7 @@ export default function CustomerContact() {
       <Spin spinning={isFetching}>
         <CustomTable>
           <Table
+            size="small"
             columns={columns}
             dataSource={listContact}
             onRow={(record) => {
@@ -215,9 +201,11 @@ export default function CustomerContact() {
               };
             }}
             pagination={{
-              ...tableParams.pagination,
-              showSizeChanger: true, // Cho phép hiển thị Select chọn số lượng phần tử trên trang
-              pageSizeOptions: tableParams.pageSizeOptions, // Sử dụng pageSizeOptions từ tableParams
+              current: __pagination.current.page_num,
+              pageSize: __pagination.current.page_size,
+              total: __pagination.current.count,
+              showSizeChanger: true,
+              pageSizeOptions: [10, 20, 50, 100],
             }}
             onChange={handleTableChange}
           />
