@@ -80,17 +80,17 @@ export default function AddAppointment() {
   };
 
   const onChange = (value) => {
-    console.log(`selected ${value}`);
+    // Handle selection change
   };
   const onSearch = (value) => {
-    console.log("search:", value);
+    // Handle search
   };
 
   // Filter `option.label` match the user type `input`
   const filterOption = (input, option) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
   const onChangeDate = (date, dateString) => {
-    console.log(date, dateString);
+    // Handle date change
   };
 
   // api lấy danh sách tất cả bác sĩ
@@ -140,8 +140,7 @@ export default function AddAppointment() {
                   optionalInput: "",
                 }}
                 form={form}
-                layout="vertical"
-              >
+                layout="vertical">
                 <Form.Item
                   className="w-full"
                   name="DoctorId"
@@ -150,8 +149,7 @@ export default function AddAppointment() {
                       required: true,
                       message: "Vui lòng chọn bác sĩ cần gặp",
                     },
-                  ]}
-                >
+                  ]}>
                   <Select
                     showSearch
                     placeholder="Chọn bác sĩ"
@@ -170,8 +168,7 @@ export default function AddAppointment() {
                       message: "Vui lòng nhập họ và tên của bạn",
                     },
                   ]}
-                  name="FullName"
-                >
+                  name="FullName">
                   <Input placeholder="Họ và tên" />
                 </Form.Item>
                 <div className="sm:flex block gap-4 w-full ">
@@ -183,8 +180,7 @@ export default function AddAppointment() {
                         required: true,
                         message: "Vui lòng nhập số điện thoại của bạn",
                       },
-                    ]}
-                  >
+                    ]}>
                     <Input placeholder="Số điện thoại của bạn" />
                   </Form.Item>
                   <Form.Item className="sm:w-1/2 w-full" name="Email">
@@ -200,8 +196,7 @@ export default function AddAppointment() {
                         required: true,
                         message: "Vui lòng chọn ngày hẹn",
                       },
-                    ]}
-                  >
+                    ]}>
                     <DatePicker
                       className="w-full"
                       onChange={onChangeDate}
@@ -221,8 +216,7 @@ export default function AddAppointment() {
                   <Button
                     type="primary"
                     onClick={() => handleSunmit()}
-                    className="bg-[#2490eb] text-white py-3 px-5 h-auto font-semibold"
-                  >
+                    className="bg-[#2490eb] text-white py-3 px-5 h-auto font-semibold">
                     TẠO LỊCH
                   </Button>
                 </Form.Item>
@@ -248,8 +242,7 @@ export default function AddAppointment() {
             onClick={() => {
               router.push("/contact");
             }}
-            className="bg-[#2490eb] text-white h-12 py-3 px-5  font-semibold flex items-center sm:mb-0 mb-10"
-          >
+            className="bg-[#2490eb] text-white h-12 py-3 px-5  font-semibold flex items-center sm:mb-0 mb-10">
             LIÊN HỆ CHÚNG TÔI <PlusOutlined />
           </Button>
         </div>
@@ -283,8 +276,7 @@ export default function AddAppointment() {
               autoplay={{
                 delay: 3500,
                 disableOnInteraction: false,
-              }}
-            >
+              }}>
               <SwiperSlide>
                 <div className="  sm:flex block gap-4">
                   <CardFeedback

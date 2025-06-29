@@ -1,7 +1,9 @@
 "use client";
 
+import { useDebounce } from "@/common/functions/commonFunction";
+import Order from "@/models/Order";
 import { HomeOutlined, SearchOutlined } from "@ant-design/icons";
-
+import styled from "@emotion/styled";
 import {
   Breadcrumb,
   Button,
@@ -12,15 +14,58 @@ import {
   Typography,
   Tag,
 } from "antd";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { useQuery } from "react-query";
 
 const { Search } = Input;
 const { Title } = Typography;
 
 export default function CheckShoppingPage() {
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [orderData, setOrderData] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [valueSearch, setValueSearch] = useState("");
+  const [valueSearchPhone, setValueSearchPhone] = useState("");
+
+  const __pagination = useRef({
+    page_num: 1,
+    page_size: 10,
+    count: 0,
+  });
+
+  const handleTableChange = (pagination, filters, sorter) => {
+    __pagination.current.page_num = pagination.current;
+    __pagination.current.page_size = pagination.pageSize;
+    refetch();
+  };
+
+  const searchDebounce = useDebounce(valueSearch, 1000);
+  const searchDebouncePhone = useDebounce(valueSearchPhone, 1000);
+  const {
+    data: listOrder,
+    refetch,
+    isFetching,
+  } = useQuery(
+    [
+      "getListCategory",
+      searchDebounce,
+      __pagination.current.page_num,
+      __pagination.current.page_size,
+      searchDebouncePhone,
+    ],
+    async () => {
+      const res = await Order.getOrderList({
+        page: __pagination.current.page_num - 1,
+        size: __pagination.current.page_size,
+        search: searchDebounce,
+        phone: searchDebouncePhone,
+      });
+
+      __pagination.current.count = res.totalElements;
+
+      return res?.content;
+    },
+    {
+      enabled: true,
+    }
+  );
 
   const breadcrumb = [
     {
@@ -36,98 +81,78 @@ export default function CheckShoppingPage() {
       href: "/check-shopping",
       title: (
         <>
-          <span className="text-[#2490eb]">Kiểm tra đơn hàng</span>
+          <span className="text-[#2490eb]">Kiểm tra đơn hàngss</span>
         </>
       ),
     },
   ];
 
-  // Mock data cho bảng đơn hàng
-  const mockOrderData = [
-    {
-      key: "1",
-      productName: "Sản phẩm A",
-      quantity: 2,
-      unitPrice: 150000,
-      total: 300000,
-      status: "pending", // chờ vận chuyển
-    },
-    {
-      key: "2",
-      productName: "Sản phẩm B",
-      quantity: 1,
-      unitPrice: 200000,
-      total: 200000,
-      status: "shipped", // đã vận chuyển
-    },
-    {
-      key: "3",
-      productName: "Sản phẩm c",
-      quantity: 2,
-      unitPrice: 150000,
-      total: 300000,
-      status: "pending", // chờ vận chuyển
-    },
-    {
-      key: "2",
-      productName: "Sản phẩm B",
-      quantity: 1,
-      unitPrice: 200000,
-      total: 200000,
-      status: "shipped", // đã vận chuyển
-    },
-  ];
-
   const columns = [
     {
-      title: "Tên sản phẩm",
-      dataIndex: "productName",
-      key: "productName",
+      title: "STT",
+      key: "stt",
+      dataIndex: "Id",
+      render: (value, item, index) => index,
+      fixed: "left",
     },
     {
-      title: "Số lượng",
-      dataIndex: "quantity",
-      key: "quantity",
-      align: "center",
+      title: "Tên Khách hàng",
+      dataIndex: "fullName",
+      key: "fullName",
+      render: (text) => <a>{text}</a>,
     },
     {
-      title: "Đơn giá",
-      dataIndex: "unitPrice",
-      key: "unitPrice",
-      align: "right",
-      render: (price) => `${price.toLocaleString("vi-VN")}đ`,
+      title: "Số điện thoại",
+      dataIndex: "phone",
+      key: "phone",
+      render: (text) => <a>{text}</a>,
     },
     {
-      title: "Tổng tiền",
-      dataIndex: "total",
-      key: "total",
-      align: "right",
-      render: (total) => `${total.toLocaleString("vi-VN")}đ`,
+      title: "Địa chỉ",
+      dataIndex: "address",
+      key: "address",
+      render: (text) => <a>{text}</a>,
+    },
+    {
+      title: "Ghi chú",
+      dataIndex: "additionalInformation",
+      key: "additionalInformation",
+      render: (text) => <a>{text}</a>,
+    },
+
+    {
+      title: "Ngày đặt hàng",
+      dataIndex: "createdAt",
+      key: "createdAt",
     },
     {
       title: "Trạng thái",
       dataIndex: "status",
       key: "status",
-      align: "center",
-      render: (status) => {
-        if (status === "pending") {
-          return <Tag color="orange">Chờ vận chuyển</Tag>;
-        } else if (status === "shipped") {
-          return <Tag color="green">Đã vận chuyển</Tag>;
-        }
-        return <Tag color="default">Không xác định</Tag>;
-      },
+      render: (text) => (
+        <Select value={text} defaultValue={"PENDING"}>
+          {LIST_STATUS_ORDER.map((item) => (
+            <Select.Option key={item.value} value={item.value}>
+              <Tag color={ORDERS_STATUS_COLOR[item.value]}>{item.label}</Tag>
+            </Select.Option>
+          ))}
+        </Select>
+      ),
+    },
+    {
+      title: "Hoạt động",
+      key: "action",
+      render: (_, record) => (
+        <Button
+          size="middle"
+          type="default"
+          icon={<EyeOutlined />}
+          onClick={() => setIsModalOpen(true)}>
+          Xem chi tiết
+        </Button>
+      ),
     },
   ];
-
-  const handleSearch = (value) => {
-    setLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      setOrderData(mockOrderData);
-      setLoading(false);
-    }, 1000);
-  };
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat("vi-VN", {
@@ -135,8 +160,6 @@ export default function CheckShoppingPage() {
       currency: "VND",
     }).format(price);
   };
-
-  const totalAmount = orderData.reduce((sum, item) => sum + item.total, 0);
 
   return (
     <div className="pb-24">
@@ -159,31 +182,65 @@ export default function CheckShoppingPage() {
                     Nhập số điện thoại để kiểm tra đơn hàng:
                   </p>
                   <Input
-                    placeholder="Nhập số điện thoại..."
-                    enterButton={<SearchOutlined />}
-                    size="large"
-                    value={phoneNumber}
-                    onChange={(e) => setPhoneNumber(e.target.value)}
-                    onSearch={handleSearch}
-                    style={{ maxWidth: 400 }}
+                    allowClear
+                    prefix={
+                      <SearchOutlined
+                        style={{
+                          color: "gray",
+                        }}
+                      />
+                    }
+                    onChange={(e) => {
+                      setValueSearch(e.target.value);
+                    }}
+                    className="w-1/3 mb-5"
+                    placeholder="Tìm kiếm"
+                  />
+
+                  <Input
+                    allowClear
+                    prefix={
+                      <SearchOutlined
+                        style={{
+                          color: "gray",
+                        }}
+                      />
+                    }
+                    onChange={(e) => {
+                      setValueSearchPhone(e.target.value);
+                    }}
+                    className="w-1/3 mb-5 ml-5"
+                    placeholder="Nhập số điện thoại"
                   />
                 </div>
 
-                <div>
+                <CustomTable>
                   <Table
+                    size="small"
                     columns={columns}
-                    dataSource={mockOrderData}
-                    loading={loading}
-                    pagination={false}
-                    className="mb-4"
+                    dataSource={listOrder}
+                    onRow={(record) => {
+                      return {
+                        onClick: () => {
+                          setItemSelected(record);
+                        },
+                      };
+                    }}
+                    pagination={{
+                      current: __pagination.current.page_num,
+                      pageSize: __pagination.current.page_size,
+                      total: __pagination.current.count,
+                      showSizeChanger: true,
+                      pageSizeOptions: [10, 20, 50, 100],
+                    }}
+                    onChange={handleTableChange}
+                    loading={isFetching}
                   />
 
                   <div className="text-right">
-                    <Title level={4}>
-                      Tổng cộng: {formatPrice(totalAmount)}
-                    </Title>
+                    <Title level={4}>Tổng cộng: 123</Title>
                   </div>
-                </div>
+                </CustomTable>
               </Space>
             </Card>
           </div>
@@ -192,3 +249,13 @@ export default function CheckShoppingPage() {
     </div>
   );
 }
+
+const CustomTable = styled.div`
+  & .ant-table-wrapper .ant-table-thead > tr > th,
+  :where(.css-dev-only-do-not-override-6j9yrn).ant-table-wrapper
+    .ant-table-thead
+    > tr
+    > td {
+    background: #cce3de;
+  }
+`;

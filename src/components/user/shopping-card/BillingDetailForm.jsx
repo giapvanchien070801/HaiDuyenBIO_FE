@@ -1,6 +1,6 @@
 "use client";
 
-import { Form, Input } from "antd";
+import { Form, Input, message } from "antd";
 import {
   UserOutlined,
   HomeOutlined,
@@ -12,7 +12,6 @@ import { useMutation } from "react-query";
 
 export default function BillingDetailForm({ form, setStep }) {
   const selectedProducts = JSON.parse(localStorage.getItem("selectedProducts"));
-  console.log(selectedProducts, "selectedProducts");
 
   const orderMutation = useMutation({
     mutationFn: (values) => {

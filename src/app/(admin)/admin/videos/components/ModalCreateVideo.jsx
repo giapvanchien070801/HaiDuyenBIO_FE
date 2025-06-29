@@ -1,120 +1,83 @@
 import React, { useEffect, useState } from "react";
 import { Button, Modal, Input, Form, message } from "antd";
 import { PlusCircleOutlined } from "@ant-design/icons";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import Base from "@/models/Base";
+import FilesRepository from "@/models/FilesRepository";
+import CardVideo from "@/components/user/common-component/CardVideo";
 
 const ModalCreateVideo = (props) => {
-  const { modalType, refetchData, idCategory } = props;
+  const { isModalOpen = false, setIsModalOpen, onActions, dataDetail } = props;
 
-  const isModalCreate = modalType === "create";
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const isModalCreate = !dataDetail;
+
   const [form] = Form.useForm();
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
 
-  const { data: dataDetailCate } = useQuery(
-    ["getDetailCate", idCategory],
-    async () => {
-      const res = await Base.getDetailCate(idCategory);
-
-      return res;
-    },
-    { enabled: !!idCategory }
-  );
+  const queryClient = useQueryClient();
 
   useEffect(() => {
-    if (dataDetailCate && idCategory) {
-      form.setFieldValue("Name", dataDetailCate?.Name);
+    if (!!dataDetail) {
+      form.setFieldValue("link", dataDetail?.externalLink);
+      form.setFieldValue("description", dataDetail?.description);
     }
-  }, [dataDetailCate, idCategory]);
+  }, [dataDetail]);
 
-  const createCateMutate = useMutation(Base.createCategory, {
+  const createVideoMutate = useMutation(FilesRepository.uploadFile, {
     onSuccess: () => {
-      message.success("Tạo mới danh mục thành công!");
-      form.resetFields();
-      if (refetchData) {
-        refetchData();
-      }
+      message.success("Tạo mới video thành công!");
+      queryClient.invalidateQueries({ queryKey: ["getListVideoAdmin"] });
       setIsModalOpen(false);
     },
     onError: (e) => {
-      message.error("Tạo mới danh mục thất bại!");
+      message.error("Tạo mới video thất bại!");
     },
   });
-  const updateCateMutate = useMutation(Base.updateCategory, {
-    onSuccess: () => {
-      message.success("Sửa danh mục thành công!");
-      form.resetFields();
-      if (refetchData) {
-        refetchData();
-      }
-      setIsModalOpen(false);
-    },
-    onError: (e) => {
-      message.error("Sửa danh mục thất bại!");
-    },
-  });
+
+  const updateVideoMutate = useMutation(
+    (data) => FilesRepository.updateFile(dataDetail?.id, data),
+    {
+      onSuccess: () => {
+        message.success("Sửa video thành công!");
+        onActions(null, "reset");
+        queryClient.invalidateQueries({ queryKey: ["getListVideoAdmin"] });
+        setIsModalOpen(false);
+      },
+      onError: (e) => {
+        message.error("Sửa video thất bại!");
+      },
+    }
+  );
 
   const handleOk = () => {
     form.submit();
-
-    const listFieldName = ["Name"];
-    form
-      .validateFields(listFieldName)
-      .then((value) => {
-        const valueCreate = {
-          Name: value?.Name?.trim(),
-        };
-        const valueUpdate = {
-          Id: idCategory,
-          Name: value?.Name?.trim(),
-        };
-
-        if (isModalCreate) {
-          createCateMutate.mutate(valueCreate);
-        } else {
-          updateCateMutate.mutate(valueUpdate);
-        }
-      })
-      .catch(() => {});
   };
+
   const handleCancel = () => {
     setIsModalOpen(false);
+    onActions(null, "reset");
+  };
+
+  const handleFinish = (values) => {
+    if (isModalCreate) {
+      createVideoMutate.mutate(values);
+    } else {
+      updateVideoMutate.mutate({
+        id: dataDetail?.id,
+        externalLink: values?.link,
+        description: values?.description,
+      });
+    }
   };
 
   return (
     <>
-      {isModalCreate ? (
-        <Button
-          icon={<PlusCircleOutlined />}
-          size="middle"
-          type="primary"
-          className="float-right  bg-blue-700 text-white"
-          onClick={showModal}
-        >
-          Thêm mới
-        </Button>
-      ) : (
-        <Button
-          size="middle"
-          className="border-teal-500 text-teal-500"
-          type="default"
-          onClick={showModal}
-        >
-          Xem chi tiết/Sửa
-        </Button>
-      )}
-
       <Modal
-        title={`${isModalCreate ? "Thêm" : "Sửa"} video`}
+        title={`${dataDetail ? "Sửa" : "Thêm"} video`}
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
-        okText={isModalCreate ? "Tạo" : "Sửa"}
-        cancelText="Hủy"
-      >
+        okText={dataDetail ? "Sửa" : "Tạo"}
+        cancelText="Hủy">
         <Form
           className="w-full"
           initialValues={{
@@ -123,25 +86,36 @@ const ModalCreateVideo = (props) => {
             optionalInput: "",
           }}
           form={form}
-          layout="vertical"
-        >
+          onFinish={handleFinish}
+          layout="vertical">
           <Form.Item
             label="Link video"
-            name="Name"
+            name="link"
             rules={[
               { required: true, message: "Link video không được bỏ trống!" },
-            ]}
-          >
+            ]}>
             <Input placeholder="Nhập link video" />
           </Form.Item>
           <Form.Item
             label="Mô tả"
-            name="Description"
-            rules={[{ required: true, message: "Mô tả không được bỏ trống!" }]}
-          >
+            name="description"
+            rules={[{ required: true, message: "Mô tả không được bỏ trống!" }]}>
             <Input.TextArea placeholder="Nhập mô tả" />
           </Form.Item>
         </Form>
+        {!isModalCreate && (
+          <CardVideo
+            video={{
+              id: 1,
+              title: dataDetail?.description,
+              url: dataDetail?.externalLink,
+              channel: "Hải Duyên Bio",
+              views: "12K",
+              timestamp: dataDetail?.createdAt,
+              avatar: "/images/LOGO.JPG",
+            }}
+          />
+        )}
       </Modal>
     </>
   );

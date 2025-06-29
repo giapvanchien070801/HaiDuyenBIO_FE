@@ -24,6 +24,7 @@ import {
 import styled from "@emotion/styled";
 import {
   ORDERS_STATUS,
+  ORDERS_STATUS_COLOR,
   ORDERS_STATUS_TEXT,
 } from "@/common/constants/commonConstant";
 
@@ -121,40 +122,6 @@ const ModalDetailsOrder = (props) => {
     return new Date(dateString).toLocaleString("vi-VN");
   };
 
-  const getStatusColor = (status) => {
-    switch (status) {
-      case "PENDING":
-        return "orange";
-      case "CONFIRMED":
-        return "blue";
-      case "SHIPPED":
-        return "purple";
-      case "DELIVERED":
-        return "green";
-      case "CANCELLED":
-        return "red";
-      default:
-        return "default";
-    }
-  };
-
-  const getStatusText = (status) => {
-    switch (status) {
-      case ORDERS_STATUS.PENDING:
-        return ORDERS_STATUS_TEXT.PENDING;
-      case ORDERS_STATUS.PROCESSING:
-        return ORDERS_STATUS_TEXT.PROCESSING;
-      case ORDERS_STATUS.COMPLETED:
-        return ORDERS_STATUS_TEXT.COMPLETED;
-      case ORDERS_STATUS.CANCELLED:
-        return ORDERS_STATUS_TEXT.CANCELLED;
-      case ORDERS_STATUS.UNSET:
-        return ORDERS_STATUS_TEXT.UNSET;
-      default:
-        return status;
-    }
-  };
-
   const productColumns = [
     {
       title: "Sản phẩm",
@@ -190,8 +157,8 @@ const ModalDetailsOrder = (props) => {
       key: "status",
       align: "center",
       render: (status) => (
-        <StatusTag color={getStatusColor(status)}>
-          {getStatusText(status)}
+        <StatusTag color={ORDERS_STATUS_COLOR[status]}>
+          {ORDERS_STATUS_TEXT[status]}
         </StatusTag>
       ),
     },
@@ -221,8 +188,8 @@ const ModalDetailsOrder = (props) => {
             </div>
             <div className="flex items-center gap-2">
               Trạng thái:
-              <Tag color={getStatusColor(dataOrder?.status)}>
-                {getStatusText(dataOrder?.status)}
+              <Tag color={ORDERS_STATUS_COLOR[dataOrder?.status]}>
+                {ORDERS_STATUS_TEXT[dataOrder?.status]}
               </Tag>
             </div>
           </div>

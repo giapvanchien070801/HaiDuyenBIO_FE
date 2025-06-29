@@ -99,7 +99,34 @@ export default function CustomerContact() {
 
   const [api, contextHolder] = notification.useNotification();
 
-  const handleDeleteContact = (id) => {};
+  const deleteContactMutate = useMutation(Contact.deleteContact, {
+    onSuccess: () => {
+      message.success("Xóa liên hệ thành công!");
+
+      refetch();
+    },
+    onError: (e) => {
+      message.error("Xóa liên hệ thất bại!");
+    },
+  });
+
+  const handleDeleteContact = (id) => {
+    deleteContactMutate.mutate(id);
+  };
+
+  const updateStatusMutate = useMutation(
+    (data) => Contact.updateStatusContact(data.idContact, data.newStatus),
+    {
+      onSuccess: () => {
+        message.success("Cập nhật trạng thái liên hệ thành công!");
+
+        refetch();
+      },
+      onError: (e) => {
+        message.error("Cập nhật trạng thái liên hệ thất bại!");
+      },
+    }
+  );
 
   const columns = [
     {
@@ -137,8 +164,17 @@ export default function CustomerContact() {
       title: "Trạng thái",
       dataIndex: "status",
       key: "status",
-      render: (text) => (
-        <Select value={text} defaultValue={"PENDING"}>
+      render: (text, record) => (
+        <Select
+          value={text}
+          defaultValue={"PENDING"}
+          onChange={(value) => {
+            const data = {
+              idContact: record.id,
+              newStatus: value,
+            };
+            updateStatusMutate.mutate(data);
+          }}>
           {LIST_STATUS_CUSTOMER_CONTACT.map((item) => (
             <Select.Option key={item.value} value={item.value}>
               <Tag color={CUSTOMER_CONTACT_STATUS_COLOR[item.value]}>
@@ -154,14 +190,16 @@ export default function CustomerContact() {
       title: "Hoạt động",
       key: "action",
       render: (_, record) => (
-        <Button
-          size="small"
-          type="default"
-          icon={<DeleteOutlined />}
-          danger
-          onClick={() => handleDeleteContact(record.Id)}>
-          Xóa liên hệ
-        </Button>
+        <Popconfirm
+          title="Xóa liên hệ"
+          description="Bạn có chắc chắn muốn xóa liên hệ này?"
+          onConfirm={() => handleDeleteContact(record.id)}
+          okText="Có"
+          cancelText="Không">
+          <Button size="small" type="default" icon={<DeleteOutlined />} danger>
+            Xóa liên hệ
+          </Button>
+        </Popconfirm>
       ),
     },
   ];

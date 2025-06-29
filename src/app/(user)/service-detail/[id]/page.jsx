@@ -76,7 +76,7 @@ export default function ServiceDetail({ params }) {
   ];
 
   const onChange = (key) => {
-    console.log(key);
+    // Handle collapse change
   };
 
   return (

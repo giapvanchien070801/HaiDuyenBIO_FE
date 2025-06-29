@@ -77,10 +77,10 @@ const CreateOrEditService = (props) => {
   );
 
   const onChangeSelect = (value) => {
-    console.log(`selected ${value}`);
+    // Handle selection change
   };
   const onSearch = (value) => {
-    console.log("search:", value);
+    // Handle search
   };
 
   // Filter `option.label` match the user type `input`

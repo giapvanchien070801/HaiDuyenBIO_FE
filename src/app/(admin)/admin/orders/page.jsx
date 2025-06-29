@@ -3,6 +3,7 @@ import {
   Breadcrumb,
   Button,
   Input,
+  Popconfirm,
   Select,
   Space,
   Spin,
@@ -11,7 +12,12 @@ import {
   message,
   notification,
 } from "antd";
-import { EyeOutlined, HomeOutlined, SearchOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  EyeOutlined,
+  HomeOutlined,
+  SearchOutlined,
+} from "@ant-design/icons";
 import { useRef, useState } from "react";
 import styled from "@emotion/styled";
 import { useRouter } from "next/navigation";
@@ -28,7 +34,7 @@ import {
 export default function Categorys() {
   const router = useRouter();
 
-  const [valueSearchCate, setValueSearchCate] = useState("");
+  const [valueSearch, setValueSearch] = useState("");
   const [valueSearchPhone, setValueSearchPhone] = useState("");
   const [itemSelected, setItemSelected] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -44,10 +50,10 @@ export default function Categorys() {
     refetch();
   };
 
-  const searchDebounce = useDebounce(valueSearchCate, 1000);
+  const searchDebounce = useDebounce(valueSearch, 1000);
   const searchDebouncePhone = useDebounce(valueSearchPhone, 1000);
   const {
-    data: listCate,
+    data: listOrder,
     refetch,
     isFetching,
   } = useQuery(
@@ -62,6 +68,7 @@ export default function Categorys() {
       const res = await Order.getOrderList({
         page: __pagination.current.page_num - 1,
         size: __pagination.current.page_size,
+        status: __pagination.current.status,
         search: searchDebounce,
         phone: searchDebouncePhone,
       });
@@ -96,6 +103,29 @@ export default function Categorys() {
   ];
 
   const [api, contextHolder] = notification.useNotification();
+
+  const updateStatusOrderMutate = useMutation(
+    (data) => Order.updateStatusOrder(data.id, data),
+    {
+      onSuccess: () => {
+        message.success("Cập nhật trạng thái đơn hàng thành công");
+        refetch();
+      },
+      onError: () => {
+        message.error("Cập nhật trạng thái đơn hàng thất bại");
+      },
+    }
+  );
+
+  const deleteOrderMutate = useMutation(Order.deleteOrder, {
+    onSuccess: () => {
+      message.success("Xóa đơn hàng thành công");
+      refetch();
+    },
+    onError: () => {
+      message.error("Xóa đơn hàng thất bại");
+    },
+  });
 
   const columns = [
     {
@@ -139,8 +169,17 @@ export default function Categorys() {
       title: "Trạng thái",
       dataIndex: "status",
       key: "status",
-      render: (text) => (
-        <Select value={text} defaultValue={"PENDING"}>
+      render: (text, record) => (
+        <Select
+          className="w-36"
+          value={text}
+          defaultValue={"PENDING"}
+          onChange={(value) => {
+            updateStatusOrderMutate.mutate({
+              id: record?.orderId,
+              orderStatusEnum: value,
+            });
+          }}>
           {LIST_STATUS_ORDER.map((item) => (
             <Select.Option key={item.value} value={item.value}>
               <Tag color={ORDERS_STATUS_COLOR[item.value]}>{item.label}</Tag>
@@ -153,13 +192,29 @@ export default function Categorys() {
       title: "Hoạt động",
       key: "action",
       render: (_, record) => (
-        <Button
-          size="middle"
-          type="default"
-          icon={<EyeOutlined />}
-          onClick={() => setIsModalOpen(true)}>
-          Xem chi tiết
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            size="middle"
+            type="default"
+            icon={<EyeOutlined />}
+            onClick={() => setIsModalOpen(true)}>
+            Xem chi tiết
+          </Button>
+          <Popconfirm
+            title="Xóa đơn hàng"
+            description="Bạn có chắc chắn muốn xóa đơn hàng này?"
+            onConfirm={() => deleteOrderMutate.mutate(record.orderId)}
+            okText="Có"
+            cancelText="Không">
+            <Button
+              size="middle"
+              type="default"
+              icon={<DeleteOutlined />}
+              danger>
+              Xóa
+            </Button>
+          </Popconfirm>
+        </div>
       ),
     },
   ];
@@ -169,44 +224,61 @@ export default function Categorys() {
       {contextHolder}
       <Breadcrumb className="mb-5" items={breadcrumb} />
 
-      <Input
-        allowClear
-        prefix={
-          <SearchOutlined
-            style={{
-              color: "gray",
-            }}
-          />
-        }
-        onChange={(e) => {
-          setValueSearchCate(e.target.value);
-        }}
-        className="w-1/3 mb-5"
-        placeholder="Tìm kiếm"
-      />
+      <div className="flex gap-5 mb-5">
+        <Input
+          allowClear
+          prefix={
+            <SearchOutlined
+              style={{
+                color: "gray",
+              }}
+            />
+          }
+          onChange={(e) => {
+            setValueSearch(e.target.value);
+          }}
+          className="w-1/4"
+          placeholder="Tìm kiếm"
+        />
 
-      <Input
-        allowClear
-        prefix={
-          <SearchOutlined
-            style={{
-              color: "gray",
-            }}
-          />
-        }
-        onChange={(e) => {
-          setValueSearchPhone(e.target.value);
-        }}
-        className="w-1/3 mb-5 ml-5"
-        placeholder="Nhập số điện thoại"
-      />
+        <Input
+          allowClear
+          prefix={
+            <SearchOutlined
+              style={{
+                color: "gray",
+              }}
+            />
+          }
+          onChange={(e) => {
+            setValueSearchPhone(e.target.value);
+          }}
+          className="w-1/4"
+          placeholder="Nhập số điện thoại"
+        />
+
+        <Select
+          className="w-1/4"
+          allowClear
+          placeholder="Chọn trạng thái"
+          onChange={(value) => {
+            __pagination.current.status = value;
+            refetch();
+          }}>
+          {LIST_STATUS_ORDER.map((item) => (
+            <Select.Option key={item.value} value={item.value}>
+              <Tag color={ORDERS_STATUS_COLOR[item.value]}>{item.label}</Tag>
+            </Select.Option>
+          ))}
+        </Select>
+      </div>
       {/* <ModalCreateVideo modalType="create" refetchData={refetch} /> */}
       <Spin spinning={isFetching}>
         <CustomTable>
           <Table
             size="small"
             columns={columns}
-            dataSource={listCate}
+            dataSource={listOrder}
             onRow={(record) => {
               return {
                 onClick: () => {

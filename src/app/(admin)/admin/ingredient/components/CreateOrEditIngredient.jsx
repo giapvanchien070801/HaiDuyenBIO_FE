@@ -181,10 +181,10 @@ const CreateOrEditIngredient = (props) => {
   }, [dataDetail, id]);
 
   const onChangeSelect = (value) => {
-    console.log(`selected ${value}`);
+    // Handle selection change
   };
   const onSearch = (value) => {
-    console.log("search:", value);
+    // Handle search
   };
 
   // Filter `option.label` match the user type `input`
@@ -213,8 +213,7 @@ const CreateOrEditIngredient = (props) => {
           remember: true,
         }}
         scrollToFirstError
-        form={form}
-      >
+        form={form}>
         {isPost && (
           <div className="flex gap-3">
             {/* <UploadAvatar /> */}
@@ -234,8 +233,7 @@ const CreateOrEditIngredient = (props) => {
                   },
                 ]}
                 className="w-full mb-3 "
-                label="Tiêu đề"
-              >
+                label="Tiêu đề">
                 <Input
                   maxLength={500}
                   allowClear
@@ -252,8 +250,7 @@ const CreateOrEditIngredient = (props) => {
                   },
                 ]}
                 className="w-full"
-                label="Mô tả ngắn"
-              >
+                label="Mô tả ngắn">
                 <TextArea rows={4} placeholder="Nhập mô tả" maxLength={500} />
               </Form.Item>
             </div>
@@ -269,8 +266,7 @@ const CreateOrEditIngredient = (props) => {
               },
             ]}
             className="w-1/2 mb-3 "
-            label={typePage === "department" ? "Tên khoa" : "Tên dịch vụ"}
-          >
+            label={typePage === "department" ? "Tên khoa" : "Tên dịch vụ"}>
             <Input
               allowClear
               className=" mb-5"
@@ -300,8 +296,7 @@ const CreateOrEditIngredient = (props) => {
             ]}
             name="CategoryId"
             className="w-4/12 mt-5"
-            label="Danh mục"
-          >
+            label="Danh mục">
             <Select
               showSearch
               placeholder="Chọn danh mục"
@@ -320,8 +315,7 @@ const CreateOrEditIngredient = (props) => {
             className="text-[#2c3d94]  border border-solid border-[#2c3d94]"
             onClick={() => {
               router.back();
-            }}
-          >
+            }}>
             Hủy
           </Button>
           <Form.Item>
@@ -331,8 +325,7 @@ const CreateOrEditIngredient = (props) => {
               }}
               type="primary"
               htmlType="submit"
-              className="bg-[#2c3d94]"
-            >
+              className="bg-[#2c3d94]">
               {id ? "Sửa" : "Tạo"}
             </Button>
           </Form.Item>

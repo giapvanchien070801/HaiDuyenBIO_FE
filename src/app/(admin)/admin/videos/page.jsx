@@ -14,73 +14,62 @@ import {
   HomeOutlined,
   SearchOutlined,
   PlusCircleOutlined,
+  EditOutlined,
 } from "@ant-design/icons";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import styled from "@emotion/styled";
 import { useRouter } from "next/navigation";
 import { useMutation, useQuery } from "react-query";
 import Base from "@/models/Base";
 import { useDebounce } from "../../../../common/functions/commonFunction";
 import ModalCreateVideo from "./components/ModalCreateVideo";
+import FilesRepository from "@/models/FilesRepository";
 
 export default function Categorys() {
   const router = useRouter();
 
   const [valueSearchCate, setValueSearchCate] = useState("");
   const [idCateSelected, setIdCateSelected] = useState();
-
-  const [tableParams, setTableParams] = useState({
-    pagination: {
-      current: 1,
-      pageSize: 5,
-      total: 20,
-    },
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const _dataDetails = useRef(null);
+  const __pagination = useRef({
+    page_num: 1,
+    page_size: 5,
+    count: 0,
   });
 
   const handleTableChange = (pagination, filters, sorter) => {
-    setTableParams({
-      pagination,
-      filters,
-      ...sorter,
-    });
-
-    if (pagination.pageSize !== tableParams.pagination?.pageSize) {
-    }
+    __pagination.current.page_num = pagination.current;
+    __pagination.current.page_size = pagination.pageSize;
+    refetch();
   };
 
   const searchDebounce = useDebounce(valueSearchCate, 1000);
   const {
-    data: listCate,
+    data: listVideo,
     refetch,
     isFetching,
   } = useQuery(
     [
-      "getListCategory",
+      "getListVideoAdmin",
       searchDebounce,
-      tableParams.pagination.current,
-      tableParams.pagination.pageSize,
+      __pagination.current.page_num,
+      __pagination.current.page_size,
     ],
     async () => {
-      const res = await Base.getListCatePagination({
-        Page: tableParams.pagination.current,
-        Size: tableParams.pagination.pageSize,
-        KeySearch: searchDebounce,
+      const res = await FilesRepository.getFiles({
+        page: __pagination.current.page_num - 1,
+        size: __pagination.current.page_size,
+        search: searchDebounce,
+        type: 2,
       });
 
-      if (res.TotalRecord) {
-        setTableParams({
-          pagination: {
-            current: tableParams.pagination.current,
-            pageSize: tableParams.pagination.pageSize,
-            total: res.TotalRecord,
-          },
-        });
-      }
+      __pagination.current.count = res.totalElements;
 
-      return res?.Data;
+      return res?.content;
     },
     {
-      enabled: false,
+      enabled: true,
     }
   );
 
@@ -106,28 +95,36 @@ export default function Categorys() {
 
   const [api, contextHolder] = notification.useNotification();
 
-  const deleteCateMutate = useMutation(Base.deleteCategory, {
+  const deleteVideoMutate = useMutation(FilesRepository.deleteFile, {
     onSuccess: () => {
-      message.success("Xóa danh mục thành công!");
+      message.success("Xóa video thành công!");
       setIdCateSelected();
       refetch();
     },
     onError: (e) => {
-      if (e?.response?.data?.Message === "Can not delete this category") {
-        // trường hợp danh mục bài viết đã có bài viết
-
-        api["error"]({
-          message: "Không thể xóa danh mục này",
-          description: "Đã có bài viết thuộc danh mục này. Không thể xóa!",
-        });
-      } else {
-        message.error("Xóa danh mục thất bại!");
-      }
+      message.error("Xóa danh mục thất bại!");
     },
   });
 
-  const handleDeleteCate = (e) => {
-    deleteCateMutate.mutate(idCateSelected);
+  const onActions = (record = null, actionName) => {
+    switch (actionName) {
+      case "create":
+        setIsModalOpen(true);
+        break;
+      case "edit":
+        _dataDetails.current = record;
+        setIsModalOpen(true);
+        break;
+      case "delete":
+        deleteVideoMutate.mutate(record?.id);
+        break;
+      case "reset":
+        _dataDetails.current = null;
+
+        break;
+      default:
+        break;
+    }
   };
 
   const columns = [
@@ -140,41 +137,44 @@ export default function Categorys() {
     },
     {
       title: "Link video",
-      dataIndex: "Name",
-      key: "Name",
+      dataIndex: "externalLink",
+      key: "externalLink",
       render: (text) => <a>{text}</a>,
     },
 
     {
       title: "Ngày tạo",
-      dataIndex: "CreatedAt",
-      key: "CreatedAt",
+      dataIndex: "createdAt",
+      key: "createdAt",
     },
     {
-      title: "Người tạo",
-      key: "CreatedBy",
-      dataIndex: "CreatedBy",
+      title: "Mô tả ngắn",
+      key: "description",
+      dataIndex: "description",
+      render: (text) => <span>{text?.slice(0, 100)}...</span>,
     },
     {
       title: "Hoạt động",
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <ModalCreateVideo
-            modalType="edit"
-            idCategory={idCateSelected}
-            refetchData={refetch}
-          />
           <Popconfirm
             title="Xóa video"
             description="Bạn có chắc chắn muốn xóa video này?"
-            onConfirm={handleDeleteCate}
+            onConfirm={() => deleteVideoMutate.mutate(record.id)}
             okText="Xóa"
             cancelText="Hủy">
             <Button size="middle" type="default" danger>
               Xóa
             </Button>
           </Popconfirm>
+          <Button
+            size="middle"
+            type="default"
+            icon={<EditOutlined />}
+            onClick={() => onActions(record, "edit")}>
+            Chỉnh sửa/Xem
+          </Button>
         </Space>
       ),
     },
@@ -200,12 +200,20 @@ export default function Categorys() {
         className="w-1/3 mb-5"
         placeholder="Tìm kiếm"
       />
-      <ModalCreateVideo modalType="create" refetchData={refetch} />
+      <Button
+        icon={<PlusCircleOutlined />}
+        size="middle"
+        type="primary"
+        className="float-right  bg-blue-700 text-white"
+        onClick={() => onActions(null, "create")}>
+        Thêm mới
+      </Button>
+
       <Spin spinning={isFetching}>
         <CustomTable>
           <Table
             columns={columns}
-            dataSource={listCate}
+            dataSource={listVideo}
             onRow={(record) => {
               return {
                 onClick: () => {
@@ -214,14 +222,25 @@ export default function Categorys() {
               };
             }}
             pagination={{
-              ...tableParams.pagination,
-              showSizeChanger: true, // Cho phép hiển thị Select chọn số lượng phần tử trên trang
-              pageSizeOptions: tableParams.pageSizeOptions, // Sử dụng pageSizeOptions từ tableParams
+              current: __pagination.current.page_num,
+              pageSize: __pagination.current.page_size,
+              total: __pagination.current.count,
+              showSizeChanger: true,
+              pageSizeOptions: [10, 20, 50, 100],
             }}
             onChange={handleTableChange}
           />
         </CustomTable>
       </Spin>
+
+      {isModalOpen && (
+        <ModalCreateVideo
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+          onActions={onActions}
+          dataDetail={_dataDetails.current}
+        />
+      )}
     </div>
   );
 }
