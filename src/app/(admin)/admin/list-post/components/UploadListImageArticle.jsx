@@ -82,6 +82,7 @@ const UploadListImageArticle = ({ value, imageDetail, onChange }) => {
       const formData = new FormData();
       formData.append("file", file);
       formData.append("fileSize", file.size);
+      formData.append("type", 1);
       const res = await uploadFileMutation.mutateAsync(formData);
 
       onSuccess(res);
@@ -98,7 +99,8 @@ const UploadListImageArticle = ({ value, imageDetail, onChange }) => {
         fileList={fileList}
         onPreview={handlePreview}
         customRequest={handleInsertFile}
-        onChange={handleChange}>
+        onChange={handleChange}
+      >
         {fileList.length >= 1 ? null : uploadButton}
       </Upload>
       {previewImage && (
