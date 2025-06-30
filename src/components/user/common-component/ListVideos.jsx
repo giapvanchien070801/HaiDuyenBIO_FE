@@ -27,15 +27,15 @@ export default function ListVideos() {
     ],
     async () => {
       const res = await FilesRepository.getFiles({
-        page: __pagination.current.page_num,
+        page: __pagination.current.page_num - 1,
         size: __pagination.current.page_size,
         type: 2,
       });
 
       return res?.content?.map((item) => ({
-        id: item.id,
-        title: item.description,
-        url: item.externalLink,
+        id: item?.id,
+        title: item?.description,
+        url: item?.externalLink,
         channel: "Hải Duyên Bio",
         views: "10K",
         timestamp: "2 tháng trước",

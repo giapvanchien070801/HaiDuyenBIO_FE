@@ -15,7 +15,8 @@ export default function CardVideo(props) {
           title={video.title}
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
-          className="w-full h-full"></iframe>
+          className="w-full h-full"
+        ></iframe>
         <div className="absolute bottom-2 right-2 bg-black text-white text-xs px-1 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity">
           Xem ngay
         </div>
