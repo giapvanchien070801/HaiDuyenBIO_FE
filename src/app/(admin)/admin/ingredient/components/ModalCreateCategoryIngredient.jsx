@@ -1,88 +1,88 @@
-import React, { useEffect, useState } from "react";
-import { Button, Modal, Input, Form, message } from "antd";
-import { PlusCircleOutlined } from "@ant-design/icons";
-import { useMutation, useQuery } from "react-query";
-import Base from "@/models/Base";
+import React, { useEffect, useState } from "react"
+import { Button, Modal, Input, Form, message } from "antd"
+import { PlusCircleOutlined } from "@ant-design/icons"
+import { useMutation, useQuery } from "react-query"
+import Base from "@/models/Base"
 
-const ModalCreateCategoryIngredient = (props) => {
-  const { modalType, refetchData, idCategory } = props;
+const ModalCreateCategoryIngredient = props => {
+  const { modalType, refetchData, idCategory } = props
 
-  const isModalCreate = modalType === "create";
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [form] = Form.useForm();
+  const isModalCreate = modalType === "create"
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [form] = Form.useForm()
   const showModal = () => {
-    setIsModalOpen(true);
-  };
+    setIsModalOpen(true)
+  }
 
   const { data: dataDetailCate } = useQuery(
     ["getDetailCate", idCategory],
     async () => {
-      const res = await Base.getDetailCate(idCategory);
+      const res = await Base.getDetailCate(idCategory)
 
-      return res;
+      return res
     },
     { enabled: !!idCategory }
-  );
+  )
 
   useEffect(() => {
     if (dataDetailCate && idCategory) {
-      form.setFieldValue("Name", dataDetailCate?.Name);
+      form.setFieldValue("Name", dataDetailCate?.Name)
     }
-  }, [dataDetailCate, idCategory]);
+  }, [dataDetailCate, idCategory])
 
   const createCateMutate = useMutation(Base.createCategory, {
     onSuccess: () => {
-      message.success("Tạo mới danh mục nguyên liệu thành công!");
-      form.resetFields();
+      message.success("Tạo mới danh mục nguyên liệu thành công!")
+      form.resetFields()
       if (refetchData) {
-        refetchData();
+        refetchData()
       }
-      setIsModalOpen(false);
+      setIsModalOpen(false)
     },
-    onError: (e) => {
-      message.error("Tạo mới danh mục Sản phẩm thất bại!");
-    },
-  });
+    onError: e => {
+      message.error("Tạo mới danh mục Sản phẩm thất bại!")
+    }
+  })
   const updateCateMutate = useMutation(Base.updateCategory, {
     onSuccess: () => {
-      message.success("Sửa danh mục Sản phẩm thành công!");
-      form.resetFields();
+      message.success("Sửa danh mục Sản phẩm thành công!")
+      form.resetFields()
       if (refetchData) {
-        refetchData();
+        refetchData()
       }
-      setIsModalOpen(false);
+      setIsModalOpen(false)
     },
-    onError: (e) => {
-      message.error("Sửa danh mục Sản phẩm thất bại!");
-    },
-  });
+    onError: e => {
+      message.error("Sửa danh mục Sản phẩm thất bại!")
+    }
+  })
 
   const handleOk = () => {
-    form.submit();
+    form.submit()
 
-    const listFieldName = ["Name"];
+    const listFieldName = ["Name"]
     form
       .validateFields(listFieldName)
-      .then((value) => {
+      .then(value => {
         const valueCreate = {
-          Name: value?.Name?.trim(),
-        };
+          Name: value?.Name?.trim()
+        }
         const valueUpdate = {
           Id: idCategory,
-          Name: value?.Name?.trim(),
-        };
+          Name: value?.Name?.trim()
+        }
 
         if (isModalCreate) {
-          createCateMutate.mutate(valueCreate);
+          createCateMutate.mutate(valueCreate)
         } else {
-          updateCateMutate.mutate(valueUpdate);
+          updateCateMutate.mutate(valueUpdate)
         }
       })
-      .catch(() => {});
-  };
+      .catch(() => {})
+  }
   const handleCancel = () => {
-    setIsModalOpen(false);
-  };
+    setIsModalOpen(false)
+  }
 
   return (
     <>
@@ -92,17 +92,11 @@ const ModalCreateCategoryIngredient = (props) => {
           size="middle"
           type="primary"
           className="float-right  bg-blue-700 text-white"
-          onClick={showModal}
-        >
+          onClick={showModal}>
           Thêm mới
         </Button>
       ) : (
-        <Button
-          size="middle"
-          className="border-teal-500 text-teal-500"
-          type="default"
-          onClick={showModal}
-        >
+        <Button size="middle" className="border-teal-500 text-teal-500" type="default" onClick={showModal}>
           Xem chi tiết/Sửa
         </Button>
       )}
@@ -113,33 +107,30 @@ const ModalCreateCategoryIngredient = (props) => {
         onOk={handleOk}
         onCancel={handleCancel}
         okText={isModalCreate ? "Tạo" : "Sửa"}
-        cancelText="Hủy"
-      >
+        cancelText="Hủy">
         <Form
           className="w-full"
           initialValues={{
             requiredSelect: undefined,
             optionalSelect: undefined,
-            optionalInput: "",
+            optionalInput: ""
           }}
           form={form}
-          layout="vertical"
-        >
+          layout="vertical">
           <Form.Item
             label="Tên danh mục nguyên liệu"
             name="Name"
             rules={[
               {
                 required: true,
-                message: "Tên danh mục nguyên liệu không được bỏ trống!",
-              },
-            ]}
-          >
+                message: "Tên danh mục nguyên liệu không được bỏ trống!"
+              }
+            ]}>
             <Input placeholder="Nhập tên danh mục nguyên liệu" />
           </Form.Item>
         </Form>
       </Modal>
     </>
-  );
-};
-export default ModalCreateCategoryIngredient;
+  )
+}
+export default ModalCreateCategoryIngredient

@@ -1,35 +1,35 @@
-import { requests } from "./Base";
+import { requests } from "./Base"
 
-const version = "/api/v1";
+const version = "/api/v1"
 
 class FilesRepository {
-  uploadFile = async (file) => {
-    const urlApi = `${version}/files`;
-    const response = await requests.postFile(urlApi, file);
+  async uploadFile(file) {
+    const urlApi = `${version}/files`
+    const response = await requests.postFile(urlApi, file)
 
-    return response?.data;
-  };
+    return response?.data
+  }
 
-  getFiles = async (params) => {
-    const urlApi = `${version}/files`;
-    const response = await requests.get(urlApi, { params });
+  async getFiles(params) {
+    const urlApi = `${version}/files`
+    const response = await requests.get(urlApi, { params })
 
-    return response?.data;
-  };
+    return response?.data
+  }
 
-  updateFile = async (id, data) => {
-    const urlApi = `${version}/files/${id}`;
-    const response = await requests.put(urlApi, data);
+  async updateFile(id, data) {
+    const urlApi = `${version}/files/${id}`
+    const response = await requests.put(urlApi, data)
 
-    return response?.data;
-  };
+    return response?.data
+  }
 
-  deleteFile = async (id) => {
-    const urlApi = `${version}/files/${id}`;
-    const response = await requests.delete(urlApi);
+  async deleteFile(id) {
+    const urlApi = `${version}/files/${id}`
+    const response = await requests.delete(urlApi)
 
-    return response?.data;
-  };
+    return response?.data
+  }
 }
 
-export default new FilesRepository();
+export default new FilesRepository()

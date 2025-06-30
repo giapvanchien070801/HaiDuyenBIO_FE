@@ -1,1 +1,1 @@
-export * from "/dataChartFake";
+export * from "/dataChartFake"

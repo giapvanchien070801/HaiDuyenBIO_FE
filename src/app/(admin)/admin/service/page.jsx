@@ -1,83 +1,61 @@
-"use client";
-import {
-  Breadcrumb,
-  Button,
-  Input,
-  Table,
-  Space,
-  Popconfirm,
-  Spin,
-  message,
-  Select,
-} from "antd";
-import {
-  HomeOutlined,
-  SearchOutlined,
-  PlusCircleOutlined,
-} from "@ant-design/icons";
-import styled from "@emotion/styled";
-import { useRef, useState } from "react";
-import { useRouter } from "next/navigation";
-import { useMutation, useQuery } from "react-query";
+"use client"
+import { Breadcrumb, Button, Input, Table, Space, Popconfirm, Spin, message, Select } from "antd"
+import { HomeOutlined, SearchOutlined, PlusCircleOutlined } from "@ant-design/icons"
+import styled from "@emotion/styled"
+import { useRef, useState } from "react"
+import { useRouter } from "next/navigation"
+import { useMutation, useQuery } from "react-query"
 
-import {
-  removeEmptyFields,
-  useDebounce,
-} from "../../../../common/functions/commonFunction";
-import Product from "@/models/Product";
-import CategoryProduct from "@/models/CategoryProduct";
+import { removeEmptyFields, useDebounce } from "../../../../common/functions/commonFunction"
+import Product from "@/models/Product"
+import CategoryProduct from "@/models/CategoryProduct"
 
 export default function Services() {
-  const router = useRouter();
+  const router = useRouter()
 
   const handleGoCreateOrEdit = () => {
-    router.push("/admin/service/create");
-  };
+    router.push("/admin/service/create")
+  }
 
-  const [valueSearch, setValueSearch] = useState("");
+  const [valueSearch, setValueSearch] = useState("")
 
   const __pagination = useRef({
     page: 1,
     size: 10,
-    categoryId: -1,
-  });
+    categoryId: -1
+  })
 
   const handleTableChange = (pagination, filters, sorter) => {
-    __pagination.current.page = pagination.current;
-    __pagination.current.size = pagination.pageSize;
-    refetch();
-  };
+    __pagination.current.page = pagination.current
+    __pagination.current.size = pagination.pageSize
+    refetch()
+  }
 
-  const searchDebounce = useDebounce(valueSearch, 1000);
+  const searchDebounce = useDebounce(valueSearch, 1000)
   const {
     data: listProduct,
     refetch,
-    isFetching,
+    isFetching
   } = useQuery(
-    [
-      "getListServicePagination",
-      searchDebounce,
-      __pagination.current.page,
-      __pagination.current.size,
-    ],
+    ["getListServicePagination", searchDebounce, __pagination.current.page, __pagination.current.size],
     async () => {
       const params = {
         ...__pagination.current,
         page: __pagination.current.page - 1,
         search: searchDebounce,
-        count: null,
-      };
+        count: null
+      }
 
-      const res = await Product.getProductList(removeEmptyFields(params));
+      const res = await Product.getProductList(removeEmptyFields(params))
 
-      __pagination.current.count = res?.totalElements;
+      __pagination.current.count = res?.totalElements
 
-      return res?.content;
+      return res?.content
     },
     {
-      enabled: true,
+      enabled: true
     }
-  );
+  )
 
   const breadcrumb = [
     {
@@ -87,7 +65,7 @@ export default function Services() {
           <HomeOutlined />
           <span>Trang chủ</span>
         </>
-      ),
+      )
     },
     {
       href: "",
@@ -95,39 +73,39 @@ export default function Services() {
         <>
           <span className="text-cyan-700">Danh sách Sản phẩm</span>
         </>
-      ),
-    },
-  ];
+      )
+    }
+  ]
 
   const columns = [
     {
       title: "STT",
       key: "stt",
-      render: (value, item, index) => index,
+      render: (value, item, index) => index
     },
     {
       title: "Tên Sản phẩm",
       dataIndex: "name",
       key: "name",
-      render: (text) => <a>{text}</a>,
+      render: text => <a>{text}</a>
     },
     {
       title: "Danh mục",
       dataIndex: "categoryName",
       key: "categoryName",
-      render: (text) => <a>{text}</a>,
+      render: text => <a>{text}</a>
     },
     {
       title: "Giá",
       dataIndex: "price",
       key: "Price",
-      render: (text) => <a>{text}</a>,
+      render: text => <a>{text}</a>
     },
     {
       title: "Số lượng",
       dataIndex: "stock",
       key: "stock",
-      render: (text) => <a>{text}</a>,
+      render: text => <a>{text}</a>
     },
 
     {
@@ -154,24 +132,24 @@ export default function Services() {
             </Button>
           </Popconfirm>
         </Space>
-      ),
-    },
-  ];
+      )
+    }
+  ]
 
   const deleteMutate = useMutation(Product.deleteProduct, {
     onSuccess: () => {
-      message.success("Xóa Sản phẩm thành công!");
+      message.success("Xóa Sản phẩm thành công!")
 
-      refetch();
+      refetch()
     },
-    onError: (e) => {
-      message.error("Xóa Sản phẩm thất bại!");
-    },
-  });
+    onError: e => {
+      message.error("Xóa Sản phẩm thất bại!")
+    }
+  })
 
-  const handleDelete = (productId) => {
-    deleteMutate.mutate(productId);
-  };
+  const handleDelete = productId => {
+    deleteMutate.mutate(productId)
+  }
 
   const { data: listCategory } = useQuery(
     ["getListCategory-Service"],
@@ -181,19 +159,19 @@ export default function Services() {
           page: 0,
           size: 1000,
           search: "",
-          type: "PRODUCT",
+          type: "PRODUCT"
         })
-      );
+      )
 
-      return res?.content?.map((item) => ({
+      return res?.content?.map(item => ({
         label: item.name,
-        value: item.id,
-      }));
+        value: item.id
+      }))
     },
     {
-      enabled: true,
+      enabled: true
     }
-  );
+  )
 
   return (
     <div>
@@ -205,12 +183,12 @@ export default function Services() {
             prefix={
               <SearchOutlined
                 style={{
-                  color: "gray",
+                  color: "gray"
                 }}
               />
             }
-            onChange={(e) => {
-              setValueSearch(e.target.value);
+            onChange={e => {
+              setValueSearch(e.target.value)
             }}
             className="w-1/2"
             placeholder="Tìm kiếm"
@@ -219,9 +197,9 @@ export default function Services() {
           <Select
             allowClear
             options={listCategory}
-            onChange={(value) => {
-              __pagination.current.categoryId = value;
-              refetch();
+            onChange={value => {
+              __pagination.current.categoryId = value
+              refetch()
             }}
             className="w-1/2"
             placeholder="Chọn danh mục"
@@ -248,22 +226,19 @@ export default function Services() {
               pageSize: __pagination.current.size,
               total: __pagination.current.count,
               showSizeChanger: true,
-              pageSizeOptions: [10, 20, 50, 100],
+              pageSizeOptions: [10, 20, 50, 100]
             }}
             onChange={handleTableChange}
           />
         </CustomTable>
       </Spin>
     </div>
-  );
+  )
 }
 
 const CustomTable = styled.div`
   & .ant-table-wrapper .ant-table-thead > tr > th,
-  :where(.css-dev-only-do-not-override-6j9yrn).ant-table-wrapper
-    .ant-table-thead
-    > tr
-    > td {
+  :where(.css-dev-only-do-not-override-6j9yrn).ant-table-wrapper .ant-table-thead > tr > td {
     background: #cce3de;
   }
-`;
+`

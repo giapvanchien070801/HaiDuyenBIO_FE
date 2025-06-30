@@ -1,100 +1,100 @@
-import React, { useState } from "react";
-import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
-import { message, Upload } from "antd";
-import { useMutation } from "react-query";
-import Base from "@/models/Base";
+import React, { useState } from "react"
+import { LoadingOutlined, PlusOutlined } from "@ant-design/icons"
+import { message, Upload } from "antd"
+import { useMutation } from "react-query"
+import Base from "@/models/Base"
 const getBase64 = (img, callback) => {
-  const reader = new FileReader();
-  reader.addEventListener("load", () => callback(reader.result));
-  reader.readAsDataURL(img);
-};
-const beforeUpload = (file) => {
-  const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
+  const reader = new FileReader()
+  reader.addEventListener("load", () => callback(reader.result))
+  reader.readAsDataURL(img)
+}
+const beforeUpload = file => {
+  const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png"
   if (!isJpgOrPng) {
-    message.error("You can only upload JPG/PNG file!");
+    message.error("You can only upload JPG/PNG file!")
   }
-  const isLt2M = file.size / 1024 / 1024 < 2;
+  const isLt2M = file.size / 1024 / 1024 < 2
   if (!isLt2M) {
-    message.error("Image must smaller than 2MB!");
+    message.error("Image must smaller than 2MB!")
   }
-  return isJpgOrPng && isLt2M;
-};
-const UploadAvatar = (props) => {
-  const { onchange, uploadType } = props;
+  return isJpgOrPng && isLt2M
+}
+const UploadAvatar = props => {
+  const { onchange, uploadType } = props
 
   // uploadType = avatar | null
 
-  const [loading, setLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState();
+  const [loading, setLoading] = useState(false)
+  const [imageUrl, setImageUrl] = useState()
 
-  const isUploadAvatar = uploadType === "avatar";
+  const isUploadAvatar = uploadType === "avatar"
 
-  const handleChange = (info) => {
+  const handleChange = info => {
     if (info.file.status === "uploading") {
-      setLoading(true);
-      return;
+      setLoading(true)
+      return
     }
 
     // Get this url from response in real world.
-    getBase64(info.file.originFileObj, (url) => {
-      setLoading(false);
-      setImageUrl(url);
-    });
-  };
+    getBase64(info.file.originFileObj, url => {
+      setLoading(false)
+      setImageUrl(url)
+    })
+  }
 
   const uploadFileMutate = useMutation(Base.uploadFile, {
     onSuccess: () => {
-      message.success("Tải ảnh lên thành công!");
+      message.success("Tải ảnh lên thành công!")
     },
-    onError: (e) => {
-      message.error("Tải ảnh lên thất bại!");
-    },
-  });
+    onError: e => {
+      message.error("Tải ảnh lên thất bại!")
+    }
+  })
   function validateImg(file) {
     const isJpgOrPng =
       file.type === "image/jpeg" ||
       file.type === "image/png" ||
       file.type === "image/jpg" ||
       file.type === "image/x-icon" ||
-      file.type === "image/jfif";
+      file.type === "image/jfif"
     if (!isJpgOrPng) {
-      message.error("Định dạng file không được hỗ trợ.");
-      return false;
+      message.error("Định dạng file không được hỗ trợ.")
+      return false
     }
-    const isLt2M = file.size / 1024 / 1024 < 10;
+    const isLt2M = file.size / 1024 / 1024 < 10
     if (!isLt2M) {
-      message.error("File không được quá 10MB");
-      return false;
+      message.error("File không được quá 10MB")
+      return false
     }
-    return true;
+    return true
   }
 
   const handleInsertImage = async ({ file, onSuccess, onError }) => {
     try {
       if (validateImg(file)) {
-        const formData = new FormData();
-        formData.append("image", file);
+        const formData = new FormData()
+        formData.append("image", file)
 
-        const res = await uploadFileMutate.mutateAsync(formData);
+        const res = await uploadFileMutate.mutateAsync(formData)
 
-        onSuccess();
+        onSuccess()
       }
     } catch (e) {
-      onError();
+      onError()
     }
-  };
+  }
 
   const uploadButton = (
     <div>
       {loading ? <LoadingOutlined /> : <PlusOutlined />}
       <div
         style={{
-          marginTop: 8,
+          marginTop: 8
         }}>
         Upload
       </div>
     </div>
-  );
+  )
   return (
     <div className="flex flex-col items-center">
       <p className=" mb-2 font-medium">Ảnh đại diện</p>
@@ -112,7 +112,7 @@ const UploadAvatar = (props) => {
             src={imageUrl}
             alt="avatar"
             style={{
-              width: "100%",
+              width: "100%"
             }}
           />
         ) : (
@@ -120,6 +120,6 @@ const UploadAvatar = (props) => {
         )}
       </Upload>
     </div>
-  );
-};
-export default UploadAvatar;
+  )
+}
+export default UploadAvatar

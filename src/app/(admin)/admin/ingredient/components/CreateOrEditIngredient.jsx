@@ -1,223 +1,213 @@
-import { useEffect, useState } from "react";
-import {
-  Form,
-  Input,
-  Button,
-  DatePicker,
-  Select,
-  Switch,
-  message,
-  Spin,
-} from "antd";
-import { useRouter } from "next/navigation";
-import styled from "@emotion/styled";
-import { useMutation, useQuery } from "react-query";
-import Base from "@/models/Base";
-import UploadImage from "@/components/admin/upload/UploadImage";
-import TextEditor from "@/components/admin/common/TextEditor";
+import { useEffect, useState } from "react"
+import { Form, Input, Button, DatePicker, Select, Switch, message, Spin } from "antd"
+import { useRouter } from "next/navigation"
+import styled from "@emotion/styled"
+import { useMutation, useQuery } from "react-query"
+import Base from "@/models/Base"
+import UploadImage from "@/components/admin/upload/UploadImage"
+import TextEditor from "@/components/admin/common/TextEditor"
 
-const { TextArea } = Input;
+const { TextArea } = Input
 
-const CreateOrEditIngredient = (props) => {
-  const { typePage, id, actionType } = props;
-  const [form] = Form.useForm();
+const CreateOrEditIngredient = props => {
+  const { typePage, id, actionType } = props
+  const [form] = Form.useForm()
 
   // typePage = post | department | service
   // actionType = create | update
-  const isCreate = actionType === "create";
+  const isCreate = actionType === "create"
 
-  const isPost = typePage === "post";
+  const isPost = typePage === "post"
 
-  const router = useRouter();
+  const router = useRouter()
 
-  const [valueTextEditor, setValueTextEditor] = useState("");
-  const [valueAvatar, setValueAvatar] = useState();
+  const [valueTextEditor, setValueTextEditor] = useState("")
+  const [valueAvatar, setValueAvatar] = useState()
 
   // tạo sửa Khoa
   const createDepartmentMutate = useMutation(Base.createDepartment, {
     onSuccess: () => {
-      message.success("Tạo mới Khoa thành công!");
-      form.resetFields();
-      router.back();
+      message.success("Tạo mới Khoa thành công!")
+      form.resetFields()
+      router.back()
     },
-    onError: (e) => {
-      message.error("Tạo mới khoa thất bại!");
-    },
-  });
+    onError: e => {
+      message.error("Tạo mới khoa thất bại!")
+    }
+  })
   const updateDepartmentMutate = useMutation(Base.updateDepartment, {
     onSuccess: () => {
-      message.success("Sửa Khoa thành công!");
-      form.resetFields();
-      router.back();
+      message.success("Sửa Khoa thành công!")
+      form.resetFields()
+      router.back()
     },
-    onError: (e) => {
-      message.error("Sửa Khoa thất bại!");
-    },
-  });
+    onError: e => {
+      message.error("Sửa Khoa thất bại!")
+    }
+  })
 
   // tạo sửa dịch vụ
   const createServiceMutate = useMutation(Base.createService, {
     onSuccess: () => {
-      message.success("Tạo mới Dịch vụ thành công!");
-      form.resetFields();
-      router.back();
+      message.success("Tạo mới Dịch vụ thành công!")
+      form.resetFields()
+      router.back()
     },
-    onError: (e) => {
-      message.error("Tạo mới Dịch vụ thất bại!");
-    },
-  });
+    onError: e => {
+      message.error("Tạo mới Dịch vụ thất bại!")
+    }
+  })
   const updateServiceMutate = useMutation(Base.updateService, {
     onSuccess: () => {
-      message.success("Sửa Dịch vụ thành công!");
-      form.resetFields();
-      router.back();
+      message.success("Sửa Dịch vụ thành công!")
+      form.resetFields()
+      router.back()
     },
-    onError: (e) => {
-      message.error("Sửa Dịch vụ thất bại!");
-    },
-  });
+    onError: e => {
+      message.error("Sửa Dịch vụ thất bại!")
+    }
+  })
 
   // tạo sửa bài viết
   const createPostMutate = useMutation(Base.createPost, {
     onSuccess: () => {
-      message.success("Tạo mới bài viết thành công!");
-      form.resetFields();
-      router.back();
+      message.success("Tạo mới bài viết thành công!")
+      form.resetFields()
+      router.back()
     },
-    onError: (e) => {
-      message.error("Tạo mới bài viết thất bại!");
-    },
-  });
+    onError: e => {
+      message.error("Tạo mới bài viết thất bại!")
+    }
+  })
   const updatePostMutate = useMutation(Base.updatePost, {
     onSuccess: () => {
-      message.success("Sửa bài viết thành công!");
-      form.resetFields();
-      router.back();
+      message.success("Sửa bài viết thành công!")
+      form.resetFields()
+      router.back()
     },
-    onError: (e) => {
-      message.error("Sửa bài viết thất bại!");
-    },
-  });
+    onError: e => {
+      message.error("Sửa bài viết thất bại!")
+    }
+  })
 
   const handleCreate = () => {
-    form.submit();
+    form.submit()
 
-    const listFieldName = ["Name"];
-    const listFieldNamePost = ["Title", "Description", "CategoryId"];
-    const listFields = isPost ? listFieldNamePost : listFieldName;
+    const listFieldName = ["Name"]
+    const listFieldNamePost = ["Title", "Description", "CategoryId"]
+    const listFields = isPost ? listFieldNamePost : listFieldName
     form
       .validateFields(listFields)
-      .then((value) => {
+      .then(value => {
         const valueCreatePost = {
           ...value,
           Content: valueTextEditor,
-          ImagePath: valueAvatar,
-        };
+          ImagePath: valueAvatar
+        }
         const valueUpdatePost = {
           ...value,
           Content: valueTextEditor || dataDetail?.Content,
           ImagePath: valueAvatar || dataDetail?.ImagePath,
-          Id: id,
-        };
+          Id: id
+        }
 
         const valueCreate = {
           Name: value?.Name?.trim(),
-          Description: valueTextEditor,
-        };
+          Description: valueTextEditor
+        }
 
         const valueUpdate = {
           Id: id,
           Name: value?.Name?.trim(),
-          Description: valueTextEditor,
-        };
+          Description: valueTextEditor
+        }
 
         if (typePage === "department") {
           if (isCreate) {
-            createDepartmentMutate.mutate(valueCreate);
+            createDepartmentMutate.mutate(valueCreate)
           } else {
-            updateDepartmentMutate.mutate(valueUpdate);
+            updateDepartmentMutate.mutate(valueUpdate)
           }
         }
         if (typePage === "service") {
           if (isCreate) {
-            createServiceMutate.mutate(valueCreate);
+            createServiceMutate.mutate(valueCreate)
           } else {
-            updateServiceMutate.mutate(valueUpdate);
+            updateServiceMutate.mutate(valueUpdate)
           }
         }
         if (typePage === "post") {
           if (isCreate) {
-            createPostMutate.mutate(valueCreatePost);
+            createPostMutate.mutate(valueCreatePost)
           } else {
-            updatePostMutate.mutate(valueUpdatePost);
+            updatePostMutate.mutate(valueUpdatePost)
           }
         }
       })
-      .catch(() => {});
-  };
+      .catch(() => {})
+  }
 
   const { data: dataDetail } = useQuery(
     ["getDetail", id],
     async () => {
-      let res;
+      let res
       if (typePage === "department") {
-        res = await Base.getDetailDepartment(id);
+        res = await Base.getDetailDepartment(id)
       }
       if (typePage === "service") {
-        res = await Base.getDetailService(id);
+        res = await Base.getDetailService(id)
       }
       if (typePage === "post") {
-        res = await Base.getDetailPost(id);
+        res = await Base.getDetailPost(id)
       }
 
-      return res;
+      return res
     },
     { enabled: !!id }
-  );
+  )
   useEffect(() => {
     if (dataDetail && id) {
       form.setFieldsValue({
         Name: dataDetail?.Name,
         CategoryId: dataDetail?.CategoryId,
         Description: dataDetail?.Description,
-        Title: dataDetail?.Title,
-      });
-      setValueTextEditor(dataDetail?.Content || dataDetail?.Description);
-      setValueAvatar(dataDetail?.ImagePath);
+        Title: dataDetail?.Title
+      })
+      setValueTextEditor(dataDetail?.Content || dataDetail?.Description)
+      setValueAvatar(dataDetail?.ImagePath)
     }
-  }, [dataDetail, id]);
+  }, [dataDetail, id])
 
-  const onChangeSelect = (value) => {
+  const onChangeSelect = value => {
     // Handle selection change
-  };
-  const onSearch = (value) => {
+  }
+  const onSearch = value => {
     // Handle search
-  };
+  }
 
   // Filter `option.label` match the user type `input`
-  const filterOption = (input, option) =>
-    (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
+  const filterOption = (input, option) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
 
   // api lấy danh sách tất cả thể loại
   const { data: listCategory } = useQuery(
     ["getAllCateAdmin"],
     async () => {
-      const res = await Base.getAllCategory();
+      const res = await Base.getAllCategory()
 
-      const dataConver = res?.map((category) => {
-        return { label: category?.Name, value: category?.Id };
-      });
-      return dataConver;
+      const dataConver = res?.map(category => {
+        return { label: category?.Name, value: category?.Id }
+      })
+      return dataConver
     },
     {}
-  );
+  )
 
   return (
     <CustomForm className="w-full h-full ">
       <Form
         layout="vertical"
         initialValues={{
-          remember: true,
+          remember: true
         }}
         scrollToFirstError
         form={form}>
@@ -225,8 +215,8 @@ const CreateOrEditIngredient = (props) => {
           <div className="flex gap-3">
             {/* <UploadAvatar /> */}
             <UploadImage
-              onChange={(value) => {
-                setValueAvatar(value);
+              onChange={value => {
+                setValueAvatar(value)
               }}
               imgDetail={valueAvatar}
             />
@@ -236,25 +226,20 @@ const CreateOrEditIngredient = (props) => {
                 rules={[
                   {
                     required: true,
-                    message: "Tiêu đề không được bỏ trống!",
-                  },
+                    message: "Tiêu đề không được bỏ trống!"
+                  }
                 ]}
                 className="w-full mb-3 "
                 label="Tiêu đề">
-                <Input
-                  maxLength={500}
-                  allowClear
-                  className=" mb-5"
-                  placeholder="Nhập tiêu đề"
-                />
+                <Input maxLength={500} allowClear className=" mb-5" placeholder="Nhập tiêu đề" />
               </Form.Item>
               <Form.Item
                 name="Description"
                 rules={[
                   {
                     required: true,
-                    message: "Mô tả không được bỏ trống!",
-                  },
+                    message: "Mô tả không được bỏ trống!"
+                  }
                 ]}
                 className="w-full"
                 label="Mô tả ngắn">
@@ -269,17 +254,15 @@ const CreateOrEditIngredient = (props) => {
             rules={[
               {
                 required: true,
-                message: "Không được bỏ trống!",
-              },
+                message: "Không được bỏ trống!"
+              }
             ]}
             className="w-1/2 mb-3 "
             label={typePage === "department" ? "Tên khoa" : "Tên dịch vụ"}>
             <Input
               allowClear
               className=" mb-5"
-              placeholder={
-                typePage === "department" ? "Nhập tên khoa" : "Nhập tên Dịch vụ"
-              }
+              placeholder={typePage === "department" ? "Nhập tên khoa" : "Nhập tên Dịch vụ"}
             />
           </Form.Item>
         )}
@@ -287,8 +270,8 @@ const CreateOrEditIngredient = (props) => {
         <p className="mb-2">{isPost ? "Nội dung trang:" : "Mô tả:"}</p>
 
         <TextEditor
-          onChange={(value) => {
-            setValueTextEditor(value);
+          onChange={value => {
+            setValueTextEditor(value)
           }}
           valueDetail={valueTextEditor}
         />
@@ -298,8 +281,8 @@ const CreateOrEditIngredient = (props) => {
             rules={[
               {
                 required: true,
-                message: "Danh mục không được bỏ trống!",
-              },
+                message: "Danh mục không được bỏ trống!"
+              }
             ]}
             name="CategoryId"
             className="w-4/12 mt-5"
@@ -321,14 +304,14 @@ const CreateOrEditIngredient = (props) => {
             type="text"
             className="text-[#2c3d94]  border border-solid border-[#2c3d94]"
             onClick={() => {
-              router.back();
+              router.back()
             }}>
             Hủy
           </Button>
           <Form.Item>
             <Button
               onClick={() => {
-                handleCreate();
+                handleCreate()
               }}
               type="primary"
               htmlType="submit"
@@ -339,13 +322,13 @@ const CreateOrEditIngredient = (props) => {
         </div>
       </Form>
     </CustomForm>
-  );
-};
+  )
+}
 
 const CustomForm = styled.div`
   & .ant-form-item-control-input-content .mb-5 {
     margin: 0;
   }
-`;
+`
 
-export default CreateOrEditIngredient;
+export default CreateOrEditIngredient

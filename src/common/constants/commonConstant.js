@@ -16,9 +16,9 @@ export const CustomQuillModules = {
     [{ font: [] }],
     [{ align: [] }],
 
-    ["clean"], // remove formatting button
-  ],
-};
+    ["clean"] // remove formatting button
+  ]
+}
 
 export const modulesTextEditor = {
   toolbar: [
@@ -31,100 +31,92 @@ export const modulesTextEditor = {
     [{ script: "sub" }, { script: "super" }],
     [{ direction: "rtl" }],
     [{ font: [] }],
-    [
-      { list: "ordered" },
-      { list: "bullet" },
-      { indent: "-1" },
-      { indent: "+1" },
-    ],
+    [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }],
     [{ color: [] }, { background: [] }],
     ["link", "image", "video"],
-    ["clean"],
+    ["clean"]
   ],
   clipboard: {
     // toggle to add extra line breaks when pasting HTML:
-    matchVisual: false,
+    matchVisual: false
   },
   imageResize: {
-    parchment:
-      typeof window !== "undefined"
-        ? require("react-quill").Quill.import("parchment")
-        : null,
-    modules: ["Resize", "DisplaySize"],
-  },
-};
+    parchment: typeof window !== "undefined" && window.ReactQuill ? window.ReactQuill.Quill.import("parchment") : null,
+    modules: ["Resize", "DisplaySize"]
+  }
+}
 // PENDING, PROCESSING, COMPLETED, CANCELLED, UNSET
 export const ORDERS_STATUS = {
   PENDING: "PENDING",
   PROCESSING: "PROCESSING",
   COMPLETED: "COMPLETED",
   CANCELLED: "CANCELLED",
-  UNSET: "UNSET",
-};
+  UNSET: "UNSET"
+}
 
 export const ORDERS_STATUS_COLOR = {
   PENDING: "orange",
   PROCESSING: "blue",
   COMPLETED: "green",
   CANCELLED: "red",
-  UNSET: "gray",
-};
+  UNSET: "gray"
+}
 
 export const ORDERS_STATUS_TEXT = {
   PENDING: "Chờ xác nhận",
   PROCESSING: "Đang xử lý",
   COMPLETED: "Đã hoàn thành",
   CANCELLED: "Đã hủy",
-  UNSET: "Chưa xác nhận",
-};
+  UNSET: "Chưa xác nhận"
+}
 
 export const LIST_STATUS_ORDER = [
   {
     label: "Chờ xác nhận",
-    value: "PENDING",
+    value: "PENDING"
   },
   {
     label: "Đang xử lý",
-    value: "PROCESSING",
+    value: "PROCESSING"
   },
   {
     label: "Đã hoàn thành",
-    value: "COMPLETED",
+    value: "COMPLETED"
   },
   {
     label: "Đã hủy",
-    value: "CANCELLED",
+    value: "CANCELLED"
   },
   {
     label: "Chưa xác nhận",
-    value: "UNSET",
-  },
-];
+    value: "UNSET"
+  }
+]
 
 // ACTIVE, INACTIVE, DELETED
 export const LIST_STATUS_CUSTOMER_CONTACT = [
   {
     label: "Đã xử lý",
-    value: "ACTIVE",
+    value: "ACTIVE"
   },
   {
     label: "Chưa xử lý",
-    value: "INACTIVE",
-  },
+    value: "INACTIVE"
+  }
   // {
   //   label: "Xóa",
   //   value: "DELETED",
   // },
-];
+]
 
 export const CUSTOMER_CONTACT_STATUS_COLOR = {
   ACTIVE: "green",
-  INACTIVE: "blue",
+  INACTIVE: "blue"
   // DELETED: "red",
-};
+}
 
 export const CUSTOMER_CONTACT_STATUS_TEXT = {
   ACTIVE: "Đã xử lý",
-  INACTIVE: "Chưa xử lý",
+  INACTIVE: "Chưa xử lý"
   // DELETED: "Xóa",
-};
+}

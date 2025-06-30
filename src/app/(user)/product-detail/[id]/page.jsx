@@ -1,34 +1,20 @@
-"use client";
+"use client"
 
-import {
-  HomeOutlined,
-  ShoppingCartOutlined,
-  ShoppingOutlined,
-  MinusOutlined,
-  PlusOutlined,
-} from "@ant-design/icons";
-import { useQuery } from "react-query";
-import Base from "@/models/Base";
-import {
-  Breadcrumb,
-  Button,
-  InputNumber,
-  message,
-  Divider,
-  Tag,
-  Tabs,
-} from "antd";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import Product from "@/models/Product";
-import RelatedProducts from "@/components/user/common-component/RelatedProducts";
+import { HomeOutlined, ShoppingCartOutlined, ShoppingOutlined, MinusOutlined, PlusOutlined } from "@ant-design/icons"
+import { useQuery } from "react-query"
+import Base from "@/models/Base"
+import { Breadcrumb, Button, InputNumber, message, Divider, Tag, Tabs } from "antd"
+import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
+import Product from "@/models/Product"
+import RelatedProducts from "@/components/user/common-component/RelatedProducts"
 
 export default function ProductDetailPage({ params }) {
   // Sử dụng query param từ URL
-  const idProduct = params?.id;
-  const [quantity, setQuantity] = useState(1);
-  const [listProducts, setListProducts] = useState([]);
-  const router = useRouter();
+  const idProduct = params?.id
+  const [quantity, setQuantity] = useState(1)
+  const [listProducts, setListProducts] = useState([])
+  const router = useRouter()
 
   // Mock data cho sản phẩm
   const mockProduct = {
@@ -39,7 +25,7 @@ export default function ProductDetailPage({ params }) {
       "/images/product2.jpg",
       "/images/product3.jpg",
       "/images/product4.jpg",
-      "/images/product5.jpg",
+      "/images/product5.jpg"
     ],
     price: 380000,
     oldPrice: 420000,
@@ -48,16 +34,16 @@ export default function ProductDetailPage({ params }) {
     subDescription:
       "Men Sinh Học EM GỐC SUPER được thiết kế đặc biệt để tối ưu hóa quá trình thuỷ phân đạm cá và chất thải hữu cơ trong môi trường chăn nuôi, thuỷ sản. Sản phẩm giúp phân giải chất đạm một cách hiệu quả hơn, ứng dụng cho nhiều công việc và quá trình.",
     description:
-      "Men vi sinh Lacto là sản phẩm chất lượng cao được nghiên cứu và phát triển bởi đội ngũ chuyên gia hàng đầu. Sản phẩm được sản xuất theo công nghệ tiên tiến, đảm bảo chất lượng và hiệu quả tối ưu cho người sử dụng.",
-  };
+      "Men vi sinh Lacto là sản phẩm chất lượng cao được nghiên cứu và phát triển bởi đội ngũ chuyên gia hàng đầu. Sản phẩm được sản xuất theo công nghệ tiên tiến, đảm bảo chất lượng và hiệu quả tối ưu cho người sử dụng."
+  }
 
   // Load listProducts from localStorage on component mount
   useEffect(() => {
-    const savedListProducts = localStorage.getItem("listProducts");
+    const savedListProducts = localStorage.getItem("listProducts")
     if (savedListProducts) {
-      setListProducts(JSON.parse(savedListProducts));
+      setListProducts(JSON.parse(savedListProducts))
     }
-  }, []);
+  }, [])
 
   // const { data: dataProduct, isFetching } = useQuery(
   //   ["getDetailProduct", idProduct],
@@ -71,12 +57,12 @@ export default function ProductDetailPage({ params }) {
   const { data: dataDetail } = useQuery(
     ["getDetail", idProduct],
     async () => {
-      const res = await Product.getProductDetail(idProduct);
+      const res = await Product.getProductDetail(idProduct)
 
-      return res;
+      return res
     },
     { enabled: !!idProduct }
-  );
+  )
 
   const breadcrumb = [
     {
@@ -86,7 +72,7 @@ export default function ProductDetailPage({ params }) {
           <HomeOutlined />
           <span>Trang chủ</span>
         </>
-      ),
+      )
     },
     {
       href: `/product-list/${dataDetail?.categoryId}`,
@@ -94,7 +80,7 @@ export default function ProductDetailPage({ params }) {
         <>
           <span className="text-[#2490eb]">Danh sách sản phẩm</span>
         </>
-      ),
+      )
     },
     {
       href: "/contact",
@@ -102,70 +88,63 @@ export default function ProductDetailPage({ params }) {
         <>
           <span className="text-[#2490eb]">Chi tiết sản phẩm</span>
         </>
-      ),
-    },
-  ];
+      )
+    }
+  ]
 
   // Function to add product to cart
   const addToCart = () => {
     // Validate quantity
     if (quantity < 1) {
-      message.error("Số lượng không hợp lệ!");
-      return;
+      message.error("Số lượng không hợp lệ!")
+      return
     }
 
     // Get current listProducts from localStorage
-    const existingListProducts = localStorage.getItem("listProducts");
-    let currentListProducts = existingListProducts
-      ? JSON.parse(existingListProducts)
-      : [];
+    const existingListProducts = localStorage.getItem("listProducts")
+    let currentListProducts = existingListProducts ? JSON.parse(existingListProducts) : []
 
     // Check if product already exists in listProducts
-    const existingProductIndex = currentListProducts.findIndex(
-      (item) => item.id === mockProduct.id
-    );
+    const existingProductIndex = currentListProducts.findIndex(item => item.id === mockProduct.id)
 
     if (existingProductIndex !== -1) {
       // If product exists, update quantity with current input value
-      currentListProducts[existingProductIndex].quantity = quantity;
+      currentListProducts[existingProductIndex].quantity = quantity
     } else {
       // If product doesn't exist, add new product with current quantity
       currentListProducts.push({
         ...mockProduct,
-        quantity: quantity,
-      });
+        quantity: quantity
+      })
     }
 
     // Save updated listProducts to localStorage
-    localStorage.setItem("listProducts", JSON.stringify(currentListProducts));
+    localStorage.setItem("listProducts", JSON.stringify(currentListProducts))
 
     // Update state
-    setListProducts(currentListProducts);
+    setListProducts(currentListProducts)
 
     // Show success message
-    message.success("Đã thêm sản phẩm vào giỏ hàng!");
-  };
+    message.success("Đã thêm sản phẩm vào giỏ hàng!")
+  }
 
   // Function to buy now
   const buyNow = () => {
-    localStorage.setItem(
-      "buyNowProducts",
-      JSON.stringify([{ ...mockProduct, quantity: quantity }])
-    );
-    router.push("/shopping/step2");
-  };
+    localStorage.setItem("buyNowProducts", JSON.stringify([{ ...mockProduct, quantity: quantity }]))
+    router.push("/shopping/step2")
+  }
 
   // Function to handle quantity increase
   const handleIncrease = () => {
-    setQuantity(quantity + 1);
-  };
+    setQuantity(quantity + 1)
+  }
 
   // Function to handle quantity decrease
   const handleDecrease = () => {
     if (quantity > 1) {
-      setQuantity(quantity - 1);
+      setQuantity(quantity - 1)
     }
-  };
+  }
 
   //   {
   //     "slug": "sdsdfdsf",
@@ -202,8 +181,8 @@ export default function ProductDetailPage({ params }) {
           </div>
         </div>
       </div>
-    ),
-  }));
+    )
+  }))
 
   return (
     <div className="pb-24 container-original mx-auto">
@@ -227,12 +206,8 @@ export default function ProductDetailPage({ params }) {
             {/* Product Info */}
             <div className="space-y-6 pt-10">
               <div>
-                <h1 className="text-2xl font-bold text-gray-800 mb-2">
-                  {dataDetail?.name}
-                </h1>
-                <p className="text-gray-600 text-sm leading-relaxed">
-                  {dataDetail?.summary}
-                </p>
+                <h1 className="text-2xl font-bold text-gray-800 mb-2">{dataDetail?.name}</h1>
+                <p className="text-gray-600 text-sm leading-relaxed">{dataDetail?.summary}</p>
               </div>
 
               {/* Price Section */}
@@ -246,19 +221,13 @@ export default function ProductDetailPage({ params }) {
                   </span>
                 </div>
                 <p className="text-sm text-gray-500">
-                  Tiết kiệm:{" "}
-                  {(dataDetail?.priceFrom - dataDetail?.price).toLocaleString(
-                    "vi-VN"
-                  )}
-                  đ
+                  Tiết kiệm: {(dataDetail?.priceFrom - dataDetail?.price).toLocaleString("vi-VN")}đ
                 </p>
               </div>
 
               {/* Quantity Section */}
               <div className="space-y-3">
-                <label className="block text-sm font-medium text-gray-700">
-                  Số lượng:
-                </label>
+                <label className="block text-sm font-medium text-gray-700">Số lượng:</label>
                 <div className="flex items-center gap-3">
                   <Button
                     icon={<MinusOutlined />}
@@ -305,21 +274,16 @@ export default function ProductDetailPage({ params }) {
           <div className=" blog-content px-5 md:px-10 ">
             <div>
               <Divider />
-              <p className="text-lg font-semibold text-gray-800 mb-3">
-                Mô tả sản phẩm
-              </p>
+              <p className="text-lg font-semibold text-gray-800 mb-3">Mô tả sản phẩm</p>
               <div
                 className="text-gray-600 leading-relaxed"
                 dangerouslySetInnerHTML={{ __html: dataDetail?.description }}
               />
             </div>
           </div>
-          <RelatedProducts
-            currentCategoryId={dataDetail?.categoryId}
-            currentProductId={idProduct}
-          />
+          <RelatedProducts currentCategoryId={dataDetail?.categoryId} currentProductId={idProduct} />
         </div>
       </div>
     </div>
-  );
+  )
 }

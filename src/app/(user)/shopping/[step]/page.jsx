@@ -1,31 +1,26 @@
-"use client";
+"use client"
 
-import {
-  HomeOutlined,
-  ShoppingCartOutlined,
-  DollarOutlined,
-  CheckCircleOutlined,
-} from "@ant-design/icons";
-import BannerBreadcrumb from "@/components/user/common-component/BannerBreadcrumb";
-import { useQuery } from "react-query";
-import Base from "@/models/Base";
-import SidebarUser from "@/components/user/common-component/SidebarUser";
-import { Breadcrumb, Button, Result, Steps } from "antd";
-import UserSwiper from "@/components/user/common-component/UserSwiper";
-import ListCardProduct from "@/components/user/common-component/ListCardProduct";
-import CardProduct from "@/components/user/common-component/CardProduct";
-import TextEditor from "@/components/admin/common/TextEditor";
-import { useState } from "react";
-import TitleList from "@/components/user/common-component/TitleList";
-import ShoppingStep1 from "@/components/user/shopping-card/ShoppingStep1";
-import ShoppingStep2 from "@/components/user/shopping-card/ShoppingStep2";
-import { useRouter } from "next/navigation";
+import { HomeOutlined, ShoppingCartOutlined, DollarOutlined, CheckCircleOutlined } from "@ant-design/icons"
+import BannerBreadcrumb from "@/components/user/common-component/BannerBreadcrumb"
+import { useQuery } from "react-query"
+import Base from "@/models/Base"
+import SidebarUser from "@/components/user/common-component/SidebarUser"
+import { Breadcrumb, Button, Result, Steps } from "antd"
+import UserSwiper from "@/components/user/common-component/UserSwiper"
+import ListCardProduct from "@/components/user/common-component/ListCardProduct"
+import CardProduct from "@/components/user/common-component/CardProduct"
+import TextEditor from "@/components/admin/common/TextEditor"
+import { useState } from "react"
+import TitleList from "@/components/user/common-component/TitleList"
+import ShoppingStep1 from "@/components/user/shopping-card/ShoppingStep1"
+import ShoppingStep2 from "@/components/user/shopping-card/ShoppingStep2"
+import { useRouter } from "next/navigation"
 
 export default function ShoppingPage({ params }) {
   // Sử dụng query param từ URL
-  const { step } = params;
-  const [stepCurrent, setStepCurrent] = useState(step);
-  const router = useRouter();
+  const { step } = params
+  const [stepCurrent, setStepCurrent] = useState(step)
+  const router = useRouter()
 
   const breadcrumb = [
     {
@@ -35,7 +30,7 @@ export default function ShoppingPage({ params }) {
           <HomeOutlined />
           <span>Trang chủ</span>
         </>
-      ),
+      )
     },
     {
       href: "/contact",
@@ -43,46 +38,37 @@ export default function ShoppingPage({ params }) {
         <>
           <span className="text-[#2490eb]">Giỏ hàng</span>
         </>
-      ),
-    },
-  ];
+      )
+    }
+  ]
 
   const items = [
     {
       title: "Mua sắm",
       status:
-        stepCurrent === "step1"
-          ? "process"
-          : stepCurrent === "step2" || stepCurrent === "step3"
-            ? "finish"
-            : "wait",
-      icon: <ShoppingCartOutlined />,
+        stepCurrent === "step1" ? "process" : stepCurrent === "step2" || stepCurrent === "step3" ? "finish" : "wait",
+      icon: <ShoppingCartOutlined />
     },
     {
       title: "Tính hóa đơn",
-      status:
-        stepCurrent === "step2"
-          ? "process"
-          : stepCurrent === "step3"
-            ? "finish"
-            : "wait",
-      icon: <DollarOutlined />,
+      status: stepCurrent === "step2" ? "process" : stepCurrent === "step3" ? "finish" : "wait",
+      icon: <DollarOutlined />
     },
     {
       title: "Đặt hàng thành công",
       status: stepCurrent === "step3" ? "finish" : "wait",
-      icon: <CheckCircleOutlined />,
-    },
-  ];
+      icon: <CheckCircleOutlined />
+    }
+  ]
 
-  const handleStepClick = (current) => {
+  const handleStepClick = current => {
     const stepMap = {
       0: "step1",
       1: "step2",
-      2: "step3",
-    };
-    setStepCurrent(stepMap[current]);
-  };
+      2: "step3"
+    }
+    setStepCurrent(stepMap[current])
+  }
 
   return (
     <div className="pb-24">
@@ -95,18 +81,10 @@ export default function ShoppingPage({ params }) {
           {/* <TitleList title="Giỏ hàng" /> */}
 
           <div className="my-8">
-            <Steps
-              items={items}
-              onChange={handleStepClick}
-              current={Number(stepCurrent.replace("step", "") - 1)}
-            />
+            <Steps items={items} onChange={handleStepClick} current={Number(stepCurrent.replace("step", "") - 1)} />
 
-            {stepCurrent === "step1" && (
-              <ShoppingStep1 setStep={setStepCurrent} />
-            )}
-            {stepCurrent === "step2" && (
-              <ShoppingStep2 setStep={setStepCurrent} />
-            )}
+            {stepCurrent === "step1" && <ShoppingStep1 setStep={setStepCurrent} />}
+            {stepCurrent === "step2" && <ShoppingStep2 setStep={setStepCurrent} />}
             {stepCurrent === "step3" && (
               <Result
                 status="success"
@@ -117,17 +95,17 @@ export default function ShoppingPage({ params }) {
                     type="default"
                     key="console"
                     onClick={() => {
-                      setStepCurrent("step1");
+                      setStepCurrent("step1")
                     }}>
                     Về giỏ hàng
                   </Button>,
                   <Button
                     className="!bg-[#2cb1ab] !text-white"
                     onClick={() => {
-                      router.push("/");
+                      router.push("/")
                     }}>
                     Mua hàng tiếp
-                  </Button>,
+                  </Button>
                 ]}
               />
             )}
@@ -135,5 +113,5 @@ export default function ShoppingPage({ params }) {
         </div>
       </div>
     </div>
-  );
+  )
 }

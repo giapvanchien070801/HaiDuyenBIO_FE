@@ -1,26 +1,26 @@
-"use client";
-import Blog from "@/components/user/Blog";
-import { HomeOutlined, SearchOutlined } from "@ant-design/icons";
-import { useEffect, useState } from "react";
+"use client"
+import Blog from "@/components/user/Blog"
+import { HomeOutlined, SearchOutlined } from "@ant-design/icons"
+import { useEffect, useState } from "react"
 
-import { handleSrcImg } from "@/common/functions/commonFunction";
-import { useQuery } from "react-query";
-import Base from "@/models/Base";
+import { handleSrcImg } from "@/common/functions/commonFunction"
+import { useQuery } from "react-query"
+import Base from "@/models/Base"
 
-import BannerBreadcrumb from "@/components/user/common-component/BannerBreadcrumb";
-import CardLatestBlog from "@/components/user/CardLatestBlog";
-import SidebarUser from "@/components/user/common-component/SidebarUser";
-import { Pagination, Spin } from "antd";
+import BannerBreadcrumb from "@/components/user/common-component/BannerBreadcrumb"
+import CardLatestBlog from "@/components/user/CardLatestBlog"
+import SidebarUser from "@/components/user/common-component/SidebarUser"
+import { Pagination, Spin } from "antd"
 
-import SearchCommon from "@/components/user/SearchCommon";
+import SearchCommon from "@/components/user/SearchCommon"
 
 export default async function ListPage({ params }) {
   const [pagination, setPagination] = useState({
     current: 1,
     total: 0,
-    pageSize: 5,
-  });
-  const [valueSearch, setValueSearch] = useState("");
+    pageSize: 5
+  })
+  const [valueSearch, setValueSearch] = useState("")
 
   const breadCrum = [
     {
@@ -30,7 +30,7 @@ export default async function ListPage({ params }) {
           <HomeOutlined />
           <span>Trang chủ</span>
         </>
-      ),
+      )
     },
     {
       href: `/blog`,
@@ -38,35 +38,35 @@ export default async function ListPage({ params }) {
         <>
           <span className="text-[#2490eb]">Danh sách bài viết</span>
         </>
-      ),
-    },
-  ];
+      )
+    }
+  ]
 
   const {
     data: listPost,
     refetch,
-    isFetching,
+    isFetching
   } = useQuery(["getListPostPaginationUser", pagination?.current], async () => {
     const res = await Base.getListPostPagination({
       Page: pagination.current,
       Size: 5,
       KeySearch: valueSearch,
-      CategoryId: params?.categoryId,
-    });
+      CategoryId: params?.categoryId
+    })
 
     if (res.TotalRecord) {
       setPagination({
         ...pagination,
-        total: res.TotalRecord,
-      });
+        total: res.TotalRecord
+      })
     }
 
-    return res?.Data;
-  });
+    return res?.Data
+  })
 
   useEffect(() => {
-    refetch();
-  }, [valueSearch]);
+    refetch()
+  }, [valueSearch])
 
   return (
     <div className=" pb-24">
@@ -92,12 +92,12 @@ export default async function ListPage({ params }) {
             </div>
             {listPost?.length > 0 && (
               <Pagination
-                onChange={(value) => {
+                onChange={value => {
                   setPagination({
                     current: value,
                     total: pagination.total,
-                    pageSize: pagination.pageSize,
-                  });
+                    pageSize: pagination.pageSize
+                  })
                 }}
                 {...pagination}
               />
@@ -106,8 +106,8 @@ export default async function ListPage({ params }) {
           <div className="col-span-3 lg:block hidden">
             {/* search */}
             <SearchCommon
-              onChange={(value) => {
-                setValueSearch(value);
+              onChange={value => {
+                setValueSearch(value)
               }}
             />
             <SidebarUser />
@@ -115,5 +115,5 @@ export default async function ListPage({ params }) {
         </div>
       </Spin>
     </div>
-  );
+  )
 }

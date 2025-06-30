@@ -1,18 +1,18 @@
-"use client";
+"use client"
 
-import { Input, Form, Button, message, Breadcrumb } from "antd";
-import { MailOutlined, PhoneFilled, PushpinFilled } from "@ant-design/icons";
-import { HomeOutlined } from "@ant-design/icons";
-import CardContact from "@/components/user/CardContact";
-import styled from "@emotion/styled";
-import BannerBreadcrumb from "@/components/user/common-component/BannerBreadcrumb";
-import { useMutation } from "react-query";
-import UserSwiper from "@/components/user/common-component/UserSwiper";
-import ContactModel from "@/models/Contact";
-const { TextArea } = Input;
+import { Input, Form, Button, message, Breadcrumb } from "antd"
+import { MailOutlined, PhoneFilled, PushpinFilled } from "@ant-design/icons"
+import { HomeOutlined } from "@ant-design/icons"
+import CardContact from "@/components/user/CardContact"
+import styled from "@emotion/styled"
+import BannerBreadcrumb from "@/components/user/common-component/BannerBreadcrumb"
+import { useMutation } from "react-query"
+import UserSwiper from "@/components/user/common-component/UserSwiper"
+import ContactModel from "@/models/Contact"
+const { TextArea } = Input
 
 export default function Contact() {
-  const [form] = Form.useForm();
+  const [form] = Form.useForm()
   const breadcrumb = [
     {
       href: "/",
@@ -21,7 +21,7 @@ export default function Contact() {
           <HomeOutlined />
           <span>Trang chủ</span>
         </>
-      ),
+      )
     },
     {
       href: "/contact",
@@ -29,29 +29,27 @@ export default function Contact() {
         <>
           <span className="text-[#2490eb]">Liên hệ</span>
         </>
-      ),
-    },
-  ];
+      )
+    }
+  ]
 
   const createContactMutate = useMutation(ContactModel.createContact, {
     onSuccess: () => {
-      message.success(
-        "Tạo liên hệ thành công, chúng tôi sẽ liên hệ lại với bạn sớm nhất có thể!"
-      );
-      form.resetFields();
+      message.success("Tạo liên hệ thành công, chúng tôi sẽ liên hệ lại với bạn sớm nhất có thể!")
+      form.resetFields()
     },
-    onError: (e) => {
-      message.error("Tạo liên hệ thất bại!");
-    },
-  });
+    onError: e => {
+      message.error("Tạo liên hệ thất bại!")
+    }
+  })
 
-  const handleSubmit = (values) => {
-    createContactMutate.mutate(values);
-  };
+  const handleSubmit = values => {
+    createContactMutate.mutate(values)
+  }
 
   const handleSunmit = () => {
-    form.submit();
-  };
+    form.submit()
+  }
 
   return (
     <div>
@@ -89,16 +87,14 @@ export default function Contact() {
           <div className=" px-2 py-1 bg-[#d3e9fb] rounded">
             <p className="text-[#2490eb] font-semibold">Liên hệ</p>
           </div>
-          <p className="text-5xl font-semibold mt-4 mb-11">
-            Liên hệ với chúng tôi
-          </p>
+          <p className="text-5xl font-semibold mt-4 mb-11">Liên hệ với chúng tôi</p>
           <CustomForm>
             <Form
               className="w-full"
               initialValues={{
                 requiredSelect: undefined,
                 optionalSelect: undefined,
-                optionalInput: "",
+                optionalInput: ""
               }}
               form={form}
               onFinish={handleSubmit}
@@ -110,8 +106,8 @@ export default function Contact() {
                   rules={[
                     {
                       required: true,
-                      message: "Vui lòng nhập họ tên của bạn!",
-                    },
+                      message: "Vui lòng nhập họ tên của bạn!"
+                    }
                   ]}>
                   <Input placeholder="Họ và tên" />
                 </Form.Item>
@@ -123,17 +119,15 @@ export default function Contact() {
                   rules={[
                     {
                       required: true,
-                      message: "Vui lòng nhập số điện thoại của bạn!`",
-                    },
+                      message: "Vui lòng nhập số điện thoại của bạn!`"
+                    }
                   ]}>
                   <Input placeholder="Số điện thoại của bạn" />
                 </Form.Item>
                 <Form.Item
                   className="sm:w-1/2 w-full"
                   name="email"
-                  rules={[
-                    { required: true, message: "Vui lòng nhập email của bạn!" },
-                  ]}>
+                  rules={[{ required: true, message: "Vui lòng nhập email của bạn!" }]}>
                   <Input placeholder="Email của bạn" type="email" />
                 </Form.Item>
               </div>
@@ -163,7 +157,7 @@ export default function Contact() {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 const CustomForm = styled.div`
@@ -185,4 +179,4 @@ const CustomForm = styled.div`
     height: 150px;
     color: gray;
   }
-`;
+`

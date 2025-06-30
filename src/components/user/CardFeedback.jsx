@@ -1,7 +1,7 @@
-"use client";
+"use client"
 
 export default function CardFeedback(props) {
-  const { content, avatar, fullName, feedBackType } = props;
+  const { content, avatar, fullName, feedBackType } = props
   return (
     <div className="sm:w-1/2 w-full sm:mb-0 mb-5 p-8 bg-white rounded">
       <p className="text-[#666666]  mt-4 leading-8 mb-5  min-h-28">{content}</p>
@@ -16,5 +16,5 @@ export default function CardFeedback(props) {
         </div>
       </div>
     </div>
-  );
+  )
 }

@@ -1,95 +1,73 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
-import {
-  Button,
-  Form,
-  Input,
-  InputNumber,
-  message,
-  Popconfirm,
-  Table,
-} from "antd";
-import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
+import React, { useContext, useEffect, useRef, useState } from "react"
+import { Form, message } from "antd"
 
-const EditableContext = React.createContext(null);
+const EditableContext = React.createContext(null)
 
 const EditableRow = ({ index, ...props }) => {
-  const [form] = Form.useForm();
+  const [form] = Form.useForm()
   return (
     <Form form={form} component={false}>
       <EditableContext.Provider value={form}>
         <tr {...props} />
       </EditableContext.Provider>
     </Form>
-  );
-};
+  )
+}
 
-const EditableCell = ({
-  title,
-  editable,
-  children,
-  dataIndex,
-  record,
-  handleSave,
-  ...restProps
-}) => {
-  const [editing, setEditing] = useState(false);
-  const inputRef = useRef(null);
-  const form = useContext(EditableContext);
+const EditableCell = ({ title, editable, children, dataIndex, record, handleSave, ...restProps }) => {
+  const [editing, setEditing] = useState(false)
+  const inputRef = useRef(null)
+  const form = useContext(EditableContext)
 
   useEffect(() => {
     if (editing) {
-      inputRef.current?.focus();
+      inputRef.current?.focus()
     }
-  }, [editing]);
+  }, [editing])
 
   const toggleEdit = () => {
-    setEditing(!editing);
-    form.setFieldsValue({ [dataIndex]: record[dataIndex] });
-  };
+    setEditing(!editing)
+    form.setFieldsValue({ [dataIndex]: record[dataIndex] })
+  }
 
   const save = async () => {
     try {
-      const values = await form.validateFields();
-      toggleEdit();
-      handleSave({ ...record, ...values });
+      const values = await form.validateFields()
+      toggleEdit()
+      handleSave({ ...record, ...values })
     } catch (errInfo) {
       // Handle error silently
     }
-  };
+  }
 
-  let childNode = children;
+  let childNode = children
 
   if (editable) {
     childNode = editing ? (
-      <Form.Item
-        style={{ margin: 0 }}
-        name={dataIndex}
-        rules={[{ required: true, message: `${title} là bắt buộc.` }]}>
+      <Form.Item style={{ margin: 0 }} name={dataIndex} rules={[{ required: true, message: `${title} là bắt buộc.` }]}>
         <Input ref={inputRef} onPressEnter={save} onBlur={save} />
       </Form.Item>
     ) : (
-      <div
-        className="editable-cell-value-wrap cursor-pointer hover:bg-gray-50 p-2 rounded"
-        onClick={toggleEdit}>
+      <div className="editable-cell-value-wrap cursor-pointer hover:bg-gray-50 p-2 rounded" onClick={toggleEdit}>
         {children}
       </div>
-    );
+    )
   }
 
-  return <td {...restProps}>{childNode}</td>;
-};
+  return <td {...restProps}>{childNode}</td>
+}
 
 const TableListProduct = ({ onChange }) => {
-  const [dataSource, setDataSource] = useState([]);
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [dataSource, setDataSource] = useState([])
+  const [selectedRowKeys, setSelectedRowKeys] = useState([])
 
   // Load data from localStorage on component mount
   useEffect(() => {
-    const savedListProducts = localStorage.getItem("listProducts");
+    const savedListProducts = localStorage.getItem("listProducts")
     if (savedListProducts) {
-      const products = JSON.parse(savedListProducts);
+      const products = JSON.parse(savedListProducts)
       // Transform data to match table structure
-      const transformedData = products.map((product) => ({
+      const transformedData = products.map(product => ({
         key: product.id.toString(),
         id: product.id,
         name: product.name,
@@ -97,59 +75,50 @@ const TableListProduct = ({ onChange }) => {
         priceFrom: product.priceFrom,
         price: product.price,
         discount: product.discount,
-        quantity: product.quantity,
-      }));
-      setDataSource(transformedData);
+        quantity: product.quantity
+      }))
+      setDataSource(transformedData)
     }
-  }, []);
+  }, [])
 
   // Load selected products from localStorage on component mount
   useEffect(() => {
-    const savedSelectedProducts = localStorage.getItem("selectedProducts");
+    const savedSelectedProducts = localStorage.getItem("selectedProducts")
     if (savedSelectedProducts) {
-      const selectedProducts = JSON.parse(savedSelectedProducts);
-      const selectedIds = selectedProducts.map((product) =>
-        product?.id?.toString()
-      );
-      setSelectedRowKeys(selectedIds);
+      const selectedProducts = JSON.parse(savedSelectedProducts)
+      const selectedIds = selectedProducts.map(product => product?.id?.toString())
+      setSelectedRowKeys(selectedIds)
 
       // Call onChange with selected products data
       if (onChange && dataSource.length > 0) {
-        onChange(selectedProducts);
+        onChange(selectedProducts)
       }
     }
-  }, [dataSource, onChange]);
+  }, [dataSource, onChange])
 
-  const handleDelete = (key) => {
-    const newData = dataSource.filter((item) => item.key !== key);
-    setDataSource(newData);
+  const handleDelete = key => {
+    const newData = dataSource.filter(item => item.key !== key)
+    setDataSource(newData)
 
     // Remove from selectedRowKeys if it was selected
-    setSelectedRowKeys((prevKeys) => {
-      const newSelectedKeys = prevKeys.filter(
-        (selectedKey) => selectedKey !== key
-      );
+    setSelectedRowKeys(prevKeys => {
+      const newSelectedKeys = prevKeys.filter(selectedKey => selectedKey !== key)
 
       // Get current selected products from localStorage
-      const savedSelectedProducts = localStorage.getItem("selectedProducts");
-      let selectedProducts = [];
+      const savedSelectedProducts = localStorage.getItem("selectedProducts")
+      let selectedProducts = []
       if (savedSelectedProducts) {
-        selectedProducts = JSON.parse(savedSelectedProducts);
+        selectedProducts = JSON.parse(savedSelectedProducts)
       }
 
       // Remove the deleted product from selectedProducts
-      const updatedSelectedProducts = selectedProducts.filter(
-        (product) => product?.id?.toString() !== key
-      );
+      const updatedSelectedProducts = selectedProducts.filter(product => product?.id?.toString() !== key)
 
       // Update localStorage with new selected products
-      localStorage.setItem(
-        "selectedProducts",
-        JSON.stringify(updatedSelectedProducts)
-      );
+      localStorage.setItem("selectedProducts", JSON.stringify(updatedSelectedProducts))
 
-      return newSelectedKeys;
-    });
+      return newSelectedKeys
+    })
 
     // Update localStorage
     const updatedProducts = newData.map(({ key, ...rest }) => ({
@@ -159,28 +128,26 @@ const TableListProduct = ({ onChange }) => {
       priceFrom: rest.priceFrom,
       price: rest.price,
       discount: rest.discount,
-      quantity: rest.quantity,
-    }));
-    localStorage.setItem("listProducts", JSON.stringify(updatedProducts));
+      quantity: rest.quantity
+    }))
+    localStorage.setItem("listProducts", JSON.stringify(updatedProducts))
 
-    message.success("Đã xóa sản phẩm khỏi giỏ hàng!");
-  };
+    message.success("Đã xóa sản phẩm khỏi giỏ hàng!")
+  }
 
   const handleQuantityChange = (value, key) => {
-    const newData = [...dataSource];
-    const index = newData.findIndex((item) => item.key === key);
-    newData[index].quantity = value;
-    setDataSource(newData);
+    const newData = [...dataSource]
+    const index = newData.findIndex(item => item.key === key)
+    newData[index].quantity = value
+    setDataSource(newData)
 
     // Remove the product from selectedRowKeys when quantity changes
-    setSelectedRowKeys((prevKeys) => {
-      const newSelectedKeys = prevKeys.filter(
-        (selectedKey) => selectedKey !== key
-      );
+    setSelectedRowKeys(prevKeys => {
+      const newSelectedKeys = prevKeys.filter(selectedKey => selectedKey !== key)
       // Update localStorage with new selected keys
-      localStorage.setItem("selectedProducts", JSON.stringify(newSelectedKeys));
-      return newSelectedKeys;
-    });
+      localStorage.setItem("selectedProducts", JSON.stringify(newSelectedKeys))
+      return newSelectedKeys
+    })
 
     // Update localStorage
     const updatedProducts = newData.map(({ key, ...rest }) => ({
@@ -190,24 +157,24 @@ const TableListProduct = ({ onChange }) => {
       priceFrom: rest.priceFrom,
       price: rest.price,
       discount: rest.discount,
-      quantity: rest.quantity,
-    }));
-    localStorage.setItem("listProducts", JSON.stringify(updatedProducts));
-  };
+      quantity: rest.quantity
+    }))
+    localStorage.setItem("listProducts", JSON.stringify(updatedProducts))
+  }
 
-  const formatPrice = (price) => {
+  const formatPrice = price => {
     return new Intl.NumberFormat("vi-VN", {
       style: "currency",
-      currency: "VND",
-    }).format(price);
-  };
+      currency: "VND"
+    }).format(price)
+  }
 
   const defaultColumns = [
     {
       title: "Tên sản phẩm",
       dataIndex: "name",
       width: "40%",
-      editable: true,
+      editable: true
     },
     {
       title: "Giá",
@@ -215,16 +182,10 @@ const TableListProduct = ({ onChange }) => {
       width: "20%",
       render: (priceFrom, record) => (
         <div>
-          <div className="text-red-600 font-semibold">
-            {formatPrice(priceFrom)}
-          </div>
-          {record.price && (
-            <div className="text-gray-500 line-through text-sm">
-              {formatPrice(record.price)}
-            </div>
-          )}
+          <div className="text-red-600 font-semibold">{formatPrice(priceFrom)}</div>
+          {record.price && <div className="text-gray-500 line-through text-sm">{formatPrice(record.price)}</div>}
         </div>
-      ),
+      )
     },
     {
       title: "Số lượng",
@@ -234,10 +195,10 @@ const TableListProduct = ({ onChange }) => {
         <InputNumber
           min={1}
           value={record.quantity}
-          onChange={(value) => handleQuantityChange(value, record.key)}
+          onChange={value => handleQuantityChange(value, record.key)}
           className="w-20"
         />
-      ),
+      )
     },
     {
       title: "Thao tác",
@@ -259,16 +220,16 @@ const TableListProduct = ({ onChange }) => {
               Xóa
             </Button>
           </Popconfirm>
-        ) : null,
-    },
-  ];
+        ) : null
+    }
+  ]
 
-  const handleSave = (row) => {
-    const newData = [...dataSource];
-    const index = newData.findIndex((item) => row.key === item.key);
-    const item = newData[index];
-    newData.splice(index, 1, { ...item, ...row });
-    setDataSource(newData);
+  const handleSave = row => {
+    const newData = [...dataSource]
+    const index = newData.findIndex(item => row.key === item.key)
+    const item = newData[index]
+    newData.splice(index, 1, { ...item, ...row })
+    setDataSource(newData)
 
     // Update localStorage
     const updatedProducts = newData.map(({ key, ...rest }) => ({
@@ -278,49 +239,49 @@ const TableListProduct = ({ onChange }) => {
       priceFrom: rest.priceFrom,
       price: rest.price,
       discount: rest.discount,
-      quantity: rest.quantity,
-    }));
-    localStorage.setItem("listProducts", JSON.stringify(updatedProducts));
-  };
+      quantity: rest.quantity
+    }))
+    localStorage.setItem("listProducts", JSON.stringify(updatedProducts))
+  }
 
   const components = {
     body: {
       row: EditableRow,
-      cell: EditableCell,
-    },
-  };
+      cell: EditableCell
+    }
+  }
 
-  const columns = defaultColumns.map((col) => {
+  const columns = defaultColumns.map(col => {
     if (!col.editable) {
-      return col;
+      return col
     }
     return {
       ...col,
-      onCell: (record) => ({
+      onCell: record => ({
         record,
         editable: col.editable,
         dataIndex: col.dataIndex,
         title: col.title,
-        handleSave,
-      }),
-    };
-  });
+        handleSave
+      })
+    }
+  })
 
   // Row selection configuration
   const rowSelection = {
     selectedRowKeys,
     onChange: (newSelectedRowKeys, selectedRows) => {
-      setSelectedRowKeys(newSelectedRowKeys);
+      setSelectedRowKeys(newSelectedRowKeys)
 
       // Save selected product IDs to localStorage
-      localStorage.setItem("selectedProducts", JSON.stringify(selectedRows));
+      localStorage.setItem("selectedProducts", JSON.stringify(selectedRows))
 
       // Call the onChange prop with selected products
       if (onChange) {
-        onChange(selectedRows);
+        onChange(selectedRows)
       }
-    },
-  };
+    }
+  }
 
   return (
     <div className="w-full max-w-4xl mx-auto p-4">
@@ -333,12 +294,12 @@ const TableListProduct = ({ onChange }) => {
         rowSelection={rowSelection}
         pagination={{
           pageSize: 5,
-          showTotal: (total) => `Tổng ${total} sản phẩm`,
+          showTotal: total => `Tổng ${total} sản phẩm`
         }}
         className="shadow-lg rounded-lg"
       />
     </div>
-  );
-};
+  )
+}
 
-export default TableListProduct;
+export default TableListProduct

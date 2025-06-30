@@ -1,56 +1,56 @@
-"use client";
+"use client"
 
-import { RightOutlined } from "@ant-design/icons";
-import Link from "next/link";
+import { RightOutlined } from "@ant-design/icons"
+import Link from "next/link"
 
 export default function SidebarUser(props) {
-  const { breadcrumb, title } = props;
+  const { breadcrumb, title } = props
 
   const listCategory = [
     {
       Id: 1,
-      Name: "Sức khỏe tiêu hóa",
+      Name: "Sức khỏe tiêu hóa"
     },
     {
       Id: 2,
-      Name: "Vitamin & khoáng chất",
+      Name: "Vitamin & khoáng chất"
     },
     {
       Id: 3,
-      Name: "Thực phẩm chức năng",
+      Name: "Thực phẩm chức năng"
     },
     {
       Id: 4,
-      Name: "Thuốc không kê đơn",
+      Name: "Thuốc không kê đơn"
     },
     {
       Id: 5,
-      Name: "Chăm sóc sức khỏe",
-    },
-  ];
+      Name: "Chăm sóc sức khỏe"
+    }
+  ]
 
   const listProduct = [
     {
       Id: 1,
-      Name: "Men vi sinh Bifido",
+      Name: "Men vi sinh Bifido"
     },
     {
       Id: 2,
-      Name: "Men vi sinh Lacto",
+      Name: "Men vi sinh Lacto"
     },
     {
       Id: 3,
-      Name: "Men vi sinh Premium",
+      Name: "Men vi sinh Premium"
     },
     {
       Id: 4,
-      Name: "Men vi sinh Plus",
+      Name: "Men vi sinh Plus"
     },
     {
       Id: 5,
-      Name: "Men vi sinh Gold",
-    },
-  ];
+      Name: "Men vi sinh Gold"
+    }
+  ]
 
   return (
     <div className="another col-span-3 lg:block hidden">
@@ -87,5 +87,5 @@ export default function SidebarUser(props) {
         </Link>
       </div>
     </div>
-  );
+  )
 }

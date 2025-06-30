@@ -1,55 +1,55 @@
-"use client";
+"use client"
 
-import { HomeOutlined, SearchOutlined } from "@ant-design/icons";
-import SidebarUser from "@/components/user/common-component/SidebarUser";
-import { Breadcrumb, Input, Pagination, Select, Spin } from "antd";
+import { HomeOutlined, SearchOutlined } from "@ant-design/icons"
+import SidebarUser from "@/components/user/common-component/SidebarUser"
+import { Breadcrumb, Input, Pagination, Select, Spin } from "antd"
 
-import CardPNews from "@/components/user/common-component/CardPNews";
-import { useQuery } from "react-query";
-import { useDebounce } from "@/common/functions/commonFunction";
-import { useRef, useState } from "react";
-import CategoryProduct from "@/models/CategoryProduct";
-import ArticleModal from "@/models/ArticleModal";
+import CardPNews from "@/components/user/common-component/CardPNews"
+import { useQuery } from "react-query"
+import { useDebounce } from "@/common/functions/commonFunction"
+import { useRef, useState } from "react"
+import CategoryProduct from "@/models/CategoryProduct"
+import ArticleModal from "@/models/ArticleModal"
 
 export default function NewsPage() {
-  const [valueSearch, setValueSearch] = useState("");
-  const [valueSearchCate, setValueSearchCate] = useState("");
+  const [valueSearch, setValueSearch] = useState("")
+  const [valueSearchCate, setValueSearchCate] = useState("")
 
   const __pagination = useRef({
     page_num: 1,
     page_size: 10,
-    count: 0,
-  });
+    count: 0
+  })
 
-  const searchDebounce = useDebounce(valueSearch, 1000);
+  const searchDebounce = useDebounce(valueSearch, 1000)
   const {
     data: listPost,
     refetch,
-    isFetching,
+    isFetching
   } = useQuery(
     [
       "getListPostPagination",
       searchDebounce,
       __pagination.current.page_num,
       __pagination.current.page_size,
-      valueSearchCate,
+      valueSearchCate
     ],
     async () => {
       const res = await ArticleModal.getArticleList({
         page: __pagination.current.page_num - 1,
         size: __pagination.current.page_size,
         search: searchDebounce,
-        categoryId: valueSearchCate,
-      });
+        categoryId: valueSearchCate
+      })
 
-      __pagination.current.count = res.totalElements;
+      __pagination.current.count = res.totalElements
 
-      return res?.content;
+      return res?.content
     },
     {
-      enabled: true,
+      enabled: true
     }
-  );
+  )
 
   // api lấy danh sách tất cả thể loại
   const { data: listCategory } = useQuery(
@@ -59,22 +59,22 @@ export default function NewsPage() {
         page: 0,
         size: 1000,
         search: "",
-        type: "ARTICLE",
-      });
+        type: "ARTICLE"
+      })
 
-      const dataConvert = res?.content?.map((category) => {
-        return { label: category?.name, value: category?.id };
-      });
-      return dataConvert;
+      const dataConvert = res?.content?.map(category => {
+        return { label: category?.name, value: category?.id }
+      })
+      return dataConvert
     },
     {}
-  );
+  )
 
   const handleTableChange = (page, pageSize) => {
-    __pagination.current.page_num = page;
-    __pagination.current.page_size = pageSize;
-    refetch();
-  };
+    __pagination.current.page_num = page
+    __pagination.current.page_size = pageSize
+    refetch()
+  }
 
   const breadcrumb = [
     {
@@ -84,7 +84,7 @@ export default function NewsPage() {
           <HomeOutlined />
           <span>Trang chủ</span>
         </>
-      ),
+      )
     },
     {
       href: "/contact",
@@ -92,9 +92,9 @@ export default function NewsPage() {
         <>
           <span className="text-[#2490eb]">Tin tức</span>
         </>
-      ),
-    },
-  ];
+      )
+    }
+  ]
 
   return (
     <div className="pb-24">
@@ -132,7 +132,7 @@ export default function NewsPage() {
           /> */}
           <Spin spinning={isFetching}>
             <div className="grid grid-cols-1  gap-6 ">
-              {listPost?.map((item) => (
+              {listPost?.map(item => (
                 <CardPNews key={item.id} dataNews={item} />
               ))}
             </div>
@@ -151,5 +151,5 @@ export default function NewsPage() {
         <SidebarUser />
       </div>
     </div>
-  );
+  )
 }

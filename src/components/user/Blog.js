@@ -1,24 +1,24 @@
-"use client";
+"use client"
 
-import { HomeOutlined } from "@ant-design/icons";
-import BannerBreadcrumb from "@/components/user/common-component/BannerBreadcrumb";
-import { useQuery } from "react-query";
-import Base from "@/models/Base";
-import SidebarUser from "./common-component/SidebarUser";
-import { Spin } from "antd";
-import CardLatestBlog from "./CardLatestBlog";
-import { handleSrcImg } from "@/common/functions/commonFunction";
+import { HomeOutlined } from "@ant-design/icons"
+import BannerBreadcrumb from "@/components/user/common-component/BannerBreadcrumb"
+import { useQuery } from "react-query"
+import Base from "@/models/Base"
+import SidebarUser from "./common-component/SidebarUser"
+import { Spin } from "antd"
+import CardLatestBlog from "./CardLatestBlog"
+import { handleSrcImg } from "@/common/functions/commonFunction"
 
 export default async function Blog({ postId, categoryId }) {
   const { data: dataPostDetail, isFetching } = useQuery(
     ["getDetailPost", postId],
     async () => {
-      const res = await Base.getDetailPost(postId);
+      const res = await Base.getDetailPost(postId)
 
-      return res;
+      return res
     },
     { enabled: !!postId }
-  );
+  )
 
   const breadCrum = [
     {
@@ -28,7 +28,7 @@ export default async function Blog({ postId, categoryId }) {
           <HomeOutlined />
           <span>Trang chủ</span>
         </>
-      ),
+      )
     },
     {
       href: `/blog`,
@@ -36,7 +36,7 @@ export default async function Blog({ postId, categoryId }) {
         <>
           <span className="text-[#2490eb]">Danh sách bài viết</span>
         </>
-      ),
+      )
     },
     {
       href: ``,
@@ -44,19 +44,19 @@ export default async function Blog({ postId, categoryId }) {
         <>
           <span className="text-[#2490eb]">{dataPostDetail?.Title}</span>
         </>
-      ),
-    },
-  ];
+      )
+    }
+  ]
   const { data: listPost } = useQuery(["getListPostNewlistSame"], async () => {
     const res = await Base.getListPostPagination({
       Page: 1,
       Size: 6,
       KeySearch: "",
-      CategoryId: categoryId,
-    });
+      CategoryId: categoryId
+    })
 
-    return res?.Data;
-  });
+    return res?.Data
+  })
 
   return (
     <>
@@ -65,10 +65,7 @@ export default async function Blog({ postId, categoryId }) {
       <div className="container-original mx-auto pb-24 grid xl:grid-cols-10 gap-6 mt-12">
         <div className="col-span-7 bg-white md:p-0 p-4">
           <Spin spinning={isFetching}>
-            <div
-              dangerouslySetInnerHTML={{ __html: dataPostDetail?.Content }}
-              className="blog-content"
-            />
+            <div dangerouslySetInnerHTML={{ __html: dataPostDetail?.Content }} className="blog-content" />
           </Spin>
 
           <div className="write-comment mt-16">
@@ -96,5 +93,5 @@ export default async function Blog({ postId, categoryId }) {
         <SidebarUser />
       </div>
     </>
-  );
+  )
 }

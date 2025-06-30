@@ -1,43 +1,23 @@
-"use client";
+"use client"
 
-import { Button } from "antd";
-import { UserOutlined, CommentOutlined, PlusOutlined } from "@ant-design/icons";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { Button } from "antd"
+import { UserOutlined, CommentOutlined, PlusOutlined } from "@ant-design/icons"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
 
 export default function CardLatestBlog(props) {
-  const {
-    isListPage,
-    time,
-    createBy,
-    avatar,
-    comment,
-    description,
-    title,
-    id,
-    categoryId,
-  } = props;
-  const router = useRouter();
+  const { isListPage, time, createBy, avatar, comment, description, title, id, categoryId } = props
+  const router = useRouter()
 
   return (
     <div
       className={`${
-        isListPage
-          ? "md:w-[45%] w-full mb-10 "
-          : "lg:w-[32%] md:w-[43%] w-full mb-10"
-      }   bg-[#F4F6F9] rounded overflow-hidden h-fit`}
-    >
+        isListPage ? "md:w-[45%] w-full mb-10 " : "lg:w-[32%] md:w-[43%] w-full mb-10"
+      }   bg-[#F4F6F9] rounded overflow-hidden h-fit`}>
       <div className="h-[400px] overflow-hidden">
-        <img
-          src={avatar}
-          alt="alt"
-          className="w-full h-full object-cover img-card-blog"
-        />
+        <img src={avatar} alt="alt" className="w-full h-full object-cover img-card-blog" />
       </div>
-      <Button
-        type="primary"
-        className="bg-[#2490eb] text-white  font-semibold ml-5 relative -top-12"
-      >
+      <Button type="primary" className="bg-[#2490eb] text-white  font-semibold ml-5 relative -top-12">
         {time}
       </Button>
       <div className="w-full px-8 pb-5">
@@ -52,10 +32,7 @@ export default function CardLatestBlog(props) {
           </div>
         </div>
         <hr />
-        <Link
-          href={`/blog/${categoryId}/${id}`}
-          as={`/blog/${categoryId}/${id}`}
-        >
+        <Link href={`/blog/${categoryId}/${id}`} as={`/blog/${categoryId}/${id}`}>
           <p className="text-2xl font-semibold leading-8 mt-4 hover:text-[#2490eb] h-16 overflow-hidden text-ellipsis line-clamp-2">
             {title}
           </p>
@@ -65,21 +42,17 @@ export default function CardLatestBlog(props) {
           {description}
         </p>
 
-        <Link
-          href={`/blog/${categoryId}/${id}`}
-          as={`/blog/${categoryId}/${id}`}
-        >
+        <Link href={`/blog/${categoryId}/${id}`} as={`/blog/${categoryId}/${id}`}>
           <Button
             type="text"
             onClick={() => {
-              router.push("/contact");
+              router.push("/contact")
             }}
-            className=" text-[#2490eb] h-12 p-0  font-semibold flex items-center"
-          >
+            className=" text-[#2490eb] h-12 p-0  font-semibold flex items-center">
             ĐỌC THÊM <PlusOutlined />
           </Button>
         </Link>
       </div>
     </div>
-  );
+  )
 }

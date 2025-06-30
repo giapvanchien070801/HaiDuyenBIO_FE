@@ -1,89 +1,70 @@
-"use client";
-import {
-  Breadcrumb,
-  Button,
-  Input,
-  Popconfirm,
-  Space,
-  Spin,
-  Table,
-  message,
-  notification,
-} from "antd";
-import {
-  HomeOutlined,
-  SearchOutlined,
-  PlusCircleOutlined,
-} from "@ant-design/icons";
-import { useState } from "react";
-import styled from "@emotion/styled";
-import { useRouter } from "next/navigation";
-import { useMutation, useQuery } from "react-query";
-import Base from "@/models/Base";
-import { useDebounce } from "@/common/functions/commonFunction";
-import ModalCreateCategoryService from "../components/ModalCreateCategoryIngredient";
-import ModalCreateCategoryIngredient from "../components/ModalCreateCategoryIngredient";
+"use client"
+import { Breadcrumb, Button, Input, Popconfirm, Space, Spin, Table, message, notification } from "antd"
+import { HomeOutlined, SearchOutlined, PlusCircleOutlined } from "@ant-design/icons"
+import { useState } from "react"
+import styled from "@emotion/styled"
+import { useRouter } from "next/navigation"
+import { useMutation, useQuery } from "react-query"
+import Base from "@/models/Base"
+import { useDebounce } from "@/common/functions/commonFunction"
+import ModalCreateCategoryService from "../components/ModalCreateCategoryIngredient"
+import ModalCreateCategoryIngredient from "../components/ModalCreateCategoryIngredient"
 
 export default function Categorys() {
-  const router = useRouter();
+  const router = useRouter()
 
-  const [valueSearchCate, setValueSearchCate] = useState("");
-  const [idCateSelected, setIdCateSelected] = useState();
+  const [valueSearchCate, setValueSearchCate] = useState("")
+  const [idCateSelected, setIdCateSelected] = useState()
 
   const [tableParams, setTableParams] = useState({
     pagination: {
       current: 1,
       pageSize: 5,
-      total: 20,
-    },
-  });
+      total: 20
+    }
+  })
 
   const handleTableChange = (pagination, filters, sorter) => {
     setTableParams({
       pagination,
       filters,
-      ...sorter,
-    });
+      ...sorter
+    })
 
     if (pagination.pageSize !== tableParams.pagination?.pageSize) {
     }
-  };
+  }
 
-  const searchDebounce = useDebounce(valueSearchCate, 1000);
+  const searchDebounce = useDebounce(valueSearchCate, 1000)
   const {
     data: listCate,
     refetch,
-    isFetching,
+    isFetching
   } = useQuery(
-    [
-      "getListCategory",
-      searchDebounce,
-      tableParams.pagination.current,
-      tableParams.pagination.pageSize,
-    ],
+    ["getListCategory", searchDebounce, tableParams.pagination.current, tableParams.pagination.pageSize],
     async () => {
       const res = await Base.getListCatePagination({
         Page: tableParams.pagination.current,
         Size: tableParams.pagination.pageSize,
-        KeySearch: searchDebounce,
-      });
+        KeySearch: searchDebounce
+      })
 
       if (res.TotalRecord) {
         setTableParams({
           pagination: {
             current: tableParams.pagination.current,
             pageSize: tableParams.pagination.pageSize,
-            total: res.TotalRecord,
-          },
-        });
+            total: res.TotalRecord
+          }
+        })
       }
 
-      return res?.Data;
+      return res?.Data
     },
     {
-      enabled: false,
+      enabled: false
     }
-  );
+  )
 
   const breadcrumb = [
     {
@@ -93,7 +74,7 @@ export default function Categorys() {
           <HomeOutlined />
           <span>Trang chủ</span>
         </>
-      ),
+      )
     },
     {
       href: "",
@@ -101,35 +82,35 @@ export default function Categorys() {
         <>
           <span className="text-cyan-700">Danh mục nguyên liệu</span>
         </>
-      ),
-    },
-  ];
+      )
+    }
+  ]
 
-  const [api, contextHolder] = notification.useNotification();
+  const [api, contextHolder] = notification.useNotification()
 
   const deleteCateMutate = useMutation(Base.deleteCategory, {
     onSuccess: () => {
-      message.success("Xóa danh mục thành công!");
-      setIdCateSelected();
-      refetch();
+      message.success("Xóa danh mục thành công!")
+      setIdCateSelected()
+      refetch()
     },
-    onError: (e) => {
+    onError: e => {
       if (e?.response?.data?.Message === "Can not delete this category") {
         // trường hợp danh mục Sản phẩm đã có Sản phẩm
 
         api["error"]({
           message: "Không thể xóa danh mục này",
-          description: "Đã có Sản phẩm thuộc danh mục này. Không thể xóa!",
-        });
+          description: "Đã có Sản phẩm thuộc danh mục này. Không thể xóa!"
+        })
       } else {
-        message.error("Xóa danh mục thất bại!");
+        message.error("Xóa danh mục thất bại!")
       }
-    },
-  });
+    }
+  })
 
-  const handleDeleteCate = (e) => {
-    deleteCateMutate.mutate(idCateSelected);
-  };
+  const handleDeleteCate = e => {
+    deleteCateMutate.mutate(idCateSelected)
+  }
 
   const columns = [
     {
@@ -137,50 +118,45 @@ export default function Categorys() {
       key: "stt",
       dataIndex: "Id",
       render: (value, item, index) => index,
-      fixed: "left",
+      fixed: "left"
     },
     {
       title: "Tên danh mục nguyên liệu",
       dataIndex: "Name",
       key: "Name",
-      render: (text) => <a>{text}</a>,
+      render: text => <a>{text}</a>
     },
 
     {
       title: "Ngày tạo",
       dataIndex: "CreatedAt",
-      key: "CreatedAt",
+      key: "CreatedAt"
     },
     {
       title: "Người tạo",
       key: "CreatedBy",
-      dataIndex: "CreatedBy",
+      dataIndex: "CreatedBy"
     },
     {
       title: "Hoạt động",
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <ModalCreateCategoryIngredient
-            modalType="edit"
-            idCategory={idCateSelected}
-            refetchData={refetch}
-          />
+          <ModalCreateCategoryIngredient modalType="edit" idCategory={idCateSelected} refetchData={refetch} />
           <Popconfirm
             title="Xóa danh mục"
             description="Bạn có chắc chắn muốn xóa danh mục này?"
             onConfirm={handleDeleteCate}
             okText="Xóa"
-            cancelText="Hủy"
-          >
+            cancelText="Hủy">
             <Button size="middle" type="default" danger>
               Xóa
             </Button>
           </Popconfirm>
         </Space>
-      ),
-    },
-  ];
+      )
+    }
+  ]
 
   return (
     <div>
@@ -192,12 +168,12 @@ export default function Categorys() {
         prefix={
           <SearchOutlined
             style={{
-              color: "gray",
+              color: "gray"
             }}
           />
         }
-        onChange={(e) => {
-          setValueSearchCate(e.target.value);
+        onChange={e => {
+          setValueSearchCate(e.target.value)
         }}
         className="w-1/3 mb-5"
         placeholder="Tìm kiếm"
@@ -208,32 +184,29 @@ export default function Categorys() {
           <Table
             columns={columns}
             dataSource={listCate}
-            onRow={(record) => {
+            onRow={record => {
               return {
                 onClick: () => {
-                  setIdCateSelected(record.Id);
-                },
-              };
+                  setIdCateSelected(record.Id)
+                }
+              }
             }}
             pagination={{
               ...tableParams.pagination,
               showSizeChanger: true, // Cho phép hiển thị Select chọn số lượng phần tử trên trang
-              pageSizeOptions: tableParams.pageSizeOptions, // Sử dụng pageSizeOptions từ tableParams
+              pageSizeOptions: tableParams.pageSizeOptions // Sử dụng pageSizeOptions từ tableParams
             }}
             onChange={handleTableChange}
           />
         </CustomTable>
       </Spin>
     </div>
-  );
+  )
 }
 
 const CustomTable = styled.div`
   & .ant-table-wrapper .ant-table-thead > tr > th,
-  :where(.css-dev-only-do-not-override-6j9yrn).ant-table-wrapper
-    .ant-table-thead
-    > tr
-    > td {
+  :where(.css-dev-only-do-not-override-6j9yrn).ant-table-wrapper .ant-table-thead > tr > td {
     background: #cce3de;
   }
-`;
+`

@@ -1,49 +1,49 @@
-import { requests } from "./Base";
+import { requests } from "./Base"
 
-const version = "/api/v1";
+const version = "/api/v1"
 
 class Order {
-  getOrderList = async (params) => {
-    const urlApi = `${version}/orders`;
-    const response = await requests.get(urlApi, { params });
+  async getOrderList(params) {
+    const urlApi = `${version}/orders`
+    const response = await requests.get(urlApi, { params })
 
-    return response?.data;
-  };
+    return response?.data
+  }
 
-  getOrderDetail = async (id) => {
-    const urlApi = `${version}/orders/${id}`;
-    const response = await requests.get(urlApi);
+  async getOrderDetail(id) {
+    const urlApi = `${version}/orders/${id}`
+    const response = await requests.get(urlApi)
 
-    return response?.data;
-  };
+    return response?.data
+  }
 
-  createOrder = async (data) => {
-    const urlApi = `${version}/orders`;
-    const response = await requests.post(urlApi, data);
+  async createOrder(data) {
+    const urlApi = `${version}/orders`
+    const response = await requests.post(urlApi, data)
 
-    return response?.data;
-  };
+    return response?.data
+  }
 
-  updateOrder = async (id, data) => {
-    const urlApi = `${version}/orders/${id}`;
-    const response = await requests.put(urlApi, data);
+  async updateOrder(id, data) {
+    const urlApi = `${version}/orders/${id}`
+    const response = await requests.put(urlApi, data)
 
-    return response?.data;
-  };
+    return response?.data
+  }
 
-  deleteOrder = async (id) => {
-    const urlApi = `${version}/orders/${id}`;
-    const response = await requests.delete(urlApi);
+  async deleteOrder(id) {
+    const urlApi = `${version}/orders/${id}`
+    const response = await requests.delete(urlApi)
 
-    return response?.data;
-  };
+    return response?.data
+  }
 
-  updateStatusOrder = async (id, data) => {
-    const urlApi = `${version}/orders/${id}/status`;
-    const response = await requests.put(urlApi, data);
+  async updateStatusOrder(id, data) {
+    const urlApi = `${version}/orders/${id}/status`
+    const response = await requests.put(urlApi, data)
 
-    return response?.data;
-  };
+    return response?.data
+  }
 }
 
-export default new Order();
+export default new Order()

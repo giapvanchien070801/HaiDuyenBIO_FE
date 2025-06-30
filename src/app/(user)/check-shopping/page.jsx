@@ -1,80 +1,66 @@
-"use client";
+"use client"
 
-import {
-  LIST_STATUS_ORDER,
-  ORDERS_STATUS_COLOR,
-} from "@/common/constants/commonConstant";
-import { useDebounce } from "@/common/functions/commonFunction";
-import ModalDetailsOrder from "@/components/admin/modals/ModalDetailsOrder";
-import Order from "@/models/Order";
-import { EyeOutlined, HomeOutlined, SearchOutlined } from "@ant-design/icons";
-import styled from "@emotion/styled";
-import {
-  Breadcrumb,
-  Button,
-  Input,
-  Table,
-  Card,
-  Space,
-  Typography,
-  Tag,
-  Select,
-  Empty,
-} from "antd";
-import { useRef, useState } from "react";
-import { useQuery } from "react-query";
+import { LIST_STATUS_ORDER, ORDERS_STATUS_COLOR } from "@/common/constants/commonConstant"
+import { useDebounce } from "@/common/functions/commonFunction"
+import ModalDetailsOrder from "@/components/admin/modals/ModalDetailsOrder"
+import Order from "@/models/Order"
+import { EyeOutlined, HomeOutlined, SearchOutlined } from "@ant-design/icons"
+import styled from "@emotion/styled"
+import { Breadcrumb, Button, Input, Table, Card, Space, Typography, Tag, Select, Empty } from "antd"
+import { useRef, useState } from "react"
+import { useQuery } from "react-query"
 
-const { Search } = Input;
-const { Title } = Typography;
+const { Search } = Input
+const { Title } = Typography
 
 export default function CheckShoppingPage() {
-  const [valueSearch, setValueSearch] = useState("");
-  const [valueSearchPhone, setValueSearchPhone] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [itemSelected, setItemSelected] = useState(null);
+  const [valueSearch, setValueSearch] = useState("")
+  const [valueSearchPhone, setValueSearchPhone] = useState("")
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [itemSelected, setItemSelected] = useState(null)
 
   const __pagination = useRef({
     page_num: 1,
     page_size: 10,
-    count: 0,
-  });
+    count: 0
+  })
 
   const handleTableChange = (pagination, filters, sorter) => {
-    __pagination.current.page_num = pagination.current;
-    __pagination.current.page_size = pagination.pageSize;
-    refetch();
-  };
+    __pagination.current.page_num = pagination.current
+    __pagination.current.page_size = pagination.pageSize
+    refetch()
+  }
 
-  const searchDebounce = useDebounce(valueSearch, 1000);
-  const searchDebouncePhone = useDebounce(valueSearchPhone, 1000);
+  const searchDebounce = useDebounce(valueSearch, 1000)
+  const searchDebouncePhone = useDebounce(valueSearchPhone, 1000)
   const {
     data: listOrder,
     refetch,
-    isFetching,
+    isFetching
   } = useQuery(
     [
       "getListCategory",
       searchDebounce,
       __pagination.current.page_num,
       __pagination.current.page_size,
-      searchDebouncePhone,
+      searchDebouncePhone
     ],
     async () => {
       const res = await Order.getOrderList({
         page: __pagination.current.page_num - 1,
         size: __pagination.current.page_size,
         search: searchDebounce,
-        phone: searchDebouncePhone,
-      });
+        phone: searchDebouncePhone
+      })
 
-      __pagination.current.count = res.totalElements;
+      __pagination.current.count = res.totalElements
 
-      return valueSearchPhone ? res?.content : [];
+      return valueSearchPhone ? res?.content : []
     },
     {
-      enabled: true,
+      enabled: true
     }
-  );
+  )
 
   const breadcrumb = [
     {
@@ -84,7 +70,7 @@ export default function CheckShoppingPage() {
           <HomeOutlined />
           <span>Trang chủ</span>
         </>
-      ),
+      )
     },
     {
       href: "/check-shopping",
@@ -92,9 +78,9 @@ export default function CheckShoppingPage() {
         <>
           <span className="text-[#2490eb]">Kiểm tra đơn hàngss</span>
         </>
-      ),
-    },
-  ];
+      )
+    }
+  ]
 
   const columns = [
     {
@@ -102,73 +88,69 @@ export default function CheckShoppingPage() {
       key: "stt",
       dataIndex: "Id",
       render: (value, item, index) => index,
-      fixed: "left",
+      fixed: "left"
     },
     {
       title: "Tên Khách hàng",
       dataIndex: "fullName",
       key: "fullName",
-      render: (text) => <a>{text}</a>,
+      render: text => <a>{text}</a>
     },
     {
       title: "Số điện thoại",
       dataIndex: "phone",
       key: "phone",
-      render: (text) => <a>{text}</a>,
+      render: text => <a>{text}</a>
     },
     {
       title: "Địa chỉ",
       dataIndex: "address",
       key: "address",
-      render: (text) => <a>{text}</a>,
+      render: text => <a>{text}</a>
     },
     {
       title: "Ghi chú",
       dataIndex: "additionalInformation",
       key: "additionalInformation",
-      render: (text) => <a>{text}</a>,
+      render: text => <a>{text}</a>
     },
 
     {
       title: "Ngày đặt hàng",
       dataIndex: "createdAt",
-      key: "createdAt",
+      key: "createdAt"
     },
     {
       title: "Trạng thái",
       dataIndex: "status",
       key: "status",
-      render: (text) => (
+      render: text => (
         <Select value={text} defaultValue={"PENDING"} disabled>
-          {LIST_STATUS_ORDER.map((item) => (
+          {LIST_STATUS_ORDER.map(item => (
             <Select.Option key={item.value} value={item.value}>
               <Tag color={ORDERS_STATUS_COLOR[item.value]}>{item.label}</Tag>
             </Select.Option>
           ))}
         </Select>
-      ),
+      )
     },
     {
       title: "Hoạt động",
       key: "action",
       render: (_, record) => (
-        <Button
-          size="middle"
-          type="default"
-          icon={<EyeOutlined />}
-          onClick={() => setIsModalOpen(true)}>
+        <Button size="middle" type="default" icon={<EyeOutlined />} onClick={() => setIsModalOpen(true)}>
           Xem chi tiết
         </Button>
-      ),
-    },
-  ];
+      )
+    }
+  ]
 
-  const formatPrice = (price) => {
+  const formatPrice = price => {
     return new Intl.NumberFormat("vi-VN", {
       style: "currency",
-      currency: "VND",
-    }).format(price);
-  };
+      currency: "VND"
+    }).format(price)
+  }
 
   return (
     <div className="pb-24">
@@ -182,14 +164,9 @@ export default function CheckShoppingPage() {
                 Kiểm tra đơn hàng
               </Title>
 
-              <Space
-                direction="vertical"
-                size="large"
-                style={{ width: "100%" }}>
+              <Space direction="vertical" size="large" style={{ width: "100%" }}>
                 <div>
-                  <p className="mb-2 text-gray-600">
-                    Nhập số điện thoại để kiểm tra đơn hàng:
-                  </p>
+                  <p className="mb-2 text-gray-600">Nhập số điện thoại để kiểm tra đơn hàng:</p>
                   {/* <Input
                     allowClear
                     prefix={
@@ -211,12 +188,12 @@ export default function CheckShoppingPage() {
                     prefix={
                       <SearchOutlined
                         style={{
-                          color: "gray",
+                          color: "gray"
                         }}
                       />
                     }
-                    onChange={(e) => {
-                      setValueSearchPhone(e.target.value);
+                    onChange={e => {
+                      setValueSearchPhone(e.target.value)
                     }}
                     className="w-1/3"
                     placeholder="Nhập số điện thoại"
@@ -228,29 +205,24 @@ export default function CheckShoppingPage() {
                     size="small"
                     columns={columns}
                     dataSource={listOrder}
-                    onRow={(record) => {
+                    onRow={record => {
                       return {
                         onClick: () => {
-                          setItemSelected(record);
-                        },
-                      };
+                          setItemSelected(record)
+                        }
+                      }
                     }}
                     pagination={{
                       current: __pagination.current.page_num,
                       pageSize: __pagination.current.page_size,
                       total: __pagination.current.count,
                       showSizeChanger: true,
-                      pageSizeOptions: [10, 20, 50, 100],
+                      pageSizeOptions: [10, 20, 50, 100]
                     }}
                     onChange={handleTableChange}
                     loading={isFetching}
                     locale={{
-                      emptyText: (
-                        <Empty
-                          description="Không có dữ liệu"
-                          image={Empty.PRESENTED_IMAGE_SIMPLE}
-                        />
-                      ),
+                      emptyText: <Empty description="Không có dữ liệu" image={Empty.PRESENTED_IMAGE_SIMPLE} />
                     }}
                   />
 
@@ -264,22 +236,15 @@ export default function CheckShoppingPage() {
         </div>
       </div>
       {isModalOpen && (
-        <ModalDetailsOrder
-          dataOrder={itemSelected}
-          isModalOpen={isModalOpen}
-          setIsModalOpen={setIsModalOpen}
-        />
+        <ModalDetailsOrder dataOrder={itemSelected} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
       )}
     </div>
-  );
+  )
 }
 
 const CustomTable = styled.div`
   & .ant-table-wrapper .ant-table-thead > tr > th,
-  :where(.css-dev-only-do-not-override-6j9yrn).ant-table-wrapper
-    .ant-table-thead
-    > tr
-    > td {
+  :where(.css-dev-only-do-not-override-6j9yrn).ant-table-wrapper .ant-table-thead > tr > td {
     background: #cce3de;
   }
-`;
+`

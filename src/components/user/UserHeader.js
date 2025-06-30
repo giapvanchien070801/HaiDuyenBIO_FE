@@ -1,5 +1,5 @@
-"use client";
-import layoutUserStyle from "@/styles/layout_user_style.module.css";
+"use client"
+import layoutUserStyle from "@/styles/layout_user_style.module.css"
 import {
   DownOutlined,
   PhoneFilled,
@@ -14,25 +14,25 @@ import {
   PlayCircleOutlined,
   ContactsOutlined,
   TruckOutlined,
-  SearchOutlined,
-} from "@ant-design/icons";
-import Link from "next/link";
-import { useQuery } from "react-query";
-import Base from "@/models/Base";
-import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
-import { Badge, Button, Popover, Input, Tooltip } from "antd";
-import CategoryProduct from "@/models/CategoryProduct";
-import ListArticleByCategory from "./home-page/ListArticleByCategory";
+  SearchOutlined
+} from "@ant-design/icons"
+import Link from "next/link"
+import { useQuery } from "react-query"
+import Base from "@/models/Base"
+import { useEffect, useState } from "react"
+import { usePathname } from "next/navigation"
+import { Badge, Button, Popover, Input, Tooltip } from "antd"
+import CategoryProduct from "@/models/CategoryProduct"
+import ListArticleByCategory from "./home-page/ListArticleByCategory"
 
-const { Search } = Input;
+const { Search } = Input
 
 export default function UserHeader() {
-  const pathname = usePathname();
-  const [cartTotal, setCartTotal] = useState(0);
-  const [cartCount, setCartCount] = useState(0);
-  const [scrollY, setScrollY] = useState(0);
-  const [header1Height, setHeader1Height] = useState(0);
+  const pathname = usePathname()
+  const [cartTotal, setCartTotal] = useState(0)
+  const [cartCount, setCartCount] = useState(0)
+  const [scrollY, setScrollY] = useState(0)
+  const [header1Height, setHeader1Height] = useState(0)
 
   // api lấy danh sách tất cả thể loại
   const { data: listCategoryProduct } = useQuery(
@@ -42,15 +42,15 @@ export default function UserHeader() {
         page: 0,
         size: 1000,
         search: "",
-        type: "PRODUCT",
-      });
+        type: "PRODUCT"
+      })
 
-      return res?.content;
+      return res?.content
     },
     {
-      enabled: true,
+      enabled: true
     }
-  );
+  )
 
   const { data: listCategoryArticle } = useQuery(
     ["getListCategory-UserHeader-Article"],
@@ -59,107 +59,105 @@ export default function UserHeader() {
         page: 0,
         size: 1000,
         search: "",
-        type: "ARTICLE",
-      });
+        type: "ARTICLE"
+      })
 
-      return res?.content;
+      return res?.content
     },
     {
-      enabled: true,
+      enabled: true
     }
-  );
+  )
 
-  const [activeMobileMenu, setActiveMobileMenu] = useState(false);
+  const [activeMobileMenu, setActiveMobileMenu] = useState(false)
 
   useEffect(() => {
-    setActiveMobileMenu(false);
-  }, [pathname]);
+    setActiveMobileMenu(false)
+  }, [pathname])
 
   // Tính toán tổng giá trị giỏ hàng từ localStorage
   const calculateCartTotal = () => {
     try {
-      const listProducts = JSON.parse(
-        localStorage.getItem("listProducts") || "[]"
-      );
+      const listProducts = JSON.parse(localStorage.getItem("listProducts") || "[]")
       const total = listProducts.reduce((sum, product) => {
-        return sum + (product.price || 0);
-      }, 0);
-      setCartTotal(total);
-      setCartCount(listProducts.length);
+        return sum + (product.price || 0)
+      }, 0)
+      setCartTotal(total)
+      setCartCount(listProducts.length)
     } catch (error) {
-      setCartTotal(0);
-      setCartCount(0);
+      setCartTotal(0)
+      setCartCount(0)
     }
-  };
+  }
 
   useEffect(() => {
-    calculateCartTotal();
+    calculateCartTotal()
 
     // Lắng nghe sự thay đổi của localStorage
     const handleStorageChange = () => {
-      calculateCartTotal();
-    };
+      calculateCartTotal()
+    }
 
     // Lắng nghe custom event để cập nhật ngay lập tức
     const handleCartUpdate = () => {
-      calculateCartTotal();
-    };
+      calculateCartTotal()
+    }
 
-    window.addEventListener("storage", handleStorageChange);
-    window.addEventListener("cartUpdated", handleCartUpdate);
+    window.addEventListener("storage", handleStorageChange)
+    window.addEventListener("cartUpdated", handleCartUpdate)
 
     // Thêm event listener cho custom event cartItemAdded
-    window.addEventListener("cartItemAdded", handleCartUpdate);
+    window.addEventListener("cartItemAdded", handleCartUpdate)
 
     return () => {
-      window.removeEventListener("storage", handleStorageChange);
-      window.removeEventListener("cartUpdated", handleCartUpdate);
-      window.removeEventListener("cartItemAdded", handleCartUpdate);
-    };
-  }, []);
+      window.removeEventListener("storage", handleStorageChange)
+      window.removeEventListener("cartUpdated", handleCartUpdate)
+      window.removeEventListener("cartItemAdded", handleCartUpdate)
+    }
+  }, [])
 
   // Xử lý scroll event
   useEffect(() => {
     const handleScroll = () => {
-      setScrollY(window.scrollY);
-    };
+      setScrollY(window.scrollY)
+    }
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
 
   // Lấy chiều cao của header 1
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const header1Element = document.querySelector(".header-1");
+      const header1Element = document.querySelector(".header-1")
       if (header1Element) {
-        setHeader1Height(header1Element.offsetHeight);
+        setHeader1Height(header1Element.offsetHeight)
       }
     }
-  }, []);
+  }, [])
 
   const listSocial = [
     {
       id: 1,
-      name: "Menu 1",
+      name: "Menu 1"
     },
     {
       id: 2,
-      name: "Menu 2",
+      name: "Menu 2"
     },
     {
       id: 3,
-      name: "Menu 3",
+      name: "Menu 3"
     },
     {
       id: 4,
-      name: "Menu 4",
+      name: "Menu 4"
     },
     {
       id: 5,
-      name: "Menu 5",
-    },
-  ];
+      name: "Menu 5"
+    }
+  ]
 
   const menu2 = [
     {
@@ -168,17 +166,17 @@ export default function UserHeader() {
       submenu: [
         {
           id: 1,
-          name: "Submenu 1",
+          name: "Submenu 1"
         },
         {
           id: 2,
-          name: "Submenu 2",
+          name: "Submenu 2"
         },
         {
           id: 3,
-          name: "Submenu 3",
-        },
-      ],
+          name: "Submenu 3"
+        }
+      ]
     },
     {
       id: 2,
@@ -186,23 +184,23 @@ export default function UserHeader() {
       submenu: [
         {
           id: 1,
-          name: "Submenu 1",
+          name: "Submenu 1"
         },
         {
           id: 2,
-          name: "Submenu 2",
+          name: "Submenu 2"
         },
         {
           id: 3,
-          name: "Submenu 3",
-        },
-      ],
-    },
-  ];
+          name: "Submenu 3"
+        }
+      ]
+    }
+  ]
 
   // Tính toán transform cho header 1
-  const header1Transform = Math.max(-header1Height, -scrollY);
-  const header2Top = Math.max(0, header1Height + header1Transform);
+  const header1Transform = Math.max(-header1Height, -scrollY)
+  const header2Top = Math.max(0, header1Height + header1Transform)
 
   return (
     <header className="relative">
@@ -211,17 +209,13 @@ export default function UserHeader() {
         className="header-1 z-20  bg-white"
         style={{
           transform: `translateY(${header1Transform}px)`,
-          transition: "transform 0.4s ease-out",
+          transition: "transform 0.4s ease-out"
         }}>
         <div className="container mx-auto flex justify-between py-5">
           <div className="items-center gap-5 hidden md:flex">
             <Link href={`/`} className="">
               <div className="flex items-center">
-                <img
-                  src="/images/logo-haiduyenbio-1.png"
-                  className=" h-14"
-                  alt="logo"
-                />
+                <img src="/images/logo-haiduyenbio-1.png" className=" h-14" alt="logo" />
               </div>
             </Link>
             <div className="flex items-center gap-2">
@@ -249,9 +243,7 @@ export default function UserHeader() {
             </Link>
             <div className="hidden md:block">
               <p className=" text-sm font-medium text-[#777]">Giỏ hàng</p>
-              <p className=" text-xs underline">
-                {cartTotal.toLocaleString("vi-VN")}đ
-              </p>
+              <p className=" text-xs underline">{cartTotal.toLocaleString("vi-VN")}đ</p>
             </div>
           </div>
         </div>
@@ -265,7 +257,7 @@ export default function UserHeader() {
           top: `${header2Top}px`,
           left: 0,
           right: 0,
-          transition: "top 0 ease-out",
+          transition: "top 0 ease-out"
         }}>
         <div className="flex items-center justify-between w-full lg:w-3/4 text-white">
           <Popover
@@ -302,9 +294,7 @@ export default function UserHeader() {
                 {listCategoryArticle?.map((category, index) => (
                   <li>
                     <Popover
-                      content={
-                        <ListArticleByCategory categoryId={category?.id} />
-                      }
+                      content={<ListArticleByCategory categoryId={category?.id} />}
                       trigger="hover"
                       placement="right">
                       <Link
@@ -320,9 +310,7 @@ export default function UserHeader() {
             }
             trigger="hover"
             placement="bottom">
-            <Link
-              href={`/`}
-              className="flex items-center gap-3 cursor-pointer ">
+            <Link href={`/`} className="flex items-center gap-3 cursor-pointer ">
               <MenuOutlined className=" text-2xl" />
               <p className="hidden sm:block">MAIN MENU</p>
               <DownOutlined className="hidden lg:block" />
@@ -391,5 +379,5 @@ export default function UserHeader() {
         </div>
       </div>
     </header>
-  );
+  )
 }

@@ -1,32 +1,32 @@
-"use client";
+"use client"
 
-import { HomeOutlined } from "@ant-design/icons";
-import BannerBreadcrumb from "@/components/user/common-component/BannerBreadcrumb";
-import { useQuery } from "react-query";
-import Base from "@/models/Base";
-import SidebarUser from "@/components/user/common-component/SidebarUser";
-import { Breadcrumb, Pagination, Spin } from "antd";
-import UserSwiper from "@/components/user/common-component/UserSwiper";
-import ListCardProduct from "@/components/user/common-component/ListCardProduct";
-import CardProduct from "@/components/user/common-component/CardProduct";
-import TextEditor from "@/components/admin/common/TextEditor";
-import { useState } from "react";
-import TitleList from "@/components/user/common-component/TitleList";
+import { HomeOutlined } from "@ant-design/icons"
+import BannerBreadcrumb from "@/components/user/common-component/BannerBreadcrumb"
+import { useQuery } from "react-query"
+import Base from "@/models/Base"
+import SidebarUser from "@/components/user/common-component/SidebarUser"
+import { Breadcrumb, Pagination, Spin } from "antd"
+import UserSwiper from "@/components/user/common-component/UserSwiper"
+import ListCardProduct from "@/components/user/common-component/ListCardProduct"
+import CardProduct from "@/components/user/common-component/CardProduct"
+import TextEditor from "@/components/admin/common/TextEditor"
+import { useState } from "react"
+import TitleList from "@/components/user/common-component/TitleList"
 
 export default function ProductDetailPage({ params }) {
   // Sử dụng query param từ URL
-  const idProduct = params?.id;
-  const [valueTextEditor, setValueTextEditor] = useState("");
+  const idProduct = params?.id
+  const [valueTextEditor, setValueTextEditor] = useState("")
 
   const { data: dataProduct, isFetching } = useQuery(
     ["getDetailProduct", idProduct],
     async () => {
-      const res = await Base.getDetailProduct(idProduct);
+      const res = await Base.getDetailProduct(idProduct)
 
-      return res;
+      return res
     },
     { enabled: !!idProduct }
-  );
+  )
 
   const products = [
     {
@@ -35,7 +35,7 @@ export default function ProductDetailPage({ params }) {
       image: "/images/product1.jpg",
       price: 450000,
       oldPrice: 500000,
-      discount: 10,
+      discount: 10
     },
     {
       id: 2,
@@ -43,7 +43,7 @@ export default function ProductDetailPage({ params }) {
       image: "/images/product1.jpg",
       price: 380000,
       oldPrice: 420000,
-      discount: 15,
+      discount: 15
     },
     {
       id: 3,
@@ -51,7 +51,7 @@ export default function ProductDetailPage({ params }) {
       image: "/images/product1.jpg",
       price: 550000,
       oldPrice: 600000,
-      discount: 8,
+      discount: 8
     },
     {
       id: 4,
@@ -59,7 +59,7 @@ export default function ProductDetailPage({ params }) {
       image: "/images/product1.jpg",
       price: 420000,
       oldPrice: 460000,
-      discount: 12,
+      discount: 12
     },
     {
       id: 5,
@@ -67,7 +67,7 @@ export default function ProductDetailPage({ params }) {
       image: "/images/product1.jpg",
       price: 480000,
       oldPrice: 520000,
-      discount: 8,
+      discount: 8
     },
     {
       id: 6,
@@ -75,7 +75,7 @@ export default function ProductDetailPage({ params }) {
       image: "/images/product1.jpg",
       price: 400000,
       oldPrice: 450000,
-      discount: 11,
+      discount: 11
     },
     {
       id: 7,
@@ -83,7 +83,7 @@ export default function ProductDetailPage({ params }) {
       image: "/images/product1.jpg",
       price: 520000,
       oldPrice: 580000,
-      discount: 10,
+      discount: 10
     },
     {
       id: 8,
@@ -91,7 +91,7 @@ export default function ProductDetailPage({ params }) {
       image: "/images/product1.jpg",
       price: 600000,
       oldPrice: 650000,
-      discount: 8,
+      discount: 8
     },
     {
       id: 9,
@@ -99,7 +99,7 @@ export default function ProductDetailPage({ params }) {
       image: "/images/product1.jpg",
       price: 470000,
       oldPrice: 510000,
-      discount: 8,
+      discount: 8
     },
     {
       id: 10,
@@ -107,7 +107,7 @@ export default function ProductDetailPage({ params }) {
       image: "/images/product1.jpg",
       price: 550000,
       oldPrice: 600000,
-      discount: 8,
+      discount: 8
     },
     {
       id: 11,
@@ -115,7 +115,7 @@ export default function ProductDetailPage({ params }) {
       image: "/images/product1.jpg",
       price: 580000,
       oldPrice: 630000,
-      discount: 8,
+      discount: 8
     },
     {
       id: 12,
@@ -123,9 +123,9 @@ export default function ProductDetailPage({ params }) {
       image: "/images/product1.jpg",
       price: 620000,
       oldPrice: 680000,
-      discount: 9,
-    },
-  ];
+      discount: 9
+    }
+  ]
 
   const breadcrumb = [
     {
@@ -135,7 +135,7 @@ export default function ProductDetailPage({ params }) {
           <HomeOutlined />
           <span>Trang chủ</span>
         </>
-      ),
+      )
     },
     {
       href: "/contact",
@@ -143,9 +143,9 @@ export default function ProductDetailPage({ params }) {
         <>
           <span className="text-[#2490eb]">Bài viết 11</span>
         </>
-      ),
-    },
-  ];
+      )
+    }
+  ]
 
   return (
     <div className="  pb-24">
@@ -157,13 +157,10 @@ export default function ProductDetailPage({ params }) {
 
           <TitleList title="Bài viết 11" />
           <Spin spinning={false}>
-            <div
-              dangerouslySetInnerHTML={{ __html: valueTextEditor }}
-              className="blog-content my-5"
-            />
+            <div dangerouslySetInnerHTML={{ __html: valueTextEditor }} className="blog-content my-5" />
             <TextEditor
-              onChange={(value) => {
-                setValueTextEditor(value);
+              onChange={value => {
+                setValueTextEditor(value)
               }}
               valueDetail={valueTextEditor}
             />
@@ -174,5 +171,5 @@ export default function ProductDetailPage({ params }) {
         <SidebarUser />
       </div>
     </div>
-  );
+  )
 }

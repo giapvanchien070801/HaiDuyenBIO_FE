@@ -1,35 +1,35 @@
-"use client";
+"use client"
 
-import { Collapse, Spin } from "antd";
-import { HomeOutlined, RightOutlined } from "@ant-design/icons";
-import styled from "@emotion/styled";
-import BannerBreadcrumb from "@/components/user/common-component/BannerBreadcrumb";
-import Link from "next/link";
-import { useQuery } from "react-query";
-import Base from "@/models/Base";
+import { Collapse, Spin } from "antd"
+import { HomeOutlined, RightOutlined } from "@ant-design/icons"
+import styled from "@emotion/styled"
+import BannerBreadcrumb from "@/components/user/common-component/BannerBreadcrumb"
+import Link from "next/link"
+import { useQuery } from "react-query"
+import Base from "@/models/Base"
 
 export default function ServiceDetail({ params }) {
   // Sử dụng query param từ URL
-  const idService = params?.id;
+  const idService = params?.id
 
   // api lấy danh sách tất cả dịch vụ
   const { data: listProduct } = useQuery(
     ["getAllServiceMenu"],
     async () => {
-      const res = await Base.getAllService();
-      return res;
+      const res = await Base.getAllService()
+      return res
     },
     {}
-  );
+  )
   const { data: dataService, isFetching } = useQuery(
     ["getDetailService", idService],
     async () => {
-      const res = await Base.getDetailService(idService);
+      const res = await Base.getDetailService(idService)
 
-      return res;
+      return res
     },
     { enabled: !!idService }
-  );
+  )
   const breadcrumb = [
     {
       href: "/",
@@ -38,7 +38,7 @@ export default function ServiceDetail({ params }) {
           <HomeOutlined />
           <span>Trang chủ</span>
         </>
-      ),
+      )
     },
     {
       href: "/contact",
@@ -46,38 +46,37 @@ export default function ServiceDetail({ params }) {
         <>
           <span className="text-[#2490eb]">{dataService?.Name}</span>
         </>
-      ),
-    },
-  ];
+      )
+    }
+  ]
 
   const text = `
   A dog is a type of domesticated animal.
   Known for its loyalty and faithfulness,
   it can be found as a welcome guest in many households across the world.
-`;
+`
 
   const items = [
     {
       key: "1",
       label: "Tôi có thể đến đâu để cung cấp mẫu để thử nghiệm?",
-      children: <p>{text}</p>,
+      children: <p>{text}</p>
     },
     {
       key: "2",
       label: "Điều gì xảy ra với mẫu của tôi sau khi tôi đã cung cấp nó?",
-      children: <p>{text}</p>,
+      children: <p>{text}</p>
     },
     {
       key: "3",
-      label:
-        "Thử nghiệm trong phòng thí nghiệm sẽ khiến tôi tốn bao nhiêu tiền?",
-      children: <p>{text}</p>,
-    },
-  ];
+      label: "Thử nghiệm trong phòng thí nghiệm sẽ khiến tôi tốn bao nhiêu tiền?",
+      children: <p>{text}</p>
+    }
+  ]
 
-  const onChange = (key) => {
+  const onChange = key => {
     // Handle collapse change
-  };
+  }
 
   return (
     <div className="flex flex-col items-center">
@@ -90,9 +89,7 @@ export default function ServiceDetail({ params }) {
               <div
                 key={index}
                 className={`${
-                  service?.Id === Number(idService)
-                    ? "bg-[#2490eb] text-white"
-                    : "bg-white"
+                  service?.Id === Number(idService) ? "bg-[#2490eb] text-white" : "bg-white"
                 } mb-2 rounded`}>
                 <Link
                   href={`/service-detail/${service?.Id}`}
@@ -115,22 +112,15 @@ export default function ServiceDetail({ params }) {
         </div>
         <div className="lg:w-8/12 w-full  bg-red-40 h-full p-8">
           <Spin spinning={isFetching}>
-            <div
-              dangerouslySetInnerHTML={{ __html: dataService?.Description }}
-              className="blog-content"
-            />
+            <div dangerouslySetInnerHTML={{ __html: dataService?.Description }} className="blog-content" />
           </Spin>
 
           {/* Lời khuyên & Thông tin về Sức khỏe */}
           <div className="mt-10">
-            <p className="text-3xl font-semibold">
-              Lời khuyên & Thông tin về Sức khỏe
-            </p>
+            <p className="text-3xl font-semibold">Lời khuyên & Thông tin về Sức khỏe</p>
             <p className="text-[#666666]  mt-4 leading-8 mb-10">
-              Medicate is a long established fact that a reader will be
-              distracted by the readable content of a page when looking at its
-              layout. Lorem Ipsum is simply dummy text of the printing and
-              typesetting industry.
+              Medicate is a long established fact that a reader will be distracted by the readable content of a page
+              when looking at its layout. Lorem Ipsum is simply dummy text of the printing and typesetting industry.
             </p>
             <CustomCollapse>
               <Collapse
@@ -144,7 +134,7 @@ export default function ServiceDetail({ params }) {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 const CustomCollapse = styled.div`
@@ -171,4 +161,4 @@ const CustomCollapse = styled.div`
     color: #666666;
     line-height: 2rem;
   }
-`;
+`

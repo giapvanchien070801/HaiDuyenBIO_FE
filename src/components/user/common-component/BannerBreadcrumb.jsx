@@ -1,9 +1,9 @@
-"use client";
+"use client"
 
-import { Breadcrumb } from "antd";
+import { Breadcrumb } from "antd"
 
 export default function BannerBreadcrumb(props) {
-  const { breadcrumb, title } = props;
+  const { breadcrumb, title } = props
 
   return (
     <div className="h-[360px] w-full flex flex-col items-center justify-center banner-contact ">
@@ -14,5 +14,5 @@ export default function BannerBreadcrumb(props) {
         <Breadcrumb items={breadcrumb} />
       </div>
     </div>
-  );
+  )
 }
