@@ -59,12 +59,13 @@ const ModalCreateVideo = (props) => {
 
   const handleFinish = (values) => {
     if (isModalCreate) {
-      createVideoMutate.mutate(values);
+      createVideoMutate.mutate({ ...values, type: 2 });
     } else {
       updateVideoMutate.mutate({
         id: dataDetail?.id,
         externalLink: values?.link,
         description: values?.description,
+        type: 2,
       });
     }
   };
@@ -77,7 +78,8 @@ const ModalCreateVideo = (props) => {
         onOk={handleOk}
         onCancel={handleCancel}
         okText={dataDetail ? "Sửa" : "Tạo"}
-        cancelText="Hủy">
+        cancelText="Hủy"
+      >
         <Form
           className="w-full"
           initialValues={{
@@ -87,19 +89,22 @@ const ModalCreateVideo = (props) => {
           }}
           form={form}
           onFinish={handleFinish}
-          layout="vertical">
+          layout="vertical"
+        >
           <Form.Item
             label="Link video"
             name="link"
             rules={[
               { required: true, message: "Link video không được bỏ trống!" },
-            ]}>
+            ]}
+          >
             <Input placeholder="Nhập link video" />
           </Form.Item>
           <Form.Item
             label="Mô tả"
             name="description"
-            rules={[{ required: true, message: "Mô tả không được bỏ trống!" }]}>
+            rules={[{ required: true, message: "Mô tả không được bỏ trống!" }]}
+          >
             <Input.TextArea placeholder="Nhập mô tả" />
           </Form.Item>
         </Form>
