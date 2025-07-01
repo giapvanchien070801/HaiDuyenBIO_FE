@@ -12,10 +12,10 @@ const getBase64 = file =>
     reader.onerror = error => reject(error)
   })
 
-const UploadListImageArticle = ({ value, imageDetail, onChange }) => {
+const UploadListImageArticle = ({ value, onChange }) => {
   const [previewOpen, setPreviewOpen] = useState(false)
   const [previewImage, setPreviewImage] = useState("")
-  const [fileList, setFileList] = useState(value || [])
+  const [fileList, setFileList] = useState([])
   const [listImageResponse, setListImageResponse] = useState([])
 
   useEffect(() => {
@@ -23,18 +23,19 @@ const UploadListImageArticle = ({ value, imageDetail, onChange }) => {
   }, [listImageResponse])
 
   useEffect(() => {
-    if (imageDetail && Array.isArray(imageDetail)) {
-      const convertedFileList = imageDetail.map((url, index) => ({
-        uid: `existing-${index}`,
-        name: `image-${index}`,
-        status: "done",
-        url: url,
-        thumbUrl: url
-      }))
-      setFileList(convertedFileList)
-      setListImageResponse(imageDetail)
+    if (value) {
+      setFileList([
+        {
+          uid: `existing-1`,
+          name: `image-1`,
+          status: "done",
+          url: value,
+          thumbUrl: value
+        }
+      ])
+      setListImageResponse([value])
     }
-  }, [imageDetail])
+  }, [value])
 
   const handlePreview = async file => {
     if (!file.url && !file.preview) {
@@ -69,7 +70,7 @@ const UploadListImageArticle = ({ value, imageDetail, onChange }) => {
   const uploadFileMutation = useMutation({
     mutationFn: FilesRepository.uploadFile,
     onSuccess: data => {
-      setListImageResponse([...listImageResponse, data])
+      setListImageResponse([data])
       message.success("Tải lên thành công")
     },
     onError: error => {

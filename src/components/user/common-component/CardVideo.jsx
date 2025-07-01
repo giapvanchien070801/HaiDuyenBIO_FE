@@ -26,7 +26,7 @@ export default function CardVideo(props) {
           <img src={video.avatar} alt={video.channel} className="w-9 h-9 rounded-full" />
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-semibold text-gray-900 line-clamp-2 mb-1 hover:text-blue-600 cursor-pointer">
+          <p className="text-sm font-semibold text-gray-900 line-clamp-2 mb-1 hover:text-blue-600 cursor-pointer h-10">
             {video.title}
           </p>
           <div className="flex items-center text-sm text-gray-600">

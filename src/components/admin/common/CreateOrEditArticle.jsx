@@ -51,6 +51,7 @@ const CreateOrEditArticle = props => {
         id: id,
         ...values
       }
+
       updateServiceMutate.mutate(valueUpdate)
     }
   }
@@ -96,7 +97,8 @@ const CreateOrEditArticle = props => {
     {}
   )
 
-  const valueDescription = form.getFieldValue("description")
+  const valueDescription = form.getFieldValue("content")
+  const imageUrl = form.getFieldValue("imageUrl")
 
   return (
     <CustomForm className="w-full h-full ">
@@ -116,7 +118,7 @@ const CreateOrEditArticle = props => {
                   imageUrl: imageResponse
                 })
               }}
-              imageDetail={dataDetail?.imageUrl}
+              // imageDetail={[dataDetail?.imageUrl]}
             />
           </Form.Item>
 
@@ -168,18 +170,18 @@ const CreateOrEditArticle = props => {
             </Form.Item>
           </div>
 
-          {/* <Form.Item
+          <Form.Item
             name="summary"
             rules={[
               {
                 required: true,
-                message: "Mô tả không được bỏ trống!",
-              },
+                message: "Mô tả không được bỏ trống!"
+              }
             ]}
             className="w-full"
             label="Mô tả ngắn">
             <TextArea rows={4} placeholder="Nhập mô tả ngắn" maxLength={500} />
-          </Form.Item> */}
+          </Form.Item>
 
           <Form.Item
             name="content"
@@ -188,7 +190,7 @@ const CreateOrEditArticle = props => {
             <TextEditor
               onChange={value => {
                 form.setFieldsValue({
-                  description: value
+                  content: value
                 })
               }}
               valueDetail={valueDescription}

@@ -101,7 +101,7 @@ export default function NewsPage() {
       {/* <UserSwiper /> */}
 
       <div className="grid xl:grid-cols-10 gap-6 mt-12 container-original mx-auto">
-        <div className="blog-content col-span-7 bg-white md:px-16 px-4">
+        <div className=" col-span-7 bg-white md:px-16 px-4">
           <Breadcrumb className="my-5" items={breadcrumb} />
           {/* <Input
             allowClear

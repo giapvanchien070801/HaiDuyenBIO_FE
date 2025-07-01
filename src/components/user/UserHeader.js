@@ -20,14 +20,17 @@ import Link from "next/link"
 import { useQuery } from "react-query"
 import Base from "@/models/Base"
 import { useEffect, useState } from "react"
-import { usePathname } from "next/navigation"
-import { Badge, Button, Popover, Input, Tooltip } from "antd"
+import { usePathname, useRouter } from "next/navigation"
+import { Badge, Button, Popover, Input, Tooltip, Select } from "antd"
 import CategoryProduct from "@/models/CategoryProduct"
 import ListArticleByCategory from "./home-page/ListArticleByCategory"
+import { removeEmptyFields, useDebounce } from "@/common/functions/commonFunction"
+import Product from "@/models/Product"
 
 const { Search } = Input
 
 export default function UserHeader() {
+  const router = useRouter()
   const pathname = usePathname()
   const [cartTotal, setCartTotal] = useState(0)
   const [cartCount, setCartCount] = useState(0)
@@ -63,6 +66,28 @@ export default function UserHeader() {
       })
 
       return res?.content
+    },
+    {
+      enabled: true
+    }
+  )
+
+  const [searchProduct, setSearchProduct] = useState("")
+  const searchProductDebounce = useDebounce(searchProduct, 500)
+
+  const { data: listProduct } = useQuery(
+    ["getListProductPagination", searchProductDebounce],
+    async () => {
+      const params = {
+        page: 0,
+        size: 10,
+        search: searchProductDebounce
+      }
+      const res = await Product.getProductList(removeEmptyFields(params))
+      return res?.content?.map(item => ({
+        label: item?.name,
+        value: item?.id
+      }))
     },
     {
       enabled: true
@@ -318,13 +343,28 @@ export default function UserHeader() {
           </Popover>
 
           <div className="flex items-center w-2/3 lg:w-5/12">
-            <Input.Search
+            <Select
+              options={listProduct}
+              placeholder="Tìm kiếm..."
+              size="middle"
+              suffixIcon={<SearchOutlined />}
+              className="w-full"
+              showSearch
+              onChange={value => {
+                router.push(`/product-detail/${value}`)
+              }}
+              optionFilterProp="label"
+              onSearch={value => {
+                setSearchProduct(value)
+              }}
+            />
+            {/* <Input.Search
               placeholder="Tìm kiếm..."
               allowClear
               enterButton={<SearchOutlined />}
               size="middle"
               className="w-full"
-            />
+            /> */}
           </div>
 
           <div className=" self-stretch lg:static absolute  z-10 top-full w-full lg:w-fit left-0">

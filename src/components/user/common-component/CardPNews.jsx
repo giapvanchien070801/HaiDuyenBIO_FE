@@ -12,9 +12,6 @@ export default function CardPNews(props) {
     router.push(`/news/${dataNews.id || 6}`)
   }
 
-  // Lấy category, fallback nếu không có
-  const category = (dataNews.category && dataNews.category.toUpperCase()) || "CHUYÊN MỤC"
-
   return (
     <div
       key={dataNews.id}
@@ -22,7 +19,7 @@ export default function CardPNews(props) {
       onClick={handleClick}>
       {/* CATEGORY */}
 
-      <span className="px-4 text-xs font-bold text-[#787b9d] tracking-widest uppercase">{category}</span>
+      <span className="px-4 text-xs font-bold text-[#787b9d] tracking-widest uppercase">{dataNews?.categoryName}</span>
 
       {/* TITLE */}
 
@@ -42,11 +39,11 @@ export default function CardPNews(props) {
       {/* IMAGE + DESCRIPTION */}
       <div className="flex flex-col md:flex-row gap-5">
         <div className="w-1/2 h-72">
-          <img src={dataNews.image} alt={dataNews.title} className="object-cover mb-2 md:mb-0 size-full" />
+          <img src={dataNews?.imageUrl} alt={dataNews?.title} className="object-cover mb-2 md:mb-0 size-full" />
         </div>
 
         <div className=" w-1/2 pr-5">
-          <p className="text-gray-700 text-sm flex-1 text-justify self-center line-clamp-6">{dataNews.description}</p>
+          <p className="text-gray-700 text-sm flex-1 text-justify self-center line-clamp-6">{dataNews?.summary}</p>
           <Button className="flex items-cente border-2 border-[#2a317a] text-[#2a317a] hover:text-cyan-700 font-medium text-sm transition-colors duration-300 mt-4">
             Tiếp tục đọc
             <ArrowRightOutlined className="ml-1" />
@@ -57,7 +54,7 @@ export default function CardPNews(props) {
       {/* Đăng trong + category */}
       <div className="px-4 pb-4 pt-3 mt-auto">
         <span className="text-xs text-[#787b9d]">
-          Đăng trong <span className="font-semibold text-[#2a317a]">{category}</span>
+          Đăng trong <span className="font-semibold text-[#2a317a]">{dataNews?.categoryName}</span>
         </span>
       </div>
     </div>

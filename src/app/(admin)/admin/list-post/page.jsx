@@ -124,7 +124,7 @@ export default function ListPost() {
             size="middle"
             className="border-teal-500 text-teal-500"
             type="default"
-            onClick={() => router.push(`/admin/list-post/edit/${record?.slug}`)}>
+            onClick={() => router.push(`/admin/list-post/edit/${record?.id}`)}>
             Xem chi tiết/Sửa
           </Button>
 
