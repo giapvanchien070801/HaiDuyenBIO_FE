@@ -1,14 +1,10 @@
-"use client";
-import { Breadcrumb, Button, Input, Space, Table, Tag } from "antd";
-import {
-  HomeOutlined,
-  SearchOutlined,
-  PlusCircleOutlined,
-} from "@ant-design/icons";
-import { useState } from "react";
-import styled from "@emotion/styled";
-import CreateOrEdit from "../../../../../../components/admin/common/CreateOrEditArticle";
-import CreateOrEditService from "../../components/CreateOrEditService";
+"use client"
+import { Breadcrumb, Button, Input, Space, Table, Tag } from "antd"
+import { HomeOutlined, SearchOutlined, PlusCircleOutlined } from "@ant-design/icons"
+import { useState } from "react"
+import styled from "@emotion/styled"
+import CreateOrEdit from "../../../../../../components/admin/common/CreateOrEditArticle"
+import CreateOrEditService from "../../components/CreateOrEditService"
 
 export default function EditDepartment({ params }) {
   const breadcrumb = [
@@ -19,7 +15,7 @@ export default function EditDepartment({ params }) {
           <HomeOutlined />
           <span>Trang chủ</span>
         </>
-      ),
+      )
     },
     {
       href: "/admin/service",
@@ -27,7 +23,7 @@ export default function EditDepartment({ params }) {
         <>
           <span className="text-cyan-700">Danh sách Sản phẩm</span>
         </>
-      ),
+      )
     },
     {
       href: "/admin/service/create",
@@ -35,9 +31,9 @@ export default function EditDepartment({ params }) {
         <>
           <span className="text-cyan-700">Chỉnh sửa Sản phẩm</span>
         </>
-      ),
-    },
-  ];
+      )
+    }
+  ]
 
   return (
     <div>
@@ -45,5 +41,5 @@ export default function EditDepartment({ params }) {
 
       <CreateOrEditService actionType="edit" id={params?.id} />
     </div>
-  );
+  )
 }

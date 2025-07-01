@@ -1,7 +1,7 @@
-"use client";
+"use client"
 
 export default function TitleList(props) {
-  const { title } = props;
+  const { title } = props
 
   return (
     <div className="container mx-auto py-8 px-8">
@@ -13,5 +13,5 @@ export default function TitleList(props) {
         <div className="flex-grow h-[1px] bg-gray-300"></div>
       </div>
     </div>
-  );
+  )
 }

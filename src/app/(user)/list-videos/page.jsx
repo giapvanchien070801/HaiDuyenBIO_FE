@@ -1,13 +1,13 @@
-"use client";
+"use client"
 
-import { HomeOutlined } from "@ant-design/icons";
-import BannerBreadcrumb from "@/components/user/common-component/BannerBreadcrumb";
-import { useQuery } from "react-query";
-import Base from "@/models/Base";
-import CardDoctor from "@/components/user/CardDoctor";
-import { Breadcrumb, Spin } from "antd";
-import ListVideos from "@/components/user/common-component/ListVideos";
-import FilesRepository from "@/models/FilesRepository";
+import { HomeOutlined } from "@ant-design/icons"
+import BannerBreadcrumb from "@/components/user/common-component/BannerBreadcrumb"
+import { useQuery } from "react-query"
+import Base from "@/models/Base"
+import CardDoctor from "@/components/user/CardDoctor"
+import { Breadcrumb, Spin } from "antd"
+import ListVideos from "@/components/user/common-component/ListVideos"
+import FilesRepository from "@/models/FilesRepository"
 
 export default function ListVideosPage() {
   const breadcrumb = [
@@ -18,7 +18,7 @@ export default function ListVideosPage() {
           <HomeOutlined />
           <span>Trang chủ</span>
         </>
-      ),
+      )
     },
     {
       href: "/contact",
@@ -26,9 +26,9 @@ export default function ListVideosPage() {
         <>
           <span className="text-[#2490eb]">Danh sách Videos</span>
         </>
-      ),
-    },
-  ];
+      )
+    }
+  ]
 
   return (
     <div className=" flex flex-col items-center mb-36 ">
@@ -40,5 +40,5 @@ export default function ListVideosPage() {
         </div>
       </div>
     </div>
-  );
+  )
 }

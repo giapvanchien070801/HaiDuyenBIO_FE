@@ -1,15 +1,15 @@
-"use client";
-import "../globals.css";
-import UserHeader from "@/components/user/UserHeader";
-import dynamic from "next/dynamic";
-import Script from "next/script";
-import { QueryClient, QueryClientProvider } from "react-query";
+"use client"
+import "../globals.css"
+import UserHeader from "@/components/user/UserHeader"
+import dynamic from "next/dynamic"
+import Script from "next/script"
+import { QueryClient, QueryClientProvider } from "react-query"
 
 const UserFooter = dynamic(() => import("@/components/user/UserFooter"), {
-  ssr: false,
-});
+  ssr: false
+})
 export default function RootLayout({ children }) {
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient()
 
   return (
     <html lang="en">
@@ -26,11 +26,8 @@ export default function RootLayout({ children }) {
           <UserFooter />
         </QueryClientProvider>
 
-        <Script
-          src="/scripts/ChatWithCustomer.js"
-          strategy="afterInteractive"
-        />
+        <Script src="/scripts/ChatWithCustomer.js" strategy="afterInteractive" />
       </body>
     </html>
-  );
+  )
 }

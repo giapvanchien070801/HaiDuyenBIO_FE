@@ -1,72 +1,59 @@
-import { useEffect, useState } from "react";
-import {
-  Form,
-  Input,
-  Button,
-  DatePicker,
-  Select,
-  Switch,
-  message,
-  Spin,
-  InputNumber,
-} from "antd";
-import TextEditor from "@/components/admin/common/TextEditor";
-import UploadAvatar from "../upload/UploadAvatar";
-import { useRouter } from "next/navigation";
-import styled from "@emotion/styled";
-import { useMutation, useQuery } from "react-query";
-import Base from "@/models/Base";
-import UploadImage from "../upload/UploadImage";
-import Product from "@/models/Product";
-import CategoryProduct from "@/models/CategoryProduct";
-import {
-  omitField,
-  removeEmptyFields,
-} from "@/common/functions/commonFunction";
+import { useEffect, useState } from "react"
+import { Form, Input, Button, DatePicker, Select, Switch, message, Spin, InputNumber } from "antd"
+import TextEditor from "@/components/admin/common/TextEditor"
+import UploadAvatar from "../upload/UploadAvatar"
+import { useRouter } from "next/navigation"
+import styled from "@emotion/styled"
+import { useMutation, useQuery } from "react-query"
+import Base from "@/models/Base"
+import UploadImage from "../upload/UploadImage"
+import Product from "@/models/Product"
+import CategoryProduct from "@/models/CategoryProduct"
+import { omitField, removeEmptyFields } from "@/common/functions/commonFunction"
 
-const { TextArea } = Input;
+const { TextArea } = Input
 
-const CreateOrEdit = (props) => {
-  const { id, actionType } = props;
-  const [form] = Form.useForm();
+const CreateOrEdit = props => {
+  const { id, actionType } = props
+  const [form] = Form.useForm()
 
   // actionType = create | update
-  const isCreate = actionType === "create";
+  const isCreate = actionType === "create"
 
-  const router = useRouter();
+  const router = useRouter()
 
   // tạo sửa Khoa
   const createProductMutate = useMutation(Product.createProduct, {
     onSuccess: () => {
-      message.success("Tạo mới sản phẩm thành công!");
-      form.resetFields();
-      router.back();
+      message.success("Tạo mới sản phẩm thành công!")
+      form.resetFields()
+      router.back()
     },
-    onError: (e) => {
-      message.error("Tạo mới sản phẩm thất bại!");
-    },
-  });
+    onError: e => {
+      message.error("Tạo mới sản phẩm thất bại!")
+    }
+  })
 
   const updateProductMutate = useMutation(Product.updateProduct, {
     onSuccess: () => {
-      message.success("Sửa sản phẩm thành công!");
-      form.resetFields();
-      router.back();
+      message.success("Sửa sản phẩm thành công!")
+      form.resetFields()
+      router.back()
     },
-    onError: (e) => {
-      message.error("Sửa sản phẩm thất bại!");
-    },
-  });
+    onError: e => {
+      message.error("Sửa sản phẩm thất bại!")
+    }
+  })
 
   const { data: dataDetail, isFetching: isFetchingDetail } = useQuery(
     ["getDetail", id],
     async () => {
-      const res = await Product.getProductDetail(id);
+      const res = await Product.getProductDetail(id)
 
-      return res;
+      return res
     },
     { enabled: !!id }
-  );
+  )
 
   useEffect(() => {
     if (dataDetail && id) {
@@ -77,60 +64,54 @@ const CreateOrEdit = (props) => {
         Title: dataDetail?.Title,
         Price: dataDetail?.Price,
         Content: dataDetail?.Content,
-        ImagePath: dataDetail?.ImagePath,
-      });
+        ImagePath: dataDetail?.ImagePath
+      })
     }
-  }, [dataDetail, id]);
+  }, [dataDetail, id])
 
   // Filter `option.label` match the user type `input`
-  const filterOption = (input, option) =>
-    (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
+  const filterOption = (input, option) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
 
   // api lấy danh sách tất cả thể loại
   const { data: listCategory } = useQuery(
     ["getAllCateAdmin"],
     async () => {
-      const res = await CategoryProduct.getCategoryProductList();
+      const res = await CategoryProduct.getCategoryProductList()
 
-      const dataConver = res?.map((category) => {
-        return { label: category?.Name, value: category?.Id };
-      });
-      return dataConver;
+      const dataConver = res?.map(category => {
+        return { label: category?.Name, value: category?.Id }
+      })
+      return dataConver
     },
     {}
-  );
+  )
 
-  const onFinish = (values) => {
+  const onFinish = values => {
     const valueCreate = {
       Name: values?.Name?.trim(),
-      Description: valueTextEditor,
-    };
+      Description: ""
+    }
 
     const valueUpdate = {
       Id: id,
       Name: values?.Name?.trim(),
-      Description: valueTextEditor,
-    };
+      Description: ""
+    }
 
     if (isCreate) {
-      createProductMutate.mutate(valueCreate);
+      createProductMutate.mutate(valueCreate)
     } else {
-      updateProductMutate.mutate(valueUpdate);
+      updateProductMutate.mutate(valueUpdate)
     }
-  };
+  }
 
   return (
     <CustomForm className="w-full h-full ">
-      <Spin
-        spinning={
-          createProductMutate.isLoading ||
-          updateProductMutate.isLoading ||
-          isFetchingDetail
-        }>
+      <Spin spinning={createProductMutate.isLoading || updateProductMutate.isLoading || isFetchingDetail}>
         <Form
           layout="vertical"
           initialValues={{
-            remember: true,
+            remember: true
           }}
           scrollToFirstError
           onFinish={onFinish}
@@ -139,10 +120,10 @@ const CreateOrEdit = (props) => {
             {/* <UploadAvatar /> */}
             <Form.Item name="ImagePath">
               <UploadImage
-                onChange={(value) => {
+                onChange={value => {
                   form.setFieldsValue({
-                    ImagePath: value,
-                  });
+                    ImagePath: value
+                  })
                 }}
                 imgDetail={form.getFieldValue("ImagePath")}
               />
@@ -156,23 +137,19 @@ const CreateOrEdit = (props) => {
               rules={[
                 {
                   required: true,
-                  message: "Không được bỏ trống!",
-                },
+                  message: "Không được bỏ trống!"
+                }
               ]}
               label={"Tên sản phẩm"}>
-              <Input
-                allowClear
-                className=" mb-5"
-                placeholder="Nhập tên sản phẩm"
-              />
+              <Input allowClear className=" mb-5" placeholder="Nhập tên sản phẩm" />
             </Form.Item>
 
             <Form.Item
               rules={[
                 {
                   required: true,
-                  message: "Danh mục không được bỏ trống!",
-                },
+                  message: "Danh mục không được bỏ trống!"
+                }
               ]}
               name="categoryId"
               className="w-1/2"
@@ -194,8 +171,8 @@ const CreateOrEdit = (props) => {
               rules={[
                 {
                   required: true,
-                  message: "Giá không được bỏ trống!",
-                },
+                  message: "Giá không được bỏ trống!"
+                }
               ]}
               label={"Giá"}>
               <Input allowClear className=" mb-5" placeholder="Nhập giá" />
@@ -205,8 +182,8 @@ const CreateOrEdit = (props) => {
               rules={[
                 {
                   required: true,
-                  message: "Giảm giá không được bỏ trống!",
-                },
+                  message: "Giảm giá không được bỏ trống!"
+                }
               ]}
               name="discount"
               className="w-1/2"
@@ -216,7 +193,7 @@ const CreateOrEdit = (props) => {
                 placeholder="Nhập giảm giá"
                 min={0}
                 max={100}
-                formatter={(value) => `${value}%`}
+                formatter={value => `${value}%`}
                 // parser={(value) => value.replace("%", "")}
                 className="w-full"
               />
@@ -228,8 +205,8 @@ const CreateOrEdit = (props) => {
             rules={[
               {
                 required: true,
-                message: "Mô tả không được bỏ trống!",
-              },
+                message: "Mô tả không được bỏ trống!"
+              }
             ]}
             className="w-full"
             label="Mô tả ngắn">
@@ -238,10 +215,10 @@ const CreateOrEdit = (props) => {
 
           <Form.Item name="content" label="Mô tả chi tiết">
             <TextEditor
-              onChange={(value) => {
+              onChange={value => {
                 form.setFieldsValue({
-                  Content: value,
-                });
+                  Content: value
+                })
               }}
               valueDetail={form.getFieldValue("content")}
             />
@@ -252,7 +229,7 @@ const CreateOrEdit = (props) => {
               type="text"
               className="text-[#2c3d94]  border border-solid border-[#2c3d94]"
               onClick={() => {
-                router.back();
+                router.back()
               }}>
               Hủy
             </Button>
@@ -271,13 +248,13 @@ const CreateOrEdit = (props) => {
         </Form>
       </Spin>
     </CustomForm>
-  );
-};
+  )
+}
 
 const CustomForm = styled.div`
   & .ant-form-item-control-input-content .mb-5 {
     margin: 0;
   }
-`;
+`
 
-export default CreateOrEdit;
+export default CreateOrEdit

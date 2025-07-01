@@ -1,8 +1,8 @@
-"use client";
-import { Breadcrumb } from "antd";
-import { HomeOutlined } from "@ant-design/icons";
+"use client"
+import { Breadcrumb } from "antd"
+import { HomeOutlined } from "@ant-design/icons"
 
-import CreateOrEditArticle from "@/components/admin/common/CreateOrEditArticle";
+import CreateOrEditArticle from "@/components/admin/common/CreateOrEditArticle"
 
 export default function EditPost({ params }) {
   const breadcrumb = [
@@ -13,7 +13,7 @@ export default function EditPost({ params }) {
           <HomeOutlined />
           <span>Trang chủ</span>
         </>
-      ),
+      )
     },
     {
       href: "/admin/list-post",
@@ -21,7 +21,7 @@ export default function EditPost({ params }) {
         <>
           <span className="text-cyan-700">Các bài viết</span>
         </>
-      ),
+      )
     },
     {
       href: "/admin/list-post/edit",
@@ -29,9 +29,9 @@ export default function EditPost({ params }) {
         <>
           <span className="text-cyan-700">Chỉnh sửa bài viết</span>
         </>
-      ),
-    },
-  ];
+      )
+    }
+  ]
 
   return (
     <div>
@@ -39,5 +39,5 @@ export default function EditPost({ params }) {
 
       <CreateOrEditArticle typePage="post" id={params?.id} />
     </div>
-  );
+  )
 }

@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import {
   CalculatorOutlined,
@@ -6,101 +6,95 @@ import {
   DollarOutlined,
   ShoppingCartOutlined,
   InfoCircleOutlined,
-  CreditCardOutlined,
-} from "@ant-design/icons";
-import { Button, Table } from "antd";
-import { useState, useEffect } from "react";
+  CreditCardOutlined
+} from "@ant-design/icons"
+import { Button, Table } from "antd"
+import { useState, useEffect } from "react"
 
 export default function BillingDetailsStep2({ setStep, form }) {
-  const [cartItems, setCartItems] = useState([]);
-  const [subtotal, setSubtotal] = useState(0);
-  const [total, setTotal] = useState(0);
+  const [cartItems, setCartItems] = useState([])
+  const [subtotal, setSubtotal] = useState(0)
+  const [total, setTotal] = useState(0)
 
   // Load selected products from localStorage
   useEffect(() => {
-    const savedSelectedProducts = localStorage.getItem("selectedProducts");
+    const savedSelectedProducts = localStorage.getItem("selectedProducts")
     if (savedSelectedProducts) {
-      const selectedProducts = JSON.parse(savedSelectedProducts);
+      const selectedProducts = JSON.parse(savedSelectedProducts)
 
       // Transform data for table display
-      const transformedItems = selectedProducts.map((product) => ({
+      const transformedItems = selectedProducts.map(product => ({
         key: product.id.toString(),
         name: product.name,
         quantity: product.quantity,
         price: formatPrice(product.price),
-        total: formatPrice(product.price * product.quantity),
-      }));
+        total: formatPrice(product.price * product.quantity)
+      }))
 
-      setCartItems(transformedItems);
+      setCartItems(transformedItems)
 
       // Calculate subtotal
-      const calculatedSubtotal = selectedProducts.reduce(
-        (sum, product) => sum + product.price * product.quantity,
-        0
-      );
+      const calculatedSubtotal = selectedProducts.reduce((sum, product) => sum + product.price * product.quantity, 0)
 
-      setSubtotal(calculatedSubtotal);
-      setTotal(calculatedSubtotal);
+      setSubtotal(calculatedSubtotal)
+      setTotal(calculatedSubtotal)
     }
-  }, []);
+  }, [])
 
   // Load buyNow products from localStorage
   useEffect(() => {
-    const savedBuyNowProducts = localStorage.getItem("buyNowProducts");
+    const savedBuyNowProducts = localStorage.getItem("buyNowProducts")
     if (savedBuyNowProducts) {
-      const buyNowProducts = JSON.parse(savedBuyNowProducts);
+      const buyNowProducts = JSON.parse(savedBuyNowProducts)
 
       // Transform data for table display
-      const transformedItems = buyNowProducts.map((product) => ({
+      const transformedItems = buyNowProducts.map(product => ({
         key: product.id.toString(),
         name: product.name,
         quantity: 1,
         price: formatPrice(product.price),
-        total: formatPrice(product.price),
-      }));
+        total: formatPrice(product.price)
+      }))
 
-      setCartItems(transformedItems);
+      setCartItems(transformedItems)
 
       // Calculate subtotal
-      const calculatedSubtotal = buyNowProducts.reduce(
-        (sum, product) => sum + product.price * product.quantity,
-        0
-      );
+      const calculatedSubtotal = buyNowProducts.reduce((sum, product) => sum + product.price * product.quantity, 0)
 
-      setSubtotal(calculatedSubtotal);
-      setTotal(calculatedSubtotal);
+      setSubtotal(calculatedSubtotal)
+      setTotal(calculatedSubtotal)
     }
-  }, []);
+  }, [])
 
-  const formatPrice = (price) => {
+  const formatPrice = price => {
     return new Intl.NumberFormat("vi-VN", {
       style: "currency",
-      currency: "VND",
-    }).format(price);
-  };
+      currency: "VND"
+    }).format(price)
+  }
 
   const columns = [
     {
       title: "Sản phẩm",
       dataIndex: "name",
-      key: "name",
+      key: "name"
     },
     {
       title: "Số lượng",
       dataIndex: "quantity",
-      key: "quantity",
+      key: "quantity"
     },
     {
       title: "Đơn giá",
       dataIndex: "price",
-      key: "price",
+      key: "price"
     },
     {
       title: "Tổng",
       dataIndex: "total",
-      key: "total",
-    },
-  ];
+      key: "total"
+    }
+  ]
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md w-1/2">
@@ -115,7 +109,7 @@ export default function BillingDetailsStep2({ setStep, form }) {
           columns={columns}
           pagination={{
             pageSize: 5,
-            showTotal: (total) => `Tổng ${total} sản phẩm`,
+            showTotal: total => `Tổng ${total} sản phẩm`
           }}
           className="border rounded-lg"
         />
@@ -143,9 +137,7 @@ export default function BillingDetailsStep2({ setStep, form }) {
                 <DollarOutlined />
                 Tổng tiền:
               </span>
-              <span className="text-xl font-bold text-red-600">
-                {formatPrice(total)}
-              </span>
+              <span className="text-xl font-bold text-red-600">{formatPrice(total)}</span>
             </div>
           </div>
         </div>
@@ -158,7 +150,7 @@ export default function BillingDetailsStep2({ setStep, form }) {
         <Button
           onClick={() => {
             // setStep("step3");
-            form.submit();
+            form.submit()
           }}
           size="large"
           type="default"
@@ -170,12 +162,11 @@ export default function BillingDetailsStep2({ setStep, form }) {
         <div className="text-gray-500 text-sm flex items-start gap-2">
           <InfoCircleOutlined className="mt-1" />
           <p>
-            Dữ liệu cá nhân của bạn sẽ được sử dụng để xử lý đơn hàng của bạn,
-            hỗ trợ trải nghiệm của bạn trên toàn bộ trang web này và cho các mục
-            đích khác được mô tả trong chính sách bảo mật của chúng tôi.
+            Dữ liệu cá nhân của bạn sẽ được sử dụng để xử lý đơn hàng của bạn, hỗ trợ trải nghiệm của bạn trên toàn bộ
+            trang web này và cho các mục đích khác được mô tả trong chính sách bảo mật của chúng tôi.
           </p>
         </div>
       </div>
     </div>
-  );
+  )
 }

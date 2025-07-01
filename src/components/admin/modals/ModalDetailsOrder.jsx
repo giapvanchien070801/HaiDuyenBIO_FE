@@ -1,16 +1,6 @@
-"use client";
-import React from "react";
-import {
-  Button,
-  Modal,
-  Form,
-  Table,
-  Tag,
-  Card,
-  Row,
-  Col,
-  Typography,
-} from "antd";
+"use client"
+import React from "react"
+import { Button, Modal, Form, Table, Tag, Card, Row, Col, Typography } from "antd"
 import {
   UserOutlined,
   PhoneOutlined,
@@ -18,17 +8,13 @@ import {
   ShoppingCartOutlined,
   CalendarOutlined,
   FileTextOutlined,
-  UnorderedListOutlined,
-} from "@ant-design/icons";
+  UnorderedListOutlined
+} from "@ant-design/icons"
 
-import styled from "@emotion/styled";
-import {
-  ORDERS_STATUS,
-  ORDERS_STATUS_COLOR,
-  ORDERS_STATUS_TEXT,
-} from "@/common/constants/commonConstant";
+import styled from "@emotion/styled"
+import { ORDERS_STATUS, ORDERS_STATUS_COLOR, ORDERS_STATUS_TEXT } from "@/common/constants/commonConstant"
 
-const { Text } = Typography;
+const { Text } = Typography
 
 const StyledModal = styled(Modal)`
   .ant-modal-content {
@@ -57,7 +43,7 @@ const StyledModal = styled(Modal)`
     max-height: 70vh;
     overflow-y: auto;
   }
-`;
+`
 
 const InfoCard = styled(Card)`
   border-radius: 8px;
@@ -73,7 +59,7 @@ const InfoCard = styled(Card)`
     font-weight: 600;
     color: #1890ff;
   }
-`;
+`
 
 const ProductTable = styled(Table)`
   .ant-table-thead > tr > th {
@@ -84,13 +70,13 @@ const ProductTable = styled(Table)`
   .ant-table-tbody > tr:hover > td {
     background: #f6f8ff;
   }
-`;
+`
 
 const StatusTag = styled(Tag)`
   border-radius: 12px;
   font-weight: 500;
   padding: 4px 12px;
-`;
+`
 
 const TotalSection = styled.div`
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -104,78 +90,68 @@ const TotalSection = styled.div`
     font-weight: 700;
     text-align: center;
   }
-`;
+`
 
-const ModalDetailsOrder = (props) => {
-  const { dataOrder, isModalOpen, setIsModalOpen } = props;
+const ModalDetailsOrder = props => {
+  const { dataOrder, isModalOpen, setIsModalOpen } = props
 
-  const [form] = Form.useForm();
+  const [form] = Form.useForm()
 
-  const formatCurrency = (amount) => {
+  const formatCurrency = amount => {
     return new Intl.NumberFormat("vi-VN", {
       style: "currency",
-      currency: "VND",
-    }).format(amount);
-  };
+      currency: "VND"
+    }).format(amount)
+  }
 
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleString("vi-VN");
-  };
+  const formatDate = dateString => {
+    return new Date(dateString).toLocaleString("vi-VN")
+  }
 
   const productColumns = [
     {
       title: "Sản phẩm",
       dataIndex: "productName",
       key: "productName",
-      render: (text) => <div className="font-medium text-gray-800">{text}</div>,
+      render: text => <div className="font-medium text-gray-800">{text}</div>
     },
     {
       title: "Số lượng",
       dataIndex: "quantity",
       key: "quantity",
       align: "center",
-      render: (quantity) => (
+      render: quantity => (
         <Tag color="blue" className="font-medium">
           {quantity}
         </Tag>
-      ),
+      )
     },
     {
       title: "Đơn giá",
       dataIndex: "price",
       key: "price",
       align: "right",
-      render: (price) => (
-        <div className="font-medium text-green-600">
-          {formatCurrency(price)}
-        </div>
-      ),
+      render: price => <div className="font-medium text-green-600">{formatCurrency(price)}</div>
     },
     {
       title: "Trạng thái",
       dataIndex: "status",
       key: "status",
       align: "center",
-      render: (status) => (
-        <StatusTag color={ORDERS_STATUS_COLOR[status]}>
-          {ORDERS_STATUS_TEXT[status]}
-        </StatusTag>
-      ),
+      render: status => <StatusTag color={ORDERS_STATUS_COLOR[status]}>{ORDERS_STATUS_TEXT[status]}</StatusTag>
     },
     {
       title: "Thành tiền",
       dataIndex: "total",
       key: "total",
       align: "right",
-      render: (total) => (
-        <div className="font-bold text-blue-600">{formatCurrency(total)}</div>
-      ),
-    },
-  ];
+      render: total => <div className="font-bold text-blue-600">{formatCurrency(total)}</div>
+    }
+  ]
 
   const handleCancel = () => {
-    setIsModalOpen(false);
-  };
+    setIsModalOpen(false)
+  }
 
   return (
     <>
@@ -188,9 +164,7 @@ const ModalDetailsOrder = (props) => {
             </div>
             <div className="flex items-center gap-2">
               Trạng thái:
-              <Tag color={ORDERS_STATUS_COLOR[dataOrder?.status]}>
-                {ORDERS_STATUS_TEXT[dataOrder?.status]}
-              </Tag>
+              <Tag color={ORDERS_STATUS_COLOR[dataOrder?.status]}>{ORDERS_STATUS_TEXT[dataOrder?.status]}</Tag>
             </div>
           </div>
         }
@@ -200,7 +174,7 @@ const ModalDetailsOrder = (props) => {
         footer={[
           <Button key="close" onClick={handleCancel}>
             Đóng
-          </Button>,
+          </Button>
         ]}
         width={800}>
         {dataOrder && (
@@ -220,9 +194,7 @@ const ModalDetailsOrder = (props) => {
                     <Text strong className="text-gray-600">
                       Họ tên:
                     </Text>
-                    <div className="text-lg font-medium">
-                      {dataOrder?.fullName}
-                    </div>
+                    <div className="text-lg font-medium">{dataOrder?.fullName}</div>
                   </div>
                 </Col>
                 <Col span={12}>
@@ -305,14 +277,12 @@ const ModalDetailsOrder = (props) => {
 
             {/* Total Amount */}
             <TotalSection>
-              <div className="total-amount">
-                Tổng tiền: {formatCurrency(dataOrder?.total)}
-              </div>
+              <div className="total-amount">Tổng tiền: {formatCurrency(dataOrder?.total)}</div>
             </TotalSection>
           </div>
         )}
       </StyledModal>
     </>
-  );
-};
-export default ModalDetailsOrder;
+  )
+}
+export default ModalDetailsOrder

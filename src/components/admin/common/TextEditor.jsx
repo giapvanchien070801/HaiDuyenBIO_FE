@@ -1,41 +1,41 @@
-import styled from "@emotion/styled";
-import React, { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
+import styled from "@emotion/styled"
+import React, { useEffect, useState } from "react"
+import dynamic from "next/dynamic"
 
 // Dynamic import ReactQuill to avoid SSR issues
 const ReactQuill = dynamic(() => import("react-quill"), {
   ssr: false,
-  loading: () => <p>Loading...</p>,
-});
+  loading: () => <p>Loading...</p>
+})
 
-const TextEditor = (props) => {
-  const { onChange, valueDetail } = props;
-  const [valueEditor, setValueEditor] = useState("");
-  const [isClient, setIsClient] = useState(false);
+const TextEditor = props => {
+  const { onChange, valueDetail } = props
+  const [valueEditor, setValueEditor] = useState("")
+  const [isClient, setIsClient] = useState(false)
 
   useEffect(() => {
-    setIsClient(true);
-  }, []);
+    setIsClient(true)
+  }, [])
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      import("react-quill/dist/quill.snow.css");
+      import("react-quill/dist/quill.snow.css")
     }
-  }, []);
+  }, [])
 
-  const onChangeEditor = (value) => {
-    setValueEditor(value);
-    onChange(value);
-  };
+  const onChangeEditor = value => {
+    setValueEditor(value)
+    onChange(value)
+  }
 
   useEffect(() => {
     if (valueDetail) {
-      setValueEditor(valueDetail);
+      setValueEditor(valueDetail)
     }
-  }, [valueDetail]);
+  }, [valueDetail])
 
   if (!isClient) {
-    return <div>Loading editor...</div>;
+    return <div>Loading editor...</div>
   }
 
   return (
@@ -49,8 +49,8 @@ const TextEditor = (props) => {
         formats={TextEditor.formats}
       />
     </CustomQuill>
-  );
-};
+  )
+}
 
 // Modules and formats configuration for React Quill
 TextEditor.modules = {
@@ -58,16 +58,11 @@ TextEditor.modules = {
     [{ header: "1" }, { header: "2" }, { font: [] }],
     [{ size: [] }],
     ["bold", "italic", "underline", "strike", "blockquote"],
-    [
-      { list: "ordered" },
-      { list: "bullet" },
-      { indent: "-1" },
-      { indent: "+1" },
-    ],
+    [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }],
     ["link", "image", "video"],
-    ["clean"],
-  ],
-};
+    ["clean"]
+  ]
+}
 
 TextEditor.formats = [
   "header",
@@ -83,12 +78,12 @@ TextEditor.formats = [
   "indent",
   "link",
   "image",
-  "video",
-];
+  "video"
+]
 const CustomQuill = styled.div`
   & .ql-container {
     min-height: 200px;
   }
-`;
+`
 
-export default TextEditor;
+export default TextEditor

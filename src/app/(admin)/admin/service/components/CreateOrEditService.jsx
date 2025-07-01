@@ -1,88 +1,81 @@
-import { useEffect, useState } from "react";
-import { Form, Input, Button, Select, message, Spin } from "antd";
-import { useRouter } from "next/navigation";
-import styled from "@emotion/styled";
-import { useMutation, useQuery } from "react-query";
-import Base from "@/models/Base";
-import TextEditor from "@/components/admin/common/TextEditor";
-import UploadImage from "@/components/admin/upload/UploadImage";
-import UploadListImageService from "./UploadListImageService";
-import Product from "@/models/Product";
-import CategoryProduct from "@/models/CategoryProduct";
-import {
-  omitField,
-  removeEmptyFields,
-} from "@/common/functions/commonFunction";
+import { useEffect, useState } from "react"
+import { Form, Input, Button, Select, message, Spin } from "antd"
+import { useRouter } from "next/navigation"
+import styled from "@emotion/styled"
+import { useMutation, useQuery } from "react-query"
+import Base from "@/models/Base"
+import TextEditor from "@/components/admin/common/TextEditor"
+import UploadImage from "@/components/admin/upload/UploadImage"
+import UploadListImageService from "./UploadListImageService"
+import Product from "@/models/Product"
+import CategoryProduct from "@/models/CategoryProduct"
+import { omitField, removeEmptyFields } from "@/common/functions/commonFunction"
 
-const { TextArea } = Input;
+const { TextArea } = Input
 
-const CreateOrEditService = (props) => {
-  const { id, actionType } = props;
-  const [form] = Form.useForm();
+const CreateOrEditService = props => {
+  const { id, actionType } = props
+  const [form] = Form.useForm()
 
   // typePage = post | department | service
   // actionType = create | update
-  const isCreate = actionType === "create";
+  const isCreate = actionType === "create"
 
-  const router = useRouter();
+  const router = useRouter()
 
   // tạo sửa Sản phẩm
   const createServiceMutate = useMutation(Product.createProduct, {
     onSuccess: () => {
-      message.success("Tạo mới Sản phẩm thành công!");
-      router.back();
+      message.success("Tạo mới Sản phẩm thành công!")
+      router.back()
     },
-    onError: (e) => {
-      message.error("Tạo mới Sản phẩm thất bại!");
-    },
-  });
-
-  const updateServiceMutate = useMutation(
-    (values) => Product.updateProduct(id, omitField(values, "id")),
-    {
-      onSuccess: () => {
-        message.success("Sửa Sản phẩm thành công!");
-        form.resetFields();
-        router.back();
-      },
-      onError: (e) => {
-        message.error("Sửa Sản phẩm thất bại!");
-      },
+    onError: e => {
+      message.error("Tạo mới Sản phẩm thất bại!")
     }
-  );
+  })
 
-  const handleCreate = (values) => {
+  const updateServiceMutate = useMutation(values => Product.updateProduct(id, omitField(values, "id")), {
+    onSuccess: () => {
+      message.success("Sửa Sản phẩm thành công!")
+      form.resetFields()
+      router.back()
+    },
+    onError: e => {
+      message.error("Sửa Sản phẩm thất bại!")
+    }
+  })
+
+  const handleCreate = values => {
     if (isCreate) {
-      createServiceMutate.mutate(values);
+      createServiceMutate.mutate(values)
     } else {
       const valueUpdate = {
         id: id,
-        ...values,
-      };
-      updateServiceMutate.mutate(valueUpdate);
+        ...values
+      }
+      updateServiceMutate.mutate(valueUpdate)
     }
-  };
+  }
 
   const { data: dataDetail } = useQuery(
     ["getDetail", id],
     async () => {
-      const res = await Product.getProductDetail(id);
-      form.setFieldsValue(res);
-      return res;
+      const res = await Product.getProductDetail(id)
+      form.setFieldsValue(res)
+      return res
     },
     { enabled: !!id }
-  );
+  )
 
-  const onChangeSelect = (value) => {
+  const onChangeSelect = value => {
     // Handle selection change
-  };
-  const onSearch = (value) => {
+  }
+  const onSearch = value => {
     // Handle search
-  };
+  }
 
   // Filter `option.label` match the user type `input`
-  const filterOption = (input, option) =>
-    (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
+  const filterOption = (input, option) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
 
   // api lấy danh sách tất cả thể loại
   const { data: listCategory } = useQuery(
@@ -93,43 +86,37 @@ const CreateOrEditService = (props) => {
           Page: 1,
           Size: 1000,
           search: "",
-          type: "PRODUCT",
+          type: "PRODUCT"
         })
-      );
+      )
 
-      return res?.content?.map((item) => ({
+      return res?.content?.map(item => ({
         label: item.name,
-        value: item.id,
-      }));
+        value: item.id
+      }))
     },
     {}
-  );
+  )
 
-  const valueDescription = form.getFieldValue("description");
+  const valueDescription = form.getFieldValue("description")
 
   return (
     <CustomForm className="w-full h-full ">
-      <Spin
-        spinning={
-          createServiceMutate.isLoading || updateServiceMutate.isLoading
-        }>
+      <Spin spinning={createServiceMutate.isLoading || updateServiceMutate.isLoading}>
         <Form
           layout="vertical"
           initialValues={{
-            remember: true,
+            remember: true
           }}
           scrollToFirstError
           form={form}
           onFinish={handleCreate}>
-          <Form.Item
-            name="imageUrl"
-            label="Ảnh"
-            rules={[{ required: true, message: "Ảnh không được bỏ trống!" }]}>
+          <Form.Item name="imageUrl" label="Ảnh" rules={[{ required: true, message: "Ảnh không được bỏ trống!" }]}>
             <UploadListImageService
-              onChange={(listImageResponse) => {
+              onChange={listImageResponse => {
                 form.setFieldsValue({
-                  imageUrl: listImageResponse,
-                });
+                  imageUrl: listImageResponse
+                })
               }}
               listImageDetail={dataDetail?.imageUrl}
             />
@@ -141,24 +128,19 @@ const CreateOrEditService = (props) => {
               rules={[
                 {
                   required: true,
-                  message: "Tiêu đề không được bỏ trống!",
-                },
+                  message: "Tiêu đề không được bỏ trống!"
+                }
               ]}
               className="w-1/2 mb-3 "
               label="Tên sản phẩm">
-              <Input
-                maxLength={500}
-                allowClear
-                className=" mb-5"
-                placeholder="Nhập tên sản phẩm"
-              />
+              <Input maxLength={500} allowClear className=" mb-5" placeholder="Nhập tên sản phẩm" />
             </Form.Item>
             <Form.Item
               rules={[
                 {
                   required: true,
-                  message: "Danh mục không được bỏ trống!",
-                },
+                  message: "Danh mục không được bỏ trống!"
+                }
               ]}
               name="categoryId"
               className="w-1/2"
@@ -181,8 +163,8 @@ const CreateOrEditService = (props) => {
               rules={[
                 {
                   required: true,
-                  message: "Không được bỏ trống!",
-                },
+                  message: "Không được bỏ trống!"
+                }
               ]}
               className="w-1/2"
               label={"Số lượng"}>
@@ -194,8 +176,8 @@ const CreateOrEditService = (props) => {
               rules={[
                 {
                   required: true,
-                  message: "Không được bỏ trống!",
-                },
+                  message: "Không được bỏ trống!"
+                }
               ]}
               className="w-1/2"
               label={"Giá"}>
@@ -209,8 +191,8 @@ const CreateOrEditService = (props) => {
               rules={[
                 {
                   required: true,
-                  message: "Không được bỏ trống!",
-                },
+                  message: "Không được bỏ trống!"
+                }
               ]}
               className="w-1/2"
               label={"Slug"}>
@@ -222,8 +204,8 @@ const CreateOrEditService = (props) => {
               rules={[
                 {
                   required: true,
-                  message: "Giảm giá không được bỏ trống!",
-                },
+                  message: "Giảm giá không được bỏ trống!"
+                }
               ]}
               className="w-1/2"
               label={"Giảm giá (%)"}>
@@ -236,8 +218,8 @@ const CreateOrEditService = (props) => {
             rules={[
               {
                 required: true,
-                message: "Mô tả không được bỏ trống!",
-              },
+                message: "Mô tả không được bỏ trống!"
+              }
             ]}
             className="w-full"
             label="Mô tả ngắn">
@@ -249,10 +231,10 @@ const CreateOrEditService = (props) => {
             label="Mô tả chi tiết"
             rules={[{ required: true, message: "Mô tả không được bỏ trống!" }]}>
             <TextEditor
-              onChange={(value) => {
+              onChange={value => {
                 form.setFieldsValue({
-                  description: value,
-                });
+                  description: value
+                })
               }}
               valueDetail={valueDescription}
             />
@@ -264,7 +246,7 @@ const CreateOrEditService = (props) => {
               type="default"
               danger
               onClick={() => {
-                router.back();
+                router.back()
               }}>
               Hủy
             </Button>
@@ -284,13 +266,13 @@ const CreateOrEditService = (props) => {
         </Form>
       </Spin>
     </CustomForm>
-  );
-};
+  )
+}
 
 const CustomForm = styled.div`
   & .ant-form-item-control-input-content .mb-5 {
     margin: 0;
   }
-`;
+`
 
-export default CreateOrEditService;
+export default CreateOrEditService

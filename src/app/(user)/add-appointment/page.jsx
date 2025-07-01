@@ -1,25 +1,25 @@
-"use client";
+"use client"
 
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import { Autoplay } from "swiper/modules";
-import { Input, Form, Button, Select, DatePicker, message } from "antd";
-import { PlusOutlined, HomeOutlined } from "@ant-design/icons";
-import { useRouter } from "next/navigation";
-import styled from "@emotion/styled";
-import BannerBreadcrumb from "@/components/user/common-component/BannerBreadcrumb";
-import CardFeedback from "@/components/user/CardFeedback";
-import CardLatestBlog from "@/components/user/CardLatestBlog";
-import { useMutation, useQuery } from "react-query";
-import Base from "@/models/Base";
-import moment from "moment";
-import { handleSrcImg } from "@/common/functions/commonFunction";
-import dayjs from "dayjs";
-const { TextArea } = Input;
+import { Swiper, SwiperSlide } from "swiper/react"
+import "swiper/css"
+import { Autoplay } from "swiper/modules"
+import { Input, Form, Button, Select, DatePicker, message } from "antd"
+import { PlusOutlined, HomeOutlined } from "@ant-design/icons"
+import { useRouter } from "next/navigation"
+import styled from "@emotion/styled"
+import BannerBreadcrumb from "@/components/user/common-component/BannerBreadcrumb"
+import CardFeedback from "@/components/user/CardFeedback"
+import CardLatestBlog from "@/components/user/CardLatestBlog"
+import { useMutation, useQuery } from "react-query"
+import Base from "@/models/Base"
+import moment from "moment"
+import { handleSrcImg } from "@/common/functions/commonFunction"
+import dayjs from "dayjs"
+const { TextArea } = Input
 
 export default function AddAppointment() {
-  const router = useRouter();
-  const [form] = Form.useForm();
+  const router = useRouter()
+  const [form] = Form.useForm()
   const breadcrumb = [
     {
       href: "/",
@@ -28,7 +28,7 @@ export default function AddAppointment() {
           <HomeOutlined />
           <span>Trang chủ</span>
         </>
-      ),
+      )
     },
     {
       href: "/add-appointment",
@@ -36,35 +36,27 @@ export default function AddAppointment() {
         <>
           <span className="text-[#2490eb]">Tạo lịch hẹn</span>
         </>
-      ),
-    },
-  ];
+      )
+    }
+  ]
 
   const createSchedule = useMutation(Base.createSchedule, {
     onSuccess: () => {
-      message.success("Tạo lịch hẹn thành công!");
-      form.resetFields();
+      message.success("Tạo lịch hẹn thành công!")
+      form.resetFields()
     },
-    onError: (e) => {
-      message.error("Tạo lịch hẹn thất bại!");
-    },
-  });
+    onError: e => {
+      message.error("Tạo lịch hẹn thất bại!")
+    }
+  })
 
   const handleSunmit = () => {
-    form.submit();
+    form.submit()
 
-    const listFieldName = [
-      "MeetTime",
-      "MeetDate",
-      "Email",
-      "PhoneNumber",
-      "FullName",
-      "DoctorId",
-      "Note",
-    ];
+    const listFieldName = ["MeetTime", "MeetDate", "Email", "PhoneNumber", "FullName", "DoctorId", "Note"]
     form
       .validateFields(listFieldName)
-      .then((value) => {
+      .then(value => {
         const valueSubmit = {
           MeetTime: value?.MeetTime,
           MeetDate: dayjs(value?.MeetDate, "DD-MM-YYYY").format("DD-MM-YYYY"),
@@ -72,56 +64,55 @@ export default function AddAppointment() {
           PhoneNumber: value?.PhoneNumber,
           FullName: value?.FullName,
           DoctorId: value?.DoctorId,
-          Note: value?.Note,
-        };
-        createSchedule.mutate(valueSubmit);
+          Note: value?.Note
+        }
+        createSchedule.mutate(valueSubmit)
       })
-      .catch(() => {});
-  };
+      .catch(() => {})
+  }
 
-  const onChange = (value) => {
+  const onChange = value => {
     // Handle selection change
-  };
-  const onSearch = (value) => {
+  }
+  const onSearch = value => {
     // Handle search
-  };
+  }
 
   // Filter `option.label` match the user type `input`
-  const filterOption = (input, option) =>
-    (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
+  const filterOption = (input, option) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
   const onChangeDate = (date, dateString) => {
     // Handle date change
-  };
+  }
 
   // api lấy danh sách tất cả bác sĩ
   const { data: listDoctor } = useQuery(
     ["getAllgetAllDoctorSchedule"],
     async () => {
-      const res = await Base.getAllDoctor();
+      const res = await Base.getAllDoctor()
 
-      const dataConver = res?.map((doctor) => {
-        return { label: doctor?.Name, value: doctor?.Id };
-      });
-      return dataConver;
+      const dataConver = res?.map(doctor => {
+        return { label: doctor?.Name, value: doctor?.Id }
+      })
+      return dataConver
     },
     {}
-  );
+  )
 
   const { data: listPost } = useQuery(["getListPostNewlist"], async () => {
     const res = await Base.getListPostPagination({
       Page: 1,
       Size: 6,
       KeySearch: "",
-      CategoryId: -1,
-    });
+      CategoryId: -1
+    })
 
-    return res?.Data;
-  });
+    return res?.Data
+  })
 
-  const disabledDate = (current) => {
+  const disabledDate = current => {
     // Nếu ngày được chọn (current) <= ngày hiện tại thì disable
-    return current && current < moment().startOf("day");
-  };
+    return current && current < moment().startOf("day")
+  }
 
   return (
     <div className="flex flex-col items-center">
@@ -137,7 +128,7 @@ export default function AddAppointment() {
                 initialValues={{
                   requiredSelect: undefined,
                   optionalSelect: undefined,
-                  optionalInput: "",
+                  optionalInput: ""
                 }}
                 form={form}
                 layout="vertical">
@@ -147,8 +138,8 @@ export default function AddAppointment() {
                   rules={[
                     {
                       required: true,
-                      message: "Vui lòng chọn bác sĩ cần gặp",
-                    },
+                      message: "Vui lòng chọn bác sĩ cần gặp"
+                    }
                   ]}>
                   <Select
                     showSearch
@@ -165,8 +156,8 @@ export default function AddAppointment() {
                   rules={[
                     {
                       required: true,
-                      message: "Vui lòng nhập họ và tên của bạn",
-                    },
+                      message: "Vui lòng nhập họ và tên của bạn"
+                    }
                   ]}
                   name="FullName">
                   <Input placeholder="Họ và tên" />
@@ -178,8 +169,8 @@ export default function AddAppointment() {
                     rules={[
                       {
                         required: true,
-                        message: "Vui lòng nhập số điện thoại của bạn",
-                      },
+                        message: "Vui lòng nhập số điện thoại của bạn"
+                      }
                     ]}>
                     <Input placeholder="Số điện thoại của bạn" />
                   </Form.Item>
@@ -194,8 +185,8 @@ export default function AddAppointment() {
                     rules={[
                       {
                         required: true,
-                        message: "Vui lòng chọn ngày hẹn",
-                      },
+                        message: "Vui lòng chọn ngày hẹn"
+                      }
                     ]}>
                     <DatePicker
                       className="w-full"
@@ -240,7 +231,7 @@ export default function AddAppointment() {
           <Button
             type="primary"
             onClick={() => {
-              router.push("/contact");
+              router.push("/contact")
             }}
             className="bg-[#2490eb] text-white h-12 py-3 px-5  font-semibold flex items-center sm:mb-0 mb-10">
             LIÊN HỆ CHÚNG TÔI <PlusOutlined />
@@ -253,17 +244,12 @@ export default function AddAppointment() {
         <div className="container-original  py-32">
           <div className=" p-0 lg:px-[15em] flex flex-col items-center mb-14 sm:p-0 px-4">
             <div className=" px-2 py-1 bg-[#d3e9fb] rounded">
-              <p className="text-[#2490eb] font-semibold ">
-                KHÁCH HÀNG CỦA CHÚNG TÔI
-              </p>
+              <p className="text-[#2490eb] font-semibold ">KHÁCH HÀNG CỦA CHÚNG TÔI</p>
             </div>
-            <p className="text-5xl font-semibold mt-4 text-center">
-              Khách hàng của chúng tôi hài lòng
-            </p>
+            <p className="text-5xl font-semibold mt-4 text-center">Khách hàng của chúng tôi hài lòng</p>
             <p className="text-[#666666] text-center mt-4 leading-8">
-              Một thực tế đã được chứng minh từ lâu là người đọc sẽ bị phân tâm
-              bởi cách bố trí của nó. Lorem Ipsum chỉ đơn giản là văn bản giả
-              của ngành in ấn và sắp chữ.
+              Một thực tế đã được chứng minh từ lâu là người đọc sẽ bị phân tâm bởi cách bố trí của nó. Lorem Ipsum chỉ
+              đơn giản là văn bản giả của ngành in ấn và sắp chữ.
             </p>
           </div>
           {/* feedback */}
@@ -275,7 +261,7 @@ export default function AddAppointment() {
               effect="coverflow"
               autoplay={{
                 delay: 3500,
-                disableOnInteraction: false,
+                disableOnInteraction: false
               }}>
               <SwiperSlide>
                 <div className="  sm:flex block gap-4">
@@ -319,13 +305,9 @@ export default function AddAppointment() {
         <div className="container-original  py-32">
           <div className="p-0 lg:px-[15em] flex flex-col items-center mb-14 sm:p-0 px-4">
             <div className=" px-2 py-1 bg-[#d3e9fb] rounded">
-              <p className="text-[#2490eb] font-semibold">
-                BÀI VIẾT CỦA CHÚNG TÔI
-              </p>
+              <p className="text-[#2490eb] font-semibold">BÀI VIẾT CỦA CHÚNG TÔI</p>
             </div>
-            <p className="text-5xl font-semibold mt-4 text-center">
-              Xem bài viết mới nhất
-            </p>
+            <p className="text-5xl font-semibold mt-4 text-center">Xem bài viết mới nhất</p>
           </div>
           <div className=" sm:flex block gap-4 flex-wrap sm:px-0 px-4 justify-center">
             {listPost?.map((post, index) => (
@@ -346,7 +328,7 @@ export default function AddAppointment() {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 const CustomForm = styled.div`
@@ -379,4 +361,4 @@ const CustomForm = styled.div`
     padding: 0px 11px 0px;
     border: none;
   }
-`;
+`

@@ -1,90 +1,76 @@
-"use client";
-import {
-  Breadcrumb,
-  Button,
-  Input,
-  Table,
-  Space,
-  Spin,
-  Popconfirm,
-  Select,
-  message,
-} from "antd";
-import {
-  HomeOutlined,
-  SearchOutlined,
-  PlusCircleOutlined,
-} from "@ant-design/icons";
-import styled from "@emotion/styled";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { useDebounce } from "../../../../common/functions/commonFunction";
-import { useMutation, useQuery } from "react-query";
-import Base from "@/models/Base";
+"use client"
+import { Breadcrumb, Button, Input, Table, Space, Spin, Popconfirm, Select, message } from "antd"
+import { HomeOutlined, SearchOutlined, PlusCircleOutlined } from "@ant-design/icons"
+import styled from "@emotion/styled"
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { useDebounce } from "../../../../common/functions/commonFunction"
+import { useMutation, useQuery } from "react-query"
+import Base from "@/models/Base"
 
 export default function ListPost() {
-  const router = useRouter();
+  const router = useRouter()
 
-  const [valueSearch, setValueSearch] = useState("");
-  const [valueSearchCate, setValueSearchCate] = useState(-1);
-  const [idSelected, setIdSelected] = useState();
+  const [valueSearch, setValueSearch] = useState("")
+  const [valueSearchCate, setValueSearchCate] = useState(-1)
+  const [idSelected, setIdSelected] = useState()
 
   const [tableParams, setTableParams] = useState({
     pagination: {
       current: 1,
       pageSize: 5,
-      total: 20,
-    },
-  });
+      total: 20
+    }
+  })
 
   const handleTableChange = (pagination, filters, sorter) => {
     setTableParams({
       pagination,
       filters,
-      ...sorter,
-    });
+      ...sorter
+    })
 
     if (pagination.pageSize !== tableParams.pagination?.pageSize) {
     }
-  };
+  }
 
-  const searchDebounce = useDebounce(valueSearch, 1000);
+  const searchDebounce = useDebounce(valueSearch, 1000)
   const {
     data: listPost,
     refetch,
-    isFetching,
+    isFetching
   } = useQuery(
     [
       "getListPostPagination",
       searchDebounce,
       tableParams.pagination.current,
       tableParams.pagination.pageSize,
-      valueSearchCate,
+      valueSearchCate
     ],
     async () => {
       const res = await Base.getListPostPagination({
         Page: tableParams.pagination.current,
         Size: tableParams.pagination.pageSize,
         KeySearch: searchDebounce,
-        CategoryId: valueSearchCate,
-      });
+        CategoryId: valueSearchCate
+      })
 
       if (res.TotalRecord) {
         setTableParams({
           pagination: {
             current: tableParams.pagination.current,
             pageSize: tableParams.pagination.pageSize,
-            total: res.TotalRecord,
-          },
-        });
+            total: res.TotalRecord
+          }
+        })
       }
 
-      return res?.Data;
+      return res?.Data
     },
     {
-      enabled: false,
+      enabled: false
     }
-  );
+  )
   const breadcrumb = [
     {
       href: "/admin/home",
@@ -93,7 +79,7 @@ export default function ListPost() {
           <HomeOutlined />
           <span>Trang chủ</span>
         </>
-      ),
+      )
     },
     {
       href: "",
@@ -101,48 +87,48 @@ export default function ListPost() {
         <>
           <span className="text-cyan-700">Danh sách nguyên liệu</span>
         </>
-      ),
-    },
-  ];
+      )
+    }
+  ]
 
   const handleGoCreateOrEdit = () => {
-    router.push("/admin/ingredient/create");
-  };
+    router.push("/admin/ingredient/create")
+  }
 
   const columns = [
     {
       title: "STT",
       key: "stt",
       render: (value, item, index) => index,
-      fixed: "left",
+      fixed: "left"
     },
     {
       title: "Tên nguyên liệu",
       dataIndex: "Title",
       key: "Title",
-      render: (text) => <a>{text}</a>,
-      width: 200,
+      render: text => <a>{text}</a>,
+      width: 200
     },
     {
       title: "Mô tả",
       dataIndex: "Description",
       key: "Description",
-      width: 300,
+      width: 300
     },
     {
       title: "Danh mục",
       dataIndex: "CategoryName",
-      key: "CategoryName",
+      key: "CategoryName"
     },
     {
       title: "Ngày tạo",
       dataIndex: "CreatedAt",
-      key: "CreatedAt",
+      key: "CreatedAt"
     },
     {
       title: "Người tạo",
       key: "AuthorName",
-      dataIndex: "AuthorName",
+      dataIndex: "AuthorName"
     },
     {
       title: "Hoạt động",
@@ -153,8 +139,7 @@ export default function ListPost() {
             size="middle"
             className="border-teal-500 text-teal-500"
             type="default"
-            onClick={() => router.push(`/admin/ingredient/edit/${record?.Id}`)}
-          >
+            onClick={() => router.push(`/admin/ingredient/edit/${record?.Id}`)}>
             Xem chi tiết/Sửa
           </Button>
 
@@ -163,53 +148,51 @@ export default function ListPost() {
             description="Bạn có chắc chắn muốn xóa nguyên liệu này?"
             onConfirm={handleDelete}
             okText="Xóa"
-            cancelText="Hủy"
-          >
+            cancelText="Hủy">
             <Button size="middle" type="default" danger>
               Xóa
             </Button>
           </Popconfirm>
         </Space>
       ),
-      width: 200,
-    },
-  ];
+      width: 200
+    }
+  ]
 
   const deleteMutate = useMutation(Base.deletePost, {
     onSuccess: () => {
-      message.success("Xóa nguyên liệu thành công!");
-      setIdSelected();
-      refetch();
+      message.success("Xóa nguyên liệu thành công!")
+      setIdSelected()
+      refetch()
     },
-    onError: (e) => {
-      message.error("Xóa nguyên liệu thất bại!");
-    },
-  });
+    onError: e => {
+      message.error("Xóa nguyên liệu thất bại!")
+    }
+  })
 
-  const handleDelete = (e) => {
-    deleteMutate.mutate(idSelected);
-  };
+  const handleDelete = e => {
+    deleteMutate.mutate(idSelected)
+  }
 
-  const onChangeSelect = (value) => {
-    setValueSearchCate(value);
-  };
+  const onChangeSelect = value => {
+    setValueSearchCate(value)
+  }
 
   // Filter `option.label` match the user type `input`
-  const filterOption = (input, option) =>
-    (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
+  const filterOption = (input, option) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
   // api lấy danh sách tất cả thể loại
   const { data: listCategory } = useQuery(
     ["getAllCateAdminSearch"],
     async () => {
-      const res = await Base.getAllCategory();
+      const res = await Base.getAllCategory()
 
-      const dataConver = res?.map((category) => {
-        return { label: category?.Name, value: category?.Id };
-      });
-      return dataConver;
+      const dataConver = res?.map(category => {
+        return { label: category?.Name, value: category?.Id }
+      })
+      return dataConver
     },
     {}
-  );
+  )
 
   return (
     <div>
@@ -219,12 +202,12 @@ export default function ListPost() {
         prefix={
           <SearchOutlined
             style={{
-              color: "gray",
+              color: "gray"
             }}
           />
         }
-        onChange={(e) => {
-          setValueSearch(e.target.value);
+        onChange={e => {
+          setValueSearch(e.target.value)
         }}
         className="w-1/3 mb-5"
         placeholder="Tìm kiếm theo tiêu đề"
@@ -243,8 +226,7 @@ export default function ListPost() {
         size="middle"
         type="primary"
         className="float-right  bg-blue-700 text-white"
-        onClick={() => handleGoCreateOrEdit()}
-      >
+        onClick={() => handleGoCreateOrEdit()}>
         Thêm mới
       </Button>
       <Spin spinning={isFetching}>
@@ -252,32 +234,29 @@ export default function ListPost() {
           <Table
             columns={columns}
             dataSource={listPost}
-            onRow={(record) => {
+            onRow={record => {
               return {
                 onClick: () => {
-                  setIdSelected(record.Id);
-                },
-              };
+                  setIdSelected(record.Id)
+                }
+              }
             }}
             pagination={{
               ...tableParams.pagination,
               showSizeChanger: true, // Cho phép hiển thị Select chọn số lượng phần tử trên trang
-              pageSizeOptions: tableParams.pageSizeOptions, // Sử dụng pageSizeOptions từ tableParams
+              pageSizeOptions: tableParams.pageSizeOptions // Sử dụng pageSizeOptions từ tableParams
             }}
             onChange={handleTableChange}
           />
         </CustomTable>
       </Spin>
     </div>
-  );
+  )
 }
 
 const CustomTable = styled.div`
   & .ant-table-wrapper .ant-table-thead > tr > th,
-  :where(.css-dev-only-do-not-override-6j9yrn).ant-table-wrapper
-    .ant-table-thead
-    > tr
-    > td {
+  :where(.css-dev-only-do-not-override-6j9yrn).ant-table-wrapper .ant-table-thead > tr > td {
     background: #cce3de;
   }
-`;
+`

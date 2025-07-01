@@ -1,68 +1,62 @@
-"use client";
+"use client"
 
-import { RightOutlined } from "@ant-design/icons";
-import Link from "next/link";
+import { removeEmptyFields } from "@/common/functions/commonFunction"
+import ArticleModal from "@/models/ArticleModal"
+import Product from "@/models/Product"
+import { RightOutlined } from "@ant-design/icons"
+import Link from "next/link"
+import { useQuery } from "react-query"
 
 export default function SidebarUser(props) {
-  const { breadcrumb, title } = props;
+  const { breadcrumb, title } = props
 
-  const listCategory = [
-    {
-      Id: 1,
-      Name: "Sức khỏe tiêu hóa",
-    },
-    {
-      Id: 2,
-      Name: "Vitamin & khoáng chất",
-    },
-    {
-      Id: 3,
-      Name: "Thực phẩm chức năng",
-    },
-    {
-      Id: 4,
-      Name: "Thuốc không kê đơn",
-    },
-    {
-      Id: 5,
-      Name: "Chăm sóc sức khỏe",
-    },
-  ];
+  const { data: listPost } = useQuery(
+    ["getListPostPagination"],
+    async () => {
+      const res = await ArticleModal.getArticleList({
+        page: 0,
+        size: 10
+      })
 
-  const listProduct = [
-    {
-      Id: 1,
-      Name: "Men vi sinh Bifido",
+      return res?.content
     },
     {
-      Id: 2,
-      Name: "Men vi sinh Lacto",
+      enabled: true
+    }
+  )
+
+  const {
+    data: listProduct,
+    refetch,
+    isFetching
+  } = useQuery(
+    ["getListProductPagination"],
+    async () => {
+      const res = await Product.getProductList(
+        removeEmptyFields({
+          page: 0,
+          size: 10
+        })
+      )
+
+      return res?.content
     },
     {
-      Id: 3,
-      Name: "Men vi sinh Premium",
-    },
-    {
-      Id: 4,
-      Name: "Men vi sinh Plus",
-    },
-    {
-      Id: 5,
-      Name: "Men vi sinh Gold",
-    },
-  ];
+      enabled: true
+    }
+  )
 
   return (
     <div className="another col-span-3 lg:block hidden">
       <div className="categories-blog py-8 pl-4">
         <p className="text-3xl mb-4">Bài viết mới nhất</p>
-        {listCategory?.map((category, index) => (
+        {listPost?.map((post, index) => (
           <p className="my-4" key={index}>
             <Link
-              href={`/news/${category?.Id}`}
-              as={`/news/${category?.Id}`}
-              className="capitalize categorie-link transition-all duration-500">
-              <RightOutlined className="text_ocean" /> {category?.Name}
+              href={`/news/${post?.id}`}
+              as={`/news/${post?.id}`}
+              className="capitalize categorie-link transition-all duration-500 line-clamp-1">
+              <RightOutlined className="text_ocean" /> {post?.title}
             </Link>
           </p>
         ))}
@@ -70,13 +64,13 @@ export default function SidebarUser(props) {
 
       <div className="categories-blog py-8 pl-4 mt-16">
         <p className="text-3xl mb-4">Sản phẩm bán chạy</p>
-        {listProduct?.map((service, index) => (
-          <p className="my-4" key={index}>
+        {listProduct?.map((product, index) => (
+          <p className="my-4 hover:ml-2 transition-all duration-500" key={index}>
             <Link
-              href={`/product-detail/${service?.Id}`}
-              as={`/product-detail/${service?.Id}`}
+              href={`/product-detail/${product?.id}`}
+              as={`/product-detail/${product?.id}`}
               className="capitalize categorie-link transition-all duration-500">
-              <RightOutlined className="text_ocean" /> {service?.Name}
+              <RightOutlined className="text_ocean" /> {product?.name}
             </Link>
           </p>
         ))}
@@ -87,5 +81,5 @@ export default function SidebarUser(props) {
         </Link>
       </div>
     </div>
-  );
+  )
 }

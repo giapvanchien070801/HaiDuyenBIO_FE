@@ -1,78 +1,64 @@
-"use client";
-import {
-  Breadcrumb,
-  Button,
-  Input,
-  Table,
-  Space,
-  Spin,
-  Popconfirm,
-  Select,
-  message,
-} from "antd";
-import {
-  HomeOutlined,
-  SearchOutlined,
-  PlusCircleOutlined,
-} from "@ant-design/icons";
-import styled from "@emotion/styled";
-import { useRef, useState } from "react";
-import { useRouter } from "next/navigation";
-import { useDebounce } from "../../../../common/functions/commonFunction";
-import { useMutation, useQuery } from "react-query";
-import Base from "@/models/Base";
-import ArticleModal from "@/models/ArticleModal";
-import moment from "moment";
-import CategoryProduct from "@/models/CategoryProduct";
+"use client"
+import { Breadcrumb, Button, Input, Table, Space, Spin, Popconfirm, Select, message } from "antd"
+import { HomeOutlined, SearchOutlined, PlusCircleOutlined } from "@ant-design/icons"
+import styled from "@emotion/styled"
+import { useRef, useState } from "react"
+import { useRouter } from "next/navigation"
+import { useDebounce } from "../../../../common/functions/commonFunction"
+import { useMutation, useQuery } from "react-query"
+import Base from "@/models/Base"
+import ArticleModal from "@/models/ArticleModal"
+import moment from "moment"
+import CategoryProduct from "@/models/CategoryProduct"
 
 export default function ListPost() {
-  const router = useRouter();
+  const router = useRouter()
 
-  const [valueSearch, setValueSearch] = useState("");
-  const [valueSearchCate, setValueSearchCate] = useState(-1);
-  const [idSelected, setIdSelected] = useState();
+  const [valueSearch, setValueSearch] = useState("")
+  const [valueSearchCate, setValueSearchCate] = useState(-1)
+  const [idSelected, setIdSelected] = useState()
 
   const __pagination = useRef({
     page_num: 1,
     page_size: 10,
-    count: 0,
-  });
+    count: 0
+  })
 
   const handleTableChange = (pagination, filters, sorter) => {
-    __pagination.current.page_num = pagination.current;
-    __pagination.current.page_size = pagination.pageSize;
-    refetch();
-  };
+    __pagination.current.page_num = pagination.current
+    __pagination.current.page_size = pagination.pageSize
+    refetch()
+  }
 
-  const searchDebounce = useDebounce(valueSearch, 1000);
+  const searchDebounce = useDebounce(valueSearch, 1000)
   const {
     data: listPost,
     refetch,
-    isFetching,
+    isFetching
   } = useQuery(
     [
       "getListPostPagination",
       searchDebounce,
       __pagination.current.page_num,
       __pagination.current.page_size,
-      valueSearchCate,
+      valueSearchCate
     ],
     async () => {
       const res = await ArticleModal.getArticleList({
         page: __pagination.current.page_num - 1,
         size: __pagination.current.page_size,
         search: searchDebounce,
-        categoryId: valueSearchCate,
-      });
+        categoryId: valueSearchCate
+      })
 
-      __pagination.current.count = res.totalElements;
+      __pagination.current.count = res.totalElements
 
-      return res?.content;
+      return res?.content
     },
     {
-      enabled: true,
+      enabled: true
     }
-  );
+  )
   const breadcrumb = [
     {
       href: "/admin/home",
@@ -81,7 +67,7 @@ export default function ListPost() {
           <HomeOutlined />
           <span>Trang chủ</span>
         </>
-      ),
+      )
     },
     {
       href: "",
@@ -89,45 +75,45 @@ export default function ListPost() {
         <>
           <span className="text-cyan-700">Danh sách bài viết</span>
         </>
-      ),
-    },
-  ];
+      )
+    }
+  ]
 
   const handleGoCreateOrEdit = () => {
-    router.push("/admin/list-post/create");
-  };
+    router.push("/admin/list-post/create")
+  }
 
   const columns = [
     {
       title: "STT",
       key: "stt",
       render: (value, item, index) => index,
-      fixed: "left",
+      fixed: "left"
     },
     {
       title: "Tiêu đề",
       dataIndex: "title",
       key: "title",
-      render: (text) => <a>{text}</a>,
-      width: 200,
+      render: text => <a>{text}</a>,
+      width: 200
     },
     {
       title: "Mô tả",
       dataIndex: "content",
       key: "content",
       width: 300,
-      render: (text) => <>{text?.slice(0, 100)}...</>,
+      render: text => <>{text?.slice(0, 100)}...</>
     },
     {
       title: "Danh mục",
       dataIndex: "categoryName",
-      key: "categoryName",
+      key: "categoryName"
     },
     {
       title: "Ngày tạo",
       dataIndex: "createdAt",
       key: "createdAt",
-      render: (text) => <>{moment(text).format("DD/MM/YYYY")}</>,
+      render: text => <>{moment(text).format("DD/MM/YYYY")}</>
     },
     {
       title: "Hoạt động",
@@ -138,9 +124,7 @@ export default function ListPost() {
             size="middle"
             className="border-teal-500 text-teal-500"
             type="default"
-            onClick={() =>
-              router.push(`/admin/list-post/edit/${record?.slug}`)
-            }>
+            onClick={() => router.push(`/admin/list-post/edit/${record?.id}`)}>
             Xem chi tiết/Sửa
           </Button>
 
@@ -156,32 +140,31 @@ export default function ListPost() {
           </Popconfirm>
         </Space>
       ),
-      width: 200,
-    },
-  ];
+      width: 200
+    }
+  ]
 
   const deleteMutate = useMutation(Base.deletePost, {
     onSuccess: () => {
-      message.success("Xóa bài viết thành công!");
-      setIdSelected();
-      refetch();
+      message.success("Xóa bài viết thành công!")
+      setIdSelected()
+      refetch()
     },
-    onError: (e) => {
-      message.error("Xóa bài viết thất bại!");
-    },
-  });
+    onError: e => {
+      message.error("Xóa bài viết thất bại!")
+    }
+  })
 
-  const handleDelete = (e) => {
-    deleteMutate.mutate(idSelected);
-  };
+  const handleDelete = e => {
+    deleteMutate.mutate(idSelected)
+  }
 
-  const onChangeSelect = (value) => {
-    setValueSearchCate(value);
-  };
+  const onChangeSelect = value => {
+    setValueSearchCate(value)
+  }
 
   // Filter `option.label` match the user type `input`
-  const filterOption = (input, option) =>
-    (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
+  const filterOption = (input, option) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
   // api lấy danh sách tất cả thể loại
   const { data: listCategory } = useQuery(
     ["getAllCateAdminSearch"],
@@ -190,16 +173,16 @@ export default function ListPost() {
         page: 0,
         size: 1000,
         search: "",
-        type: "ARTICLE",
-      });
+        type: "ARTICLE"
+      })
 
-      const dataConvert = res?.content?.map((category) => {
-        return { label: category?.name, value: category?.id };
-      });
-      return dataConvert;
+      const dataConvert = res?.content?.map(category => {
+        return { label: category?.name, value: category?.id }
+      })
+      return dataConvert
     },
     {}
-  );
+  )
 
   return (
     <div>
@@ -209,12 +192,12 @@ export default function ListPost() {
         prefix={
           <SearchOutlined
             style={{
-              color: "gray",
+              color: "gray"
             }}
           />
         }
-        onChange={(e) => {
-          setValueSearch(e.target.value);
+        onChange={e => {
+          setValueSearch(e.target.value)
         }}
         className="w-1/3 mb-5"
         placeholder="Tìm kiếm theo tiêu đề"
@@ -242,34 +225,31 @@ export default function ListPost() {
           <Table
             columns={columns}
             dataSource={listPost}
-            onRow={(record) => {
+            onRow={record => {
               return {
                 onClick: () => {
-                  setIdSelected(record.Id);
-                },
-              };
+                  setIdSelected(record.Id)
+                }
+              }
             }}
             pagination={{
               current: __pagination.current.page_num,
               pageSize: __pagination.current.page_size,
               total: __pagination.current.count,
               showSizeChanger: true,
-              pageSizeOptions: [10, 20, 50, 100],
+              pageSizeOptions: [10, 20, 50, 100]
             }}
             onChange={handleTableChange}
           />
         </CustomTable>
       </Spin>
     </div>
-  );
+  )
 }
 
 const CustomTable = styled.div`
   & .ant-table-wrapper .ant-table-thead > tr > th,
-  :where(.css-dev-only-do-not-override-6j9yrn).ant-table-wrapper
-    .ant-table-thead
-    > tr
-    > td {
+  :where(.css-dev-only-do-not-override-6j9yrn).ant-table-wrapper .ant-table-thead > tr > td {
     background: #cce3de;
   }
-`;
+`

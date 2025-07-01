@@ -1,24 +1,16 @@
-"use client";
+"use client"
 
-import {
-  CalculatorOutlined,
-  CarOutlined,
-  DollarOutlined,
-  ShoppingCartOutlined,
-} from "@ant-design/icons";
-import { Button } from "antd";
-import { useState, useEffect } from "react";
+import { CalculatorOutlined, CarOutlined, DollarOutlined, ShoppingCartOutlined } from "@ant-design/icons"
+import { Button } from "antd"
+import { useState, useEffect } from "react"
 
 export default function BillingTotal({ setStep, selectedProducts }) {
-  const [totalPrice, setTotalPrice] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0)
 
   useEffect(() => {
-    const total = selectedProducts.reduce(
-      (acc, product) => acc + product?.priceFrom * product?.quantity,
-      0
-    );
-    setTotalPrice(total.toLocaleString("vi-VN"));
-  }, [selectedProducts]);
+    const total = selectedProducts.reduce((acc, product) => acc + product?.priceFrom * product?.quantity, 0)
+    setTotalPrice(total.toLocaleString("vi-VN"))
+  }, [selectedProducts])
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md w-1/3">
@@ -50,9 +42,7 @@ export default function BillingTotal({ setStep, selectedProducts }) {
               <DollarOutlined />
               Tổng tiền:
             </span>
-            <span className="text-xl font-bold text-red-600">
-              {totalPrice}đ
-            </span>
+            <span className="text-xl font-bold text-red-600">{totalPrice}đ</span>
           </div>
         </div>
 
@@ -61,12 +51,12 @@ export default function BillingTotal({ setStep, selectedProducts }) {
           type="default"
           className="w-full bg-[#2cb1ab] text-white py-3 rounded-lg hover:bg-[#2cb1ab] transition duration-200 mt-6 flex items-center justify-center gap-2"
           onClick={() => {
-            setStep("step2");
+            setStep("step2")
           }}>
           <ShoppingCartOutlined />
           Tiến hành thanh toán
         </Button>
       </div>
     </div>
-  );
+  )
 }

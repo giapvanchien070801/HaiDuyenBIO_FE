@@ -1,86 +1,80 @@
-import { Form, Input, Button, Select, message, Spin } from "antd";
-import { useRouter } from "next/navigation";
-import styled from "@emotion/styled";
-import { useMutation, useQuery } from "react-query";
-import TextEditor from "@/components/admin/common/TextEditor";
-import CategoryProduct from "@/models/CategoryProduct";
-import {
-  omitField,
-  removeEmptyFields,
-} from "@/common/functions/commonFunction";
+import { Form, Input, Button, Select, message, Spin } from "antd"
+import { useRouter } from "next/navigation"
+import styled from "@emotion/styled"
+import { useMutation, useQuery } from "react-query"
+import TextEditor from "@/components/admin/common/TextEditor"
+import CategoryProduct from "@/models/CategoryProduct"
+import { omitField, removeEmptyFields } from "@/common/functions/commonFunction"
 
-import ArticleModal from "@/models/ArticleModal";
-import UploadListImageArticle from "@/app/(admin)/admin/list-post/components/UploadListImageArticle";
+import ArticleModal from "@/models/ArticleModal"
+import UploadListImageArticle from "@/app/(admin)/admin/list-post/components/UploadListImageArticle"
 
-const { TextArea } = Input;
+const { TextArea } = Input
 
-const CreateOrEditArticle = (props) => {
-  const { id, actionType } = props;
-  const [form] = Form.useForm();
+const CreateOrEditArticle = props => {
+  const { id, actionType } = props
+  const [form] = Form.useForm()
 
   // typePage = post | department | service
   // actionType = create | update
-  const isCreate = actionType === "create";
+  const isCreate = actionType === "create"
 
-  const router = useRouter();
+  const router = useRouter()
 
   // tạo sửa Sản phẩm
   const createServiceMutate = useMutation(ArticleModal.createArticle, {
     onSuccess: () => {
-      message.success("Tạo mới Sản phẩm thành công!");
-      router.back();
+      message.success("Tạo mới Sản phẩm thành công!")
+      router.back()
     },
-    onError: (e) => {
-      message.error("Tạo mới Sản phẩm thất bại!");
-    },
-  });
-
-  const updateServiceMutate = useMutation(
-    (values) => ArticleModal.updateArticle(id, omitField(values, "id")),
-    {
-      onSuccess: () => {
-        message.success("Sửa Sản phẩm thành công!");
-        form.resetFields();
-        router.back();
-      },
-      onError: (e) => {
-        message.error("Sửa Sản phẩm thất bại!");
-      },
+    onError: e => {
+      message.error("Tạo mới Sản phẩm thất bại!")
     }
-  );
+  })
 
-  const handleCreate = (values) => {
+  const updateServiceMutate = useMutation(values => ArticleModal.updateArticle(id, omitField(values, "id")), {
+    onSuccess: () => {
+      message.success("Sửa Sản phẩm thành công!")
+      form.resetFields()
+      router.back()
+    },
+    onError: e => {
+      message.error("Sửa Sản phẩm thất bại!")
+    }
+  })
+
+  const handleCreate = values => {
     if (isCreate) {
-      createServiceMutate.mutate(values);
+      createServiceMutate.mutate(values)
     } else {
       const valueUpdate = {
         id: id,
-        ...values,
-      };
-      updateServiceMutate.mutate(valueUpdate);
+        ...values
+      }
+
+      updateServiceMutate.mutate(valueUpdate)
     }
-  };
+  }
 
   const { data: dataDetail } = useQuery(
     ["getDetail", id],
     async () => {
-      const res = await ArticleModal.getArticleDetail(id);
-      form.setFieldsValue(res);
-      return res;
+      const res = await ArticleModal.getArticleDetail(id)
+      form.setFieldsValue(res)
+      return res
     },
     { enabled: !!id }
-  );
+  )
 
-  const onChangeSelect = (value) => {
+  const onChangeSelect = value => {
     // Handle selection change
-  };
-  const onSearch = (value) => {
+  }
+  const onSearch = value => {
     // Handle search
-  };
+  }
 
   // Filter `option.label` match the user type `input`
-  const filterOption = (input, option) =>
-    (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
+  const filterOption = (input, option) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
 
   // api lấy danh sách tất cả thể loại
   const { data: listCategory } = useQuery(
@@ -91,45 +85,40 @@ const CreateOrEditArticle = (props) => {
           Page: 1,
           Size: 1000,
           search: "",
-          type: "ARTICLE",
+          type: "ARTICLE"
         })
-      );
+      )
 
-      return res?.content?.map((item) => ({
+      return res?.content?.map(item => ({
         label: item.name,
-        value: item.id,
-      }));
+        value: item.id
+      }))
     },
     {}
-  );
+  )
 
-  const valueDescription = form.getFieldValue("description");
+  const valueDescription = form.getFieldValue("content")
+  const imageUrl = form.getFieldValue("imageUrl")
 
   return (
     <CustomForm className="w-full h-full ">
-      <Spin
-        spinning={
-          createServiceMutate.isLoading || updateServiceMutate.isLoading
-        }>
+      <Spin spinning={createServiceMutate.isLoading || updateServiceMutate.isLoading}>
         <Form
           layout="vertical"
           initialValues={{
-            remember: true,
+            remember: true
           }}
           scrollToFirstError
           form={form}
           onFinish={handleCreate}>
-          <Form.Item
-            name="imageUrl"
-            label="Ảnh"
-            rules={[{ required: true, message: "Ảnh không được bỏ trống!" }]}>
+          <Form.Item name="imageUrl" label="Ảnh" rules={[{ required: true, message: "Ảnh không được bỏ trống!" }]}>
             <UploadListImageArticle
-              onChange={(imageResponse) => {
+              onChange={imageResponse => {
                 form.setFieldsValue({
-                  imageUrl: imageResponse,
-                });
+                  imageUrl: imageResponse
+                })
               }}
-              imageDetail={dataDetail?.imageUrl}
+              // imageDetail={[dataDetail?.imageUrl]}
             />
           </Form.Item>
 
@@ -138,17 +127,12 @@ const CreateOrEditArticle = (props) => {
             rules={[
               {
                 required: true,
-                message: "Tiêu đề không được bỏ trống!",
-              },
+                message: "Tiêu đề không được bỏ trống!"
+              }
             ]}
             className="w-full mb-3 "
             label="Tên bài viết">
-            <Input
-              maxLength={500}
-              allowClear
-              className=" mb-5"
-              placeholder="Nhập tên bài viết"
-            />
+            <Input maxLength={500} allowClear className=" mb-5" placeholder="Nhập tên bài viết" />
           </Form.Item>
 
           <div className="flex gap-3">
@@ -157,8 +141,8 @@ const CreateOrEditArticle = (props) => {
               rules={[
                 {
                   required: true,
-                  message: "Không được bỏ trống!",
-                },
+                  message: "Không được bỏ trống!"
+                }
               ]}
               className="w-1/2"
               label={"Slug"}>
@@ -168,8 +152,8 @@ const CreateOrEditArticle = (props) => {
               rules={[
                 {
                   required: true,
-                  message: "Danh mục không được bỏ trống!",
-                },
+                  message: "Danh mục không được bỏ trống!"
+                }
               ]}
               name="categoryId"
               className="w-1/2"
@@ -186,28 +170,28 @@ const CreateOrEditArticle = (props) => {
             </Form.Item>
           </div>
 
-          {/* <Form.Item
+          <Form.Item
             name="summary"
             rules={[
               {
                 required: true,
-                message: "Mô tả không được bỏ trống!",
-              },
+                message: "Mô tả không được bỏ trống!"
+              }
             ]}
             className="w-full"
             label="Mô tả ngắn">
             <TextArea rows={4} placeholder="Nhập mô tả ngắn" maxLength={500} />
-          </Form.Item> */}
+          </Form.Item>
 
           <Form.Item
             name="content"
             label="Mô tả chi tiết"
             rules={[{ required: true, message: "Mô tả không được bỏ trống!" }]}>
             <TextEditor
-              onChange={(value) => {
+              onChange={value => {
                 form.setFieldsValue({
-                  description: value,
-                });
+                  content: value
+                })
               }}
               valueDetail={valueDescription}
             />
@@ -219,7 +203,7 @@ const CreateOrEditArticle = (props) => {
               type="default"
               danger
               onClick={() => {
-                router.back();
+                router.back()
               }}>
               Hủy
             </Button>
@@ -239,13 +223,13 @@ const CreateOrEditArticle = (props) => {
         </Form>
       </Spin>
     </CustomForm>
-  );
-};
+  )
+}
 
 const CustomForm = styled.div`
   & .ant-form-item-control-input-content .mb-5 {
     margin: 0;
   }
-`;
+`
 
-export default CreateOrEditArticle;
+export default CreateOrEditArticle

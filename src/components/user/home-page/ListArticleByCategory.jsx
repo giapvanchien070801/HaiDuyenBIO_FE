@@ -1,15 +1,15 @@
-"use client";
+"use client"
 
-import ArticleModal from "@/models/ArticleModal";
-import { Breadcrumb } from "antd";
-import Link from "next/link";
-import { useQuery } from "react-query";
+import ArticleModal from "@/models/ArticleModal"
+import { Breadcrumb } from "antd"
+import Link from "next/link"
+import { useQuery } from "react-query"
 
 export default function ListArticleByCategory({ categoryId }) {
   const {
     data: listArticle,
     refetch,
-    isFetching,
+    isFetching
   } = useQuery(
     ["getListPostPagination", categoryId],
     async () => {
@@ -17,15 +17,15 @@ export default function ListArticleByCategory({ categoryId }) {
         page: 0,
         size: 1000,
 
-        categoryId: categoryId,
-      });
+        categoryId: categoryId
+      })
 
-      return res?.content;
+      return res?.content
     },
     {
-      enabled: !!categoryId,
+      enabled: !!categoryId
     }
-  );
+  )
 
   return (
     <ul className="w-max bg-white">
@@ -41,5 +41,5 @@ export default function ListArticleByCategory({ categoryId }) {
         </li>
       ))}
     </ul>
-  );
+  )
 }

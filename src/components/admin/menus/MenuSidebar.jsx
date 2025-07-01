@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from "react"
 
 import {
   HomeOutlined,
@@ -19,19 +19,19 @@ import {
   FullscreenOutlined,
   OrderedListOutlined,
   VideoCameraAddOutlined,
-  ShoppingCartOutlined,
-} from "@ant-design/icons";
-import CollapseMemuItem from "./CollapseMemuItem";
+  ShoppingCartOutlined
+} from "@ant-design/icons"
+import CollapseMemuItem from "./CollapseMemuItem"
 
-const MenuSidebar = (props) => {
-  const { isCloseMenu } = props;
-  const [indexItemSelected, setIndexItemSelected] = useState(null);
+const MenuSidebar = props => {
+  const { isCloseMenu } = props
+  const [indexItemSelected, setIndexItemSelected] = useState(null)
 
   const lstDataMenu = [
     {
       text: "Trang quản trị",
       icon: <HomeOutlined />,
-      pushTo: "/admin/home",
+      pushTo: "/admin/home"
     },
 
     // {
@@ -61,21 +61,17 @@ const MenuSidebar = (props) => {
       icon: <InsertRowAboveOutlined />,
       listSubMenu: [
         {
-          icon: (
-            <FullscreenOutlined className={`${isCloseMenu && "text-xs"}`} />
-          ),
+          icon: <FullscreenOutlined className={`${isCloseMenu && "text-xs"}`} />,
           text: "Danh mục Sản phẩm",
-          pushTo: "/admin/service/categories-service",
+          pushTo: "/admin/service/categories-service"
         },
         ,
         {
-          icon: (
-            <OrderedListOutlined className={`${isCloseMenu && "text-xs"}`} />
-          ),
+          icon: <OrderedListOutlined className={`${isCloseMenu && "text-xs"}`} />,
           text: "Danh sách Sản phẩm",
-          pushTo: "/admin/service",
-        },
-      ],
+          pushTo: "/admin/service"
+        }
+      ]
     },
 
     {
@@ -83,18 +79,16 @@ const MenuSidebar = (props) => {
       icon: <FileSearchOutlined />,
       listSubMenu: [
         {
-          icon: (
-            <UnorderedListOutlined className={`${isCloseMenu && "text-xs"}`} />
-          ),
+          icon: <UnorderedListOutlined className={`${isCloseMenu && "text-xs"}`} />,
           text: "Danh mục bài viết",
-          pushTo: "/admin/list-post/categories-post",
+          pushTo: "/admin/list-post/categories-post"
         },
         {
           icon: <FileTextOutlined className={`${isCloseMenu && "text-xs"}`} />,
           text: "Danh sách bài viết",
-          pushTo: "/admin/list-post",
-        },
-      ],
+          pushTo: "/admin/list-post"
+        }
+      ]
     },
 
     // {
@@ -132,7 +126,7 @@ const MenuSidebar = (props) => {
     {
       text: "Quản lý Liên hệ",
       icon: <ContactsOutlined />,
-      pushTo: "/admin/customer-contact",
+      pushTo: "/admin/customer-contact"
       // listSubMenu: [
       //   {
       //     icon: <ContactsOutlined  className={`${isCloseMenu && "text-xs"}`} />,
@@ -144,27 +138,27 @@ const MenuSidebar = (props) => {
     {
       text: "Quản lý Video",
       icon: <VideoCameraAddOutlined />,
-      pushTo: "/admin/videos",
+      pushTo: "/admin/videos"
     },
     {
       text: "Quản lý đơn hàng",
       icon: <ShoppingCartOutlined />,
-      pushTo: "/admin/orders",
+      pushTo: "/admin/orders"
     },
     {
       text: "Quản lý Tài khoản",
       icon: <UserSwitchOutlined />,
-      pushTo: "/admin/accounts-admin",
-    },
-  ];
-
-  const handleClickItem = (index) => {
-    if (indexItemSelected !== index) {
-      setIndexItemSelected(index);
-    } else {
-      setIndexItemSelected(null);
+      pushTo: "/admin/accounts-admin"
     }
-  };
+  ]
+
+  const handleClickItem = index => {
+    if (indexItemSelected !== index) {
+      setIndexItemSelected(index)
+    } else {
+      setIndexItemSelected(null)
+    }
+  }
 
   return (
     <div className="w-full h-full ">
@@ -181,7 +175,7 @@ const MenuSidebar = (props) => {
         />
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default MenuSidebar;
+export default MenuSidebar
