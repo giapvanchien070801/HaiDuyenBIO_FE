@@ -350,8 +350,11 @@ export default function UserHeader() {
               suffixIcon={<SearchOutlined />}
               className="w-full"
               showSearch
+              allowClear
               onChange={value => {
-                router.push(`/product-detail/${value}`)
+                if (value) {
+                  router.push(`/product-detail/${value}`)
+                }
               }}
               optionFilterProp="label"
               onSearch={value => {

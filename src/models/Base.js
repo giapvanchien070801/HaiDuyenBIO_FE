@@ -35,8 +35,10 @@ axiosInstance.interceptors.response.use(
     if (error.status === 401) {
       message.error("Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại!")
       const cookies = new Cookies()
-      cookies.remove("accessToken")
-      window.location.href = "/login-admin"
+      cookies.remove("accessToken", { path: "/" })
+      setTimeout(() => {
+        window.location.href = "/login-admin"
+      }, 5000)
     }
     return Promise.reject(error)
   }

@@ -17,7 +17,7 @@ function LoginPage() {
   // delete Record
   const loginMutate = useMutation(Login.loginAdmin, {
     onSuccess: value => {
-      cookies.set("accessToken", value.accessToken)
+      cookies.set("accessToken", value.accessToken, { path: "/" })
       message.success("Đăng nhập thành công!")
       router.push("/admin/home")
     },

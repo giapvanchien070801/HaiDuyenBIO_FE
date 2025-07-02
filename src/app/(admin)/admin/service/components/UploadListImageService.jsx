@@ -19,10 +19,6 @@ const UploadListImageService = ({ value, listImageDetail, onChange }) => {
   const [listImageResponse, setListImageResponse] = useState([])
 
   useEffect(() => {
-    onChange(listImageResponse)
-  }, [listImageResponse])
-
-  useEffect(() => {
     if (listImageDetail && Array.isArray(listImageDetail)) {
       const convertedFileList = listImageDetail.map((url, index) => ({
         uid: `existing-${index}`,
@@ -45,18 +41,11 @@ const UploadListImageService = ({ value, listImageDetail, onChange }) => {
   }
 
   const handleChange = ({ fileList: newFileList }) => {
-    setFileList(newFileList)
+    if (newFileList.length < listImageResponse.length) {
+      onChange(newFileList?.map(item => item.url))
+    }
 
-    // Convert fileList to array of URLs for form value
-    // onChange(
-    //   newFileList.map((el) => {
-    //     if (el.response) {
-    //       el.id = el.response.id;
-    //       el.fileName = el.response.fileName;
-    //     }
-    //     return el;
-    //   })
-    // );
+    setFileList(newFileList)
   }
 
   const uploadButton = (
@@ -70,6 +59,7 @@ const UploadListImageService = ({ value, listImageDetail, onChange }) => {
     mutationFn: FilesRepository.uploadFile,
     onSuccess: data => {
       setListImageResponse([...listImageResponse, data])
+      onChange([...listImageResponse, data])
       message.success("Tải lên thành công")
     },
     onError: error => {
