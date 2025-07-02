@@ -43,12 +43,12 @@ export default function BillingDetailsStep2({ setStep, form }) {
 
   // Load buyNow products from localStorage
   useEffect(() => {
-    const savedBuyNowProducts = localStorage.getItem("buyNowProducts")
+    const savedBuyNowProducts = localStorage.getItem("selectedProducts")
     if (savedBuyNowProducts) {
-      const buyNowProducts = JSON.parse(savedBuyNowProducts)
+      const selectedProducts = JSON.parse(savedBuyNowProducts)
 
       // Transform data for table display
-      const transformedItems = buyNowProducts.map(product => ({
+      const transformedItems = selectedProducts.map(product => ({
         key: product.id.toString(),
         name: product.name,
         quantity: 1,
@@ -59,7 +59,7 @@ export default function BillingDetailsStep2({ setStep, form }) {
       setCartItems(transformedItems)
 
       // Calculate subtotal
-      const calculatedSubtotal = buyNowProducts.reduce((sum, product) => sum + product.price * product.quantity, 0)
+      const calculatedSubtotal = selectedProducts.reduce((sum, product) => sum + product.price * product.quantity, 0)
 
       setSubtotal(calculatedSubtotal)
       setTotal(calculatedSubtotal)

@@ -26,13 +26,20 @@ export default function AdminHomeLayout({ children }) {
   const handleLogOut = () => {
     setIsLoading(true)
 
-    cookies.remove("accessToken")
+    // Thử nhiều cách khác nhau để xóa cookie
+    try {
+      cookies.remove("accessToken", { path: "/" })
+      cookies.remove("accessToken")
 
-    setTimeout(() => {
+      setTimeout(() => {
+        setIsLoading(false)
+        router.push("/login-admin")
+        message.success("Đăng xuất thành công")
+      }, 2000)
+    } catch (error) {
       setIsLoading(false)
-      router.push("/login-admin")
-      message.success("Đăng xuất thành công")
-    }, 1000)
+      message.error("Có lỗi xảy ra khi đăng xuất")
+    }
   }
 
   const contentPopover = (

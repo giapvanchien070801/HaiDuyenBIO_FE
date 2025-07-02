@@ -45,27 +45,39 @@ const CreateOrEditService = props => {
     }
   })
 
+  const { data: dataDetail, refetch } = useQuery(
+    ["getDetail", id],
+    async () => {
+      const res = await Product.getProductDetail(id)
+
+      form.setFieldsValue(res)
+      return res
+    },
+    { enabled: !!id }
+  )
+
+  const updateServiceNotBackMutate = useMutation(values => Product.updateProduct(id, omitField(values, "id")), {
+    onSuccess: () => {
+      message.success("Sửa Sản phẩm thành công!")
+      refetch()
+    },
+    onError: e => {
+      message.error("Sửa Sản phẩm thất bại!")
+    }
+  })
+
   const handleCreate = values => {
     if (isCreate) {
       createServiceMutate.mutate(values)
     } else {
       const valueUpdate = {
         id: id,
-        ...values
+        ...values,
+        imageUrl: dataDetail?.imageUrl
       }
       updateServiceMutate.mutate(valueUpdate)
     }
   }
-
-  const { data: dataDetail } = useQuery(
-    ["getDetail", id],
-    async () => {
-      const res = await Product.getProductDetail(id)
-      form.setFieldsValue(res)
-      return res
-    },
-    { enabled: !!id }
-  )
 
   const onChangeSelect = value => {
     // Handle selection change
@@ -114,9 +126,17 @@ const CreateOrEditService = props => {
           <Form.Item name="imageUrl" label="Ảnh" rules={[{ required: true, message: "Ảnh không được bỏ trống!" }]}>
             <UploadListImageService
               onChange={listImageResponse => {
-                form.setFieldsValue({
-                  imageUrl: listImageResponse
-                })
+                if (!!id) {
+                  updateServiceNotBackMutate.mutate({
+                    id: id,
+                    ...form.getFieldsValue(),
+                    imageUrl: listImageResponse
+                  })
+                } else {
+                  form.setFieldsValue({
+                    imageUrl: listImageResponse
+                  })
+                }
               }}
               listImageDetail={dataDetail?.imageUrl}
             />

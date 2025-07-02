@@ -112,7 +112,7 @@ export default function ProductListPage({ params }) {
 
   // Function to buy now
   const buyNow = () => {
-    localStorage.setItem("buyNowProducts", JSON.stringify([{ ...mockProduct, quantity: quantity }]))
+    localStorage.setItem("selectedProducts", JSON.stringify([{ ...mockProduct, quantity: quantity }]))
     router.push("/shopping/step2")
   }
 

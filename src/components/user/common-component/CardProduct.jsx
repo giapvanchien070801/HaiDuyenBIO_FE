@@ -89,7 +89,7 @@ export default function CardProduct(props) {
               onClick={e => {
                 e.stopPropagation()
                 router.push(`/shopping/step2`)
-                localStorage.setItem("buyNowProducts", JSON.stringify([{ ...product, quantity: 1 }]))
+                localStorage.setItem("selectedProducts", JSON.stringify([{ ...product, quantity: 1 }]))
               }}
               //   type="primary"
               className="flex-1 !bg-[#2cb1ab] text-sm sm:text-base px-1 text-white"
