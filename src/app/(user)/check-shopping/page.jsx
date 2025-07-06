@@ -76,7 +76,7 @@ export default function CheckShoppingPage() {
       href: "/check-shopping",
       title: (
         <>
-          <span className="text-[#2490eb]">Kiểm tra đơn hàngss</span>
+          <span className="text-[#2490eb]">Kiểm tra đơn hàng</span>
         </>
       )
     }
@@ -155,7 +155,7 @@ export default function CheckShoppingPage() {
   return (
     <div className="pb-24">
       <div className="grid xl:grid-cols-10 gap-6 mt-4 container-original mx-auto">
-        <div className="blog-content col-span-10 bg-white md:px-0 px-4">
+        <div className="col-span-10 bg-white md:px-0 px-4">
           <Breadcrumb className="my-3" items={breadcrumb} />
 
           <div className="my-8">

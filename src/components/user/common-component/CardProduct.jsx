@@ -55,7 +55,7 @@ export default function CardProduct(props) {
         <div className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-sm z-10">
           -{product?.discountPercent}%
         </div>
-        <div className="px-2 py-4 overflow-hidden  h-44 sm:h-52 w-full">
+        <div className="px-2 py-4 overflow-hidden  h-52 sm:h-52 w-full">
           <img
             src={product?.imageUrl ? product?.imageUrl[0] : "/images/product1.png"}
             alt={product?.name}
@@ -78,7 +78,7 @@ export default function CardProduct(props) {
             <Button
               type="default"
               icon={<ShoppingCartOutlined />}
-              className="flex-1 text-sm sm:text-base px-1"
+              className="flex-1 text-sm sm:text-base px-1 py-2"
               onClick={e => {
                 e.stopPropagation()
                 addToCart()
@@ -92,7 +92,7 @@ export default function CardProduct(props) {
                 localStorage.setItem("selectedProducts", JSON.stringify([{ ...product, quantity: 1 }]))
               }}
               //   type="primary"
-              className="flex-1 !bg-[#2cb1ab] text-sm sm:text-base px-1 text-white"
+              className="flex-1 !bg-[#2cb1ab] text-sm sm:text-base px-1 text-white  py-2"
               icon={<ShoppingOutlined />}>
               Mua ngay
             </Button>

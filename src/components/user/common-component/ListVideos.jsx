@@ -12,7 +12,7 @@ import FilesRepository from "@/models/FilesRepository"
 export default function ListVideos() {
   const __pagination = useRef({
     page_num: 1,
-    page_size: 10,
+    page_size: 9,
     count: 0
   })
   const {
@@ -30,6 +30,7 @@ export default function ListVideos() {
 
       return res?.content?.map(item => ({
         id: item?.id,
+        createdAt: item?.createdAt,
         title: item?.description,
         url: item?.externalLink,
         channel: "Hải Duyên Bio",

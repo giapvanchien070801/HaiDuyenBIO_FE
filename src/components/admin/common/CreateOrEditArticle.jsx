@@ -1,5 +1,5 @@
 import { Form, Input, Button, Select, message, Spin } from "antd"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import styled from "@emotion/styled"
 import { useMutation, useQuery } from "react-query"
 import TextEditor from "@/components/admin/common/TextEditor"
@@ -14,6 +14,10 @@ const { TextArea } = Input
 const CreateOrEditArticle = props => {
   const { id, actionType } = props
   const [form] = Form.useForm()
+  const params = useSearchParams()
+  const type = params.get("type")
+
+  const isMenu = type === "menu"
 
   // typePage = post | department | service
   // actionType = create | update
@@ -24,22 +28,22 @@ const CreateOrEditArticle = props => {
   // tạo sửa Sản phẩm
   const createServiceMutate = useMutation(ArticleModal.createArticle, {
     onSuccess: () => {
-      message.success("Tạo mới Sản phẩm thành công!")
+      message.success("Tạo mới bài viết thành công!")
       router.back()
     },
     onError: e => {
-      message.error("Tạo mới Sản phẩm thất bại!")
+      message.error("Tạo mới bài viết thất bại!")
     }
   })
 
   const updateServiceMutate = useMutation(values => ArticleModal.updateArticle(id, omitField(values, "id")), {
     onSuccess: () => {
-      message.success("Sửa Sản phẩm thành công!")
+      message.success("Sửa bài viết thành công!")
       form.resetFields()
       router.back()
     },
     onError: e => {
-      message.error("Sửa Sản phẩm thất bại!")
+      message.error("Sửa bài viết thất bại!")
     }
   })
 
@@ -85,7 +89,7 @@ const CreateOrEditArticle = props => {
           Page: 1,
           Size: 1000,
           search: "",
-          type: "ARTICLE"
+          type: isMenu ? "MENU" : "ARTICLE"
         })
       )
 
@@ -131,8 +135,13 @@ const CreateOrEditArticle = props => {
               }
             ]}
             className="w-full mb-3 "
-            label="Tên bài viết">
-            <Input maxLength={500} allowClear className=" mb-5" placeholder="Nhập tên bài viết" />
+            label={isMenu ? "Tên menu" : "Tên bài viết"}>
+            <Input
+              maxLength={500}
+              allowClear
+              className=" mb-5"
+              placeholder={`Nhập tên ${isMenu ? "menu" : "bài viết"}`}
+            />
           </Form.Item>
 
           <div className="flex gap-3">
@@ -157,10 +166,10 @@ const CreateOrEditArticle = props => {
               ]}
               name="categoryId"
               className="w-1/2"
-              label="Danh mục bài viết">
+              label={isMenu ? "Menu chính" : "Danh mục bài viết"}>
               <Select
                 showSearch
-                placeholder="Chọn danh mục"
+                placeholder={`Chọn ${isMenu ? "menu chính" : "danh mục bài viết"}`}
                 optionFilterProp="children"
                 onChange={onChangeSelect}
                 onSearch={onSearch}
@@ -185,8 +194,8 @@ const CreateOrEditArticle = props => {
 
           <Form.Item
             name="content"
-            label="Mô tả chi tiết"
-            rules={[{ required: true, message: "Mô tả không được bỏ trống!" }]}>
+            label="Nội dung"
+            rules={[{ required: true, message: "Nội dung không được bỏ trống!" }]}>
             <TextEditor
               onChange={value => {
                 form.setFieldsValue({

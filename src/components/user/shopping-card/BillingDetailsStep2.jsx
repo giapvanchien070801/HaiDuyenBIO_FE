@@ -19,52 +19,59 @@ export default function BillingDetailsStep2({ setStep, form }) {
   // Load selected products from localStorage
   useEffect(() => {
     const savedSelectedProducts = localStorage.getItem("selectedProducts")
-    if (savedSelectedProducts) {
-      const selectedProducts = JSON.parse(savedSelectedProducts)
-
+    const selectedProducts = JSON.parse(savedSelectedProducts)?.filter(product => product !== null)
+    if (selectedProducts.length > 0) {
+      debugger
       // Transform data for table display
       const transformedItems = selectedProducts.map(product => ({
-        key: product.id.toString(),
-        name: product.name,
-        quantity: product.quantity,
-        price: formatPrice(product.price),
-        total: formatPrice(product.price * product.quantity)
+        key: product?.id?.toString(),
+        name: product?.name,
+        quantity: product?.quantity,
+        price: formatPrice(product?.price),
+        priceFrom: formatPrice(product?.priceFrom),
+        total: formatPrice(product?.priceFrom * product?.quantity)
       }))
 
       setCartItems(transformedItems)
 
       // Calculate subtotal
-      const calculatedSubtotal = selectedProducts.reduce((sum, product) => sum + product.price * product.quantity, 0)
+      const calculatedSubtotal = selectedProducts.reduce(
+        (sum, product) => sum + product.priceFrom * product.quantity,
+        0
+      )
 
       setSubtotal(calculatedSubtotal)
       setTotal(calculatedSubtotal)
     }
   }, [])
 
-  // Load buyNow products from localStorage
-  useEffect(() => {
-    const savedBuyNowProducts = localStorage.getItem("selectedProducts")
-    if (savedBuyNowProducts) {
-      const selectedProducts = JSON.parse(savedBuyNowProducts)
+  // // Load buyNow products from localStorage
+  // useEffect(() => {
+  //   const savedBuyNowProducts = localStorage.getItem("selectedProducts")
+  //   const selectedProducts = JSON.parse(savedBuyNowProducts)
+  //   if (selectedProducts.length > 0) {
+  //     // Transform data for table display
+  //     const transformedItems = selectedProducts.map(product => ({
+  //       key: product.id.toString(),
+  //       name: product.name,
+  //       quantity: product.quantity,
+  //       priceFrom: formatPrice(product.priceFrom),
+  //       price: formatPrice(product.price),
+  //       total: formatPrice(product.priceFrom * product.quantity)
+  //     }))
 
-      // Transform data for table display
-      const transformedItems = selectedProducts.map(product => ({
-        key: product.id.toString(),
-        name: product.name,
-        quantity: 1,
-        price: formatPrice(product.price),
-        total: formatPrice(product.price)
-      }))
+  //     setCartItems(transformedItems)
 
-      setCartItems(transformedItems)
+  //     // Calculate subtotal
+  //     const calculatedSubtotal = selectedProducts.reduce(
+  //       (sum, product) => sum + product.priceFrom * product.quantity,
+  //       0
+  //     )
 
-      // Calculate subtotal
-      const calculatedSubtotal = selectedProducts.reduce((sum, product) => sum + product.price * product.quantity, 0)
-
-      setSubtotal(calculatedSubtotal)
-      setTotal(calculatedSubtotal)
-    }
-  }, [])
+  //     setSubtotal(calculatedSubtotal)
+  //     setTotal(calculatedSubtotal)
+  //   }
+  // }, [])
 
   const formatPrice = price => {
     return new Intl.NumberFormat("vi-VN", {
@@ -86,8 +93,8 @@ export default function BillingDetailsStep2({ setStep, form }) {
     },
     {
       title: "Đơn giá",
-      dataIndex: "price",
-      key: "price"
+      dataIndex: "priceFrom",
+      key: "priceFrom"
     },
     {
       title: "Tổng",

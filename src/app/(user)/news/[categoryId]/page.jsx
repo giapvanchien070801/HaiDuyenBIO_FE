@@ -2,7 +2,7 @@
 
 import { HomeOutlined, SearchOutlined } from "@ant-design/icons"
 import SidebarUser from "@/components/user/common-component/SidebarUser"
-import { Breadcrumb, Input, Pagination, Select, Spin } from "antd"
+import { Breadcrumb, Empty, Input, Pagination, Select, Spin } from "antd"
 
 import CardPNews from "@/components/user/common-component/CardPNews"
 import { useQuery } from "react-query"
@@ -11,7 +11,9 @@ import { useRef, useState } from "react"
 import CategoryProduct from "@/models/CategoryProduct"
 import ArticleModal from "@/models/ArticleModal"
 
-export default function NewsPage() {
+export default function NewsPage({ params }) {
+  const categoryId = params?.categoryId
+
   const [valueSearch, setValueSearch] = useState("")
   const [valueSearchCate, setValueSearchCate] = useState("")
 
@@ -39,7 +41,8 @@ export default function NewsPage() {
         page: __pagination.current.page_num - 1,
         size: __pagination.current.page_size,
         search: searchDebounce,
-        categoryId: valueSearchCate
+        categoryId: valueSearchCate || categoryId,
+        type: "ARTICLE"
       })
 
       __pagination.current.count = res.totalElements
@@ -131,19 +134,27 @@ export default function NewsPage() {
             options={listCategory}
           /> */}
           <Spin spinning={isFetching}>
-            <div className="grid grid-cols-1  gap-6 ">
-              {listPost?.map(item => (
-                <CardPNews key={item.id} dataNews={item} />
-              ))}
-            </div>
-            <div className="flex justify-center my-4">
-              <Pagination
-                current={__pagination.current.page}
-                total={__pagination.current.count}
-                pageSize={__pagination.current.size}
-                onChange={handleTableChange}
-              />
-            </div>
+            {listPost?.length > 0 ? (
+              <>
+                <div className="grid grid-cols-1  gap-6 ">
+                  {listPost?.map(item => (
+                    <CardPNews key={item.id} dataNews={item} categoryId={categoryId} />
+                  ))}
+                </div>
+                <div className="flex justify-center my-4">
+                  <Pagination
+                    current={__pagination.current.page}
+                    total={__pagination.current.count}
+                    pageSize={__pagination.current.size}
+                    onChange={handleTableChange}
+                  />
+                </div>
+              </>
+            ) : (
+              <div className="flex justify-center items-center h-full">
+                <Empty description="Không có bài viết" />
+              </div>
+            )}
           </Spin>
         </div>
 

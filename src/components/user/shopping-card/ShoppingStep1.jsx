@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import BillingTotal from "./BillingTotal"
 import TableListProduct from "./TableListProduct"
 
@@ -10,6 +10,10 @@ export default function ShoppingStep1({ setStep }) {
   const handleChange = selectedProducts => {
     setSelectedProducts(selectedProducts)
   }
+
+  // useEffect(() => {
+  //   localStorage.setItem("selectedProducts", JSON.stringify([]))
+  // }, [])
 
   return (
     <div className="flex gap-4 w-full ">

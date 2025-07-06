@@ -3,7 +3,7 @@ import { Breadcrumb, Button, Input, Popconfirm, Space, Spin, Table, message, not
 import { HomeOutlined, PlusCircleOutlined, SearchOutlined } from "@ant-design/icons"
 import { useRef, useState } from "react"
 import styled from "@emotion/styled"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { useMutation, useQuery } from "react-query"
 
 import { removeEmptyFields, useDebounce } from "@/common/functions/commonFunction"
@@ -13,6 +13,11 @@ import CategoryProduct from "@/models/CategoryProduct"
 export default function Categorys() {
   const [valueSearchCate, setValueSearchCate] = useState("")
   const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const params = useSearchParams()
+  const type = params.get("type")
+
+  const isMenu = type === "menu"
 
   const __pagination = useRef({
     page_num: 1,
@@ -38,7 +43,7 @@ export default function Categorys() {
           page: __pagination.current.page_num - 1,
           size: __pagination.current.page_size,
           search: searchDebounce,
-          type: "ARTICLE"
+          type: isMenu ? "MENU" : "ARTICLE"
         })
       )
 
@@ -65,7 +70,7 @@ export default function Categorys() {
       href: "",
       title: (
         <>
-          <span className="text-cyan-700">Danh mục Sản phẩm</span>
+          <span className="text-cyan-700">{isMenu ? "Danh sách Menu chính" : "Danh mục bài viết"}</span>
         </>
       )
     }
@@ -122,7 +127,7 @@ export default function Categorys() {
       fixed: "left"
     },
     {
-      title: "Tên danh mục Sản phẩm",
+      title: isMenu ? "Tên menu chính" : "Tên danh mục bài viết",
       dataIndex: "name",
       key: "name",
       render: text => <a>{text}</a>
@@ -216,6 +221,7 @@ export default function Categorys() {
             isModalOpen={isModalOpen}
             setIsModalOpen={setIsModalOpen}
             onActions={onActions}
+            isMenu={isMenu}
           />
         )}
       </Spin>

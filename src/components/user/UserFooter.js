@@ -126,7 +126,7 @@ export default function UserFooter() {
                   <PhoneFilled className="text-2xl" style={{ color: "#27ae60" }} />
                 </Link>
                 <Link
-                  href="mailto:info@haiduyenbio.vn"
+                  href="mailto:haiduyenbio.com"
                   className="flex items-center justify-center rounded-full bg-white shadow hover:scale-110 transition"
                   style={{ width: 40, height: 40 }}>
                   <MailFilled className="text-2xl" style={{ color: "#e67e22" }} />
@@ -144,7 +144,7 @@ export default function UserFooter() {
                 <div>
                   <span className="font-semibold">Hotline:</span>{" "}
                   <a href="tel:0987654321" className="hover:underline">
-                    0987 654 321
+                    085 489 1993
                   </a>
                 </div>
               </div>
@@ -152,8 +152,8 @@ export default function UserFooter() {
                 <MailFilled className="text-xl mt-1 text-white" />
                 <div>
                   <span className="font-semibold">Email:</span>{" "}
-                  <a href="mailto:info@haiduyenbio.vn" className="hover:underline">
-                    info@haiduyenbio.vn
+                  <a href="mailto:haiduyenbio.com" className="hover:underline">
+                    haiduyenbio.com
                   </a>
                 </div>
               </div>
@@ -162,7 +162,7 @@ export default function UserFooter() {
                 <div>
                   <span className="font-semibold">Địa chỉ:</span>
                   <br />
-                  Số 123, Đường ABC, Quận XYZ, TP. Hà Nội, Việt Nam
+                  Nam Điện - Nam Dương - Lục Ngạn - Bắc Ninh
                 </div>
               </div>
               <div className="flex items-start gap-3">

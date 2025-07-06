@@ -5,6 +5,7 @@ import { useMutation, useQuery, useQueryClient } from "react-query"
 import Base from "@/models/Base"
 import FilesRepository from "@/models/FilesRepository"
 import CardVideo from "@/components/user/common-component/CardVideo"
+import { UPLOAD_FILE_TYPE } from "@/common/constants/commonConstant"
 
 const ModalCreateVideo = props => {
   const { isModalOpen = false, setIsModalOpen, onActions, dataDetail } = props
@@ -28,7 +29,7 @@ const ModalCreateVideo = props => {
       queryClient.invalidateQueries({ queryKey: ["getListVideoAdmin"] })
       setIsModalOpen(false)
     },
-    onError: e => {
+    onError: () => {
       message.error("Tạo mới video thất bại!")
     }
   })
@@ -40,7 +41,7 @@ const ModalCreateVideo = props => {
       queryClient.invalidateQueries({ queryKey: ["getListVideoAdmin"] })
       setIsModalOpen(false)
     },
-    onError: e => {
+    onError: () => {
       message.error("Sửa video thất bại!")
     }
   })
@@ -56,13 +57,13 @@ const ModalCreateVideo = props => {
 
   const handleFinish = values => {
     if (isModalCreate) {
-      createVideoMutate.mutate({ ...values, type: 2 })
+      createVideoMutate.mutate({ ...values, type: UPLOAD_FILE_TYPE.VIDEO })
     } else {
       updateVideoMutate.mutate({
         id: dataDetail?.id,
         externalLink: values?.link,
         description: values?.description,
-        type: 2
+        objectType: UPLOAD_FILE_TYPE.VIDEO
       })
     }
   }

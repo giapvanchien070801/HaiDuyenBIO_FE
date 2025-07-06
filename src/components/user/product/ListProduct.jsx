@@ -1,6 +1,6 @@
 "use client"
 
-import { Button, Input, Pagination, Select, Spin } from "antd"
+import { Button, Empty, Input, Pagination, Select, Spin } from "antd"
 import { SearchOutlined } from "@ant-design/icons"
 
 import CardProduct from "../common-component/CardProduct"
@@ -11,11 +11,13 @@ import CategoryProduct from "@/models/CategoryProduct"
 import Product from "@/models/Product"
 import TitleList from "../common-component/TitleList"
 
-export default function ListProduct() {
+export default function ListProduct(props) {
+  const { categoryId } = props
+
   const __pagination = useRef({
     page: 1,
     size: 10,
-    categoryId: -1
+    categoryId: categoryId
   })
 
   const [valueSearch, setValueSearch] = useState("")
@@ -78,7 +80,7 @@ export default function ListProduct() {
   return (
     <div className="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
       <TitleList title="Danh sách sản phẩm" />
-      <div className="flex gap-5 w-1/2 mb-5">
+      <div className="flex gap-5 w-full md:w-1/2 mb-5">
         <Input
           allowClear
           prefix={
@@ -107,19 +109,27 @@ export default function ListProduct() {
         />
       </div>
       <Spin spinning={isFetching}>
-        <div className="flex flex-col items-center gap-5">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-            {listProduct?.map(product => (
-              <CardProduct key={product?.id} product={product} />
-            ))}
+        {listProduct?.length > 0 ? (
+          <>
+            <div className="flex flex-col items-center gap-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+                {listProduct?.map(product => (
+                  <CardProduct key={product?.id} product={product} />
+                ))}
+              </div>
+              <Pagination
+                current={__pagination.current.page}
+                total={__pagination.current.count}
+                pageSize={__pagination.current.size}
+                onChange={handleTableChange}
+              />
+            </div>
+          </>
+        ) : (
+          <div className="flex justify-center items-center h-full">
+            <Empty description="Không có sản phẩm" />
           </div>
-          <Pagination
-            current={__pagination.current.page}
-            total={__pagination.current.count}
-            pageSize={__pagination.current.size}
-            onChange={handleTableChange}
-          />
-        </div>
+        )}
       </Spin>
     </div>
   )

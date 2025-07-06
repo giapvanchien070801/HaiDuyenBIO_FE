@@ -33,12 +33,11 @@ export default function CardVideo(props) {
             <span className="hover:text-gray-900 cursor-pointer">{video.channel}</span>
             <CheckCircleFilled className="ml-1 text-gray-600" />
           </div>
-          <div className="text-sm text-gray-600">
-            <span>{video.views} lượt xem</span>
-            <span className="mx-1 ml-5">
+          <div className="text-sm text-gray-600 flex items-center gap-2">
+            <span className="">
               <ClockCircleOutlined />
             </span>
-            <span>{video.timestamp}</span>
+            <span>{video.createdAt}</span>
           </div>
         </div>
       </div>

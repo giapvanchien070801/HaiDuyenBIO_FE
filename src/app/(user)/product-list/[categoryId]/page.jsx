@@ -12,7 +12,7 @@ import ListProduct from "@/components/user/product/ListProduct"
 
 export default function ProductListPage({ params }) {
   // Sử dụng query param từ URL
-  const idProduct = params?.id
+  const categoryId = params?.categoryId
   const [quantity, setQuantity] = useState(1)
   const [listProducts, setListProducts] = useState([])
   const router = useRouter()
@@ -153,7 +153,7 @@ export default function ProductListPage({ params }) {
       <div className=" gap-6 mt-12  flex justify-center">
         <div className=" bg-white md:px-0 px-4">
           <Breadcrumb className="my-5" items={breadcrumb} />
-          <ListProduct />
+          <ListProduct categoryId={categoryId} />
         </div>
       </div>
     </div>

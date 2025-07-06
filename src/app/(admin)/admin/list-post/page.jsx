@@ -3,7 +3,7 @@ import { Breadcrumb, Button, Input, Table, Space, Spin, Popconfirm, Select, mess
 import { HomeOutlined, SearchOutlined, PlusCircleOutlined } from "@ant-design/icons"
 import styled from "@emotion/styled"
 import { useRef, useState } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { useDebounce } from "../../../../common/functions/commonFunction"
 import { useMutation, useQuery } from "react-query"
 import Base from "@/models/Base"
@@ -17,6 +17,10 @@ export default function ListPost() {
   const [valueSearch, setValueSearch] = useState("")
   const [valueSearchCate, setValueSearchCate] = useState(-1)
   const [idSelected, setIdSelected] = useState()
+  const params = useSearchParams()
+  const type = params.get("type")
+
+  const isMenu = type === "menu"
 
   const __pagination = useRef({
     page_num: 1,
@@ -48,7 +52,8 @@ export default function ListPost() {
         page: __pagination.current.page_num - 1,
         size: __pagination.current.page_size,
         search: searchDebounce,
-        categoryId: valueSearchCate
+        categoryId: valueSearchCate,
+        type: isMenu ? "MENU" : "ARTICLE"
       })
 
       __pagination.current.count = res.totalElements
@@ -73,14 +78,14 @@ export default function ListPost() {
       href: "",
       title: (
         <>
-          <span className="text-cyan-700">Danh sách bài viết</span>
+          <span className="text-cyan-700">Danh sách {isMenu ? "Menu phụ" : "bài viết"}</span>
         </>
       )
     }
   ]
 
   const handleGoCreateOrEdit = () => {
-    router.push("/admin/list-post/create")
+    router.push(`/admin/list-post/create?type=${isMenu ? "menu" : "post"}`)
   }
 
   const columns = [
@@ -91,7 +96,7 @@ export default function ListPost() {
       fixed: "left"
     },
     {
-      title: "Tiêu đề",
+      title: isMenu ? "Tên menu" : "Tiêu đề",
       dataIndex: "title",
       key: "title",
       render: text => <a>{text}</a>,
@@ -146,12 +151,12 @@ export default function ListPost() {
 
   const deleteMutate = useMutation(Base.deletePost, {
     onSuccess: () => {
-      message.success("Xóa bài viết thành công!")
+      message.success(`Xóa ${isMenu ? "menu phụ" : "bài viết"} thành công!`)
       setIdSelected()
       refetch()
     },
     onError: e => {
-      message.error("Xóa bài viết thất bại!")
+      message.error(`Xóa ${isMenu ? "menu phụ" : "bài viết"} thất bại!`)
     }
   })
 
@@ -173,7 +178,7 @@ export default function ListPost() {
         page: 0,
         size: 1000,
         search: "",
-        type: "ARTICLE"
+        type: isMenu ? "MENU" : "ARTICLE"
       })
 
       const dataConvert = res?.content?.map(category => {
@@ -200,13 +205,13 @@ export default function ListPost() {
           setValueSearch(e.target.value)
         }}
         className="w-1/3 mb-5"
-        placeholder="Tìm kiếm theo tiêu đề"
+        placeholder={`Tìm kiếm theo ${isMenu ? "tên menu" : "tiêu đề"}`}
       />
       <Select
         allowClear
         className="w-1/3 mb-5 ml-5"
         showSearch
-        placeholder="Tìm kiếm theo danh mục"
+        placeholder={`Tìm kiếm theo ${isMenu ? "danh mục menu" : "danh mục bài viết"}`}
         optionFilterProp="children"
         onChange={onChangeSelect}
         filterOption={filterOption}
