@@ -69,10 +69,10 @@ const TableListProduct = ({ onChange }) => {
       const products = JSON.parse(savedListProducts)
       // Transform data to match table structure
       const transformedData = products.map(product => ({
-        key: product.id.toString(),
-        id: product.id,
-        name: product.name,
-        image: product.image,
+        key: product?.id?.toString(),
+        id: product?.id,
+        name: product?.name,
+        image: product?.image,
         priceFrom: product.priceFrom,
         price: product.price,
         discount: product.discount,
@@ -83,19 +83,20 @@ const TableListProduct = ({ onChange }) => {
   }, [])
 
   // Load selected products from localStorage on component mount
-  useEffect(() => {
-    const savedSelectedProducts = localStorage.getItem("selectedProducts")
-    if (savedSelectedProducts) {
-      const selectedProducts = JSON.parse(savedSelectedProducts)
-      const selectedIds = selectedProducts.map(product => product?.id?.toString())
-      setSelectedRowKeys(selectedIds)
+  // useEffect(() => {
+  //   const savedSelectedProducts = localStorage.getItem("selectedProducts")
+  //   const selectedProducts = JSON.parse(savedSelectedProducts)?.filter(product => product !== null)
 
-      // Call onChange with selected products data
-      if (onChange && dataSource.length > 0) {
-        onChange(selectedProducts)
-      }
-    }
-  }, [dataSource, onChange])
+  //   if (selectedProducts.length > 0) {
+  //     const selectedIds = selectedProducts.map(product => product?.id?.toString())
+  //     setSelectedRowKeys(selectedIds)
+
+  //     // Call onChange with selected products data
+  //     if (onChange && dataSource.length > 0) {
+  //       onChange(selectedProducts)
+  //     }
+  //   }
+  // }, [dataSource])
 
   const handleDelete = key => {
     const newData = dataSource.filter(item => item.key !== key)
@@ -142,14 +143,6 @@ const TableListProduct = ({ onChange }) => {
     newData[index].quantity = value
     setDataSource(newData)
 
-    // Remove the product from selectedRowKeys when quantity changes
-    setSelectedRowKeys(prevKeys => {
-      const newSelectedKeys = prevKeys.filter(selectedKey => selectedKey !== key)
-      // Update localStorage with new selected keys
-      localStorage.setItem("selectedProducts", JSON.stringify(newSelectedKeys))
-      return newSelectedKeys
-    })
-
     // Update localStorage
     const updatedProducts = newData.map(({ key, ...rest }) => ({
       id: rest.id,
@@ -160,7 +153,24 @@ const TableListProduct = ({ onChange }) => {
       discount: rest.discount,
       quantity: rest.quantity
     }))
+
+    onChange(updatedProducts?.filter(product => selectedRowKeys.includes(product?.id?.toString())))
+
     localStorage.setItem("listProducts", JSON.stringify(updatedProducts))
+
+    // Update selectedProducts in localStorage if the product is selected
+    // const savedSelectedProducts = localStorage.getItem("selectedProducts")
+    // if (savedSelectedProducts) {
+    //   const selectedProducts = JSON.parse(savedSelectedProducts)
+    //   const updatedSelectedProducts = selectedProducts.map(product => {
+    //     if (product?.id?.toString() === key) {
+    //       return { ...product, quantity: value }
+    //     }
+    //     return product
+    //   })
+    //   debugger
+
+    // }
   }
 
   const formatPrice = price => {
@@ -275,7 +285,7 @@ const TableListProduct = ({ onChange }) => {
       setSelectedRowKeys(newSelectedRowKeys)
 
       // Save selected product IDs to localStorage
-      localStorage.setItem("selectedProducts", JSON.stringify(selectedRows))
+      // localStorage.setItem("selectedProducts", JSON.stringify(selectedRows))
 
       // Call the onChange prop with selected products
       if (onChange) {

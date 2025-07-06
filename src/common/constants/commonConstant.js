@@ -120,3 +120,11 @@ export const CUSTOMER_CONTACT_STATUS_TEXT = {
   INACTIVE: "Chưa xử lý"
   // DELETED: "Xóa",
 }
+
+export const UPLOAD_FILE_TYPE = {
+  BANNER: "BANNER",
+  VIDEO: 2,
+  AVATAR: "AVATAR",
+  ARTICLE: "ARTICLE",
+  UNSET: "UNSET"
+}

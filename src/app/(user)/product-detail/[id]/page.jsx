@@ -8,6 +8,7 @@ import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import Product from "@/models/Product"
 import RelatedProducts from "@/components/user/common-component/RelatedProducts"
+import ListImgProduct from "@/components/user/product/ListImgProduct"
 
 export default function ProductDetailPage({ params }) {
   // Sử dụng query param từ URL
@@ -184,6 +185,12 @@ export default function ProductDetailPage({ params }) {
     )
   }))
 
+  const listSliderFake = [
+    "/images/vi-sinh-xu-ly-nuoc-min_banner1.jpg",
+    "/images/sieu-men-duong-ruot-min_banner2.jpg",
+    "/images/men-i-sinh-xu-ly-ao-nuoi-min_banner_3.jpg"
+  ]
+
   return (
     <div className="pb-24 container-original mx-auto">
       <div className=" mt-12  flex justify-center">
@@ -191,20 +198,16 @@ export default function ProductDetailPage({ params }) {
           <Breadcrumb className="my-5" items={breadcrumb} />
 
           {/* Product Detail Section */}
-          <div className="grid md:grid-cols-2 p-6 gap-6">
-            {/* Product Image with Tabs */}
-            <div className="space-y-4">
-              <Tabs
-                defaultActiveKey="0"
-                items={imageTabs}
-                className="product-image-tabs"
-                tabPosition="top"
-                size="small"
-              />
+          <div className="grid  grid-cols-1 md:grid-cols-2 p-6 gap-10">
+            {/* Product Image */}
+            <div className="col-span-1">
+              <div className="">
+                <ListImgProduct listImg={dataDetail?.imageUrl} />
+              </div>
             </div>
 
             {/* Product Info */}
-            <div className="space-y-6 pt-10">
+            <div className="col-span-1">
               <div>
                 <h1 className="text-2xl font-bold text-gray-800 mb-2">{dataDetail?.name}</h1>
                 <p className="text-gray-600 text-sm leading-relaxed">{dataDetail?.summary}</p>

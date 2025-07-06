@@ -128,8 +128,8 @@ const ModalDetailsOrder = props => {
     },
     {
       title: "Đơn giá",
-      dataIndex: "price",
-      key: "price",
+      dataIndex: "priceFrom",
+      key: "priceFrom",
       align: "right",
       render: price => <div className="font-medium text-green-600">{formatCurrency(price)}</div>
     },

@@ -6,7 +6,7 @@ import CategoryProduct from "@/models/CategoryProduct"
 import { omitField } from "@/common/functions/commonFunction"
 
 const ModalCreateCategoryService = props => {
-  const { refetchData, idCategory = null, isModalOpen, setIsModalOpen, onActions } = props
+  const { refetchData, idCategory = null, isModalOpen, setIsModalOpen, onActions, isMenu } = props
 
   const isModalCreate = idCategory === null
   const [form] = Form.useForm()
@@ -71,7 +71,7 @@ const ModalCreateCategoryService = props => {
   const handleFinish = values => {
     const valueUpdate = {
       id: idCategory,
-      type: "ARTICLE",
+      type: isMenu ? "MENU" : "ARTICLE",
       ...values
     }
 
@@ -85,7 +85,7 @@ const ModalCreateCategoryService = props => {
   return (
     <>
       <Modal
-        title={`${isModalCreate ? "Thêm" : "Sửa"} danh mục Sản phẩm`}
+        title={`${isModalCreate ? "Thêm" : "Sửa"}  ${isMenu ? "Menu chính" : "danh mục bài viết"}`}
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -97,15 +97,15 @@ const ModalCreateCategoryService = props => {
         <Spin spinning={createCateMutate.isLoading || updateCateMutate.isLoading || isFetchingDetailCate}>
           <Form className="w-full" form={form} onFinish={handleFinish} layout="vertical">
             <Form.Item
-              label="Tên danh mục Sản phẩm"
+              label={`Tên ${isMenu ? "Menu chính" : "danh mục bài viết"}`}
               name="name"
               rules={[
                 {
                   required: true,
-                  message: "Tên danh mục Sản phẩm không được bỏ trống!"
+                  message: `Tên ${isMenu ? "Menu chính" : "danh mục bài viết"} không được bỏ trống!`
                 }
               ]}>
-              <Input placeholder="Nhập tên danh mục Sản phẩm" />
+              <Input placeholder={`Nhập tên ${isMenu ? "Menu chính" : "danh mục bài viết"}`} />
             </Form.Item>
             <Form.Item
               label="Slug"
@@ -113,10 +113,10 @@ const ModalCreateCategoryService = props => {
               rules={[
                 {
                   required: true,
-                  message: "Slug không được bỏ trống!"
+                  message: `Slug ${isMenu ? "Bài viết" : "Dịch vụ"} không được bỏ trống!`
                 }
               ]}>
-              <Input placeholder="Nhập slug" />
+              <Input placeholder={`Nhập slug ${isMenu ? "Bài viết" : "Dịch vụ"}`} />
             </Form.Item>
             <Form.Item
               label="Mô tả"
@@ -124,10 +124,10 @@ const ModalCreateCategoryService = props => {
               rules={[
                 {
                   required: true,
-                  message: "Mô tả không được bỏ trống!"
+                  message: `Mô tả ${isMenu ? "Bài viết" : "Dịch vụ"} không được bỏ trống!`
                 }
               ]}>
-              <Input.TextArea placeholder="Nhập mô tả" />
+              <Input.TextArea placeholder={`Nhập mô tả ${isMenu ? "Bài viết" : "Dịch vụ"}`} />
             </Form.Item>
           </Form>
         </Spin>

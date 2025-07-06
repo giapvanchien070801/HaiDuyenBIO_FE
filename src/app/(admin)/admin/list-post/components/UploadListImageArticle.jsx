@@ -3,6 +3,7 @@ import { PlusOutlined } from "@ant-design/icons"
 import { Image, message, Upload } from "antd"
 import FilesRepository from "@/models/FilesRepository"
 import { useMutation } from "react-query"
+import { UPLOAD_FILE_TYPE } from "@/common/constants/commonConstant"
 
 const getBase64 = file =>
   new Promise((resolve, reject) => {
@@ -83,7 +84,7 @@ const UploadListImageArticle = ({ value, onChange }) => {
       const formData = new FormData()
       formData.append("file", file)
       formData.append("fileSize", file.size)
-      formData.append("type", 1)
+      formData.append("objectType ", UPLOAD_FILE_TYPE.ARTICLE)
       const res = await uploadFileMutation.mutateAsync(formData)
 
       onSuccess(res)

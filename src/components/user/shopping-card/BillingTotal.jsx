@@ -51,6 +51,7 @@ export default function BillingTotal({ setStep, selectedProducts }) {
           type="default"
           className="w-full bg-[#2cb1ab] text-white py-3 rounded-lg hover:bg-[#2cb1ab] transition duration-200 mt-6 flex items-center justify-center gap-2"
           onClick={() => {
+            localStorage.setItem("selectedProducts", JSON.stringify(selectedProducts))
             setStep("step2")
           }}>
           <ShoppingCartOutlined />

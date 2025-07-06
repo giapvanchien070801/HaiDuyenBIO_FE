@@ -58,7 +58,7 @@ const CreateOrEditService = props => {
 
   const updateServiceNotBackMutate = useMutation(values => Product.updateProduct(id, omitField(values, "id")), {
     onSuccess: () => {
-      message.success("Sửa Sản phẩm thành công!")
+      // message.success("Sửa Sản phẩm thành công!")
       refetch()
     },
     onError: e => {

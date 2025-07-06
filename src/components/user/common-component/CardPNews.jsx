@@ -5,11 +5,11 @@ import { Button } from "antd"
 import { useRouter } from "next/navigation"
 
 export default function CardPNews(props) {
-  const { dataNews } = props
+  const { dataNews, categoryId } = props
   const router = useRouter()
 
   const handleClick = () => {
-    router.push(`/news/${dataNews.id || 6}`)
+    router.push(`/news/${categoryId}/${dataNews?.id}`)
   }
 
   return (

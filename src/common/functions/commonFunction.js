@@ -41,3 +41,7 @@ export const omitField = (obj, keyToRemove) => {
   const { [keyToRemove]: _, ...rest } = obj
   return rest
 }
+
+export const handleCallHotline = () => {
+  window.location.href = "tel:0854891993"
+}
