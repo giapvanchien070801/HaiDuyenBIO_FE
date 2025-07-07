@@ -157,7 +157,7 @@ const ModalDetailsOrder = props => {
     <>
       <StyledModal
         title={
-          <div className="flex items-center gap-2 justify-between">
+          <div className="flex flex-col sm:flex-row items-center gap-2 justify-between">
             <div className="flex items-center gap-2">
               <ShoppingCartOutlined className="mr-2" />
               Chi tiết đơn hàng
@@ -189,7 +189,7 @@ const ModalDetailsOrder = props => {
               }
               size="small">
               <Row gutter={16}>
-                <Col span={12}>
+                <Col span={16} lg={12} s>
                   <div className="mb-3">
                     <Text strong className="text-gray-600">
                       Họ tên:
@@ -272,6 +272,7 @@ const ModalDetailsOrder = props => {
                 pagination={false}
                 bordered
                 className="mb-4"
+                scroll={{ x: "max-content" }}
               />
             </InfoCard>
 

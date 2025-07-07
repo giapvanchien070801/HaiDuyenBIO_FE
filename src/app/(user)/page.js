@@ -11,6 +11,7 @@ import ListVideos from "@/components/user/common-component/ListVideos"
 import { FloatButton } from "antd"
 import { QuestionCircleOutlined, UpOutlined, VerticalAlignTopOutlined } from "@ant-design/icons"
 import { useEffect, useState } from "react"
+import ContactFloatingButtons from "@/components/user/common-component/ListContact"
 
 export default function HomePage() {
   const [showScrollTop, setShowScrollTop] = useState(false)
@@ -51,6 +52,8 @@ export default function HomePage() {
           <VerticalAlignTopOutlined className="text-2xl" />
         </div>
       )}
+
+      <ContactFloatingButtons />
     </>
   )
 }

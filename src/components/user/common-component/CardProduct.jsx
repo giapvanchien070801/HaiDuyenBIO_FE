@@ -55,13 +55,16 @@ export default function CardProduct(props) {
         <div className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-sm z-10">
           -{product?.discountPercent}%
         </div>
-        <div className="px-2 py-4 overflow-hidden  h-52 sm:h-52 w-full">
-          <img
-            src={product?.imageUrl ? product?.imageUrl[0] : "/images/product1.png"}
-            alt={product?.name}
-            className="w-full h-full object-cover"
-          />
+        <div className="flex justify-center items-center">
+          <div className="overflow-hidden w-52 h-52 ">
+            <img
+              src={product?.imageUrl ? product?.imageUrl[0] : "/images/product1.png"}
+              alt={product?.name}
+              className="w-full h-full object-cover"
+            />
+          </div>
         </div>
+
         <div className="p-3 sm:p-4">
           <Tooltip title={product?.name}>
             <h1 className="font-semibold text-base sm:text-lg mb-2 line-clamp-2 h-14">{product?.name}</h1>

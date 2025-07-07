@@ -7,7 +7,7 @@ import Order from "@/models/Order"
 import { EyeOutlined, HomeOutlined, SearchOutlined } from "@ant-design/icons"
 import styled from "@emotion/styled"
 import { Breadcrumb, Button, Input, Table, Card, Space, Typography, Tag, Select, Empty } from "antd"
-import { useRef, useState } from "react"
+import { useRef, useState, useEffect } from "react"
 import { useQuery } from "react-query"
 
 const { Search } = Input
@@ -18,12 +18,24 @@ export default function CheckShoppingPage() {
   const [valueSearchPhone, setValueSearchPhone] = useState("")
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [itemSelected, setItemSelected] = useState(null)
+  const [isMobile, setIsMobile] = useState(false)
 
   const __pagination = useRef({
     page_num: 1,
     page_size: 10,
     count: 0
   })
+
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+
+    checkIsMobile()
+    window.addEventListener("resize", checkIsMobile)
+
+    return () => window.removeEventListener("resize", checkIsMobile)
+  }, [])
 
   const handleTableChange = (pagination, filters, sorter) => {
     __pagination.current.page_num = pagination.current
@@ -82,68 +94,109 @@ export default function CheckShoppingPage() {
     }
   ]
 
-  const columns = [
-    {
-      title: "STT",
-      key: "stt",
-      dataIndex: "Id",
-      render: (value, item, index) => index,
-      fixed: "left"
-    },
-    {
-      title: "Tên Khách hàng",
-      dataIndex: "fullName",
-      key: "fullName",
-      render: text => <a>{text}</a>
-    },
-    {
-      title: "Số điện thoại",
-      dataIndex: "phone",
-      key: "phone",
-      render: text => <a>{text}</a>
-    },
-    {
-      title: "Địa chỉ",
-      dataIndex: "address",
-      key: "address",
-      render: text => <a>{text}</a>
-    },
-    {
-      title: "Ghi chú",
-      dataIndex: "additionalInformation",
-      key: "additionalInformation",
-      render: text => <a>{text}</a>
-    },
-
-    {
-      title: "Ngày đặt hàng",
-      dataIndex: "createdAt",
-      key: "createdAt"
-    },
-    {
-      title: "Trạng thái",
-      dataIndex: "status",
-      key: "status",
-      render: text => (
-        <Select value={text} defaultValue={"PENDING"} disabled>
-          {LIST_STATUS_ORDER.map(item => (
-            <Select.Option key={item.value} value={item.value}>
-              <Tag color={ORDERS_STATUS_COLOR[item.value]}>{item.label}</Tag>
-            </Select.Option>
-          ))}
-        </Select>
-      )
-    },
-    {
-      title: "Hoạt động",
-      key: "action",
-      render: (_, record) => (
-        <Button size="middle" type="default" icon={<EyeOutlined />} onClick={() => setIsModalOpen(true)}>
-          Xem chi tiết
-        </Button>
-      )
+  const getColumns = () => {
+    if (isMobile) {
+      return [
+        {
+          title: "Họ tên",
+          dataIndex: "fullName",
+          key: "fullName",
+          render: text => <a>{text}</a>
+        },
+        {
+          title: "Số điện thoại",
+          dataIndex: "phone",
+          key: "phone",
+          render: text => <a>{text}</a>
+        },
+        {
+          title: "Trạng thái",
+          dataIndex: "status",
+          key: "status",
+          render: text => (
+            <Select value={text} defaultValue={"PENDING"} disabled>
+              {LIST_STATUS_ORDER.map(item => (
+                <Select.Option key={item.value} value={item.value}>
+                  <Tag color={ORDERS_STATUS_COLOR[item.value]}>{item.label}</Tag>
+                </Select.Option>
+              ))}
+            </Select>
+          )
+        },
+        {
+          title: "Hoạt động",
+          key: "action",
+          render: (_, record) => (
+            <Button size="middle" type="default" icon={<EyeOutlined />} onClick={() => setIsModalOpen(true)}>
+              Xem chi tiết
+            </Button>
+          )
+        }
+      ]
     }
-  ]
+
+    return [
+      {
+        title: "STT",
+        key: "stt",
+        dataIndex: "Id",
+        render: (value, item, index) => index,
+        fixed: "left"
+      },
+      {
+        title: "Tên Khách hàng",
+        dataIndex: "fullName",
+        key: "fullName",
+        render: text => <a>{text}</a>
+      },
+      {
+        title: "Số điện thoại",
+        dataIndex: "phone",
+        key: "phone",
+        render: text => <a>{text}</a>
+      },
+      {
+        title: "Địa chỉ",
+        dataIndex: "address",
+        key: "address",
+        render: text => <a>{text}</a>
+      },
+      {
+        title: "Ghi chú",
+        dataIndex: "additionalInformation",
+        key: "additionalInformation",
+        render: text => <a>{text}</a>
+      },
+      {
+        title: "Ngày đặt hàng",
+        dataIndex: "createdAt",
+        key: "createdAt"
+      },
+      {
+        title: "Trạng thái",
+        dataIndex: "status",
+        key: "status",
+        render: text => (
+          <Select value={text} defaultValue={"PENDING"} disabled>
+            {LIST_STATUS_ORDER.map(item => (
+              <Select.Option key={item.value} value={item.value}>
+                <Tag color={ORDERS_STATUS_COLOR[item.value]}>{item.label}</Tag>
+              </Select.Option>
+            ))}
+          </Select>
+        )
+      },
+      {
+        title: "Hoạt động",
+        key: "action",
+        render: (_, record) => (
+          <Button size="middle" type="default" icon={<EyeOutlined />} onClick={() => setIsModalOpen(true)}>
+            Xem chi tiết
+          </Button>
+        )
+      }
+    ]
+  }
 
   const formatPrice = price => {
     return new Intl.NumberFormat("vi-VN", {
@@ -153,7 +206,7 @@ export default function CheckShoppingPage() {
   }
 
   return (
-    <div className="pb-24">
+    <div className="pb-24 overflow-x-hidden">
       <div className="grid xl:grid-cols-10 gap-6 mt-4 container-original mx-auto">
         <div className="col-span-10 bg-white md:px-0 px-4">
           <Breadcrumb className="my-3" items={breadcrumb} />
@@ -195,15 +248,15 @@ export default function CheckShoppingPage() {
                     onChange={e => {
                       setValueSearchPhone(e.target.value)
                     }}
-                    className="w-1/3"
+                    className="lg:w-1/3 w-1/2"
                     placeholder="Nhập số điện thoại"
                   />
                 </div>
 
-                <CustomTable>
+                <div className="w-full overflow-x-auto overflow-hidden">
                   <Table
                     size="small"
-                    columns={columns}
+                    columns={getColumns()}
                     dataSource={listOrder}
                     onRow={record => {
                       return {
@@ -224,12 +277,13 @@ export default function CheckShoppingPage() {
                     locale={{
                       emptyText: <Empty description="Không có dữ liệu" image={Empty.PRESENTED_IMAGE_SIMPLE} />
                     }}
+                    scroll={{ x: "max-content" }}
                   />
+                </div>
 
-                  {/* <div className="text-right">
+                {/* <div className="text-right">
                     <Title level={4}>Tổng cộng: 123</Title>
                   </div> */}
-                </CustomTable>
               </Space>
             </Card>
           </div>
