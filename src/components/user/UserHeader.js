@@ -270,7 +270,7 @@ export default function UserHeader() {
         <div className="flex items-center justify-between w-full lg:w-3/4 text-white">
           <Popover
             content={
-              <Menu style={{ width: 150 }} mode="vertical" items={items} />
+              <Menu className="w-auto" mode="vertical" items={items} />
               // <ul className="w-max bg-white">
               //   <li>
               //     <Popover

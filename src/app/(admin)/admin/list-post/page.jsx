@@ -149,7 +149,7 @@ export default function ListPost() {
     }
   ]
 
-  const deleteMutate = useMutation(Base.deletePost, {
+  const deleteMutate = useMutation(ArticleModal.deleteArticle, {
     onSuccess: () => {
       message.success(`Xóa ${isMenu ? "menu phụ" : "bài viết"} thành công!`)
       setIdSelected()
@@ -233,7 +233,7 @@ export default function ListPost() {
             onRow={record => {
               return {
                 onClick: () => {
-                  setIdSelected(record.Id)
+                  setIdSelected(record.id)
                 }
               }
             }}

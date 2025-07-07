@@ -48,7 +48,7 @@ export default function ListVideos() {
     <div className="container mx-auto pb-14 px-4 sm:px-6 lg:px-8 bg-gray-100">
       <TitleList title="Video chính gốc" />
       <Spin spinning={isFetching}>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
           {listVideo?.map(video => (
             <CardVideo key={video?.id} video={video} />
           ))}
