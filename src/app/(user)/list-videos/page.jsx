@@ -32,8 +32,8 @@ export default function ListVideosPage() {
 
   return (
     <div className=" flex flex-col items-center mb-36 ">
-      <div className=" container-original  pb-0  sm:mt-10 mt-16">
-        <Breadcrumb items={breadcrumb} className="my-5" />
+      <div className=" container-original  pb-0  sm:mt-10 mt-5 lg:mt-16">
+        <Breadcrumb items={breadcrumb} className="my-5 mx-4 lg:mx-0" />
 
         <div className="flex gap-4 flex-wrap md:px-0 px-4 justify-center">
           <ListVideos />

@@ -87,7 +87,7 @@ export default function Contact() {
           <div className=" px-2 py-1 bg-[#d3e9fb] rounded">
             <p className="text-[#2490eb] font-semibold">Liên hệ</p>
           </div>
-          <p className="text-5xl font-semibold mt-4 mb-11">Liên hệ với chúng tôi</p>
+          <p className=" text-xl lg:text-5xl font-semibold mt-4 mb-11">Liên hệ với chúng tôi</p>
           <CustomForm>
             <Form
               className="w-full"

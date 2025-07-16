@@ -31,7 +31,7 @@ export default function ListCartBanner() {
   ]
 
   return (
-    <div className="bg-gray-100 flex flex-col items-center">
+    <div className="bg-gray-100 flex flex-col items-center px-4 lg:p-0">
       <div className="container my-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {cardData.map(card => (

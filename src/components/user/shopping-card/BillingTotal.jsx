@@ -47,6 +47,7 @@ export default function BillingTotal({ setStep, selectedProducts }) {
         </div>
 
         <Button
+          disabled={selectedProducts?.length === 0}
           size="large"
           type="default"
           className="w-full bg-[#2cb1ab] text-white py-3 rounded-lg hover:bg-[#2cb1ab] transition duration-200 mt-6 flex items-center justify-center gap-2"
