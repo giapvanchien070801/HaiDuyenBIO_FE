@@ -69,7 +69,7 @@ export default function SidebarUser(props) {
             <Link
               href={`/product-detail/${product?.id}`}
               as={`/product-detail/${product?.id}`}
-              className="capitalize categorie-link transition-all duration-500">
+              className="capitalize categorie-link transition-all duration-500 line-clamp-1 pr-2">
               <RightOutlined className="text_ocean" /> {product?.name}
             </Link>
           </p>

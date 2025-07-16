@@ -38,11 +38,11 @@ export default function CardPNews(props) {
 
       {/* IMAGE + DESCRIPTION */}
       <div className="flex flex-col md:flex-row gap-5">
-        <div className="w-1/2 h-72">
+        <div className="w-full lg:w-1/2 h-72">
           <img src={dataNews?.imageUrl} alt={dataNews?.title} className="object-cover mb-2 md:mb-0 size-full" />
         </div>
 
-        <div className=" w-1/2 pr-5">
+        <div className="w-full lg:w-1/2 px-4 lg:pr-5">
           <p className="text-gray-700 text-sm flex-1 text-justify self-center line-clamp-6">{dataNews?.summary}</p>
           <Button className="flex items-cente border-2 border-[#2a317a] text-[#2a317a] hover:text-cyan-700 font-medium text-sm transition-colors duration-300 mt-4">
             Tiếp tục đọc

@@ -43,6 +43,7 @@ export default function UserHeader() {
 
   const [scrollY, setScrollY] = useState(0)
   const [header1Height, setHeader1Height] = useState(0)
+  const [isMobile, setIsMobile] = useState(false)
 
   // api lấy danh sách tất cả thể loại
   const { data: listCategoryProduct } = useQuery(
@@ -168,11 +169,9 @@ export default function UserHeader() {
     }
   )
 
-  const [activeMobileMenu, setActiveMobileMenu] = useState(false)
-
-  useEffect(() => {
-    setActiveMobileMenu(false)
-  }, [pathname])
+  // useEffect(() => {
+  //   setActiveMobileMenu(false)
+  // }, [pathname])
 
   // Xử lý scroll event
   useEffect(() => {
@@ -198,16 +197,70 @@ export default function UserHeader() {
   const header1Transform = Math.max(-header1Height, -scrollY)
   const header2Top = Math.max(0, header1Height + header1Transform)
 
-  const items = [
-    {
-      key: "sub1",
-      icon: <ProductOutlined />,
-      label: "Sản phẩm",
-      children: listCategoryProduct
-    },
+  const items = isMobile
+    ? [
+        {
+          key: "sub1",
+          icon: <ProductOutlined />,
+          label: "Sản phẩm",
+          children: listCategoryProduct
+        },
 
-    ...(listCategoryMenu ? listCategoryMenu : [])
-  ]
+        ...(listCategoryMenu ? listCategoryMenu : []),
+        {
+          key: "about",
+          icon: <InfoCircleOutlined />,
+          label: "Giới thiệu",
+          onClick: () => {
+            router.push(`/about`)
+          }
+        },
+        {
+          key: "news",
+          icon: <FileTextOutlined />,
+          label: "Tin tức",
+          onClick: () => {
+            router.push(`/news/-1`)
+          }
+        },
+        {
+          key: "video",
+          icon: <PlayCircleOutlined />,
+          label: "Video",
+          onClick: () => {
+            router.push(`/list-videos`)
+          }
+        },
+        {
+          key: "contact",
+          icon: <ContactsOutlined />,
+          label: "Liên hệ",
+          onClick: () => {
+            router.push(`/contact`)
+          }
+        }
+      ]
+    : [
+        {
+          key: "sub1",
+          icon: <ProductOutlined />,
+          label: "Sản phẩm",
+          children: listCategoryProduct
+        },
+
+        ...(listCategoryMenu ? listCategoryMenu : [])
+      ]
+
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+
+    checkIsMobile()
+    window.addEventListener("resize", checkIsMobile)
+
+    return () => window.removeEventListener("resize", checkIsMobile)
+  }, [])
 
   return (
     <header className="relative">
@@ -355,10 +408,7 @@ export default function UserHeader() {
           </div>
 
           <div className=" self-stretch lg:static absolute  z-10 top-full w-full lg:w-fit left-0">
-            <ul
-              className={`lg:flex items-center h-full md:container md:mx-auto lg:p-0 p-4 gap-2 ${
-                activeMobileMenu ? "lg:block" : "hidden lg:block"
-              }`}>
+            <ul className={`lg:flex items-center h-full md:container md:mx-auto lg:p-0 p-4 gap-2 hidden lg:block`}>
               {/* <li className="h-full relative">
                 <Link
                   href={`/`}
@@ -382,7 +432,7 @@ export default function UserHeader() {
                   trigger="hover"
                   placement="bottom">
                   <Link
-                    href={`/news`}
+                    href={`/news/-1`}
                     className="h-full flex items-center p-2 hover:text-cyan-600 transition-all duration-300 py-2">
                     <FileTextOutlined className="mr-2" />
                     <p>Tin tức</p>
