@@ -13,7 +13,7 @@ export default function BillingTotal({ setStep, selectedProducts }) {
   }, [selectedProducts])
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md w-1/3">
+    <div className="bg-white p-6 rounded-lg shadow-md w-1/3 h-fit">
       <h2 className="text-2xl font-semibold mb-6 border-b pb-4 flex items-center gap-2">
         <CalculatorOutlined />
         Thông Tin Hóa Đơn

@@ -12,6 +12,9 @@ import { FloatButton } from "antd"
 import { QuestionCircleOutlined, UpOutlined, VerticalAlignTopOutlined } from "@ant-design/icons"
 import { useEffect, useState } from "react"
 import ContactFloatingButtons from "@/components/user/common-component/ListContact"
+import ListNewsHome from "@/components/user/common-component/ListNewsHome"
+import ListCardProductHot from "@/components/user/common-component/ListCardProductHot"
+import ListCategory from "@/components/user/home-page/ListCategory"
 
 export default function HomePage() {
   const [showScrollTop, setShowScrollTop] = useState(false)
@@ -37,10 +40,14 @@ export default function HomePage() {
     <>
       <div className="pb-48 ">
         <UserSwiper />
+        <ListCategory />
+        <ListCardProductHot />
         <ListCardProduct />
-        <ListCartBanner />
-        <AquacultureProbioticsList />
+
+        {/* <AquacultureProbioticsList /> */}
         <PricingBanner />
+        <ListNewsHome />
+        <ListCartBanner />
         <ListVideos />
       </div>
 

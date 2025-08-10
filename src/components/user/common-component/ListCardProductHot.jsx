@@ -10,7 +10,7 @@ import { removeEmptyFields, useDebounce } from "@/common/functions/commonFunctio
 import CategoryProduct from "@/models/CategoryProduct"
 import Product from "@/models/Product"
 
-export default function ListCardProduct() {
+export default function ListCardProductHot() {
   const __pagination = useRef({
     page: 1,
     size: 10,
@@ -50,7 +50,7 @@ export default function ListCardProduct() {
 
   return (
     <div className="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
-      <TitleList title="Sản phẩm mới" />
+      <TitleList title="Sản phẩm bán chạy" />
 
       <Spin spinning={isFetching}>
         <div className="flex flex-col items-center gap-5">
