@@ -25,6 +25,7 @@ export default function ListCategory() {
     },
     {}
   )
+
   return (
     <div className="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
       <h2 className="text-2xl font-bold mb-6 text-center text-cyan-700 tracking-wide uppercase">Danh mục sản phẩm</h2>
@@ -33,7 +34,7 @@ export default function ListCategory() {
           <div
             key={category}
             onClick={() => {
-              router.push(`/news/${category.value}`)
+              router.push(`/product-list/${category?.value}`)
             }}
             className="flex flex-col items-center bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 p-4 cursor-pointer group hover:bg-cyan-50 w-fit">
             <div className="w-16 h-16 mb-3 flex items-center justify-center rounded-full bg-gradient-to-tr from-cyan-400 to-cyan-700 group-hover:scale-110 transition-transform duration-300 shadow-lg">
@@ -41,7 +42,7 @@ export default function ListCategory() {
               <span className="text-3xl">{["🐟", "🐄", "🌱", "💊", "🌿", "🧪", "🛡️", "⚙️"][idx % 8]}</span>
             </div>
             <span className="text-base font-semibold text-gray-700 group-hover:text-cyan-700 text-center">
-              {category}
+              {category?.label}
             </span>
           </div>
         ))}

@@ -15,21 +15,21 @@ const contactButtons = [
   {
     title: "Facebook",
     icon: <FacebookOutlined />,
-    href: "https://facebook.com/",
+    href: "https://www.facebook.com/trinh.hai.duyen.bio",
     color: "#1877F2",
     delay: 0
   },
   {
     title: "Zalo",
     icon: <WechatOutlined />,
-    href: "https://zalo.me/",
+    href: "https://zalo.me/0854891993",
     color: "#0088cc",
     delay: 0.1
   },
   {
     title: "Gửi tin nhắn",
     icon: <MessageOutlined />,
-    href: "sms:085 489 1993",
+    href: "sms:0854891993",
     color: "#1890ff",
     delay: 0.2
   },

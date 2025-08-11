@@ -43,7 +43,7 @@ function LoginPage() {
     <div className="bg-login h-[100vh] flex items-center justify-center">
       <div className="bg-orange-600 w-3/4 h-3/4 rounded-2xl flex overflow-hidden">
         <div className="w-1/2 bg-white flex items-center flex-col justify-center">
-          <p className=" mb-7 text-4xl font-mono">Login Admin</p>
+          <p className=" mb-7 text-4xl font-mono">Đăng nhập Admin</p>
           {contextHolder}
           <CustomForm className="w-1/2">
             <Form

@@ -120,7 +120,7 @@ export default function UserFooter() {
                   <GlobalOutlined className="text-2xl" style={{ color: "#0A66C2" }} />
                 </Link>
                 <Link
-                  href="tel:0987654321"
+                  href="tel:0854891993"
                   className="flex items-center justify-center rounded-full bg-white shadow hover:scale-110 transition"
                   style={{ width: 40, height: 40 }}>
                   <PhoneFilled className="text-2xl" style={{ color: "#27ae60" }} />
@@ -200,7 +200,7 @@ export default function UserFooter() {
               </p>
               <div className="flex gap-4 mb-4">
                 <Link
-                  href="https://www.facebook.com/profile.php?id=100063795834247"
+                  href="https://www.facebook.com/trinh.hai.duyen.bio"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center rounded-full bg-white shadow hover:scale-110 transition"
@@ -208,7 +208,7 @@ export default function UserFooter() {
                   <FacebookFilled className="text-2xl" style={{ color: "#1877f3" }} />
                 </Link>
                 <Link
-                  href="https://www.instagram.com/haiduyenbio/"
+                  href="https://www.facebook.com/trinh.hai.duyen.bio"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center rounded-full bg-white shadow hover:scale-110 transition"
