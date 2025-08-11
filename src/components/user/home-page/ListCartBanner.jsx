@@ -31,23 +31,21 @@ export default function ListCartBanner() {
   ]
 
   return (
-    <div className="bg-gray-100 flex flex-col items-center px-4 lg:p-0">
-      <div className="container my-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {cardData.map(card => (
-            <div
-              key={card.id}
-              className="flex flex-col bg-white rounded-lg shadow-md border border-gray-100 overflow-hidden hover:shadow-lg transition-shadow">
-              <div className="flex p-4 gap-4">
-                <img src={card.image} alt={`Card ${card.id}`} className="w-16 h-16 object-cover rounded-lg" />
-                <div className="flex flex-col">
-                  <p className="font-semibold text-lg  mb-2 text-red-500">{card.title}</p>
-                  <p className="text-gray-600 text-sm">{card.description}</p>
-                </div>
+    <div className="bg-gray-100 flex flex-col items-center px-4 py-20  container mx-auto ">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {cardData.map(card => (
+          <div
+            key={card.id}
+            className="flex flex-col bg-white rounded-lg shadow-md border border-gray-100 overflow-hidden hover:shadow-lg transition-shadow">
+            <div className="flex p-4 gap-4">
+              <img src={card.image} alt={`Card ${card.id}`} className="w-16 h-16 object-cover rounded-lg" />
+              <div className="flex flex-col">
+                <p className="font-semibold text-lg  mb-2 text-red-500">{card.title}</p>
+                <p className="text-gray-600 text-sm">{card.description}</p>
               </div>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
     </div>
   )
