@@ -12,21 +12,18 @@ import ArticleModal from "@/models/ArticleModal"
 import CardPNews from "./CardPNews"
 
 export default function ListNewsHome() {
-  const __pagination = useRef({
-    page_num: 1,
-    page_size: 9,
-    count: 0
-  })
   const {
     data: listPost,
 
     isFetching
   } = useQuery(
-    ["getListVideoAdmin", __pagination.current.page_num, __pagination.current.page_size],
+    ["getArticleListHome"],
     async () => {
       const res = await ArticleModal.getArticleList({
-        page: 1,
-        size: 6
+        page: 0,
+        size: 6,
+        categoryId: -1,
+        type: "ARTICLE"
       })
 
       return res?.content

@@ -45,7 +45,7 @@ export default function HomePage() {
         <ListCardProduct />
 
         {/* <AquacultureProbioticsList /> */}
-        <PricingBanner />
+        {/* <PricingBanner /> */}
         <ListNewsHome />
         <ListVideos />
       </div>

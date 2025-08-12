@@ -58,11 +58,11 @@ export default function AboutPage({ params }) {
             <div className="space-y-8 py-6">
               {/* Hero Section */}
               <div className="relative h-[300px] md:h-[400px] rounded-lg overflow-hidden shadow-2xl">
-                <img
+                {/* <img
                   src="https://haiduyenbio.com/wp-content/uploads/2024/07/hai-duyen-bio-2.jpg"
                   alt="Company Banner"
                   className="w-full h-full "
-                />
+                /> */}
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black/50 flex flex-col items-center justify-center">
                   <h1 className="text-3xl md:text-5xl font-bold text-center px-4 text-white drop-shadow-lg">
                     Hải Duyên Bio
