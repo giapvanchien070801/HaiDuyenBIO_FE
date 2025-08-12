@@ -15,7 +15,7 @@ export default function ListCategory() {
         page: 0,
         size: 1000,
         search: "",
-        type: "ARTICLE"
+        type: "PRODUCT"
       })
 
       const dataConvert = res?.content?.map(category => {
