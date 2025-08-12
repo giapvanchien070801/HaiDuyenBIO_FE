@@ -57,7 +57,7 @@ export default function ProductListPage({ params }) {
 
   const breadcrumb = [
     {
-      href: "/product-list",
+      href: "/",
       title: (
         <>
           <HomeOutlined />

@@ -29,7 +29,7 @@ export default function CardVideo(props) {
           <p className="text-sm font-semibold text-gray-900 line-clamp-2 mb-1 hover:text-blue-600 cursor-pointer h-10">
             {video.title}
           </p>
-          <div className="flex items-center text-sm text-gray-600">
+          {/* <div className="flex items-center text-sm text-gray-600">
             <span className="hover:text-gray-900 cursor-pointer">{video.channel}</span>
             <CheckCircleFilled className="ml-1 text-gray-600" />
           </div>
@@ -38,7 +38,7 @@ export default function CardVideo(props) {
               <ClockCircleOutlined />
             </span>
             <span>{video.createdAt}</span>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
