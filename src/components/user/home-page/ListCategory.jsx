@@ -13,7 +13,7 @@ export default function ListCategory() {
     async () => {
       const res = await CategoryProduct.getCategoryProductList({
         page: 0,
-        size: 1000,
+        size: 4,
         search: "",
         type: "PRODUCT"
       })
@@ -27,9 +27,9 @@ export default function ListCategory() {
   )
 
   return (
-    <div className="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
+    <div className="container mx-auto py-4 md:py-8">
       <h2 className="text-2xl font-bold mb-6 text-center text-cyan-700 tracking-wide uppercase">Danh mục sản phẩm</h2>
-      <div className="flex gap-6 overflow-x-auto scrollbar-thin scrollbar-thumb-cyan-400 scrollbar-track-gray-200 pb-2">
+      <div className="flex flex-wrap justify-center gap-6 overflow-x-auto scrollbar-thin scrollbar-thumb-cyan-400 scrollbar-track-gray-200 pb-2">
         {listCategory?.map((category, idx) => (
           <div
             key={category}
@@ -41,7 +41,7 @@ export default function ListCategory() {
               {/* Fake icon: use emoji for demo, can replace with real icon */}
               <span className="text-3xl">{["🐟", "🐄", "🌱", "💊", "🌿", "🧪", "🛡️", "⚙️"][idx % 8]}</span>
             </div>
-            <span className="text-base font-semibold text-gray-700 group-hover:text-cyan-700 text-center">
+            <span className="text-base font-semibold text-gray-700 group-hover:text-cyan-700 text-center uppercase">
               {category?.label}
             </span>
           </div>

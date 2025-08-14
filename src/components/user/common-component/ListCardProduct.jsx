@@ -44,17 +44,21 @@ export default function ListCardProduct() {
       return res?.content
     },
     {
+      refetchOnWindowFocus: false,
+      staleTime: 0,
+      cacheTime: 0,
+      gcTime: 0,
       enabled: true
     }
   )
 
   return (
-    <div className="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
+    <div className="container-original mx-auto p-4 my-8">
       <TitleList title="Sản phẩm mới" />
 
       <Spin spinning={isFetching}>
         <div className="flex flex-col items-center gap-5">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-15">
             {listProduct?.map(product => (
               <CardProduct key={product?.id} product={product} />
             ))}

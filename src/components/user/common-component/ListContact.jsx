@@ -26,20 +26,20 @@ const contactButtons = [
     color: "#0088cc",
     delay: 0.1
   },
-  {
-    title: "Gửi tin nhắn",
-    icon: <MessageOutlined />,
-    href: "sms:0854891993",
-    color: "#1890ff",
-    delay: 0.2
-  },
-  {
-    title: "Gọi điện",
-    icon: <PhoneOutlined />,
-    href: "tel:0854891993",
-    color: "#52c41a",
-    delay: 0.3
-  },
+  // {
+  //   title: "Gửi tin nhắn",
+  //   icon: <MessageOutlined />,
+  //   href: "sms:0854891993",
+  //   color: "#1890ff",
+  //   delay: 0.2
+  // },
+  // {
+  //   title: "Gọi điện",
+  //   icon: <PhoneOutlined />,
+  //   href: "tel:0854891993",
+  //   color: "#52c41a",
+  //   delay: 0.3
+  // },
   {
     title: "Gửi email",
     icon: <MailOutlined />,
@@ -50,7 +50,7 @@ const contactButtons = [
 ]
 
 const ContactFloatingButtons = () => {
-  const [isExpanded, setIsExpanded] = useState(false)
+  const [isExpanded, setIsExpanded] = useState(true)
   const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {

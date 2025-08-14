@@ -98,7 +98,7 @@ export default function UserFooter() {
         </div>
 
         {/* Main Footer Content */}
-        <div className="container mx-auto sm:mt-20 mt-32 lg:mt-0">
+        <div className="container mx-auto mt-36 md:mt-40  lg:mt-0">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Logo & About */}
             <div className="footer_logo h-full  flex flex-col items-center">

@@ -1,0 +1,1 @@
+export const BEST_SELLING_PRODUCTS = 15

@@ -56,7 +56,7 @@ export default function CardProduct(props) {
           -{product?.discountPercent}%
         </div>
         <div className="flex justify-center items-center">
-          <div className="overflow-hidden w-52 h-52 ">
+          <div className="overflow-hidden w-52  h-44 md:h-52 ">
             <img
               src={product?.imageUrl ? product?.imageUrl[0] : "/images/product1.png"}
               alt={product?.name}
@@ -67,21 +67,25 @@ export default function CardProduct(props) {
 
         <div className="p-3 sm:p-4">
           <Tooltip title={product?.name}>
-            <h1 className="font-semibold text-base sm:text-lg mb-2 line-clamp-2 h-14">{product?.name}</h1>
+            <h1
+              className="text-center sm:text-left font-semibold 
+            text-base sm:text-lg mb-1 md:mb-2 h-6 md:h-14 line-clamp-1 md:line-clamp-2">
+              {product?.name}
+            </h1>
           </Tooltip>
-          <div className="flex items-center gap-2 mb-3 sm:mb-4">
-            <span className="text-red-500 font-bold text-lg sm:text-xl">
+          <div className="flex flex-col sm:flex-row items-center gap-1 md:gap-2 mb-1 md:mb-3 sm:mb-4">
+            <span className="text-red-500 font-bold text-sm sm:text-lg lg:text-xl">
               {product?.priceFrom?.toLocaleString("vi-VN")}đ
             </span>
             <span className="text-gray-400 line-through text-xs sm:text-sm">
               {product?.price?.toLocaleString("vi-VN")}đ
             </span>
           </div>
-          <div className="flex gap-2 flex-col sm:flex-row">
+          <div className="flex gap-2 flex-col md:flex-row">
             <Button
               type="default"
               icon={<ShoppingCartOutlined />}
-              className="flex-1 text-sm sm:text-base px-1 py-2"
+              className="flex-1 text-sm sm:text-base p-0 md:px-1 md:py-2"
               onClick={e => {
                 e.stopPropagation()
                 addToCart()
@@ -95,7 +99,7 @@ export default function CardProduct(props) {
                 localStorage.setItem("selectedProducts", JSON.stringify([{ ...product, quantity: 1 }]))
               }}
               //   type="primary"
-              className="flex-1 !bg-[#2cb1ab] text-sm sm:text-base px-1 text-white  py-2"
+              className="flex-1 !bg-[#2cb1ab] text-sm sm:text-base text-white  p-0 md:px-1 md:py-2"
               icon={<ShoppingOutlined />}>
               Mua ngay
             </Button>
