@@ -34,7 +34,7 @@ export default function ListNewsHome() {
   )
 
   return (
-    <div className="container mx-auto pb-14 px-4 sm:px-6 lg:px-8 bg-gray-100">
+    <div className="container-original mx-auto pb-14 px-4 sm:px-6 lg:px-10 bg-gray-100">
       <TitleList title="Tin tức nổi bật" />
       <Spin spinning={isFetching}>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-6">

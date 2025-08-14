@@ -379,6 +379,8 @@ export default function UserHeader() {
             </Link>
           </Popover>
 
+          <img src="/images/LOGO.JPG" className="h-8 mr-5 w-auto block md:hidden" alt="Hai Duyen Bio Logo" />
+
           <div className="flex items-center w-2/3 lg:w-5/12">
             <Select
               options={listProduct}

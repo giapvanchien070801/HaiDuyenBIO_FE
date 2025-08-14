@@ -9,6 +9,7 @@ import { useRef, useState } from "react"
 import { removeEmptyFields, useDebounce } from "@/common/functions/commonFunction"
 import CategoryProduct from "@/models/CategoryProduct"
 import Product from "@/models/Product"
+import { BEST_SELLING_PRODUCTS } from "@/utils/common-const"
 
 export default function ListCardProductHot() {
   const __pagination = useRef({
@@ -28,13 +29,14 @@ export default function ListCardProductHot() {
     refetch,
     isFetching
   } = useQuery(
-    ["getListServicePagination", __pagination.current.page, __pagination.current.size],
+    ["getListServicePaginationHot", __pagination.current.page, __pagination.current.size],
     async () => {
       const params = {
         ...__pagination.current,
         page: __pagination.current.page - 1,
         search: "",
-        count: null
+        count: null,
+        categoryId: BEST_SELLING_PRODUCTS
       }
 
       const res = await Product.getProductList(removeEmptyFields(params))
@@ -44,17 +46,21 @@ export default function ListCardProductHot() {
       return res?.content
     },
     {
+      refetchOnWindowFocus: false,
+      staleTime: 0,
+      cacheTime: 0,
+      gcTime: 0,
       enabled: true
     }
   )
 
   return (
-    <div className="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
+    <div className="container-original mx-auto p-4 my-8">
       <TitleList title="Sản phẩm bán chạy" />
 
       <Spin spinning={isFetching}>
         <div className="flex flex-col items-center gap-5">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-15">
             {listProduct?.map(product => (
               <CardProduct key={product?.id} product={product} />
             ))}

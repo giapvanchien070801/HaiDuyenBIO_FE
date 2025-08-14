@@ -51,6 +51,17 @@ function ProductDetailPage({ params }) {
           <Breadcrumb className="my-5" items={breadcrumb} />
 
           <TitleList title="Bài viết" />
+
+          <span className="text-xs font-bold text-[#787b9d] tracking-widest uppercase">
+            {dataArticle?.categoryName}
+          </span>
+
+          {/* TITLE */}
+
+          <h2 className="text-2xl font-bold m-0 hover:text-cyan-600 transition-colors duration-300 text-[#545454]">
+            {dataArticle?.title}
+          </h2>
+          <div className="bg-black/10 block mt-2 mb-10 h-[3px]  max-w-[30px] w-full "></div>
           <Spin spinning={isFetching}>
             <div dangerouslySetInnerHTML={{ __html: dataArticle?.content }} className="blog-content my-5" />
           </Spin>

@@ -28,7 +28,7 @@ export default function AquacultureProbioticsList() {
   )
 
   return (
-    <div className="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
+    <div className="container-original mx-auto p-4 my-8">
       <TitleList title="Vi sinh xử lý nước" />
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
         <Spin spinning={isFetching}>

@@ -9,6 +9,7 @@ import Base from "@/models/Base"
 import { removeEmptyFields, useDebounce } from "@/common/functions/commonFunction"
 import ModalCreateCategoryService from "../components/ModalCreateCategoryService"
 import CategoryProduct from "@/models/CategoryProduct"
+import { BEST_SELLING_PRODUCTS } from "@/utils/common-const"
 
 export default function Categorys() {
   const [valueSearchCate, setValueSearchCate] = useState("")
@@ -143,6 +144,7 @@ export default function Categorys() {
             size="middle"
             className="border-teal-500 text-teal-500"
             type="default"
+            disabled={record?.id === BEST_SELLING_PRODUCTS}
             onClick={() => onActions(record, "edit")}>
             Xem chi tiết/Sửa
           </Button>
@@ -152,7 +154,7 @@ export default function Categorys() {
             onConfirm={() => onActions(record, "delete")}
             okText="Xóa"
             cancelText="Hủy">
-            <Button size="middle" type="default" danger>
+            <Button size="middle" type="default" danger disabled={record?.id === BEST_SELLING_PRODUCTS}>
               Xóa
             </Button>
           </Popconfirm>

@@ -78,7 +78,7 @@ export default function ListProduct(props) {
   )
 
   return (
-    <div className="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
+    <div className="container mx-auto py-4 md:py-8">
       <TitleList title="Danh sách sản phẩm" />
       <div className="flex gap-5 w-full md:w-1/2 mb-5">
         <Input

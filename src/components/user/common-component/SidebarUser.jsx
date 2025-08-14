@@ -42,6 +42,10 @@ export default function SidebarUser(props) {
       return res?.content
     },
     {
+      refetchOnWindowFocus: false,
+      staleTime: 0,
+      cacheTime: 0,
+      gcTime: 0,
       enabled: true
     }
   )
@@ -75,11 +79,11 @@ export default function SidebarUser(props) {
           </p>
         ))}
       </div>
-      <div className="w-full mt-12">
+      {/* <div className="w-full mt-12">
         <Link href={`/contact`}>
           <img src="/images/call-img-1.jpg" alt="alt" className="w-full" />
         </Link>
-      </div>
+      </div> */}
     </div>
   )
 }
