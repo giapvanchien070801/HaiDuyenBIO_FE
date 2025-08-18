@@ -1,4 +1,5 @@
-import styled from "@emotion/styled"
+"use client"
+
 import React, { useEffect, useState } from "react"
 import dynamic from "next/dynamic"
 
@@ -39,7 +40,7 @@ const TextEditor = props => {
   }
 
   return (
-    <CustomQuill>
+    <div style={{ minHeight: 200 }}>
       <ReactQuill
         value={valueEditor}
         className="bg-white"
@@ -47,19 +48,44 @@ const TextEditor = props => {
         onChange={onChangeEditor}
         modules={TextEditor.modules}
         formats={TextEditor.formats}
+        placeholder="Nhập nội dung..."
       />
-    </CustomQuill>
+    </div>
   )
 }
 
 // Modules and formats configuration for React Quill
 TextEditor.modules = {
   toolbar: [
-    [{ header: "1" }, { header: "2" }, { font: [] }],
+    [{ header: "1" }, { header: "2" }, { header: [3, 4, 5, 6, false] }, { font: [] }],
     [{ size: [] }],
-    ["bold", "italic", "underline", "strike", "blockquote"],
+    [
+      "bold",
+      "italic",
+      "underline",
+      "strike",
+      "blockquote",
+      "code", // Thêm code
+      "code-block", // Thêm code-block
+      "script", // Thêm script
+      { script: "sub" }, // subscript
+      { script: "super" } // superscript
+    ],
+    [
+      { color: [] }, // Thêm màu chữ
+      { background: [] } // Thêm màu nền
+    ],
     [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }],
-    ["link", "image", "video"],
+    [
+      { align: [] }, // Thêm chức năng căn trái, phải, giữa
+      { direction: "rtl" } // Thêm hỗ trợ RTL
+    ],
+    [
+      "link",
+      "image",
+      "video",
+      "formula" // Thêm công thức toán học
+    ],
     ["clean"]
   ]
 }
@@ -73,17 +99,22 @@ TextEditor.formats = [
   "underline",
   "strike",
   "blockquote",
+  "code",
+  "code-block",
+  "script",
+  "sub",
+  "super",
+  "color",
+  "background",
   "list",
   "bullet",
   "indent",
+  "align",
+  "direction",
   "link",
   "image",
-  "video"
+  "video",
+  "formula"
 ]
-const CustomQuill = styled.div`
-  & .ql-container {
-    min-height: 200px;
-  }
-`
 
 export default TextEditor

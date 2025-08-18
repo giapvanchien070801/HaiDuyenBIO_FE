@@ -33,20 +33,20 @@ const contactButtons = [
   //   color: "#1890ff",
   //   delay: 0.2
   // },
-  // {
-  //   title: "Gọi điện",
-  //   icon: <PhoneOutlined />,
-  //   href: "tel:0854891993",
-  //   color: "#52c41a",
-  //   delay: 0.3
-  // },
   {
-    title: "Gửi email",
-    icon: <MailOutlined />,
-    href: "mailto:haiduyenbio.com",
-    color: "#faad14",
-    delay: 0.4
+    title: "Gọi điện",
+    icon: <PhoneOutlined />,
+    href: "tel:0854891993",
+    color: "#52c41a",
+    delay: 0.3
   }
+  // {
+  //   title: "Gửi email",
+  //   icon: <MailOutlined />,
+  //   href: "mailto:haiduyenbio.com",
+  //   color: "#faad14",
+  //   delay: 0.4
+  // }
 ]
 
 const ContactFloatingButtons = () => {
@@ -69,24 +69,9 @@ const ContactFloatingButtons = () => {
   if (!isVisible) return null
 
   return (
-    <div className="fixed bottom-20 right-6 z-50">
+    <div className="fixed bottom-24 right-6 z-50">
       <div className="relative">
         {/* Main toggle button */}
-        <div className="mb-3">
-          {/* <Tooltip title={isExpanded ? "Thu gọn" : "Liên hệ"} placement="left" open={isExpanded}> */}
-          <Button
-            type="primary"
-            shape="circle"
-            icon={isExpanded ? <CloseOutlined /> : <MessageOutlined />}
-            // size="large"
-            onClick={toggleExpanded}
-            className="animate-bounce shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 !w-12 !h-12"
-            style={{
-              animation: "bounce 2s infinite"
-            }}
-          />
-          {/* </Tooltip> */}
-        </div>
 
         {/* Contact buttons with staggered animation */}
         <div
@@ -107,7 +92,7 @@ const ContactFloatingButtons = () => {
                       type="primary"
                       icon={btn.icon}
                       size="large"
-                      className="shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 hover:rotate-12 transform !w-12 !h-12 rounded-full"
+                      className="shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 hover:rotate-12 transform !w-14 !h-14 rounded-full"
                       style={{
                         backgroundColor: btn.color,
                         borderColor: btn.color,
@@ -123,9 +108,9 @@ const ContactFloatingButtons = () => {
 
         {/* Floating notification */}
         {/* {isExpanded && ( */}
-        <div className="absolute -top-12 right-0 bg-white rounded-lg shadow-lg p-2 animate-pulse">
+        {/* <div className="absolute -top-12 right-0 bg-white rounded-lg shadow-lg p-2 animate-pulse">
           <div className="text-base text-gray-600 whitespace-nowrap">💬 Liên hệ ngay!</div>
-        </div>
+        </div> */}
         {/* )} */}
       </div>
 

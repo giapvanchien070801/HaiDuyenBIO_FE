@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation"
 import Product from "@/models/Product"
 import RelatedProducts from "@/components/user/common-component/RelatedProducts"
 import ListImgProduct from "@/components/user/product/ListImgProduct"
+import "react-quill/dist/quill.snow.css"
 
 export default function ProductDetailPage({ params }) {
   // Sử dụng query param từ URL

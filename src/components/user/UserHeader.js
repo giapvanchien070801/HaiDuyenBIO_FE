@@ -103,9 +103,9 @@ export default function UserHeader() {
         type: "MENU"
       })
 
+      // Thêm onClick cho cả menu cha và con
       return resCategory?.content?.map(item => ({
         key: item?.id,
-        icon: <AppstoreOutlined />,
         label: item?.name,
         children: resArticle?.content
           ?.filter(article => +article?.categoryId === +item?.id)
@@ -133,6 +133,7 @@ export default function UserHeader() {
         type: "ARTICLE"
       })
 
+      // Thêm onClick cho category bài viết
       return resCategory?.content?.map(item => ({
         key: item?.id,
         icon: <ContainerOutlined />,
@@ -197,19 +198,21 @@ export default function UserHeader() {
   const header1Transform = Math.max(-header1Height, -scrollY)
   const header2Top = Math.max(0, header1Height + header1Transform)
 
+  // Thêm onClick cho menu cha (sub1) và các menu cha khác
   const items = isMobile
     ? [
         {
           key: "sub1",
-          icon: <ProductOutlined />,
           label: "Sản phẩm",
+          onTitleClick: () => {
+            router.push(`/product-list/-1`)
+          },
           children: listCategoryProduct
         },
 
         ...(listCategoryMenu ? listCategoryMenu : []),
         {
           key: "about",
-          icon: <InfoCircleOutlined />,
           label: "Giới thiệu",
           onClick: () => {
             router.push(`/about`)
@@ -217,7 +220,6 @@ export default function UserHeader() {
         },
         {
           key: "news",
-          icon: <FileTextOutlined />,
           label: "Tin tức",
           onClick: () => {
             router.push(`/news/-1`)
@@ -225,7 +227,6 @@ export default function UserHeader() {
         },
         {
           key: "video",
-          icon: <PlayCircleOutlined />,
           label: "Video",
           onClick: () => {
             router.push(`/list-videos`)
@@ -233,7 +234,6 @@ export default function UserHeader() {
         },
         {
           key: "contact",
-          icon: <ContactsOutlined />,
           label: "Liên hệ",
           onClick: () => {
             router.push(`/contact`)
@@ -243,8 +243,10 @@ export default function UserHeader() {
     : [
         {
           key: "sub1",
-          icon: <ProductOutlined />,
           label: "Sản phẩm",
+          onTitleClick: () => {
+            router.push(`/product-list/-1`)
+          },
           children: listCategoryProduct
         },
 
@@ -322,55 +324,8 @@ export default function UserHeader() {
         }}>
         <div className="flex items-center justify-between w-full lg:w-3/4 text-white">
           <Popover
-            content={
-              <Menu className="w-auto" mode="vertical" items={items} />
-              // <ul className="w-max bg-white">
-              //   <li>
-              //     <Popover
-              //       content={
-              //         <ul className="w-max bg-white">
-              //           {listCategoryProduct?.map((category, index) => (
-              //             <li key={index} className="w-full">
-              //               {/* link đến tranh danh sách bài viết */}
-              //               <Link
-              //                 href={`/product-list/${category?.id}`}
-              //                 as={`/product-list/${category?.id}`}
-              //                 className="hover:text-white block hover:bg-cyan-600 py-2 px-8 transition-all duration-300 lg:px-4 lg:py-2 rounded">
-              //                 {category?.name}
-              //               </Link>
-              //             </li>
-              //           ))}
-              //         </ul>
-              //       }
-              //       trigger="hover"
-              //       placement="right">
-              //       <Link
-              //         href={`/product-list/-1`}
-              //         className="h-full flex items-center hover:text-cyan-600 transition-all duration-300 p-2 w-full justify-between gap-4">
-              //         Sản phẩm
-              //         <RightOutlined />
-              //       </Link>
-              //     </Popover>
-              //   </li>
-
-              //   {listCategoryArticle?.map((category, index) => (
-              //     <li>
-              //       <Popover
-              //         content={<ListArticleByCategory categoryId={category?.id} />}
-              //         trigger="hover"
-              //         placement="right">
-              //         <Link
-              //           href={`#`}
-              //           className="h-full flex items-center  hover:text-cyan-600 transition-all duration-300 p-2 w-full justify-between gap-4">
-              //           {category?.name}
-              //           <RightOutlined />
-              //         </Link>
-              //       </Popover>
-              //     </li>
-              //   ))}
-              // </ul>
-            }
-            trigger="hover"
+            content={<Menu className="w-auto" mode="vertical" items={items} />}
+            trigger="click"
             placement="bottom">
             <Link href={`/`} className="flex items-center gap-3 cursor-pointer ">
               <MenuOutlined className=" text-2xl" />

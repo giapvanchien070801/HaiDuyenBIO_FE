@@ -36,7 +36,7 @@ export default function ListImgProduct({ listImg = [] }) {
         className="relative">
         {listImg?.map((slider, index) => (
           <SwiperSlide key={index} className="flex items-center justify-center">
-            <img src={slider} className="!w-[500px] !h-[500px]" alt={`slider-${index}`} />
+            <img src={slider} className="!w-[500px] !h-[300px] lg:!h-[500px]" alt={`slider-${index}`} />
           </SwiperSlide>
         ))}
 
