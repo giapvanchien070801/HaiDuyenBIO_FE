@@ -253,13 +253,7 @@ body {
   background-color: #14457b;
 }
 .shadow-container-contact {
-  box-shadow: 0px 0px 30px 0px
-    rgba(
-      20.999999999999996,
-      20.999999999999996,
-      20.999999999999996,
-      0.10980392156862745
-    );
+  box-shadow: 0px 0px 30px 0px rgba(20.999999999999996, 20.999999999999996, 20.999999999999996, 0.10980392156862745);
 }
 .banner-contact {
   background-image: url("/images/breadcrumb-image-1.jpg");

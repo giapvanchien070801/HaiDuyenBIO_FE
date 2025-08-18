@@ -68,7 +68,7 @@ export default function UserFooter() {
   return (
     <footer className={`${layoutUserStyle.background_footer} text-white transition-all duration-500 lg:p-0 p-4`}>
       {/* Email Subscription Banner */}
-      <div className="relative container mx-auto sm:pt-20 py-5">
+      <div className="relative container-original mx-auto sm:pt-20 py-5">
         <div
           className={`${layoutUserStyle.send_email} flex flex-col lg:flex-row lg:justify-between lg:items-center absolute z-10 p-6 w-full rounded-lg bg-gradient-to-r from-cyan-700 to-cyan-500 shadow-lg`}>
           <div className="flex items-center mb-4 lg:mb-0 lg:w-1/2">
@@ -103,7 +103,7 @@ export default function UserFooter() {
             {/* Logo & About */}
             <div className="footer_logo h-full  flex flex-col items-center">
               <div className="flex items-center mb-4">
-                <img src={`/images/logo-haiduyenbio-1.png`} className="h-14 w-auto" alt="Hai Duyen Bio Logo" />
+                <img src={`/images/LOGO.JPG`} className="h-14 w-auto" alt="Hai Duyen Bio Logo" />
               </div>
               <p className="text-lg text-left p-2">
                 HẢI DUYÊN BIO là thương hiệu thuộc Công ty TNHH Ứng dụng công nghệ Vi sinh JAPAN. Chúng tôi chuyên cung

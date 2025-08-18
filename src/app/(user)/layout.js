@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from "react-query"
 const UserFooter = dynamic(() => import("@/components/user/UserFooter"), {
   ssr: false
 })
+
 export default function RootLayout({ children }) {
   const queryClient = new QueryClient()
 

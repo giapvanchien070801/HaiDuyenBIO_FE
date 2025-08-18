@@ -67,7 +67,10 @@ const CreateOrEditArticle = props => {
       form.setFieldsValue(res)
       return res
     },
-    { enabled: !!id }
+    {
+      enabled: !!id,
+      refetchOnWindowFocus: false
+    }
   )
 
   const onChangeSelect = value => {
@@ -98,7 +101,9 @@ const CreateOrEditArticle = props => {
         value: item.id
       }))
     },
-    {}
+    {
+      refetchOnWindowFocus: false
+    }
   )
 
   const valueDescription = form.getFieldValue("content")

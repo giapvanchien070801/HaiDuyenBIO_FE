@@ -53,7 +53,10 @@ const CreateOrEditService = props => {
       form.setFieldsValue(res)
       return res
     },
-    { enabled: !!id }
+    {
+      enabled: !!id,
+      refetchOnWindowFocus: false
+    }
   )
 
   const updateServiceNotBackMutate = useMutation(values => Product.updateProduct(id, omitField(values, "id")), {
@@ -107,7 +110,9 @@ const CreateOrEditService = props => {
         value: item.id
       }))
     },
-    {}
+    {
+      refetchOnWindowFocus: false
+    }
   )
 
   const valueDescription = form.getFieldValue("description")
