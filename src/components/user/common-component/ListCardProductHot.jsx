@@ -60,7 +60,7 @@ export default function ListCardProductHot() {
 
       <Spin spinning={isFetching}>
         <div className="flex flex-col items-center gap-5">
-          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-15">
+          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-15 w-full">
             {listProduct?.map(product => (
               <CardProduct key={product?.id} product={product} />
             ))}
