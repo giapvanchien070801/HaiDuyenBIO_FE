@@ -15,6 +15,7 @@ import {
 } from "@ant-design/icons"
 import { useRouter } from "next/navigation"
 import { Breadcrumb, Spin } from "antd"
+import DynamicPageTitle from "@/components/common/DynamicPageTitle"
 
 // Dynamically import components
 const SidebarUser = dynamic(() => import("@/components/user/common-component/SidebarUser"), {
@@ -48,8 +49,10 @@ export default function AboutPage({ params }) {
   ]
 
   return (
-    <div className="pb-24">
-      <div className="grid xl:grid-cols-10 gap-6 mt-12 container-original mx-auto">
+    <>
+      <DynamicPageTitle title="Giới thiệu" />
+      <div className="pb-24">
+        <div className="grid xl:grid-cols-10 gap-6 mt-12 container-original mx-auto">
         <div className="blog-content col-span-7 bg-white md:px-6 px-4">
           <Breadcrumb className="my-5" items={breadcrumb} />
 
@@ -323,5 +326,6 @@ export default function AboutPage({ params }) {
         <SidebarUser />
       </div>
     </div>
+    </>
   )
 }

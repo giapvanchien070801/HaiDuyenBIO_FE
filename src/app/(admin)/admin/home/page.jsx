@@ -4,6 +4,7 @@ import { Breadcrumb } from "antd"
 import { HomeOutlined } from "@ant-design/icons"
 import { useQuery } from "react-query"
 import Base from "../../../../models/Base"
+import DynamicPageTitle from "@/components/common/DynamicPageTitle"
 
 export default function Dashboard() {
   const breadcrumb = [
@@ -25,15 +26,18 @@ export default function Dashboard() {
   })
 
   return (
-    <div>
-      <Breadcrumb className="mb-5" items={breadcrumb} />
-      <div className="text-center">
-        <p className="my-10 text-2xl">Xin chào quản trị viên! {dataAdmin?.Name}</p>
-      </div>
+    <>
+      <DynamicPageTitle title="Dashboard" />
+      <div>
+        <Breadcrumb className="mb-5" items={breadcrumb} />
+        <div className="text-center">
+          <p className="my-10 text-2xl">Xin chào quản trị viên! {dataAdmin?.Name}</p>
+        </div>
 
-      <div className="mx-auto">
-        <img src="/images/logo-haiduyenbio-1.png" alt="logo" className="m-auto" />
+        <div className="mx-auto">
+          <img src="/images/logo-haiduyenbio-1.png" alt="logo" className="m-auto" />
+        </div>
       </div>
-    </div>
+    </>
   )
 }

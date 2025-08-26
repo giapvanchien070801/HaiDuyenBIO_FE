@@ -103,9 +103,9 @@ export default function UserFooter() {
             {/* Logo & About */}
             <div className="footer_logo h-full  flex flex-col items-center">
               <div className="flex items-center mb-4">
-                <img src={`/images/LOGO.JPG`} className="h-14 w-auto" alt="Hai Duyen Bio Logo" />
+                <img src={`/images/logo-chu-trang.png`} className="h-14 w-auto" alt="Hai Duyen Bio Logo" />
               </div>
-              <p className="text-lg text-left p-2">
+              <p className="text-left p-2">
                 HẢI DUYÊN BIO là thương hiệu thuộc Công ty TNHH Ứng dụng công nghệ Vi sinh JAPAN. Chúng tôi chuyên cung
                 cấp giải pháp sinh học xử lý môi trường và ao nuôi tôm, hiện đang sản xuất và phân phối trực tiếp các
                 sản phẩm men vi sinh cho nuôi trồng thủy sản.

@@ -6,6 +6,7 @@ import "/src/app/globals.css"
 import { QueryClient, QueryClientProvider } from "react-query"
 import { message, notification } from "antd"
 import { Cookies } from "react-cookie"
+import { usePageTitle } from "@/utils/hooks/usePageTitle"
 
 export default function AdminLayout({ children }) {
   const queryClient = new QueryClient()
@@ -17,6 +18,9 @@ export default function AdminLayout({ children }) {
   const accessToken = cookies.get("accessToken")
 
   const [api, contextHolder] = notification.useNotification()
+  
+  // Sử dụng hook để cập nhật tiêu đề trang
+  usePageTitle()
 
   useEffect(() => {
     // Nếu đường dẫn là /admin và chưa đăng nhập, điều hướng đến trang login

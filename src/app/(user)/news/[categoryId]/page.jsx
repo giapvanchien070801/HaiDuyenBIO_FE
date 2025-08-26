@@ -10,6 +10,7 @@ import { useDebounce } from "@/common/functions/commonFunction"
 import { useRef, useState } from "react"
 import CategoryProduct from "@/models/CategoryProduct"
 import ArticleModal from "@/models/ArticleModal"
+import DynamicPageTitle from "@/components/common/DynamicPageTitle"
 
 export default function NewsPage({ params }) {
   const categoryId = params?.categoryId
@@ -100,10 +101,12 @@ export default function NewsPage({ params }) {
   ]
 
   return (
-    <div className="pb-24">
-      {/* <UserSwiper /> */}
+    <>
+      <DynamicPageTitle title="Tin tức" />
+      <div className="pb-24">
+        {/* <UserSwiper /> */}
 
-      <div className="grid xl:grid-cols-10 gap-6 mt-12 container-original mx-auto">
+        <div className="grid xl:grid-cols-10 gap-6 mt-12 container-original mx-auto">
         <div className=" col-span-7 bg-white md:px-16 px-4">
           <Breadcrumb className="my-5" items={breadcrumb} />
           {/* <Input
@@ -162,5 +165,6 @@ export default function NewsPage({ params }) {
         <SidebarUser />
       </div>
     </div>
+    </>
   )
 }
