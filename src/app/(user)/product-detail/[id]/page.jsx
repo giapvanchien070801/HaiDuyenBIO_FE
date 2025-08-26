@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation"
 import Product from "@/models/Product"
 import RelatedProducts from "@/components/user/common-component/RelatedProducts"
 import ListImgProduct from "@/components/user/product/ListImgProduct"
+import DynamicPageTitle from "@/components/common/DynamicPageTitle"
 import "react-quill/dist/quill.snow.css"
 
 export default function ProductDetailPage({ params }) {
@@ -193,101 +194,104 @@ export default function ProductDetailPage({ params }) {
   ]
 
   return (
-    <div className="pb-24 container-original mx-auto">
-      <div className=" mt-12  flex justify-center">
-        <div className=" bg-white md:px-0 px-4">
-          <Breadcrumb className="my-5" items={breadcrumb} />
+    <>
+      <DynamicPageTitle title={dataDetail?.name || "Chi tiết sản phẩm"} />
+      <div className="pb-24 container-original mx-auto">
+        <div className=" mt-12  flex justify-center">
+          <div className=" bg-white md:px-0 px-4">
+            <Breadcrumb className="my-5" items={breadcrumb} />
 
-          {/* Product Detail Section */}
-          <div className="grid  grid-cols-1 md:grid-cols-2 p-6 gap-10">
-            {/* Product Image */}
-            <div className="col-span-1">
-              <div className="">
-                <ListImgProduct listImg={dataDetail?.imageUrl} />
+            {/* Product Detail Section */}
+            <div className="grid  grid-cols-1 md:grid-cols-2 p-6 gap-10">
+              {/* Product Image */}
+              <div className="col-span-1">
+                <div className="">
+                  <ListImgProduct listImg={dataDetail?.imageUrl} />
+                </div>
+              </div>
+
+              {/* Product Info */}
+              <div className="col-span-1">
+                <div>
+                  <h1 className="text-2xl font-bold text-gray-800 mb-2">{dataDetail?.name}</h1>
+                  <p className="text-gray-600 text-sm leading-relaxed">{dataDetail?.summary}</p>
+                </div>
+
+                {/* Price Section */}
+                <div className="space-y-2">
+                  <div className="flex items-center gap-3">
+                    <span className="text-3xl font-bold text-red-500">
+                      {dataDetail?.priceFrom.toLocaleString("vi-VN")}đ
+                    </span>
+                    <span className="text-lg text-gray-400 line-through">
+                      {dataDetail?.price.toLocaleString("vi-VN")}đ
+                    </span>
+                  </div>
+                  <p className="text-sm text-gray-500">
+                    Tiết kiệm: {(dataDetail?.priceFrom - dataDetail?.price).toLocaleString("vi-VN")}đ
+                  </p>
+                </div>
+
+                {/* Quantity Section */}
+                <div className="space-y-3">
+                  <label className="block text-sm font-medium text-gray-700">Số lượng:</label>
+                  <div className="flex items-center gap-3">
+                    <Button
+                      icon={<MinusOutlined />}
+                      onClick={handleDecrease}
+                      disabled={quantity <= 1}
+                      className="flex items-center justify-center"
+                    />
+                    <InputNumber
+                      min={1}
+                      // max={mockProduct.quantity}
+                      value={quantity}
+                      onChange={setQuantity}
+                      className="w-24"
+                    />
+                    <Button
+                      icon={<PlusOutlined />}
+                      onClick={handleIncrease}
+                      // disabled={quantity >= mockProduct.quantity}
+                      className="flex items-center justify-center"
+                    />
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className=" pt-4 flex flex-col md:flex-row gap-3">
+                  <Button
+                    type="primary"
+                    size="large"
+                    icon={<ShoppingCartOutlined />}
+                    onClick={addToCart}
+                    className="w-full h-12 bg-blue-600 hover:bg-blue-700">
+                    Thêm vào giỏ hàng
+                  </Button>
+                  <Button
+                    size="large"
+                    icon={<ShoppingOutlined />}
+                    onClick={buyNow}
+                    className="w-full h-12 bg-green-600 hover:bg-green-700 text-white !m-0">
+                    Mua ngay
+                  </Button>
+                </div>
               </div>
             </div>
-
-            {/* Product Info */}
-            <div className="col-span-1">
+            <div className=" blog-content px-5 md:px-10 ">
               <div>
-                <h1 className="text-2xl font-bold text-gray-800 mb-2">{dataDetail?.name}</h1>
-                <p className="text-gray-600 text-sm leading-relaxed">{dataDetail?.summary}</p>
-              </div>
-
-              {/* Price Section */}
-              <div className="space-y-2">
-                <div className="flex items-center gap-3">
-                  <span className="text-3xl font-bold text-red-500">
-                    {dataDetail?.priceFrom.toLocaleString("vi-VN")}đ
-                  </span>
-                  <span className="text-lg text-gray-400 line-through">
-                    {dataDetail?.price.toLocaleString("vi-VN")}đ
-                  </span>
-                </div>
-                <p className="text-sm text-gray-500">
-                  Tiết kiệm: {(dataDetail?.priceFrom - dataDetail?.price).toLocaleString("vi-VN")}đ
-                </p>
-              </div>
-
-              {/* Quantity Section */}
-              <div className="space-y-3">
-                <label className="block text-sm font-medium text-gray-700">Số lượng:</label>
-                <div className="flex items-center gap-3">
-                  <Button
-                    icon={<MinusOutlined />}
-                    onClick={handleDecrease}
-                    disabled={quantity <= 1}
-                    className="flex items-center justify-center"
-                  />
-                  <InputNumber
-                    min={1}
-                    // max={mockProduct.quantity}
-                    value={quantity}
-                    onChange={setQuantity}
-                    className="w-24"
-                  />
-                  <Button
-                    icon={<PlusOutlined />}
-                    onClick={handleIncrease}
-                    // disabled={quantity >= mockProduct.quantity}
-                    className="flex items-center justify-center"
-                  />
-                </div>
-              </div>
-
-              {/* Action Buttons */}
-              <div className=" pt-4 flex flex-col md:flex-row gap-3">
-                <Button
-                  type="primary"
-                  size="large"
-                  icon={<ShoppingCartOutlined />}
-                  onClick={addToCart}
-                  className="w-full h-12 bg-blue-600 hover:bg-blue-700">
-                  Thêm vào giỏ hàng
-                </Button>
-                <Button
-                  size="large"
-                  icon={<ShoppingOutlined />}
-                  onClick={buyNow}
-                  className="w-full h-12 bg-green-600 hover:bg-green-700 text-white !m-0">
-                  Mua ngay
-                </Button>
+                <Divider />
+                <p className="text-lg font-semibold text-gray-800 mb-3">Mô tả sản phẩm</p>
+                <div
+                  className="text-gray-600 leading-relaxed"
+                  dangerouslySetInnerHTML={{ __html: dataDetail?.description }}
+                />
               </div>
             </div>
+            <RelatedProducts currentCategoryId={dataDetail?.categoryId} currentProductId={idProduct} />
           </div>
-          <div className=" blog-content px-5 md:px-10 ">
-            <div>
-              <Divider />
-              <p className="text-lg font-semibold text-gray-800 mb-3">Mô tả sản phẩm</p>
-              <div
-                className="text-gray-600 leading-relaxed"
-                dangerouslySetInnerHTML={{ __html: dataDetail?.description }}
-              />
-            </div>
-          </div>
-          <RelatedProducts currentCategoryId={dataDetail?.categoryId} currentProductId={idProduct} />
         </div>
       </div>
-    </div>
+    </>
   )
 }

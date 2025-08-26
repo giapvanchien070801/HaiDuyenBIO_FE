@@ -9,6 +9,7 @@ import { useRef, useState } from "react"
 import { removeEmptyFields, useDebounce } from "@/common/functions/commonFunction"
 import CategoryProduct from "@/models/CategoryProduct"
 import Product from "@/models/Product"
+import { BEST_SELLING_PRODUCTS } from "@/utils/common-const"
 
 export default function ListCardProduct() {
   const __pagination = useRef({
@@ -41,7 +42,7 @@ export default function ListCardProduct() {
 
       __pagination.current.count = res?.totalElements
 
-      return res?.content
+      return res?.content?.filter(item => item?.categoryId !== BEST_SELLING_PRODUCTS)
     },
     {
       refetchOnWindowFocus: false,

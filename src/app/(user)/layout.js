@@ -4,6 +4,7 @@ import UserHeader from "@/components/user/UserHeader"
 import dynamic from "next/dynamic"
 import Script from "next/script"
 import { QueryClient, QueryClientProvider } from "react-query"
+import { usePageTitle } from "@/utils/hooks/usePageTitle"
 
 const UserFooter = dynamic(() => import("@/components/user/UserFooter"), {
   ssr: false
@@ -11,6 +12,9 @@ const UserFooter = dynamic(() => import("@/components/user/UserFooter"), {
 
 export default function RootLayout({ children }) {
   const queryClient = new QueryClient()
+  
+  // Sử dụng hook để cập nhật tiêu đề trang
+  usePageTitle()
 
   return (
     <html lang="en">

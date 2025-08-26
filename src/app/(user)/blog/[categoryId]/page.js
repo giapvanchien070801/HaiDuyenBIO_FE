@@ -13,6 +13,7 @@ import SidebarUser from "@/components/user/common-component/SidebarUser"
 import { Pagination, Spin } from "antd"
 
 import SearchCommon from "@/components/user/SearchCommon"
+import DynamicPageTitle from "@/components/common/DynamicPageTitle"
 
 export default async function ListPage({ params }) {
   const [pagination, setPagination] = useState({
@@ -69,8 +70,10 @@ export default async function ListPage({ params }) {
   }, [valueSearch])
 
   return (
-    <div className=" pb-24">
-      <BannerBreadcrumb title="Danh sách bài viết" breadcrumb={breadCrum} />
+    <>
+      <DynamicPageTitle title="Danh sách bài viết" />
+      <div className=" pb-24">
+        <BannerBreadcrumb title="Danh sách bài viết" breadcrumb={breadCrum} />
       <Spin spinning={isFetching}>
         <div className="grid xl:grid-cols-10 gap-6 container-original mx-auto mt-20">
           <div className=" col-span-7 flex flex-col items-center">
@@ -115,5 +118,6 @@ export default async function ListPage({ params }) {
         </div>
       </Spin>
     </div>
+    </>
   )
 }
