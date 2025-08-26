@@ -8,6 +8,7 @@ import SidebarUser from "./common-component/SidebarUser"
 import { Spin } from "antd"
 import CardLatestBlog from "./CardLatestBlog"
 import { handleSrcImg } from "@/common/functions/commonFunction"
+import QuillContent from "@/components/common/QuillContent"
 
 export default async function Blog({ postId, categoryId }) {
   const { data: dataPostDetail, isFetching } = useQuery(
@@ -65,7 +66,7 @@ export default async function Blog({ postId, categoryId }) {
       <div className="container-original mx-auto pb-24 grid xl:grid-cols-10 gap-6 mt-12">
         <div className="col-span-7 bg-white md:p-0 p-4">
           <Spin spinning={isFetching}>
-            <div dangerouslySetInnerHTML={{ __html: dataPostDetail?.Content }} className="blog-content" />
+            <QuillContent content={dataPostDetail?.Content} />
           </Spin>
 
           <div className="write-comment mt-16">

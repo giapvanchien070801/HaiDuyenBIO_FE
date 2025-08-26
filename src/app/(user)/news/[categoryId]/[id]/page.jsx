@@ -7,6 +7,7 @@ import { HomeOutlined } from "@ant-design/icons"
 import { Breadcrumb, Spin } from "antd"
 import TitleList from "@/components/user/common-component/TitleList"
 import SidebarUser from "@/components/user/common-component/SidebarUser"
+import QuillContent from "@/components/common/QuillContent"
 
 function ProductDetailPage({ params }) {
   // Sử dụng query param từ URL
@@ -63,7 +64,7 @@ function ProductDetailPage({ params }) {
           </h2>
           <div className="bg-black/10 block mt-2 mb-10 h-[3px]  max-w-[30px] w-full "></div>
           <Spin spinning={isFetching}>
-            <div dangerouslySetInnerHTML={{ __html: dataArticle?.content }} className="blog-content my-5" />
+            <QuillContent content={dataArticle?.content} className="my-5" />
           </Spin>
         </div>
 

@@ -7,6 +7,7 @@ import BannerBreadcrumb from "@/components/user/common-component/BannerBreadcrum
 import Link from "next/link"
 import { useQuery } from "react-query"
 import Base from "@/models/Base"
+import QuillContent from "@/components/common/QuillContent"
 
 export default function ServiceDetail({ params }) {
   // Sử dụng query param từ URL
@@ -112,7 +113,7 @@ export default function ServiceDetail({ params }) {
         </div>
         <div className="lg:w-8/12 w-full  bg-red-40 h-full p-8">
           <Spin spinning={isFetching}>
-            <div dangerouslySetInnerHTML={{ __html: dataService?.Description }} className="blog-content" />
+            <QuillContent content={dataService?.Description} />
           </Spin>
 
           {/* Lời khuyên & Thông tin về Sức khỏe */}

@@ -10,7 +10,7 @@ import Product from "@/models/Product"
 import RelatedProducts from "@/components/user/common-component/RelatedProducts"
 import ListImgProduct from "@/components/user/product/ListImgProduct"
 import DynamicPageTitle from "@/components/common/DynamicPageTitle"
-import "react-quill/dist/quill.snow.css"
+import QuillContent from "@/components/common/QuillContent"
 
 export default function ProductDetailPage({ params }) {
   // Sử dụng query param từ URL
@@ -278,14 +278,11 @@ export default function ProductDetailPage({ params }) {
                 </div>
               </div>
             </div>
-            <div className=" blog-content px-5 md:px-10 ">
+            <div className=" px-5 md:px-10 ">
               <div>
                 <Divider />
                 <p className="text-lg font-semibold text-gray-800 mb-3">Mô tả sản phẩm</p>
-                <div
-                  className="text-gray-600 leading-relaxed"
-                  dangerouslySetInnerHTML={{ __html: dataDetail?.description }}
-                />
+                <QuillContent content={dataDetail?.description} className="text-gray-600 leading-relaxed" />
               </div>
             </div>
             <RelatedProducts currentCategoryId={dataDetail?.categoryId} currentProductId={idProduct} />
