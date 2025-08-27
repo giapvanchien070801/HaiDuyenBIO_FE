@@ -14,14 +14,14 @@ import {
 const contactButtons = [
   {
     title: "Facebook",
-    icon: <FacebookOutlined />,
+    icon: <FacebookOutlined className="text-2xl" />,
     href: "https://www.facebook.com/trinh.hai.duyen.bio",
     color: "#1877F2",
     delay: 0
   },
   {
     title: "Zalo",
-    icon: <WechatOutlined />,
+    icon: <WechatOutlined className="text-2xl" />,
     href: "https://zalo.me/0854891993",
     color: "#0088cc",
     delay: 0.1
@@ -35,7 +35,7 @@ const contactButtons = [
   // },
   {
     title: "Gọi điện",
-    icon: <PhoneOutlined />,
+    icon: <PhoneOutlined className="text-2xl" />,
     href: "tel:0854891993",
     color: "#52c41a",
     delay: 0.3
@@ -90,15 +90,20 @@ const ContactFloatingButtons = () => {
                   <a href={btn.href} target="_blank" rel="noopener noreferrer" className="block">
                     <Button
                       type="primary"
-                      icon={btn.icon}
                       size="large"
                       className="shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 hover:rotate-12 transform !w-14 !h-14 rounded-full"
                       style={{
                         backgroundColor: btn.color,
-                        borderColor: btn.color,
-                        animation: isExpanded ? `pulse 2s infinite ${2 + btn.delay}s` : "none"
-                      }}
-                    />
+                        borderColor: btn.color
+                      }}>
+                      <div
+                        className="icon-shake"
+                        style={{
+                          animation: isExpanded ? `iconShake 1.5s infinite ${2 + btn.delay}s` : "none"
+                        }}>
+                        {btn.icon}
+                      </div>
+                    </Button>
                   </a>
                 </Tooltip>
               </div>
@@ -143,6 +148,30 @@ const ContactFloatingButtons = () => {
           50% {
             opacity: 0.4;
           }
+        }
+
+        @keyframes iconShake {
+          0%,
+          66.67%,
+          100% {
+            transform: translateX(0);
+          }
+          4%,
+          12%,
+          20%,
+          28% {
+            transform: translateX(-2px);
+          }
+          8%,
+          16%,
+          24%,
+          32% {
+            transform: translateX(2px);
+          }
+        }
+
+        .icon-shake:hover {
+          animation: iconShake 0.5s ease-in-out !important;
         }
       `}</style>
     </div>
