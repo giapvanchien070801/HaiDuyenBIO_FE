@@ -277,7 +277,7 @@ export default function UserHeader() {
           <div className="items-center gap-5 hidden md:flex">
             <Link href={`/`} className="">
               <div className="flex items-center">
-                <img src="/images/new_logo.png" className=" h-14" alt="logo" />
+                <img src="/images/logo-chu-xanh.png" className=" h-14" alt="logo-header" />
               </div>
             </Link>
           </div>

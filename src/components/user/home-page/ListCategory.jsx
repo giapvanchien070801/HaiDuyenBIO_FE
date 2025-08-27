@@ -3,6 +3,8 @@
 import CategoryProduct from "@/models/CategoryProduct"
 import { useQuery } from "react-query"
 import { useRouter } from "next/navigation"
+import { BEST_SELLING_PRODUCTS } from "@/utils/common-const"
+import { Button } from "antd"
 
 export default function ListCategory() {
   const router = useRouter()
@@ -18,13 +20,17 @@ export default function ListCategory() {
         type: "PRODUCT"
       })
 
-      const dataConvert = res?.content?.map(category => {
-        return { label: category?.name, value: category?.id }
-      })
+      const dataConvert = res?.content
+        ?.filter(category => category?.id !== BEST_SELLING_PRODUCTS)
+        .map(category => {
+          return { label: category?.name, value: category?.id }
+        })
       return dataConvert
     },
     {}
   )
+
+  const listColorCate = ["geekblue", "pink", "orange", "green"]
 
   return (
     <div className="container mx-auto py-4 md:py-8">
@@ -36,14 +42,14 @@ export default function ListCategory() {
             onClick={() => {
               router.push(`/product-list/${category?.value}`)
             }}
-            className="flex flex-col items-center bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 p-4 cursor-pointer group hover:bg-cyan-50 w-fit">
+            className="flex flex-col items-center bg-white rounded-lg bg-slate-200 transition-shadow duration-300 p-4 cursor-pointer group hover:bg-cyan-50 w-fit">
             <div className="w-16 h-16 mb-3 flex items-center justify-center rounded-full bg-gradient-to-tr from-cyan-400 to-cyan-700 group-hover:scale-110 transition-transform duration-300 shadow-lg">
               {/* Fake icon: use emoji for demo, can replace with real icon */}
-              <span className="text-3xl">{["🐟", "🐄", "🌱", "💊", "🌿", "🧪", "🛡️", "⚙️"][idx % 8]}</span>
+              <span className="text-3xl">{["🌱", "🐄", "🧪", "🛡️"][idx]}</span>
             </div>
-            <span className="text-base font-semibold text-gray-700 group-hover:text-cyan-700 text-center uppercase">
+            <Button color={listColorCate[idx]} variant="outlined" className="uppercase">
               {category?.label}
-            </span>
+            </Button>
           </div>
         ))}
       </div>

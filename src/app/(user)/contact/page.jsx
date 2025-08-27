@@ -72,7 +72,7 @@ export default function Contact() {
             <CardContact
               title="Vị trí của chúng tôi"
               icon={<MailOutlined className=" text-white text-4xl" />}
-              content="Thôn Nam Điện, Xã Nam Dương, Huyện Lục Ngạn, Tỉnh Bắc Giang"
+              content="Thôn Nam Điện, Xã Nam Dương, Tỉnh Bắc Ninh"
             />
             <CardContact
               icon={<PhoneFilled className="text-white text-4xl" />}
