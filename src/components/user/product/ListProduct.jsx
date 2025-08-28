@@ -77,13 +77,13 @@ export default function ListProduct(props) {
     }
   )
 
-  const currentCategory = listCategory?.find(
-    item => item.value === (__pagination.current.categoryId || Number(categoryId))
-  )
+  // const currentCategory = listCategory?.find(
+  //   item => item.value === (__pagination.current.categoryId || Number(categoryId))
+  // )
 
   return (
     <div className="container mx-auto py-4 md:py-8">
-      <TitleList title={currentCategory?.label || "Danh sách sản phẩm"} />
+      {/* <TitleList title={currentCategory?.label || "Danh sách sản phẩm"} /> */}
       <div className="flex gap-5 w-full md:w-1/2 mb-5">
         <Input
           allowClear

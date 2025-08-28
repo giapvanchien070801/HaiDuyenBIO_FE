@@ -55,7 +55,7 @@ export default function ListCardProductHot() {
   )
 
   return (
-    <div className="container-original mx-auto p-4 md:p-0 my-8">
+    <div className="container-original mx-auto p-4 md:p-0 my-10">
       <TitleList title="Sản phẩm bán chạy" />
 
       <Spin spinning={isFetching}>

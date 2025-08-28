@@ -9,7 +9,7 @@ export default function CardPNews(props) {
   const router = useRouter()
 
   const handleClick = () => {
-    router.push(`/news/${categoryId}/${dataNews?.id}`)
+    router.push(`/news/${categoryId}/${dataNews?.id}?slug=${dataNews?.slug}`)
   }
 
   return (

@@ -51,7 +51,7 @@ function ProductDetailPage({ params }) {
         <div className="blog-content col-span-7 bg-white md:px-0 px-4">
           <Breadcrumb className="my-5" items={breadcrumb} />
 
-          <TitleList title="Bài viết" />
+          {/* <TitleList title="Bài viết" /> */}
 
           <span className="text-xs font-bold text-[#787b9d] tracking-widest uppercase">
             {dataArticle?.categoryName}
@@ -59,7 +59,7 @@ function ProductDetailPage({ params }) {
 
           {/* TITLE */}
 
-          <h2 className="text-2xl font-bold m-0 hover:text-cyan-600 transition-colors duration-300 text-[#545454]">
+          <h2 className="text-3xl font-bold m-0 hover:text-cyan-600 transition-colors duration-300 text-[#545454] uppercase">
             {dataArticle?.title}
           </h2>
           <div className="bg-black/10 block mt-2 mb-10 h-[3px]  max-w-[30px] w-full "></div>
