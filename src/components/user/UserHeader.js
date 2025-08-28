@@ -33,6 +33,7 @@ import { handleCallHotline, removeEmptyFields, useDebounce } from "@/common/func
 import Product from "@/models/Product"
 import BadgeShop from "./home-page/BadgeShop"
 import ArticleModal from "@/models/ArticleModal"
+import { BEST_SELLING_PRODUCTS } from "@/utils/common-const"
 
 const { Search } = Input
 
@@ -56,13 +57,15 @@ export default function UserHeader() {
         type: "PRODUCT"
       })
 
-      return res?.content?.map(item => ({
-        key: item?.id,
-        label: item?.name,
-        onClick: () => {
-          router.push(`/product-list/${item?.id}`)
-        }
-      }))
+      return res?.content
+        ?.filter(item => item?.id !== BEST_SELLING_PRODUCTS)
+        ?.map(item => ({
+          key: item?.id,
+          label: item?.name,
+          onClick: () => {
+            router.push(`/product-list/${item?.id}`)
+          }
+        }))
     },
     {
       enabled: true
@@ -104,7 +107,7 @@ export default function UserHeader() {
       })
 
       // Thêm onClick cho cả menu cha và con
-      return resCategory?.content?.map(item => ({
+      const listMenuConvert = resCategory?.content?.map(item => ({
         key: item?.id,
         label: item?.name,
         children: resArticle?.content
@@ -117,6 +120,8 @@ export default function UserHeader() {
             }
           }))
       }))
+
+      return listMenuConvert
     },
     {
       enabled: true
@@ -273,8 +278,8 @@ export default function UserHeader() {
           transform: `translateY(${header1Transform}px)`,
           transition: "transform 0.4s ease-out"
         }}>
-        <div className="container mx-auto flex justify-between py-5">
-          <div className="items-center gap-5 hidden md:flex">
+        <div className="container-original mx-auto flex justify-between py-5">
+          <div className="items-center gap-5 hidden md:flex translate-x-[-5px]">
             <Link href={`/`} className="">
               <div className="flex items-center">
                 <img src="/images/logo-chu-xanh.png" className=" h-14" alt="logo-header" />
@@ -322,7 +327,7 @@ export default function UserHeader() {
           right: 0,
           transition: "top 0 ease-out"
         }}>
-        <div className="flex items-center justify-between w-full lg:w-3/4 text-white">
+        <div className="flex items-center justify-between  text-white container-original mx-auto">
           <Popover
             content={<Menu className="w-auto" mode="vertical" items={items} />}
             trigger="click"
@@ -408,7 +413,7 @@ export default function UserHeader() {
               <li className="h-full relative">
                 <Link
                   href={`/contact`}
-                  className="h-full flex items-center hover:text-cyan-600 transition-all duration-300 p-2">
+                  className="h-full flex items-center hover:text-cyan-600 transition-all duration-300 py-2 pl-2 pr-0">
                   <ContactsOutlined className="mr-2" />
                   Liên hệ
                 </Link>

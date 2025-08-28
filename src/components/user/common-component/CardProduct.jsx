@@ -49,7 +49,7 @@ export default function CardProduct(props) {
     <>
       <div
         onClick={() => {
-          router.push(`/product-detail/${product?.id}`)
+          router.push(`/product-detail/${product?.id}?slug=${product?.slug}`)
         }}
         className="  cursor-pointer bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden relative hover:shadow-lg transition-shadow duration-300 card-product">
         <div className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-sm z-10">

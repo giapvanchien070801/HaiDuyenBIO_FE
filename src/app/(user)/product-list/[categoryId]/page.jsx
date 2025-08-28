@@ -151,7 +151,7 @@ export default function ProductListPage({ params }) {
   return (
     <div className="pb-24 container-original mx-auto">
       <div className=" gap-6 mt-12  flex justify-center">
-        <div className=" bg-white md:px-0 px-4">
+        <div className=" bg-white md:px-0 px-4 w-full">
           <Breadcrumb className="my-5" items={breadcrumb} />
           <ListProduct categoryId={categoryId} />
         </div>

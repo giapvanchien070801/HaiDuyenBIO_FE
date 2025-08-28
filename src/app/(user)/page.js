@@ -17,28 +17,9 @@ import ListCardProductHot from "@/components/user/common-component/ListCardProdu
 import ListCategory from "@/components/user/home-page/ListCategory"
 
 export default function HomePage() {
-  const [showScrollTop, setShowScrollTop] = useState(false)
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop
-      setShowScrollTop(scrollTop > 300)
-    }
-
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
-
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    })
-  }
-
   return (
     <>
-      <div className="pb-48 ">
+      <div className="pb-32 ">
         <UserSwiper />
         <ListCategory />
         <ListCardProductHot />
@@ -49,17 +30,6 @@ export default function HomePage() {
         <ListNewsHome />
         <ListVideos />
       </div>
-
-      {/* Nút scroll to top */}
-      {showScrollTop && (
-        <div
-          className="fixed bottom-6 right-6 z-50 cursor-pointer bg-cyan-600 hover:bg-cyan-700 text-white rounded-full p-4 shadow-lg transition-all duration-300 hover:scale-110"
-          onClick={scrollToTop}>
-          <VerticalAlignTopOutlined className="text-2xl" />
-        </div>
-      )}
-
-      <ContactFloatingButtons />
     </>
   )
 }

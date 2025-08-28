@@ -256,7 +256,7 @@ export default function UserFooter() {
         </div>
       </div>
       {/* Footer Bottom */}
-      <div className="container mx-auto mt-10 border-t border-cyan-900 pt-6 flex flex-col md:flex-row items-center justify-between text-sm text-cyan-100 gap-2">
+      <div className="container-original mx-auto mt-10 border-t border-cyan-900 pt-6 flex flex-col md:flex-row items-center justify-between text-sm text-cyan-100 gap-2">
         <span>&copy; {new Date().getFullYear()} HẢI DUYÊN BIO. All rights reserved.</span>
         <div className="flex gap-4">
           <Link href="/privacy" className="hover:underline">
