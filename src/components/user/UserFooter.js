@@ -207,14 +207,7 @@ export default function UserFooter() {
                   style={{ width: 40, height: 40 }}>
                   <FacebookFilled className="text-2xl" style={{ color: "#1877f3" }} />
                 </Link>
-                <Link
-                  href="https://www.facebook.com/trinh.hai.duyen.bio"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center rounded-full bg-white shadow hover:scale-110 transition"
-                  style={{ width: 40, height: 40 }}>
-                  <InstagramFilled className="text-2xl" style={{ color: "#E4405F" }} />
-                </Link>
+
                 <Link
                   href="https://www.youtube.com/@haiduyenbio"
                   target="_blank"
