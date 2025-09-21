@@ -56,7 +56,9 @@ export default function ListCategory() {
               router.push(`/product-list/${category?.value}`)
             }}
             className="h-[200px]  gap-4 flex flex-col items-center justify-end  rounded-lg transition-shadow duration-300 p-3 cursor-pointer group hover:bg-cyan-50">
-            <Tag className="[&.ant-tag]:py-1 [&.ant-tag]:px-3 uppercase font-semibold" color={listColorCate[idx].color}>
+            <Tag
+              className="[&.ant-tag]:py-1 [&.ant-tag]:px-3 uppercase font-bold text-lg m-0"
+              color={listColorCate[idx].color}>
               {category?.label}
             </Tag>
           </div>
